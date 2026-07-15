@@ -4,7 +4,6 @@ import com.hbm.explosion.ExplosionNT;
 import com.hbm.particle.helper.ExplosionSmallCreator;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class BlockChargeDynamite extends BlockChargeBase {
