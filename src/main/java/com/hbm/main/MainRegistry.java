@@ -3,6 +3,7 @@ package com.hbm.main;
 import com.google.common.collect.ImmutableList;
 import com.hbm.blocks.BlockEnums.EnumStoneType;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.energymk3.EnergySystemMK3;
 import com.hbm.blocks.generic.BlockToolConversion;
 import com.hbm.commands.*;
 import com.hbm.config.*;
@@ -386,6 +387,7 @@ public class MainRegistry {
 			}
 		});
 
+		EnergySystemMK3.init();
 		DispenserBehaviorHandler.init();
 		MicroBlocksCompatHandler.preInit();
 	}
