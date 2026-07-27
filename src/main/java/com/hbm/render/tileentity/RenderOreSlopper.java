@@ -39,6 +39,7 @@ public class RenderOreSlopper extends TileEntitySpecialRenderer implements IItem
 		
 		TileEntityMachineOreSlopper slopper = (TileEntityMachineOreSlopper) tile;
 
+		DeformationHandler.applyDeformation(slopper.processing);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.ore_slopper_tex);
 		ResourceManager.ore_slopper.renderPart("Base");

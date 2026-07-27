@@ -40,6 +40,7 @@ public class RenderChemicalPlant extends TileEntitySpecialRenderer implements II
 		float anim = chemplant.prevAnim + (chemplant.anim - chemplant.prevAnim) * interp;
 		GenericRecipe recipe = chemplant.chemplantModule.getRecipe();
 		
+		DeformationHandler.applyDeformation(chemplant.didProcess);
 		bindTexture(ResourceManager.chemical_plant_tex);
 		ResourceManager.chemical_plant.renderPart("Base");
 		if(chemplant.frame) ResourceManager.chemical_plant.renderPart("Frame");

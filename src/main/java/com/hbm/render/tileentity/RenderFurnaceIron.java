@@ -30,6 +30,7 @@ public class RenderFurnaceIron extends TileEntitySpecialRenderer {
 		
 		TileEntityFurnaceIron furnace = (TileEntityFurnaceIron) tileEntity;
 		
+		DeformationHandler.applyDeformation(furnace.wasOn);
 		bindTexture(ResourceManager.furnace_iron_tex);
 		ResourceManager.furnace_iron.renderPart("Main");
 		

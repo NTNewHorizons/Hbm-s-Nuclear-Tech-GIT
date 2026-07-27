@@ -35,6 +35,7 @@ public class RenderHTRNeo extends TileEntitySpecialRenderer implements IItemRend
 
 		float rot = rocket.prevRotor + (rocket.rotor - rocket.prevRotor) * interp;
 
+		DeformationHandler.applyDeformation(rocket.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.htrf4_neo_tex);
 		ResourceManager.htrf4_neo.renderOnly("Base", "Engine");

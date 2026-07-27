@@ -33,11 +33,13 @@ public class RenderCentrifuge extends TileEntitySpecialRenderer implements IItem
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		
 		if(tileEntity instanceof TileEntityMachineCentrifuge) {
+			DeformationHandler.applyDeformation(((TileEntityMachineCentrifuge) tileEntity).isProgressing);
 			bindTexture(ResourceManager.centrifuge_tex);
 			ResourceManager.centrifuge.renderAll();
 		}
 
 		if(tileEntity instanceof TileEntityMachineGasCent) {
+			DeformationHandler.applyDeformation(((TileEntityMachineGasCent) tileEntity).isProgressing);
 			GL11.glRotatef(180, 0F, 1F, 0F);
 			bindTexture(ResourceManager.gascent_tex);
 			ResourceManager.gascent.renderPart("Centrifuge");

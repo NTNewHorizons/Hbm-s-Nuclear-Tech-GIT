@@ -21,6 +21,7 @@ public class RenderLiquefactor extends TileEntitySpecialRenderer {
 		
 		TileEntityMachineLiquefactor liq = (TileEntityMachineLiquefactor) tileEntity;
 		
+		DeformationHandler.applyDeformation(liq.canProcess());
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.liquefactor_tex);
 		ResourceManager.liquefactor.renderPart("Main");

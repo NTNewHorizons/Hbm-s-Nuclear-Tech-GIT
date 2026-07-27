@@ -26,11 +26,11 @@ public class RenderMixer extends TileEntitySpecialRenderer implements IItemRende
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		
+		TileEntityMachineMixer mixer = (TileEntityMachineMixer) tile;
+		DeformationHandler.applyDeformation(mixer.wasOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.mixer_tex);
 		ResourceManager.mixer.renderPart("Main");
-		
-		TileEntityMachineMixer mixer = (TileEntityMachineMixer) tile;
 		
 		GL11.glPushMatrix();
 		GL11.glRotatef(mixer.prevRotation + (mixer.rotation - mixer.prevRotation) * interp, 0, -1, 0);

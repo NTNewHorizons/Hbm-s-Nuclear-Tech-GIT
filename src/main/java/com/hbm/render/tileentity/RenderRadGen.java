@@ -30,6 +30,7 @@ public class RenderRadGen extends TileEntitySpecialRenderer {
 		case 5: GL11.glRotatef(0, 0F, 1F, 0F); break;
 		}
 
+		DeformationHandler.applyDeformation(radgen.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.radgen_tex);
 

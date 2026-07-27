@@ -47,6 +47,7 @@ public class RenderLaserMiner extends TileEntitySpecialRenderer {
 		//turns out using tan(vec.yCoord, length) was inaccurate,
 		//the emitter wouldn't match the laser perfectly when pointing down
 
+		DeformationHandler.applyDeformation(laser.isOn);
 		bindTexture(ResourceManager.mining_laser_base_tex);
 		ResourceManager.mining_laser.renderPart("Base");
 

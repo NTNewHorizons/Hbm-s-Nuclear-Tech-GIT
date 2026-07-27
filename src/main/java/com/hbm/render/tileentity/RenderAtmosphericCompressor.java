@@ -38,6 +38,7 @@ public class RenderAtmosphericCompressor extends TileEntitySpecialRenderer {
 			break;
 		}
 
+		DeformationHandler.applyDeformation(atmo.hasPower());
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.atmo_vent_tex);
 		ResourceManager.atmo_vent.renderPart("Body_Cylinder");

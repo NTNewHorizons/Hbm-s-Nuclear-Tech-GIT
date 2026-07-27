@@ -29,11 +29,11 @@ public class RenderCompressor extends TileEntitySpecialRenderer implements IItem
 		}
 
 		GL11.glDisable(GL11.GL_CULL_FACE);
+		TileEntityMachineCompressor compressor = (TileEntityMachineCompressor) tile;
+		DeformationHandler.applyDeformation(compressor.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.compressor_tex);
 		ResourceManager.compressor.renderPart("Compressor");
-		
-		TileEntityMachineCompressor compressor = (TileEntityMachineCompressor) tile;
 		float lift = compressor.prevPiston + (compressor.piston - compressor.prevPiston) * interp;
 		float fan = compressor.prevFanSpin + (compressor.fanSpin - compressor.prevFanSpin) * interp;
 		

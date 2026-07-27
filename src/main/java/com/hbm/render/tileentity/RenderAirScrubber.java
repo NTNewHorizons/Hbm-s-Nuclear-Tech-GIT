@@ -37,6 +37,7 @@ public class RenderAirScrubber extends TileEntitySpecialRenderer implements IIte
 
 			bindTexture(ResourceManager.air_scrubber_tex);
 
+			DeformationHandler.applyDeformation(scrubber.canOperate());
 			GL11.glShadeModel(GL11.GL_SMOOTH);
 			ResourceManager.air_scrubber.renderPart("Base");
 

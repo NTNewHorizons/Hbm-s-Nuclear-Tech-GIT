@@ -39,6 +39,7 @@ public class RenderExposureChamber extends TileEntitySpecialRenderer implements 
 		
 		TileEntityMachineExposureChamber chamber = (TileEntityMachineExposureChamber) tileEntity;
 		
+		DeformationHandler.applyDeformation(chamber.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.exposure_chamber_tex);
 		ResourceManager.exposure_chamber.renderPart("Chamber");

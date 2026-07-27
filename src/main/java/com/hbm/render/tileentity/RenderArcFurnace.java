@@ -33,6 +33,7 @@ public class RenderArcFurnace extends TileEntitySpecialRenderer implements IItem
 		TileEntityMachineArcFurnaceLarge arc = (TileEntityMachineArcFurnaceLarge) tile;
 		float lift = arc.prevLid + (arc.lid - arc.prevLid) * interp;
 
+		DeformationHandler.applyDeformation(arc.isProgressing);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.arc_furnace_tex);
 		ResourceManager.arc_furnace.renderPart("Furnace");

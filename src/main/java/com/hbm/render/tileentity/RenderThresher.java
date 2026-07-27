@@ -34,6 +34,7 @@ public class RenderThresher extends TileEntitySpecialRenderer implements IItemRe
 		double spin = thresher.lastSpin + (thresher.spin - thresher.lastSpin) * interp;
 		double engine = thresher.isOn ? Math.sin(thresher.getWorldObj().getTotalWorldTime() * 2 % (Math.PI * 2) + interp) : 0;
 
+		DeformationHandler.applyDeformation(thresher.isOn);
 		renderCommon(82.5 - angle, spin, engine);
 		
 		GL11.glPopMatrix();

@@ -33,6 +33,7 @@ public class RenderFirebox extends TileEntitySpecialRenderer implements IItemRen
 		
 		TileEntityHeaterFirebox firebox = (TileEntityHeaterFirebox) tile;
 		
+		DeformationHandler.applyDeformation(firebox.wasOn);
 		bindTexture(ResourceManager.heater_firebox_tex);
 		ResourceManager.heater_firebox.renderPart("Main");
 		

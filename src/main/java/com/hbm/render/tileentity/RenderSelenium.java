@@ -32,6 +32,7 @@ public class RenderSelenium extends TileEntitySpecialRenderer {
 			GL11.glRotatef(0, 0F, 1F, 0F); break;
 		}
 
+        DeformationHandler.applyDeformation(((TileEntityMachineSeleniumEngine)tileEntity).hasAcceptableFuel());
         bindTexture(ResourceManager.selenium_body_tex);
         ResourceManager.selenium_body.renderAll();
         

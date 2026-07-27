@@ -26,6 +26,7 @@ public class RenderGasFlare extends TileEntitySpecialRenderer {
 			GL11.glRotated(5, 0, 1, 0);
 		}
 
+		DeformationHandler.applyDeformation(flare.isOn);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.oilflare_tex);

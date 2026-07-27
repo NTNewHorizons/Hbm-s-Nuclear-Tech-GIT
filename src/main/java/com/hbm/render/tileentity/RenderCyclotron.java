@@ -22,12 +22,12 @@ public class RenderCyclotron extends TileEntitySpecialRenderer {
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glShadeModel(GL11.GL_SMOOTH);
 
+        TileEntityMachineCyclotron cyc = (TileEntityMachineCyclotron)tileEntity;
+        DeformationHandler.applyDeformation(cyc.canProcess());
         bindTexture(ResourceManager.cyclotron_tex);
         ResourceManager.cyclotron.renderPart("Body");
         
         GL11.glShadeModel(GL11.GL_FLAT);
-        
-        TileEntityMachineCyclotron cyc = (TileEntityMachineCyclotron)tileEntity;
         
         boolean plugged = true;
         

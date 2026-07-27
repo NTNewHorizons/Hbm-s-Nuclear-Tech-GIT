@@ -43,6 +43,7 @@ public class RenderAssemblyMachine extends TileEntitySpecialRenderer implements 
 		
 		TileEntityMachineAssemblyMachine assembler = (TileEntityMachineAssemblyMachine) tileEntity;
 		
+		DeformationHandler.applyDeformation(assembler.didProcess);
 		bindTexture(ResourceManager.assembly_machine_tex);
 		ResourceManager.assembly_machine.renderPart("Base");
 		if(assembler.frame) ResourceManager.assembly_machine.renderPart("Frame");

@@ -38,6 +38,7 @@ public class RenderFan extends TileEntitySpecialRenderer implements IItemRendere
 		ResourceManager.fan.renderPart("Frame");
 
 		TileEntityFan fan = (TileEntityFan) tile;
+		DeformationHandler.applyDeformation(fan.spin > 0);
 		float rot = fan.prevSpin + (fan.spin - fan.prevSpin) * interp;
 		GL11.glRotated(-rot, 0, 1, 0);
 		ResourceManager.fan.renderPart("Blades");

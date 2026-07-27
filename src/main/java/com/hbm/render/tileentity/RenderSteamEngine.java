@@ -32,6 +32,7 @@ public class RenderSteamEngine extends TileEntitySpecialRenderer implements IIte
 
 		TileEntitySteamEngine engine = (TileEntitySteamEngine) tile;
 		float angle = engine.lastRotor + (engine.rotor - engine.lastRotor) * interp;
+		DeformationHandler.applyDeformation(engine.rotor > 0);
 		GL11.glTranslated(2, 0, 0);
 		renderCommon(angle);
 		

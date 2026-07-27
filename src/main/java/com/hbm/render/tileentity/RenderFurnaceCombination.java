@@ -28,10 +28,10 @@ public class RenderFurnaceCombination extends TileEntitySpecialRenderer implemen
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		
+		TileEntityFurnaceCombination furnace = (TileEntityFurnaceCombination) tileEntity;
+		DeformationHandler.applyDeformation(furnace.wasOn);
 		bindTexture(ResourceManager.combination_oven_tex);
 		ResourceManager.combination_oven.renderAll();
-		
-		TileEntityFurnaceCombination furnace = (TileEntityFurnaceCombination) tileEntity;
 		
 		if(furnace.wasOn) {
 

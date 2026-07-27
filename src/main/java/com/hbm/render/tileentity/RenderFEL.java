@@ -33,12 +33,13 @@ public class RenderFEL extends TileEntitySpecialRenderer {
 		case 2: GL11.glRotatef(0, 0F, 1F, 0F); break;
 		}
 		
+		TileEntityFEL fel = (TileEntityFEL) tileEntity;
+		DeformationHandler.applyDeformation(fel.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.fel_tex);
 		ResourceManager.fel.renderAll();
 		GL11.glShadeModel(GL11.GL_FLAT);
 		
-		TileEntityFEL fel = (TileEntityFEL) tileEntity;
 		int color = 0xffffff;
 		
 		if(fel.mode.renderedBeamColor == 0) {

@@ -29,6 +29,7 @@ public class RenderRefinery extends TileEntitySpecialRenderer {
 			GL11.glRotated(5, 0, 1, 0);
 		}
 
+		DeformationHandler.applyDeformation(refinery.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		
 		if(refinery.hasExploded) {

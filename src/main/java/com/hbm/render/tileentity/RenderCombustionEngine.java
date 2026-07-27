@@ -31,12 +31,12 @@ public class RenderCombustionEngine extends TileEntitySpecialRenderer implements
 		}
 		
 		GL11.glTranslated(-0.5, 0, 3);
-		
+
+		TileEntityMachineCombustionEngine engine = (TileEntityMachineCombustionEngine) tile;
+		DeformationHandler.applyDeformation(engine.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.combustion_engine_tex);
 		ResourceManager.combustion_engine.renderPart("Engine");
-		
-		TileEntityMachineCombustionEngine engine = (TileEntityMachineCombustionEngine) tile;
 		CD_Canister canister = engine.tank.getTankType().getContainer(CD_Canister.class);
 		
 		if(canister != null) {

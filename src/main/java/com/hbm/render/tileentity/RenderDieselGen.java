@@ -32,6 +32,7 @@ public class RenderDieselGen extends TileEntitySpecialRenderer implements IItemR
 		bindTexture(ResourceManager.dieselgen_tex);
 		
 		TileEntityMachineDiesel engine = (TileEntityMachineDiesel) tile;
+		DeformationHandler.applyDeformation(engine.hasAcceptableFuel() && engine.tank.getFill() > 0);
 		ResourceManager.dieselgen.renderPart("Generator");
 		
 		if(engine.hasAcceptableFuel() && engine.tank.getFill() > 0) {

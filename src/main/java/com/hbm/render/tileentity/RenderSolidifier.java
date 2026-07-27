@@ -29,6 +29,7 @@ public class RenderSolidifier extends TileEntitySpecialRenderer {
 		
 		TileEntityMachineSolidifier liq = (TileEntityMachineSolidifier) tileEntity;
 		
+		DeformationHandler.applyDeformation(liq.canProcess());
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.solidifier_tex);
 		ResourceManager.solidifier.renderPart("Main");

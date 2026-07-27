@@ -6,6 +6,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.ItemRenderBase;
+import com.hbm.tileentity.machine.oil.TileEntityMachineOilWell;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -30,6 +31,8 @@ public class RenderDerrick extends TileEntitySpecialRenderer implements IItemRen
 		case 5: GL11.glRotatef(0, 0F, 1F, 0F); break;
 		}
 
+		TileEntityMachineOilWell well = (TileEntityMachineOilWell) tileEntity;
+		DeformationHandler.applyDeformation(well.indicator > 0);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.derrick_tex);
 		ResourceManager.derrick.renderAll();

@@ -34,6 +34,7 @@ public class RenderPUREX extends TileEntitySpecialRenderer implements IItemRende
 		TileEntityMachinePUREX purex = (TileEntityMachinePUREX) tileEntity;
 		float anim = purex.prevAnim + (purex.anim - purex.prevAnim) * interp;
 		
+		DeformationHandler.applyDeformation(purex.didProcess);
 		bindTexture(ResourceManager.purex_tex);
 		ResourceManager.purex.renderPart("Base");
 		if(purex.frame)ResourceManager.purex.renderPart("Frame");

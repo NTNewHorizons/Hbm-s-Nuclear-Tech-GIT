@@ -31,6 +31,7 @@ public class RenderTurbineGas extends TileEntitySpecialRenderer implements IItem
 
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_CULL_FACE);
+		DeformationHandler.applyDeformation(turbinegas.hasAcceptableFuel());
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 
 		bindTexture(ResourceManager.turbinegas_tex);

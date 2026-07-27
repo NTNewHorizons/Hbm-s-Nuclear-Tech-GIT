@@ -37,6 +37,7 @@ public class RenderStirling extends TileEntitySpecialRenderer implements IItemRe
 		
 		TileEntityStirling stirling = (TileEntityStirling) tile;
 		
+		DeformationHandler.applyDeformation(stirling.hasCog && stirling.spin > 0);
 		float rot = stirling.lastSpin + (stirling.spin - stirling.lastSpin) * interp;
 		renderCommon(rot, stirling.hasCog, stirling.getGeatMeta());
 		

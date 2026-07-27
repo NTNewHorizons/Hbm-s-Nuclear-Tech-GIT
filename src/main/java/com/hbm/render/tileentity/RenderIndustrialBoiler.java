@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.ItemRenderBase;
+import com.hbm.tileentity.machine.TileEntityHeatBoilerIndustrial;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -20,6 +21,8 @@ public class RenderIndustrialBoiler extends TileEntitySpecialRenderer implements
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 		GL11.glEnable(GL11.GL_LIGHTING);
 
+		TileEntityHeatBoilerIndustrial boiler = (TileEntityHeatBoilerIndustrial) tile;
+		DeformationHandler.applyDeformation(boiler.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.boiler_industrial_tex);
 		ResourceManager.boiler_industrial.renderAll();

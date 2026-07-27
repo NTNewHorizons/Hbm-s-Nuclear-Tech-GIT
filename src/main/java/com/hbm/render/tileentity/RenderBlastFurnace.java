@@ -37,6 +37,7 @@ public class RenderBlastFurnace extends TileEntitySpecialRenderer implements IIt
 			GL11.glRotated(5, 0, 1, 0);
 		}
 		
+		DeformationHandler.applyDeformation(furnace.isProgressing);
 		bindTexture(ResourceManager.blast_furnace_tex);
 		ResourceManager.blast_furnace.renderAll();
 		

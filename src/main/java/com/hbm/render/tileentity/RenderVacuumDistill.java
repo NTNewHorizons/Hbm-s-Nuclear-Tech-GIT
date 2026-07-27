@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.ItemRenderBase;
+import com.hbm.tileentity.machine.oil.TileEntityMachineVacuumDistill;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -19,6 +20,8 @@ public class RenderVacuumDistill extends TileEntitySpecialRenderer implements II
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 		GL11.glEnable(GL11.GL_LIGHTING);
 
+		TileEntityMachineVacuumDistill vac = (TileEntityMachineVacuumDistill) tile;
+		DeformationHandler.applyDeformation(vac.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.vacuum_distill_tex);
 		ResourceManager.vacuum_distill.renderAll();

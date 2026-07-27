@@ -33,6 +33,9 @@ public class RenderChemicalFactory extends TileEntitySpecialRenderer implements 
 		TileEntityMachineChemicalFactory chemplant = (TileEntityMachineChemicalFactory) tileEntity;
 		float anim = chemplant.prevAnim + (chemplant.anim - chemplant.prevAnim) * interp;
 		
+		boolean working = false;
+		for(boolean b : chemplant.didProcess) if(b) { working = true; break; }
+		DeformationHandler.applyDeformation(working);
 		bindTexture(ResourceManager.chemical_factory_tex);
 		ResourceManager.chemical_factory.renderPart("Base");
 		if(chemplant.frame) ResourceManager.chemical_factory.renderPart("Frame");

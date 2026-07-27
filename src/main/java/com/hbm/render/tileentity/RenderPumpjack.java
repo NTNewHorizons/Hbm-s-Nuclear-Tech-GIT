@@ -31,6 +31,7 @@ public class RenderPumpjack extends TileEntitySpecialRenderer {
 		
 		float rotation = pj.prevRot + (pj.rot - pj.prevRot) * f;
 
+		DeformationHandler.applyDeformation(pj.indicator > 0);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		
 		bindTexture(ResourceManager.pumpjack_tex);

@@ -32,6 +32,7 @@ public class RenderSawmill extends TileEntitySpecialRenderer implements IItemRen
 		
 		TileEntitySawmill sawmill = (TileEntitySawmill) tile;
 		
+		DeformationHandler.applyDeformation(sawmill.hasBlade && sawmill.spin > 0);
 		float rot = sawmill.lastSpin + (sawmill.spin - sawmill.lastSpin) * interp;
 		renderCommon(rot, sawmill.hasBlade);
 		

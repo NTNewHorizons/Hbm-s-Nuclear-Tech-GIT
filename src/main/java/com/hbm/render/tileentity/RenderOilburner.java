@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.ItemRenderBase;
+import com.hbm.tileentity.machine.TileEntityHeaterOilburner;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -20,6 +21,8 @@ public class RenderOilburner extends TileEntitySpecialRenderer implements IItemR
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_CULL_FACE);
 
+		TileEntityHeaterOilburner burner = (TileEntityHeaterOilburner) tile;
+		DeformationHandler.applyDeformation(burner.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.heater_oilburner_tex);
 		ResourceManager.heater_oilburner.renderAll();

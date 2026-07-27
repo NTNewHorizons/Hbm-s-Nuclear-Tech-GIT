@@ -36,6 +36,7 @@ public class RenderDriveProcessor extends TileEntitySpecialRenderer implements I
 			case 5: GL11.glRotatef(270, 0F, 1F, 0F); break;
 			}
 	
+			DeformationHandler.applyDeformation(processor.isProcessing);
 			bindTexture(ResourceManager.drive_processor_tex);
 			ResourceManager.drive_processor.renderPart("Base");
 

@@ -6,6 +6,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.ItemRenderBase;
 import com.hbm.tileentity.machine.TileEntityMachineCrystallizer;
+import com.hbm.tileentity.machine.TileEntityMachineGasCent;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -32,6 +33,7 @@ public class RenderCrystallizer extends TileEntitySpecialRenderer implements IIt
 
 		TileEntityMachineCrystallizer crys = (TileEntityMachineCrystallizer) te;
 
+		DeformationHandler.applyDeformation(crys.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.crystallizer_tex);
 		ResourceManager.crystallizer.renderPart("Body");

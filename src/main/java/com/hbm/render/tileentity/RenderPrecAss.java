@@ -43,6 +43,7 @@ public class RenderPrecAss extends TileEntitySpecialRenderer implements IItemRen
 		
 		TileEntityMachinePrecAss assembler = (TileEntityMachinePrecAss) tileEntity;
 		
+		DeformationHandler.applyDeformation(assembler.didProcess);
 		bindTexture(ResourceManager.precass_tex);
 		ResourceManager.assembly_machine.renderPart("Base");
 		if(assembler.frame) ResourceManager.assembly_machine.renderPart("Frame");

@@ -6,6 +6,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.ItemRenderBase;
+import com.hbm.tileentity.machine.TileEntityMachineWoodBurner;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -29,7 +30,9 @@ public class RenderWoodBurner extends TileEntitySpecialRenderer implements IItem
 		}
 		
 		GL11.glTranslated(-0.5, 0, -0.5);
-		
+
+		TileEntityMachineWoodBurner burner = (TileEntityMachineWoodBurner) tile;
+		DeformationHandler.applyDeformation(burner.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.wood_burner_tex);
 		ResourceManager.wood_burner.renderAll();

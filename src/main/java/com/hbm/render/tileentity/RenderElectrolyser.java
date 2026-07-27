@@ -6,6 +6,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.ItemRenderBase;
+import com.hbm.tileentity.machine.TileEntityElectrolyser;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -30,6 +31,8 @@ public class RenderElectrolyser extends TileEntitySpecialRenderer implements IIt
 		GL11.glRotated(180, 0, 1, 0);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_CULL_FACE);
+		TileEntityElectrolyser electrolyser = (TileEntityElectrolyser) te;
+		DeformationHandler.applyDeformation(electrolyser.canProcessFluid() || electrolyser.canProcessMetal());
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		
 		bindTexture(ResourceManager.electrolyser_tex);

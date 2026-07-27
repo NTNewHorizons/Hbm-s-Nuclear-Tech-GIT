@@ -31,6 +31,7 @@ public class RenderCompressorCompact extends TileEntitySpecialRenderer implement
 		
 		TileEntityMachineCompressorCompact compressor = (TileEntityMachineCompressorCompact) tileEntity;
 		
+		DeformationHandler.applyDeformation(compressor.isOn);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.compressor_compact_tex);
 		ResourceManager.condenser.renderPart("Condenser");

@@ -33,6 +33,7 @@ public class RenderHeatingOven extends TileEntitySpecialRenderer implements IIte
 		
 		TileEntityHeaterOven oven = (TileEntityHeaterOven) tile;
 		
+		DeformationHandler.applyDeformation(oven.wasOn);
 		bindTexture(ResourceManager.heater_oven_tex);
 		ResourceManager.heater_oven.renderPart("Main");
 		

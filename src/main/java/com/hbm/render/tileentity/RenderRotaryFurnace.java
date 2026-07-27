@@ -31,12 +31,12 @@ public class RenderRotaryFurnace extends TileEntitySpecialRenderer implements II
 		case 5: GL11.glRotatef(0, 0F, 1F, 0F); break;
 		}
 		
+		TileEntityMachineRotaryFurnace furnace = (TileEntityMachineRotaryFurnace) tile;
+		DeformationHandler.applyDeformation(furnace.isProgressing);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.rotary_furnace_tex);
 		ResourceManager.rotary_furnace.renderPart("Furnace");
 		GL11.glPushMatrix();
-		
-		TileEntityMachineRotaryFurnace furnace = (TileEntityMachineRotaryFurnace) tile;
 		float anim = furnace.lastAnim + (furnace.anim - furnace.lastAnim) * f;
 		
 		GL11.glTranslated(0, BobMathUtil.sps((anim * 0.75) * 0.125) * 0.5 - 0.5, 0);

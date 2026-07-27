@@ -32,6 +32,8 @@ public class RenderSolarBoiler extends TileEntitySpecialRenderer {
 		case 5: GL11.glRotatef(270, 0F, 1F, 0F); break;
 		}
 
+		TileEntitySolarBoiler boiler = (TileEntitySolarBoiler) te;
+		DeformationHandler.applyDeformation(boiler.heat > 0);
 		bindTexture(ResourceManager.solar_tex);
 
 		GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -40,7 +42,6 @@ public class RenderSolarBoiler extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 		
 		if(te instanceof TileEntitySolarBoiler && Minecraft.getMinecraft().gameSettings.fancyGraphics) {
-			TileEntitySolarBoiler boiler = (TileEntitySolarBoiler) te;
 
 			Tessellator tess = Tessellator.instance;
 			GL11.glDisable(GL11.GL_TEXTURE_2D);

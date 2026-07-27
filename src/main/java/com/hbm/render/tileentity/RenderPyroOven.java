@@ -34,6 +34,7 @@ public class RenderPyroOven extends TileEntitySpecialRenderer implements IItemRe
 		TileEntityMachinePyroOven pyro = (TileEntityMachinePyroOven) tile;
 		float anim = pyro.prevAnim + (pyro.anim - pyro.prevAnim) * f;
 		
+		DeformationHandler.applyDeformation(pyro.isProgressing);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.pyrooven_tex);
 		ResourceManager.pyrooven.renderPart("Oven");

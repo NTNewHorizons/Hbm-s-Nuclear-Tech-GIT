@@ -28,6 +28,8 @@ public class RenderPress extends TileEntitySpecialRenderer {
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glRotatef(180, 0F, 1F, 0F);
 			
+			TileEntityMachinePress press = (TileEntityMachinePress)tileentity;
+			DeformationHandler.applyDeformation(press.canProcess());
 			this.bindTexture(ResourceManager.press_body_tex);
 			
 			ResourceManager.press_body.renderAll();

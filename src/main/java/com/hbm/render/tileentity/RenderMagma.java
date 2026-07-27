@@ -42,6 +42,7 @@ public class RenderMagma extends TileEntitySpecialRenderer implements IItemRende
 			
 			TileEntityMachineMagma drill = (TileEntityMachineMagma) tile;
 			
+			DeformationHandler.applyDeformation(drill.operating);
 			GL11.glShadeModel(GL11.GL_SMOOTH);
 			bindTexture(ResourceManager.magma_drill_tex);
 			ResourceManager.magma_drill.renderAllExcept("DrillHead", "Blades");

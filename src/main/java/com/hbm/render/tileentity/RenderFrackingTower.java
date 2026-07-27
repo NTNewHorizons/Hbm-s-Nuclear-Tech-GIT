@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.hbm.lib.RefStrings;
 import com.hbm.main.ResourceManager;
+import com.hbm.tileentity.machine.oil.TileEntityMachineFrackingTower;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -22,6 +23,8 @@ public class RenderFrackingTower extends TileEntitySpecialRenderer {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glRotatef(180, 0F, 1F, 0F);
 
+		TileEntityMachineFrackingTower tower = (TileEntityMachineFrackingTower) tileEntity;
+		DeformationHandler.applyDeformation(tower.indicator > 0);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.fracking_tower_tex);
 		ResourceManager.fracking_tower.renderAll();

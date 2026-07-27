@@ -22,11 +22,11 @@ public class RenderHephaestus extends TileEntitySpecialRenderer implements IItem
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 
+		TileEntityMachineHephaestus geo = (TileEntityMachineHephaestus) tile;
+		DeformationHandler.applyDeformation(geo.bufferedHeat > 0);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		bindTexture(ResourceManager.hephaestus_tex);
 		ResourceManager.hephaestus.renderPart("Main");
-		
-		TileEntityMachineHephaestus geo = (TileEntityMachineHephaestus) tile;
 		float movement = geo.prevRot + (geo.rot - geo.prevRot) * interp;
 		boolean isOn = geo.bufferedHeat > 0;
 		GL11.glPushMatrix();

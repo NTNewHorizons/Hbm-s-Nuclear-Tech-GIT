@@ -28,6 +28,7 @@ public class RenderAutosaw extends TileEntitySpecialRenderer implements IItemRen
 		double angle = 80 - (saw.prevRotationPitch + (saw.rotationPitch - saw.prevRotationPitch) * interp);
 		float spin = saw.lastSpin + (saw.spin - saw.lastSpin) * interp;
 		double engine = saw.isOn ? Math.sin(saw.getWorldObj().getTotalWorldTime() * 2 % (Math.PI * 2) + interp) : 0;
+		DeformationHandler.applyDeformation(saw.isOn);
 		renderCommon(turn, angle, spin, engine);
 		
 		GL11.glPopMatrix();

@@ -6,6 +6,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.ItemRenderBase;
+import com.hbm.tileentity.machine.TileEntityHeaterElectric;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -21,6 +22,9 @@ public class RenderElectricHeater extends TileEntitySpecialRenderer implements I
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_CULL_FACE);
+
+		TileEntityHeaterElectric heater = (TileEntityHeaterElectric) tile;
+		DeformationHandler.applyDeformation(heater.isOn);
 		
 		switch(tile.getBlockMetadata() - BlockDummyable.offset) {
 		case 3: GL11.glRotatef(270, 0F, 1F, 0F); break;

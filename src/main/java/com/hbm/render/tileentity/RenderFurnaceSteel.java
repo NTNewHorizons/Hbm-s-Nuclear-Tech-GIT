@@ -32,10 +32,10 @@ public class RenderFurnaceSteel extends TileEntitySpecialRenderer implements IIt
 		
 		GL11.glRotatef(-90, 0F, 1F, 0F);
 		
+		TileEntityFurnaceSteel furnace = (TileEntityFurnaceSteel) tileEntity;
+		DeformationHandler.applyDeformation(furnace.wasOn);
 		bindTexture(ResourceManager.furnace_steel_tex);
 		ResourceManager.furnace_steel.renderAll();
-		
-		TileEntityFurnaceSteel furnace = (TileEntityFurnaceSteel) tileEntity;
 		
 		if(furnace.wasOn) {
 			GL11.glDisable(GL11.GL_TEXTURE_2D);

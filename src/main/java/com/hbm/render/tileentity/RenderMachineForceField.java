@@ -21,11 +21,11 @@ public class RenderMachineForceField extends TileEntitySpecialRenderer {
         GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glRotatef(180, 0F, 1F, 0F);
 
+        TileEntityForceField ff = (TileEntityForceField)te;
+        DeformationHandler.applyDeformation(ff.isOn && ff.health > 0 && ff.power > 0 && ff.cooldown == 0);
         bindTexture(ResourceManager.forcefield_base_tex);
         
         ResourceManager.radar_body.renderAll();
-        
-        TileEntityForceField ff = (TileEntityForceField)te;
 
         GL11.glTranslated(0, 0.5D, 0);
         
