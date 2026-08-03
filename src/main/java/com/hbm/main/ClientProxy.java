@@ -17,6 +17,8 @@ import com.hbm.blocks.machine.MachineFan.TileEntityFan;
 import com.hbm.blocks.machine.PistonInserter.TileEntityPistonInserter;
 import com.hbm.blocks.machine.WatzPump.TileEntityWatzPump;
 import com.hbm.blocks.network.FluidPump.TileEntityFluidPump;
+import com.hbm.config.CustomMachineConfigJSON;
+import com.hbm.config.MachineSoundValidator;
 import com.hbm.config.GeneralConfig;
 import com.hbm.dim.CelestialBody;
 import com.hbm.dim.trait.CBT_Atmosphere;
@@ -920,7 +922,14 @@ public class ClientProxy extends ServerProxy {
 
 		MinecraftForgeClient.registerItemRenderer(ModItems.missile_custom, new ItemRenderMissile());
 	}
-
+	@Override
+	public void registerCustomMachineModels() {
+		MachineModelRegistry.registerModelPaths();
+	}
+	@Override
+	public void registerCustomMachineSounds() {
+		MachineSoundValidator.validateSounds();
+	}
 	//mk3, only use this one
 	@Override
 	public void effectNT(NBTTagCompound data) {

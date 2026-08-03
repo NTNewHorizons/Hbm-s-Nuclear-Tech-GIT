@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hbm.crafting.handlers.GergToolRecipe;
+import com.hbm.handler.imc.ICompatNHNEI;
 import com.hbm.items.tool.GergToolType;
 
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import net.minecraft.client.gui.inventory.GuiCrafting;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 
-public class GergToolNEIHandler extends TemplateRecipeHandler {
+public class GergToolNEIHandler extends TemplateRecipeHandler implements ICompatNHNEI {
 
 	@Override
 	public String getRecipeName() {
@@ -22,6 +26,26 @@ public class GergToolNEIHandler extends TemplateRecipeHandler {
 	@Override
 	public String getGuiTexture() {
 		return "textures/gui/container/crafting_table.png";
+	}
+
+	@Override
+	public String getOverlayIdentifier() {
+		return "crafting";
+	}
+
+	@Override
+	public Class<? extends GuiContainer> getGuiClass() {
+		return GuiCrafting.class;
+	}
+
+	@Override
+	public ItemStack[] getMachinesForRecipe() {
+		return new ItemStack[]{new ItemStack(Blocks.crafting_table)};
+	}
+
+	@Override
+	public String getRecipeID() {
+		return "gergCrafting";
 	}
 
 	@Override
@@ -103,6 +127,13 @@ public class GergToolNEIHandler extends TemplateRecipeHandler {
 		return 2;
 	}
 
+	private static boolean isAnyTool(ItemStack stack) {
+		for(GergToolType type : GergToolType.values()) {
+			if(GergToolType.isToolOfType(stack, type)) return true;
+		}
+		return false;
+	}
+
 	private class GergCachedRecipe extends CachedRecipe {
 
 		private final List<PositionedStack> ingredients = new ArrayList<>();
@@ -113,7 +144,11 @@ public class GergToolNEIHandler extends TemplateRecipeHandler {
 			if(display != null) {
 				for(int i = 0; i < 9; i++) {
 					if(display[i] != null) {
-						ingredients.add(new PositionedStack(display[i], 25 + (i % 3) * 18, 6 + (i / 3) * 18));
+						PositionedStack stack = new PositionedStack(display[i], 25 + (i % 3) * 18, 6 + (i / 3) * 18);
+						if(isAnyTool(display[i])) {
+							stack.setChance(0);
+						}
+						ingredients.add(stack);
 					}
 				}
 			}

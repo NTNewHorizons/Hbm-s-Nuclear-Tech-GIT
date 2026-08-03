@@ -26,6 +26,18 @@ public class ItemWrench extends ItemSword {
 	}
 
 	@Override
+	public boolean hasContainerItem(ItemStack stack) {
+		return true;
+	}
+
+	@Override
+	public ItemStack getContainerItem(ItemStack stack) {
+		ItemStack copy = stack.copy();
+		copy.setItemDamage(stack.getItemDamage() + 1);
+		return copy;
+	}
+
+	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
 
 		if(!player.isSneaking()) {

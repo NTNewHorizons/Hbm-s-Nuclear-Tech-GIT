@@ -589,6 +589,8 @@ public class MainRegistry {
 		GasCentrifugeRecipes.register();
 
 		CustomMachineConfigJSON.initialize();
+		proxy.registerCustomMachineModels();
+		proxy.registerCustomMachineSounds();
 
 		//the good stuff
 		SerializableRecipe.registerAllHandlers();
@@ -1730,7 +1732,7 @@ public class MainRegistry {
 		ignoreMappings.add("hbm:item.drax");
 		ignoreMappings.add("hbm:item.drax_mk2");
 		ignoreMappings.add("hbm:item.drax_mk3");
-		
+
 		/// REMAP ///
 		remapItems.put("hbm:item.gadget_explosive8", ModItems.early_explosive_lenses);
 		remapItems.put("hbm:item.man_explosive8", ModItems.explosive_lenses);

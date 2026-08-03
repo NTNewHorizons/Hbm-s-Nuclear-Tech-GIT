@@ -10,6 +10,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockCap.EnumCapBlock;
 import com.hbm.config.GeneralConfig;
 import com.hbm.inventory.FluidStack;
+import com.hbm.inventory.OreDictManager;
 import com.hbm.inventory.OreDictManager.DictFrame;
 import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
@@ -37,6 +38,7 @@ import com.hbm.items.weapon.grenade.ItemGrenadeFuze.EnumGrenadeFuze;
 import com.hbm.items.weapon.grenade.ItemGrenadeShell.EnumGrenadeShell;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmoSecret;
+
 
 import cpw.mods.fml.common.Loader;
 import net.minecraft.block.Block;
@@ -834,6 +836,9 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new OreDictStack(STEEL.plateCast(), 6), new OreDictStack(ANY_CONCRETE.any(), 64), new OreDictStack(ANY_PLASTIC.ingot(), 16), new ComparableStack(ModBlocks.steel_scaffold, 24), new ComparableStack(ModItems.circuit, 2, EnumCircuitType.ADVANCED)));
 		this.register(new GenericRecipe("ass.launchpadsilo").setup(200, 100).outputItems(new ItemStack(ModBlocks.launch_pad, 1))
 				.inputItems(new OreDictStack(STEEL.plateWelded(), 8), new OreDictStack(ANY_CONCRETE.any(), 8), new OreDictStack(ANY_HARDPLASTIC.ingot(), 16), new ComparableStack(ModItems.circuit, 4, EnumCircuitType.ADVANCED)));
+
+
+
 
 		// We keep the old recipes for these, for balancing (saturnite + desh requirements)
 
@@ -1788,6 +1793,225 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				new ComparableStack(ModItems.part_generic, 2, 1)
 			));
 		}
+
+
+		// NTNH ARMOR RECIPES
+
+		// Diesel Power Armor
+		this.register(new GenericRecipe("zockernext.diesel.helmet").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.dieselsuit_helmet, 1))
+			.inputItems(
+				new ComparableStack(Blocks.wool, 4, 14),
+				new ComparableStack(ModItems.circuit, 1, 8),
+				new ComparableStack(ModItems.motor, 1),
+				new OreDictStack(STEEL.ingot(), 2),
+				new OreDictStack(CU.wireFine(), 2)
+			));
+
+		this.register(new GenericRecipe("zockernext.diesel.chestplate").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.dieselsuit_plate, 1))
+			.inputItems(
+				new ComparableStack(Blocks.wool, 3, 14),
+				new ComparableStack(ModBlocks.machine_diesel, 1),
+				new ComparableStack(ModItems.circuit, 2, 8),
+				new ComparableStack(ModItems.motor, 1),
+				new OreDictStack(STEEL.ingot(), 5),
+				new OreDictStack(CU.wireFine(), 2)
+			));
+		this.register(new GenericRecipe("zockernext.diesel.legs").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.dieselsuit_legs, 1))
+			.inputItems(
+				new ComparableStack(Blocks.wool, 2, 14),
+				new ComparableStack(ModItems.circuit, 1, 8),
+				new ComparableStack(ModItems.motor, 2),
+				new OreDictStack(STEEL.ingot(), 4),
+				new OreDictStack(CU.wireFine(), 2)
+			));
+		this.register(new GenericRecipe("zockernext.diesel.boots").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.dieselsuit_boots, 1))
+			.inputItems(
+				new ComparableStack(Blocks.wool, 2, 14),
+				new ComparableStack(ModItems.circuit, 1, 8),
+				new OreDictStack(STEEL.ingot(), 2),
+				new OreDictStack(CU.wireFine(), 2)
+			));
+
+		// T-51 Power Armor
+		String t51armor = "autoswitch.t51powerarmor";
+
+		this.register(new GenericRecipe("zockernext.t51.helmet").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.t51_helmet, 1))
+			.inputItems(
+				new ComparableStack(ModItems.titanium_helmet, 1),
+				new ComparableStack(ModItems.plate_armor_titanium, 4),
+				new OreDictStack(ANY_RUBBER.ingot(), 3),
+				new ComparableStack(ModItems.circuit, 2, 9),
+				new ComparableStack(ModItems.gas_mask_m65, 1),
+				new ComparableStack(ModItems.motor, 1),
+				new OreDictStack(STEEL.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "t51powerarmor")
+			.setGroup(t51armor, this)
+		);
+
+		this.register(new GenericRecipe("zockernext.t51.chestplate").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.t51_plate, 1))
+			.inputItems(
+				new ComparableStack(ModItems.titanium_plate, 1),
+				new ComparableStack(ModItems.plate_armor_titanium, 7),
+				new ComparableStack(ModItems.circuit, 1, 9),
+				new ComparableStack(ModItems.gas_empty, 2),
+				new ComparableStack(ModItems.motor, 2),
+				new OreDictStack(STEEL.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "t51powerarmor")
+			.setGroup(t51armor, this)
+		);
+		this.register(new GenericRecipe("zockernext.t51.legs").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.t51_legs, 1))
+			.inputItems(
+				new ComparableStack(ModItems.titanium_legs, 1),
+				new ComparableStack(ModItems.plate_armor_titanium, 5),
+				new ComparableStack(ModItems.circuit, 1, 9),
+				new ComparableStack(ModItems.motor, 2),
+				new OreDictStack(STEEL.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "t51powerarmor")
+			.setGroup(t51armor, this)
+		);
+		this.register(new GenericRecipe("zockernext.t51.boots").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.t51_boots, 1))
+			.inputItems(
+				new ComparableStack(ModItems.titanium_boots, 1),
+				new ComparableStack(ModItems.plate_armor_titanium, 4),
+				new ComparableStack(ModItems.motor, 2),
+				new OreDictStack(STEEL.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "t51powerarmor")
+			.setGroup(t51armor, this)
+		);
+
+		// RPA ARMOR
+		String rpapowerArmor = "autoswitch.rpapowerarmor";
+
+		this.register(new GenericRecipe("zockernext.rpa.helmet").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.rpa_helmet, 1))
+			.inputItems(
+				new ComparableStack(ModItems.cmb_helmet, 1),
+				new ComparableStack(ModItems.plate_armor_ajr, 4),
+				new OreDictStack(ANY_RUBBER.ingot(), 2),
+				new ComparableStack(ModItems.circuit, 1, 10),
+				new ComparableStack(ModItems.gas_mask_m65, 1),
+				new ComparableStack(ModItems.motor, 1),
+				new ComparableStack(ModItems.parts_legendary, 1, 1),
+				new ComparableStack(ModItems.plate_kevlar, 2),
+				new OreDictStack(W.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "rpapowerarmor")
+			.setGroup(rpapowerArmor, this)
+		);
+
+		this.register(new GenericRecipe("zockernext.rpa.chestplate").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.rpa_plate, 1))
+			.inputItems(
+				new ComparableStack(ModItems.cmb_plate, 1),
+				new ComparableStack(ModItems.plate_armor_ajr, 7),
+				new ComparableStack(ModItems.circuit, 2, 10),
+				new ComparableStack(ModItems.gas_empty, 2),
+				new ComparableStack(ModItems.motor_desh, 2),
+				new ComparableStack(ModItems.parts_legendary, 1, 1),
+				new ComparableStack(ModItems.plate_kevlar, 4),
+				new OreDictStack(W.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "rpapowerarmor")
+			.setGroup(rpapowerArmor, this)
+		);
+		this.register(new GenericRecipe("zockernext.rpa.legs").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.rpa_legs, 1))
+			.inputItems(
+				new ComparableStack(ModItems.cmb_legs, 1),
+				new ComparableStack(ModItems.plate_armor_ajr, 5),
+				new ComparableStack(ModItems.circuit, 1, 10),
+				new ComparableStack(ModItems.motor_desh, 2),
+				new ComparableStack(ModItems.parts_legendary, 1, 1),
+				new ComparableStack(ModItems.plate_kevlar, 2),
+				new OreDictStack(W.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "rpapowerarmor")
+			.setGroup(rpapowerArmor, this)
+		);
+		this.register(new GenericRecipe("zockernext.rpa.boots").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.rpa_boots, 1))
+			.inputItems(
+				new ComparableStack(ModItems.cmb_boots, 1),
+				new ComparableStack(ModItems.plate_armor_ajr, 4),
+				new ComparableStack(ModItems.motor_desh, 2),
+				new ComparableStack(ModItems.parts_legendary, 1, 1),
+				new ComparableStack(ModItems.plate_kevlar, 2),
+				new OreDictStack(W.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "rpapowerarmor")
+			.setGroup(rpapowerArmor, this)
+		);
+
+		// Steel Ranger Armor
+
+		// RPA ARMOR
+		String steelranger = "autoswitch.steelrangerarmor";
+
+		this.register(new GenericRecipe("zockernext.ranger.helmet").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.ajr_helmet, 1))
+			.inputItems(
+				new ComparableStack(ModItems.titanium_helmet, 1),
+				new ComparableStack(ModItems.plate_armor_ajr, 3),
+				new OreDictStack(ANY_RUBBER.ingot(), 2),
+				new ComparableStack(ModItems.circuit, 1, 9),
+				new ComparableStack(ModItems.gas_mask_m65, 1),
+				new ComparableStack(ModItems.motor, 1),
+				new OreDictStack(CU.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "steelrangerarmor")
+			.setGroup(steelranger, this)
+		);
+
+		this.register(new GenericRecipe("zockernext.ranger.chestplate").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.ajr_plate, 1))
+			.inputItems(
+				new ComparableStack(ModItems.titanium_plate, 1),
+				new ComparableStack(ModItems.plate_armor_ajr, 7),
+				new ComparableStack(ModItems.circuit, 2, 9),
+				new ComparableStack(ModItems.gas_empty, 2),
+				new ComparableStack(ModItems.motor, 2),
+				new OreDictStack(CU.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "steelrangerarmor")
+			.setGroup(steelranger, this)
+		);
+		this.register(new GenericRecipe("zockernext.ranger.legs").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.ajr_legs, 1))
+			.inputItems(
+				new ComparableStack(ModItems.titanium_legs, 1),
+				new ComparableStack(ModItems.plate_armor_ajr, 5),
+				new ComparableStack(ModItems.circuit, 1, 9),
+				new ComparableStack(ModItems.motor, 2),
+				new OreDictStack(CU.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "steelrangerarmor")
+			.setGroup(steelranger, this)
+		);
+		this.register(new GenericRecipe("zockernext.ranger.boots").setup(200, 100)
+			.outputItems(new ItemStack(ModItems.ajr_boots, 1))
+			.inputItems(
+				new ComparableStack(ModItems.titanium_boots, 1),
+				new ComparableStack(ModItems.plate_armor_ajr, 4),
+				new ComparableStack(ModItems.motor, 1),
+				new OreDictStack(CU.wireFine(), 3)
+			)
+			.setPools(GenericRecipes.POOL_PREFIX_ALT + "steelrangerarmor")
+			.setGroup(steelranger, this)
+		);
+
+
 
 		if(Loader.isModLoaded("matter-manipulator")) {
 		// Matter Manipulator

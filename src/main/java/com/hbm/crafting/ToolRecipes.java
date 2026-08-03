@@ -140,16 +140,9 @@ public class ToolRecipes {
 
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.toolbox), new Object[] { "CCC", "CIC", 'C', CU.plate(), 'I', IRON.ingot() });
 
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.screwdriver, 1), new Object[] { "  I", " I ", "P  ", 'P', KEY_PLANKS, 'I', IRON.ingot() });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.screwdriver_steel, 1), new Object[] { "  S", " S ", "I  ", 'I', IRON.ingot(), 'S', STEEL.ingot() });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.screwdriver_desh, 1), new Object[] { "  I", " I ", "S  ", 'S', ANY_PLASTIC.ingot(), 'I', DESH.ingot() });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.hammer_iron, 1), new Object[] { " I ", " SI", "S  ", 'I', IRON.ingot(), 'S', KEY_STICK });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.hammer_steel, 1), new Object[] { " S ", " KS", "K  ", 'S', STEEL.ingot(), 'K', KEY_STICK });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.hammer_desh, 1), new Object[] { " D ", " PD", "P  ", 'D', DESH.ingot(), 'P', POLYMER.ingot()});
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.saw_iron, 1), new Object[] { "II ", "I I", "IIS", 'I', IRON.ingot(), 'S', KEY_STICK });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.saw_steel, 1), new Object[] { "SS ", "S S", "SSK", 'S', STEEL.ingot(), 'K', KEY_STICK });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.pliers_iron, 1), new Object[] { "I I", " S ", 'I', IRON.ingot(), 'S', KEY_STICK });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.pliers_steel, 1), new Object[] { "S S", " K ", 'S', STEEL.ingot(), 'K', KEY_STICK });
+		GergRecipeHelper.addGergShaped(new ItemStack(ModItems.pliers_iron, 1), new Object[] { "I I", " S ", 'I', IRON.ingot(), 'S', KEY_STICK }, GergToolType.HAMMER);
+		GergRecipeHelper.addGergShaped(new ItemStack(ModItems.pliers_steel, 1), new Object[] { "S S", " K ", 'S', STEEL.ingot(), 'K', IRON.ingot() }, GergToolType.HAMMER);
+		GergRecipeHelper.addGergShaped(new ItemStack(ModItems.pliers_desh, 1), new Object[] { "D D", " P ", 'D', DESH.ingot(), 'P', POLYMER.ingot() }, 2, GergToolType.HAMMER);
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.hand_drill), new Object[] { " D", "S ", " S", 'D', DURA.ingot(), 'S', KEY_STICK });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.hand_drill_desh), new Object[] { " D", "S ", " S", 'D', DESH.ingot(), 'S', ANY_PLASTIC.ingot() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.chemistry_set), new Object[] { "GIG", "GCG", 'G', KEY_ANYGLASS, 'I', IRON.ingot(), 'C', CU.ingot() });
@@ -209,7 +202,125 @@ public class ToolRecipes {
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.schrabidium_shovel, 1), new Object[] { "B", "W", "P", 'B', SA326.block(), 'W', ModItems.desh_shovel, 'P', ANY_PLASTIC.ingot() });
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.schrabidium_hoe, 1), new Object[] { "IW", " S", " S", 'I', SA326.ingot(), 'W', ModItems.desh_hoe, 'S', ANY_PLASTIC.ingot() });
 		}
+
+		// NTNH Recipes
+
+		CraftingManager.addRecipeAuto(
+			new ItemStack(ModItems.hammer_iron, 1),
+			new Object[] {
+				"II ",
+				"IIS",
+				"II ",
+				'I', IRON.ingot(),
+				'S', KEY_STICK
+			}
+		);
+
+		CraftingManager.addRecipeAuto(
+			new ItemStack(ModItems.hammer_steel, 1),
+			new Object[] {
+				"II ",
+				"IIS",
+				"II ",
+				'I', STEEL.ingot(),
+				'S', IRON.ingot()
+			}
+		);
+
+		GergRecipeHelper.addGergShaped(
+			new ItemStack(ModItems.hammer_desh, 1),
+			new Object[] {
+				"II ",
+				"IIS",
+				"II ",
+				'I', DESH.ingot(),
+				'S', POLYMER.ingot()
+			}, 2, GergToolType.HAMMER
+		);
+
+		GergRecipeHelper.addGergShaped(
+			new ItemStack(ModItems.wrench, 1),
+			new Object[] {
+				"SSS",
+				"III",
+				" I ",
+				'I', IRON.ingot(),
+				'S', STEEL.ingot()
+			}, GergToolType.HAMMER
+		);
+
+		GergRecipeHelper.addGergShaped(
+			new ItemStack(ModItems.saw_iron, 1),
+			new Object[] {
+				"   ",
+				"SSS",
+				"IIS",
+				'I', IRON.plate(),
+				'S', KEY_STICK
+			}, GergToolType.HAMMER
+		);
+
+		GergRecipeHelper.addGergShaped(
+			new ItemStack(ModItems.saw_steel, 1),
+			new Object[] {
+				"   ",
+				"SSS",
+				"IIS",
+				'I', STEEL.plate(),
+				'S', IRON.ingot()
+			}, GergToolType.HAMMER
+		);
+
+		GergRecipeHelper.addGergShaped(
+			new ItemStack(ModItems.saw_desh, 1),
+			new Object[] {
+				"   ",
+				"SSS",
+				"IIS",
+				'I', DESH.ingot(),
+				'S', POLYMER.ingot()
+			}, 2, GergToolType.HAMMER
+		);
+
+		GergRecipeHelper.addGergShaped(
+			new ItemStack(ModItems.screwdriver, 1),
+			new Object[] {
+				"  I",
+				" I ",
+				"S  ",
+				'I', IRON.ingot(),
+				'S', KEY_STICK
+			}, GergToolType.HAMMER, GergToolType.SAW
+		);
+
+		GergRecipeHelper.addGergShaped(
+			new ItemStack(ModItems.screwdriver_steel, 1),
+			new Object[] {
+				"  I",
+				" I ",
+				"S  ",
+				'I', STEEL.ingot(),
+				'S', IRON.ingot()
+			}, GergToolType.HAMMER, GergToolType.SAW
+		);
+
+		GergRecipeHelper.addGergShaped(
+			new ItemStack(ModItems.screwdriver_desh, 1),
+			new Object[] {
+				"  I",
+				" I ",
+				"S  ",
+				'I', DESH.ingot(),
+				'S', RUBBER.ingot()
+			}, 2, GergToolType.HAMMER, GergToolType.SAW
+		);
+
+
+
+
+
 	}
+
 
 	//Common wrappers
 	public static void addSword(Object ingot, Item sword) {

@@ -89,6 +89,10 @@ eclipse.classpath.file.whenMerged { cp ->
 
 repositories {
 	maven {
+		name = 'GTNH Nexus'
+		url = 'https://nexus.gtnewhorizons.com/repository/public/'
+	}
+	maven {
 		name = 'Blerg'
 		url = 'https://maven.ntmr.dev/proxy/'
 	}
@@ -119,14 +123,15 @@ repositories {
 }
 
 dependencies {
-	implementation('codechicken:CodeChickenCore:1.7.10-1.0.4.29:dev') { transitive = false }
-	compileOnly('codechicken:CodeChickenCore:1.7.10-1.0.4.29:src') { transitive = false }
+	// GTNH CodeChickenCore (MCP-mapped dev jar). NEI 2.8.114 requires CCC@[1.4.16,);
+	// the ancient maven 1.0.4.29 fails the runClient version check and release jars are SRG-mapped.
+	implementation('com.github.GTNewHorizons:CodeChickenCore:1.4.17:dev') { transitive = false }
 
 	implementation('codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev') { transitive = false }
 	compileOnly('codechicken:CodeChickenLib:1.7.10-1.1.3.140:src') { transitive = false }
 
-	implementation('codechicken:NotEnoughItems:1.7.10-1.0.3.74:dev') { transitive = false }
-	compileOnly('codechicken:NotEnoughItems:1.7.10-1.0.3.74:src') { transitive = false }
+	// GTNH NEI (MCP-mapped dev jar), matches the runtime NEI 2.8.114-GTNH.
+	implementation('com.github.GTNewHorizons:NotEnoughItems:2.8.114-GTNH:dev') { transitive = false }
 
 	compileOnly fileTree(dir: 'deps', include: ['*.jar'])
 

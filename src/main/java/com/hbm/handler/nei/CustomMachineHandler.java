@@ -11,9 +11,13 @@ import com.hbm.config.CustomMachineConfigJSON;
 import com.hbm.config.CustomMachineConfigJSON.MachineConfiguration;
 import com.hbm.inventory.FluidStack;
 import com.hbm.inventory.RecipesCommon.AStack;
+import com.hbm.inventory.material.Mats;
+import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.inventory.recipes.CustomMachineRecipes;
 import com.hbm.inventory.recipes.CustomMachineRecipes.CustomMachineRecipe;
+import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFluidIcon;
+import com.hbm.items.machine.ItemScraps;
 import com.hbm.lib.RefStrings;
 import com.hbm.util.ItemStackUtil;
 import com.hbm.util.Tuple.Pair;
@@ -62,35 +66,40 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 		public RecipeSet(CustomMachineRecipe recipe) {
 
 			for(int i = 0; i < 3; i++) if(recipe.inputFluids.length > i) inputs.add(new PositionedStack(ItemFluidIcon.make(recipe.inputFluids[i]), 12 + i * 18, 6));
-			for(int i = 0; i < 3; i++) if(recipe.inputItems.length > i) inputs.add(new PositionedStack(recipe.inputItems[i].extractForNEI(), 12 + i * 18, 24));
-			for(int i = 3; i < 6; i++) if(recipe.inputItems.length > i) inputs.add(new PositionedStack(recipe.inputItems[i].extractForNEI(), 12 + (i - 3) * 18, 42));
+
+			int inputPos = 0;
+			for(int i = 0; i < recipe.inputItems.length && inputPos < 6; i++, inputPos++) {
+				inputs.add(new PositionedStack(recipe.inputItems[i].extractForNEI(), 12 + (inputPos % 3) * 18, inputPos < 3 ? 24 : 42));
+			}
+			if(recipe.inputMaterials != null) {
+				for(int i = 0; i < recipe.inputMaterials.length && inputPos < 6; i++, inputPos++) {
+					inputs.add(new PositionedStack(ItemScraps.create(recipe.inputMaterials[i], true), 12 + (inputPos % 3) * 18, inputPos < 3 ? 24 : 42));
+				}
+			}
 
 			for(int i = 0; i < 3; i++) if(recipe.outputFluids.length > i) outputs.add(new PositionedStack(ItemFluidIcon.make(recipe.outputFluids[i]), 102 + i * 18, 6));
 
-			for(int i = 0; i < 3; i++) if(recipe.outputItems.length > i) {
+			int outputPos = 0;
+			for(int i = 0; i < recipe.outputItems.length && outputPos < 6; i++, outputPos++) {
 				Pair<ItemStack, Float> pair = recipe.outputItems[i];
 				ItemStack out = pair.getKey().copy();
 				if(pair.getValue() != 1) {
 					ItemStackUtil.addTooltipToStack(out, EnumChatFormatting.RED + "" + (((int)(pair.getValue() * 1000)) / 10D) + "%");
 				}
-				outputs.add(new PositionedStack(out, 102 + i * 18, 24));
+				outputs.add(new PositionedStack(out, 102 + (outputPos % 3) * 18, outputPos < 3 ? 24 : 42));
+			}
+			if(recipe.outputMaterials != null) {
+				for(int i = 0; i < recipe.outputMaterials.length && outputPos < 6; i++, outputPos++) {
+					outputs.add(new PositionedStack(ItemScraps.create(recipe.outputMaterials[i], true), 102 + (outputPos % 3) * 18, outputPos < 3 ? 24 : 42));
+				}
 			}
 
-			for(int i = 3; i < 6; i++) if(recipe.outputItems.length > i) {
-				Pair<ItemStack, Float> pair = recipe.outputItems[i];
-				ItemStack out = pair.getKey().copy();
-				if(pair.getValue() != 1) {
-					ItemStackUtil.addTooltipToStack(out, EnumChatFormatting.RED + "" + (((int)(pair.getValue() * 1000)) / 10D) + "%");
-				}
-				outputs.add(new PositionedStack(out, 102 + (i - 3) * 18, 42));
-			}
-			
 			this.pollutionType = recipe.pollutionType;
 			this.pollutionAmount = recipe.pollutionAmount;
 			this.radiationAmount = recipe.radiationAmount;
 			if(conf.fluxMode) this.flux = recipe.flux;
 			if(conf.maxHeat > 0 && recipe.heat > 0) this.heat = recipe.heat;
-			
+
 			this.machine = new PositionedStack(new ItemStack(ModBlocks.custom_machine, 1, 100 + CustomMachineConfigJSON.niceList.indexOf(conf)), 75, 42);
 		}
 
@@ -162,6 +171,18 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 					continue outer;
 				}
 			}
+
+			if(recipe.outputMaterials != null) {
+				if(result.getItem() == ModItems.scraps) {
+					NTMMaterial material = Mats.matById.get(result.getItemDamage());
+					for(Mats.MaterialStack stack : recipe.outputMaterials) {
+						if(stack.material == material) {
+							this.arecipes.add(new RecipeSet(recipe));
+							continue outer;
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -200,6 +221,18 @@ public class CustomMachineHandler extends TemplateRecipeHandler {
 				if(compareFluidStacks(ingredient, drop)) {
 					this.arecipes.add(new RecipeSet(recipe));
 					continue outer;
+				}
+			}
+
+			if(recipe.inputMaterials != null) {
+				if(ingredient.getItem() == ModItems.scraps) {
+					NTMMaterial material = Mats.matById.get(ingredient.getItemDamage());
+					for(Mats.MaterialStack stack : recipe.inputMaterials) {
+						if(stack.material == material) {
+							this.arecipes.add(new RecipeSet(recipe));
+							continue outer;
+						}
+					}
 				}
 			}
 		}
