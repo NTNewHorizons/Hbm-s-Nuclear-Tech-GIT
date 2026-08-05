@@ -307,8 +307,9 @@ public class PowerNetMK2 extends NodeNet<IEnergyReceiverMK2, IEnergyProviderMK2,
 				return;
 			}
 		}
-		if(provider.getProviderVoltage() != voltage && sourceAvailable > 0) {
-			route.cables.get(0).explodeForWrongVoltage(provider.getProviderVoltage());
+		long providerVoltage = provider.getProviderVoltage();
+		if(VoltageTier.isConfigured(providerVoltage) && providerVoltage != voltage && sourceAvailable > 0) {
+			route.cables.get(0).explodeForWrongVoltage(providerVoltage);
 			return;
 		}
 		long demand = getReceiverDemand(receiver);

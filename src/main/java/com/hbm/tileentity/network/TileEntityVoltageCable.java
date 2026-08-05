@@ -192,8 +192,19 @@ public class TileEntityVoltageCable extends TileEntityCableBaseNT implements IVo
 	public PowerNode createNode() {
 		List<DirPos> connections = new ArrayList<DirPos>();
 		for(ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-			if(isConnectionEnabled(direction)) {
-				connections.add(new DirPos(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction));
+			if(!isConnectionEnabled(direction)) continue;
+			TileEntity neighbour = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+			if(neighbour instanceof TileEntityVoltageCable) {
+				TileEntityVoltageCable cable = (TileEntityVoltageCable) neighbour;
+				if(cable.isConnectionEnabled(direction.getOpposite())
+						&& cable.getCableProperties().voltage == getCableProperties().voltage) {
+					connections.add(new DirPos(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction));
+				}
+			} else if(neighbour instanceof TileEntityVoltageTransformer) {
+				TileEntityVoltageTransformer transformer = (TileEntityVoltageTransformer) neighbour;
+				if(transformer.canConnectCable(direction.getOpposite(), getCableProperties().voltage)) {
+					connections.add(new DirPos(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction));
+				}
 			}
 		}
 		return new PowerNode(new BlockPos(xCoord, yCoord, zCoord)).setConnections(connections.toArray(new DirPos[connections.size()]));
