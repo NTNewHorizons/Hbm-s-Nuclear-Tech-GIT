@@ -124,6 +124,8 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 		if(this.usingTicks < delay || power == 0)
 			return power;
 
+		long chargerVoltage = this.getReceiverVoltage();
+
 		for(EntityPlayer player : players) {
 
 			for(int i = 0; i < 5; i++) {
@@ -132,6 +134,14 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 
 				if(stack != null && stack.getItem() instanceof IBatteryItem) {
 					IBatteryItem battery = (IBatteryItem) stack.getItem();
+
+					long itemVoltage = BatteryVoltageRegistry.getVoltage(stack, VoltageTier.DEFAULT);
+
+					// Only block charging when the charger is voltage-aware AND the battery has a
+					// registered, mismatching tier. Legacy (unconfigured) chargers and batteries are unaffected.
+					if(VoltageTier.isConfigured(chargerVoltage) && VoltageTier.isConfigured(itemVoltage) && itemVoltage != chargerVoltage) {
+						continue;
+					}
 
 					long toCharge = Math.min(battery.getMaxCharge(stack) - battery.getCharge(stack), battery.getChargeRate(stack));
 					toCharge = Math.min(toCharge, Math.max(power / 5, 1));

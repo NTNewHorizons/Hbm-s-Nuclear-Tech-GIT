@@ -22,11 +22,9 @@ public final class VoltageCheckedCharging {
 			if(VoltageTier.isConfigured(machineVoltage)) {
 				long batteryVoltage = BatteryVoltageRegistry.getVoltage(stack, VoltageTier.DEFAULT);
 
-				if(!VoltageTier.isConfigured(batteryVoltage)) {
-					return power;
-				}
-
-				if(batteryVoltage != machineVoltage) {
+				// Legacy batteries have no registered tier and keep working as before,
+				// only a registered, mismatching tier is treated as an overvoltage.
+				if(VoltageTier.isConfigured(batteryVoltage) && batteryVoltage != machineVoltage) {
 					machine.onOvervoltage(batteryVoltage);
 					return power;
 				}
@@ -44,12 +42,8 @@ public final class VoltageCheckedCharging {
 
 			long itemVoltage = BatteryVoltageRegistry.getVoltage(stack, VoltageTier.DEFAULT);
 
-			if(!VoltageTier.isConfigured(itemVoltage)) {
-				return power;
-			}
-
 			long machineVoltage = getMachineBlockVoltage(machine);
-			if(VoltageTier.isConfigured(machineVoltage) && itemVoltage != machineVoltage) {
+			if(VoltageTier.isConfigured(itemVoltage) && VoltageTier.isConfigured(machineVoltage) && itemVoltage != machineVoltage) {
 				return power;
 			}
 		}
