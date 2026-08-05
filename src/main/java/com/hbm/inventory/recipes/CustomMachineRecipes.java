@@ -14,8 +14,11 @@ import com.hbm.inventory.FluidStack;
 import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.fluid.Fluids;
+import com.hbm.inventory.material.Mats;
+import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.inventory.recipes.loader.SerializableRecipe;
 import com.hbm.items.ModItems;
+import com.hbm.main.MainRegistry;
 import com.hbm.util.Tuple.Pair;
 
 import net.minecraft.init.Items;
@@ -75,6 +78,8 @@ public class CustomMachineRecipes extends SerializableRecipe {
 			recipeInstance.inputItems = this.readAStackArray(rec.get("inputItems").getAsJsonArray());
 			recipeInstance.outputFluids = this.readFluidArray(rec.get("outputFluids").getAsJsonArray());
 			recipeInstance.outputItems = this.readItemStackArrayChance(rec.get("outputItems").getAsJsonArray());
+			if(rec.has("inputMaterials")) recipeInstance.inputMaterials = readMaterialStackArray(rec.get("inputMaterials").getAsJsonArray());
+			if(rec.has("outputMaterials")) recipeInstance.outputMaterials = readMaterialStackArray(rec.get("outputMaterials").getAsJsonArray());
 			recipeInstance.duration = rec.get("duration").getAsInt();
 			recipeInstance.consumptionPerTick = rec.get("consumptionPerTick").getAsInt();
 
@@ -121,6 +126,14 @@ public class CustomMachineRecipes extends SerializableRecipe {
 			for(Pair stack : recipeInstance.outputItems) this.writeItemStackChance(stack, writer);
 			writer.endArray();
 
+			writer.name("inputMaterials").beginArray();
+			if(recipeInstance.inputMaterials != null) for(Mats.MaterialStack stack : recipeInstance.inputMaterials) writeMaterialStack(stack, writer);
+			writer.endArray();
+
+			writer.name("outputMaterials").beginArray();
+			if(recipeInstance.outputMaterials != null) for(Mats.MaterialStack stack : recipeInstance.outputMaterials) writeMaterialStack(stack, writer);
+			writer.endArray();
+
 			writer.name("duration").value(recipeInstance.duration);
 			writer.name("consumptionPerTick").value(recipeInstance.consumptionPerTick);
 			writer.name("pollutionType").value(recipeInstance.pollutionType);
@@ -135,12 +148,41 @@ public class CustomMachineRecipes extends SerializableRecipe {
 		writer.endArray();
 	}
 
+
+
+	public static Mats.MaterialStack[] readMaterialStackArray(JsonArray array) {
+		try {
+			Mats.MaterialStack[] stacks = new Mats.MaterialStack[array.size()];
+			for(int i = 0; i < stacks.length; i++) {
+				JsonArray entry = array.get(i).getAsJsonArray();
+				String name = entry.get(0).getAsString();
+				int amount = entry.get(1).getAsInt();
+				NTMMaterial mat = Mats.matByName.get(name);
+				if(mat != null) stacks[i] = new Mats.MaterialStack(mat, amount);
+			}
+			return stacks;
+		} catch(Exception ex) { }
+		MainRegistry.logger.error("Error reading material stack array " + array.toString());
+		return new Mats.MaterialStack[0];
+	}
+
+	public static void writeMaterialStack(Mats.MaterialStack stack, JsonWriter writer) throws IOException {
+		writer.beginArray();
+		writer.setIndent("");
+		writer.value(stack.material.names.length > 0 ? stack.material.names[0] : "UNKNOWN");
+		writer.value(stack.amount);
+		writer.endArray();
+		writer.setIndent("  ");
+	}
+
 	public static class CustomMachineRecipe {
 
 		public FluidStack[] inputFluids;
 		public AStack[] inputItems;
 		public FluidStack[] outputFluids;
 		public Pair<ItemStack, Float>[] outputItems;
+		public Mats.MaterialStack[] inputMaterials;
+		public Mats.MaterialStack[] outputMaterials;
 
 		public int duration;
 		public int consumptionPerTick;

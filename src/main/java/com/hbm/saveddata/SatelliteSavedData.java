@@ -2,7 +2,8 @@ package com.hbm.saveddata;
 
 import com.hbm.dim.CelestialBody;
 import com.hbm.dim.orbit.OrbitalStation;
-import com.hbm.saveddata.satellites.Satellite;
+import com.hbm.saveddata.satellites.SatelliteBase;
+import com.hbm.saveddata.satellites.XSatelliteRegistry;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,8 +18,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class SatelliteSavedData extends WorldSavedData {
-
-	public final HashMap<Integer, Satellite> sats = new HashMap<>();
+	
+	public final HashMap<Integer, SatelliteBase> sats = new HashMap<>();
 
 	/**
 	 * Constructor used for deserialization
@@ -36,23 +37,17 @@ public class SatelliteSavedData extends WorldSavedData {
 		this.markDirty();
 	}
 
-	public boolean isFreqTaken(int freq) {
-		return getSatFromFreq(freq) != null;
-	}
-
-	public Satellite getSatFromFreq(int freq) {
-		return sats.get(freq);
-	}
+	public boolean isFreqTaken(int freq) { return getSatFromFreq(freq) != null; }
+	public SatelliteBase getSatFromFreq(int freq) { return sats.get(freq); }
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		int satCount = nbt.getInteger("satCount");
 
 		for(int i = 0; i < satCount; i++) {
-			Satellite sat = Satellite.create(nbt.getInteger("sat_id_" + i));
-			NBTTagCompound satNbt = (NBTTagCompound) nbt.getTag("sat_data_" + i);
-			sat.readFromNBT(satNbt);
-
+			SatelliteBase sat = XSatelliteRegistry.createFromId(nbt.getInteger("sat_id_" + i));
+			sat.readFromNBT((NBTTagCompound) nbt.getTag("sat_data_" + i));
+			
 			int freq = nbt.getInteger("sat_freq_" + i);
 			sats.put(freq, sat);
 		}
@@ -64,7 +59,7 @@ public class SatelliteSavedData extends WorldSavedData {
 
 		int i = 0;
 
-		for(Entry<Integer, Satellite> struct : sats.entrySet()) {
+		for(Entry<Integer, SatelliteBase> struct : sats.entrySet()) {
 			NBTTagCompound data = new NBTTagCompound();
 			struct.getValue().writeToNBT(data);
 
@@ -77,13 +72,12 @@ public class SatelliteSavedData extends WorldSavedData {
 
 	@Deprecated // will return invalid results in orbit
 	public static SatelliteSavedData getData(World worldObj) {
-		SatelliteSavedData data = (SatelliteSavedData)worldObj.perWorldStorage.loadData(SatelliteSavedData.class, "satellites");
+		SatelliteSavedData data = (SatelliteSavedData) worldObj.perWorldStorage.loadData(SatelliteSavedData.class, "satellites");
 		if(data == null) {
 			worldObj.perWorldStorage.setData("satellites", new SatelliteSavedData());
 
-			data = (SatelliteSavedData)worldObj.perWorldStorage.loadData(SatelliteSavedData.class, "satellites");
+			data = (SatelliteSavedData) worldObj.perWorldStorage.loadData(SatelliteSavedData.class, "satellites");
 		}
-
 		return data;
 	}
 
@@ -127,28 +121,28 @@ public class SatelliteSavedData extends WorldSavedData {
 		return data;
 	}
 
-	public static HashMap<Integer, Satellite> clientSats = new HashMap<>();
-	public static HashMap<Integer, HashMap<Integer, Satellite>> clientSatsByDimension = new HashMap<Integer, HashMap<Integer, Satellite>>();
+	public static HashMap<Integer, SatelliteBase> clientSats = new HashMap<>();
+	public static HashMap<Integer, HashMap<Integer, SatelliteBase>> clientSatsByDimension = new HashMap<Integer, HashMap<Integer, SatelliteBase>>();
 
 	@SideOnly(Side.CLIENT)
-	public static void setClientSats(HashMap<Integer, Satellite> sats) {
+	public static void setClientSats(HashMap<Integer, SatelliteBase> sats) {
 		clientSats = sats;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static HashMap<Integer, Satellite> getClientSats() {
+	public static HashMap<Integer, SatelliteBase> getClientSats() {
 		return clientSats;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void setClientSatsByDimension(HashMap<Integer, HashMap<Integer, Satellite>> satsByDimension) {
-		clientSatsByDimension = satsByDimension != null ? satsByDimension : new HashMap<Integer, HashMap<Integer, Satellite>>();
+	public static void setClientSatsByDimension(HashMap<Integer, HashMap<Integer, SatelliteBase>> satsByDimension) {
+		clientSatsByDimension = satsByDimension != null ? satsByDimension : new HashMap<Integer, HashMap<Integer, SatelliteBase>>();
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static Map<Integer, Satellite> getClientSats(int dimensionId) {
-		HashMap<Integer, Satellite> sats = clientSatsByDimension.get(dimensionId);
-		return sats != null ? sats : Collections.<Integer, Satellite>emptyMap();
+	public static Map<Integer, SatelliteBase> getClientSats(int dimensionId) {
+		HashMap<Integer, SatelliteBase> sats = clientSatsByDimension.get(dimensionId);
+		return sats != null ? sats : Collections.<Integer, SatelliteBase>emptyMap();
 	}
 
 }

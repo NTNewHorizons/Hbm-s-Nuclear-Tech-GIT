@@ -24,12 +24,12 @@ import net.minecraftforge.event.world.WorldEvent;
 public class NTMWorldGenerator implements IWorldGenerator {
 
 	boolean regTest = false;
-	
+
 	/** Includes all biomes tagged as ocean or river */
 	public static boolean isWaterBiome(BiomeGenBase biome) {
 		return BiomeDictionary.isBiomeOfType(biome, Type.WATER);
 	}
-	
+
 	/** Includes biomes with little height variation and sparse vegetation, excludes water biomes */
 	public static boolean isFlatBiome(BiomeGenBase biome) {
 		return biome.heightVariation <= 0.2F && !isWaterBiome(biome) && BiomeDictionary.isBiomeOfType(biome, Type.SPARSE);
@@ -107,6 +107,12 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			spawnWeight = StructureConfig.dishSpawnWeight;
 		}});
 
+		NBTStructure.registerStructure(0, new SpawnCondition("water_pump") {{
+			canSpawn = biome -> BiomeDictionary.isBiomeOfType(biome, Type.PLAINS) || BiomeDictionary.isBiomeOfType(biome, Type.SWAMP);
+			structure = new JigsawPiece("water_pump", StructureManager.water_pump, -10);
+			spawnWeight = StructureConfig.waterPumpSpawnWeight;
+		}});
+
 		NBTStructure.registerStructure(0, new SpawnCondition("forestchem") {{
 			canSpawn = biome -> biome.heightVariation <= 0.3F && !isWaterBiome(biome);
 			structure = new JigsawPiece("forest_chem", StructureManager.forest_chem, -9);
@@ -134,14 +140,14 @@ public class NTMWorldGenerator implements IWorldGenerator {
 		}});
 
 		NBTStructure.registerStructure(0, new SpawnCondition("factory") {{
-			canSpawn = biome -> isFlatBiome(biome);
+			canSpawn = biome -> biome.heightVariation <= 0.2F && !isWaterBiome(biome);
 			structure = new JigsawPiece("factory", StructureManager.factory, -10);
 			spawnWeight = StructureConfig.factorySpawnWeight;
 		}});
 
 		NBTStructure.registerStructure(0, new SpawnCondition("crane") {{
-			canSpawn = biome -> isFlatBiome(biome);
-			structure = new JigsawPiece("crane", StructureManager.crane, -9);
+			canSpawn = biome -> biome.heightVariation <= 0.2F && !isWaterBiome(biome);
+			structure = new JigsawPiece("crane", StructureManager.crane, -13);
 			spawnWeight = StructureConfig.craneSpawnWeight;
 		}});
 
@@ -179,6 +185,12 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			canSpawn = biome -> BiomeDictionary.isBiomeOfType(biome, Type.SANDY);
 			structure = new JigsawPiece("desert_shack_3", StructureManager.desert_shack_3, -5);
 			spawnWeight = StructureConfig.desertShack3SpawnWeight;
+		}});
+
+		NBTStructure.registerStructure(0, new SpawnCondition("dead_dish_small") {{
+			canSpawn = biome -> BiomeDictionary.isBiomeOfType(biome, Type.SANDY);
+			structure = new JigsawPiece("dead_dish_small", StructureManager.dead_dish_small, -5);
+			spawnWeight = StructureConfig.deadDishSmallSpawnWeight;
 		}});
 
 		NBTStructure.registerStructure(0, new SpawnCondition("ruinA") {{
@@ -230,6 +242,11 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			canSpawn = biome -> !isWaterBiome(biome) && biome.canSpawnLightningBolt();
 			structure = new JigsawPiece("NTMRuinsJ", StructureManager.ntmruinsJ, -1) {{conformToTerrain = true;}};
 			spawnWeight = StructureConfig.enableRuins ? StructureConfig.ruinsJSpawnWeight : 0;
+		}});
+		NBTStructure.registerStructure(0, new SpawnCondition("tower_base") {{
+			canSpawn = biome -> biome.heightVariation <= 0.3F && !isWaterBiome(biome) && !BiomeDictionary.isBiomeOfType(biome, Type.SANDY);
+			structure = new JigsawPiece("tower_base", StructureManager.tower_base, -6);
+			spawnWeight = StructureConfig.towerBaseSpawnWeight;
 		}});
 
 		NBTStructure.registerNullWeight(0, StructureConfig.plainsNullWeight, biome -> biome == BiomeGenBase.plains);

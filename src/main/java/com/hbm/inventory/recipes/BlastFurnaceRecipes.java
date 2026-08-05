@@ -64,6 +64,9 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 
 		addRecipe(new ComparableStack(ModBlocks.block_steel),			new ComparableStack(ModItems.ingot_magnetized_tungsten),										new ItemStack(ModItems.lodestone, 1));
 
+		// blober.
+		addRecipe(STEEL.block(), ModItems.ingot_magnetized_tungsten, new ItemStack(ModItems.lodestone, 1));
+
 		if(GeneralConfig.enableLBSM && GeneralConfig.enableLBSMSimpleChemsitry) {
 			addRecipe(ModItems.canister_empty, COAL, new ItemStack(ModItems.canister_full, 1, Fluids.OIL.getID()));
 		}

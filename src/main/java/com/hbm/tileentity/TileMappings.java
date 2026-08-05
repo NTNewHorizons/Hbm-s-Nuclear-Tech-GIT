@@ -147,6 +147,7 @@ public class TileMappings {
 		put(TileEntityMachineSeleniumEngine.class, "tileentity_selenium_engine");
 		put(TileEntityBroadcaster.class, "tileentity_pink_cloud_broadcaster");
 		put(TileEntityMachineSatLinker.class, "tileentity_satlinker");
+		put(TileEntityMachineSatLink.class, "tileentity_satlink");
 		put(TileEntityReactorResearch.class, "tileentity_small_reactor");
 		put(TileEntityVaultDoorMigration.class, "tileentity_vault_door");
 		put(TileEntityRadiobox.class, "tileentity_radio_broadcaster");

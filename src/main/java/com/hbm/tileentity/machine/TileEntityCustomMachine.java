@@ -18,10 +18,13 @@ import com.hbm.inventory.gui.GUIMachineCustom;
 import com.hbm.inventory.recipes.CustomMachineRecipes;
 import com.hbm.inventory.recipes.CustomMachineRecipes.CustomMachineRecipe;
 import com.hbm.lib.Library;
+import com.hbm.main.MainRegistry;
 import com.hbm.module.ModulePatternMatcher;
+import com.hbm.sound.AudioWrapper;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachinePolluting;
 import com.hbm.tileentity.TileEntityProxyBase;
+import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.util.BufferUtil;
 import com.hbm.util.Compat;
 import com.hbm.util.fauxpointtwelve.BlockPos;
@@ -39,10 +42,27 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityCustomMachine extends TileEntityMachinePolluting implements IFluidStandardTransceiver, IEnergyProviderMK2, IEnergyReceiverMK2, IGUIProvider {
+import api.hbm.block.ICrucibleAcceptor;
+import api.hbm.block.IToolable;
+import api.hbm.block.IToolable.ToolType;
+import api.hbm.item.IDepthRockTool;
+import com.hbm.blocks.machine.FoundryOutlet;
+import com.hbm.inventory.material.Mats;
+import com.hbm.inventory.material.Mats.MaterialStack;
+import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.interfaces.IControlReceiver;
+import com.hbm.items.ModItems;
+import com.hbm.items.machine.ItemScraps;
+import com.hbm.items.tool.ItemToolAbility;
+import com.hbm.items.tool.ItemTooling;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemTool;
+
+public class TileEntityCustomMachine extends TileEntityMachinePolluting implements IFluidStandardTransceiver, IEnergyProviderMK2, IEnergyReceiverMK2, ICrucibleAcceptor, IControlReceiver, IGUIProvider {
 
 	public String machineType;
 	public MachineConfiguration config;
@@ -53,13 +73,21 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 	public int maxHeat;
 	public int progress;
 	public int maxProgress = 1;
+	public boolean isProgressing;
+	public int networkTicker = 0;
 	public FluidTank[] inputTanks;
 	public FluidTank[] outputTanks;
 	public ModulePatternMatcher matcher;
 	public int structureCheckDelay;
 	public boolean structureOK = false;
+	public int ghostAnimationIndex = 0;
+	private AudioWrapper audio;
 	public CustomMachineRecipe cachedRecipe;
+	public List<MaterialStack> materials = new ArrayList();
 
+	private static final int[] EMPTY_SLOTS = new int[0];
+	private int[] accessibleSlots = null;
+	private int cachedItemInCount = -1;
 	public List<DirPos> connectionPos = new ArrayList();
 	public List<DirPos> fluxPos = new ArrayList();
 	public List<DirPos> heatPos = new ArrayList();
@@ -80,6 +108,7 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 
 		if (config != null) {
 			this.config = config;
+			this.bb = null; // invalidate cached bounding box since config changed
 
 			inputTanks = new FluidTank[config.fluidInCount];
 			for (int i = 0; i < inputTanks.length; i++) inputTanks[i] = new FluidTank(Fluids.NONE, config.fluidInCap);
@@ -97,6 +126,55 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 		}
 	}
 
+	public boolean hasMaterialSupport() {
+		return config != null && config.materialInCount > 0;
+	}
+
+	public int getTotalMaterialAmount() {
+		int total = 0;
+		for(MaterialStack ms : materials) total += ms.amount;
+		return total;
+	}
+
+	private int containsMaterial(NTMMaterial mat) {
+		for(int i = 0; i < materials.size(); i++) {
+			if(materials.get(i).material == mat) return i;
+		}
+		return -1;
+	}
+
+	private void addToMaterials(Mats.MaterialStack stack) {
+		int idx = containsMaterial(stack.material);
+		if(idx >= 0) {
+			materials.get(idx).amount += stack.amount;
+		} else {
+			materials.add(stack.copy());
+		}
+	}
+
+	@Override
+	public boolean canAcceptPartialPour(World world, int x, int y, int z, double dX, double dY, double dZ, ForgeDirection side, Mats.MaterialStack stack) {
+		if(!hasMaterialSupport()) return false;
+		if(side != ForgeDirection.UP) return false;
+		int existingType = containsMaterial(stack.material);
+		if(existingType == -1 && materials.size() >= config.materialInCount) return false;
+		if(getTotalMaterialAmount() + stack.amount > config.materialInCap) return false;
+		return true;
+	}
+
+	@Override
+	public Mats.MaterialStack pour(World world, int x, int y, int z, double dX, double dY, double dZ, ForgeDirection side, Mats.MaterialStack stack) {
+		if(!canAcceptPartialPour(world, x, y, z, dX, dY, dZ, side, stack)) return stack;
+		addToMaterials(stack);
+		return null;
+	}
+
+	@Override
+	public boolean canAcceptPartialFlow(World world, int x, int y, int z, ForgeDirection side, Mats.MaterialStack stack) { return false; }
+
+	@Override
+	public Mats.MaterialStack flow(World world, int x, int y, int z, ForgeDirection side, Mats.MaterialStack stack) { return stack; }
+
 	@Override
 	public String getName() {
 		return config != null ? config.localizedName : "INVALID";
@@ -111,7 +189,7 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 				worldObj.func_147480_a(xCoord, yCoord, zCoord, false);
 				return;
 			}
-
+			this.isProgressing = false;
 			this.power = Library.chargeTEFromItems(slots, 0, power, this.config.maxPower);
 
 			if (this.inputTanks.length > 0) this.inputTanks[0].setType(1, slots);
@@ -164,6 +242,33 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 				this.sendSmoke(pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
 			}
 
+			if(hasMaterialSupport() && !materials.isEmpty() && worldObj.getTotalWorldTime() % 20 == 0) {
+				CustomMachineRecipe recipe = this.getMatchingRecipe();
+				Mats.MaterialStack[] inputMats = recipe != null ? recipe.inputMaterials : null;
+				for(DirPos pos : this.connectionPos) {
+					if(pos.getDir() == ForgeDirection.UP || pos.getDir() == ForgeDirection.DOWN) continue;
+					TileEntity te = worldObj.getTileEntity(pos.getX(), pos.getY(), pos.getZ());
+					if(te instanceof TileEntityFoundryChannel || te instanceof TileEntityFoundryOutlet) {
+						ICrucibleAcceptor acc = (ICrucibleAcceptor) te;
+						ForgeDirection side = pos.getDir().getOpposite();
+						matLoop:
+						for(MaterialStack ms : materials) {
+							if(ms.amount <= 0) continue;
+							if(inputMats != null) {
+								for(MaterialStack req : inputMats) {
+									if(ms.material == req.material) continue matLoop;
+								}
+							}
+							if(acc.canAcceptPartialFlow(worldObj, pos.getX(), pos.getY(), pos.getZ(), side, ms)) {
+								MaterialStack remaining = acc.flow(worldObj, pos.getX(), pos.getY(), pos.getZ(), side, ms);
+								ms.amount = remaining != null ? remaining.amount : 0;
+							}
+						}
+					}
+				}
+				materials.removeIf(m -> m.amount <= 0);
+			}
+
 			if (this.structureOK) {
 
 				if (config.generatorMode) {
@@ -176,6 +281,7 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 					}
 
 					if (this.cachedRecipe != null) {
+						isProgressing = true;
 						this.maxProgress = (int) Math.max(cachedRecipe.duration / this.config.recipeSpeedMult, 1);
 						int powerReq = (int) Math.max(cachedRecipe.consumptionPerTick * this.config.recipeConsumptionMult, 1);
 
@@ -222,7 +328,38 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 			} else {
 				this.progress = 0;
 			}
-			this.networkPackNT(50);
+			// Adaptive sync: 50t when active, 200t when idle
+			int sendInterval = this.isProgressing ? 50 : 200;
+			this.networkTicker++;
+			if(this.networkTicker >= sendInterval) {
+				this.networkTicker = 0;
+				this.networkPackNT(50);
+			}
+		} else {
+			// Pre-compute ghost animation index so renderer doesn't call System.currentTimeMillis()
+			if(!this.structureOK && this.config != null && this.config.components != null
+				&& !this.config.components.isEmpty()) {
+				this.ghostAnimationIndex = (int)((this.worldObj.getTotalWorldTime() / 20)
+					% this.config.components.size());
+			}
+
+			float volume = this.getVolume(1F);
+			if (this.isProgressing && config.progressSound!=null && MainRegistry.proxy.me().getDistance(xCoord, yCoord, zCoord) < 50) {
+				if (audio == null) {
+					audio = this.createAudioLoop();
+					audio.startSound();
+				} else if (!audio.isPlaying()) {
+					audio = rebootAudio(audio);
+				}
+				audio.keepAlive();
+				audio.updateVolume(volume);
+			} else {
+				if (audio != null) {
+					audio.stopSound();
+					audio = null;
+				}
+			}
+
 		}
 
 	}
@@ -235,6 +372,7 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 
 		buf.writeLong(power);
 		buf.writeInt(progress);
+		buf.writeBoolean(isProgressing);
 		buf.writeInt(flux);
 		buf.writeInt(heat);
 		buf.writeBoolean(structureOK);
@@ -242,6 +380,13 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 		for (FluidTank inputTank : inputTanks) inputTank.serialize(buf);
 		for (FluidTank outputTank : outputTanks) outputTank.serialize(buf);
 		this.matcher.serialize(buf);
+		if(hasMaterialSupport()) {
+			buf.writeShort(materials.size());
+			for(Mats.MaterialStack ms : materials) {
+				buf.writeInt(ms.material != null ? ms.material.id : -1);
+				buf.writeInt(ms.amount);
+			}
+		}
 	}
 
 	@Override
@@ -253,6 +398,7 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 
 		this.power = buf.readLong();
 		this.progress = buf.readInt();
+		this.isProgressing = buf.readBoolean();
 		this.flux = buf.readInt();
 		this.heat = buf.readInt();
 		this.structureOK = buf.readBoolean();
@@ -260,13 +406,64 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 		for (FluidTank inputTank : inputTanks) inputTank.deserialize(buf);
 		for (FluidTank outputTank : outputTanks) outputTank.deserialize(buf);
 		this.matcher.deserialize(buf);
+		if(hasMaterialSupport()) {
+			materials.clear();
+			int matSize = buf.readShort();
+			for(int i = 0; i < matSize; i++) {
+				int id = buf.readInt();
+				int amount = buf.readInt();
+				if(id == -1) continue;
+				NTMMaterial mat = Mats.matById.get(id);
+				if(mat != null) materials.add(new MaterialStack(mat, amount));
+			}
+		}
+	}
+	@Override
+	public AudioWrapper createAudioLoop() {
+		return MainRegistry.proxy.getLoopedSound(config.progressSound, xCoord, yCoord, zCoord, 1.0F, 10F, 1.0F);
+	}
+	@Override
+	public void onChunkUnload() {
+
+		if(audio != null) {
+			audio.stopSound();
+			audio = null;
+		}
 	}
 
-	/** Only accepts inputs in a fixed order, saves a ton of performance because there's no permutations to check for */
+	@Override
+	public void invalidate() {
+
+		super.invalidate();
+
+		if(audio != null) {
+			audio.stopSound();
+			audio = null;
+		}
+	}
+	/** Only accepts inputs in a fixed order, saves a ton of performance because there's no permutations to check for.
+	 *  Caches the last matched recipe: validates it against current inputs first (O(slots)),
+	 *  only falls back to full scan (O(recipes × slots)) when inputs changed. */
 	public CustomMachineRecipe getMatchingRecipe() {
 		List<CustomMachineRecipe> recipes = CustomMachineRecipes.recipes.get(this.config.recipeKey);
 		if(recipes == null || recipes.isEmpty()) return null;
 
+		// Fast path: validate cached recipe against current inputs
+		if(cachedRecipe != null) {
+			boolean stillMatches = true;
+			for(int i = 0; i < cachedRecipe.inputFluids.length && stillMatches; i++) {
+				if(this.inputTanks[i].getTankType() != cachedRecipe.inputFluids[i].type
+					|| this.inputTanks[i].getPressure() != cachedRecipe.inputFluids[i].pressure)
+					stillMatches = false;
+			}
+			for(int i = 0; i < cachedRecipe.inputItems.length && stillMatches; i++) {
+				if(cachedRecipe.inputItems[i] != null && slots[i + 4] == null) stillMatches = false;
+				if(!cachedRecipe.inputItems[i].matchesRecipe(slots[i + 4], true)) stillMatches = false;
+			}
+			if(stillMatches) return cachedRecipe;
+		}
+
+		// Slow path: full scan
 		outer:
 		for(CustomMachineRecipe recipe : recipes) {
 			for(int i = 0; i < recipe.inputFluids.length; i++) {
@@ -278,9 +475,11 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 				if(!recipe.inputItems[i].matchesRecipe(slots[i + 4], true)) continue outer;
 			}
 
+			cachedRecipe = recipe;
 			return recipe;
 		}
 
+		cachedRecipe = null;
 		return null;
 	}
 	public void pollution(CustomMachineRecipe recipe) {
@@ -325,6 +524,12 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 		for(int i = 0; i < recipe.inputItems.length; i++) {
 			if(slots[i + 4] != null && slots[i + 4].stackSize < recipe.inputItems[i].stacksize) return false;
 		}
+		if(recipe.inputMaterials != null) {
+			for(Mats.MaterialStack req : recipe.inputMaterials) {
+				int idx = containsMaterial(req.material);
+				if(idx == -1 || materials.get(idx).amount < req.amount) return false;
+			}
+		}
 		if(config.fluxMode ? this.flux < recipe.flux : false) return false;
 		if(config.maxHeat>0 && recipe.heat>0 ? this.heat < recipe.heat : false) return false;
 		return true;
@@ -340,6 +545,16 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 			if(slots[i + 16] != null && (slots[i + 16].getItem() != recipe.outputItems[i].key.getItem() || slots[i + 16].getItemDamage() != recipe.outputItems[i].key.getItemDamage())) return false;
 			if(slots[i + 16] != null && slots[16 + i].stackSize + recipe.outputItems[i].key.stackSize > slots[i + 16].getMaxStackSize()) return false;
 		}
+		if(recipe.outputMaterials != null && hasMaterialSupport()) {
+			int total = getTotalMaterialAmount();
+			int newTypes = 0;
+			for(Mats.MaterialStack out : recipe.outputMaterials) {
+				total += out.amount;
+				if(containsMaterial(out.material) == -1) newTypes++;
+			}
+			if(total > config.materialInCap) return false;
+			if(materials.size() + newTypes > config.materialInCount) return false;
+		}
 
 		return true;
 	}
@@ -352,6 +567,13 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 
 		for(int i = 0; i < recipe.inputItems.length; i++) {
 			this.decrStackSize(i + 4, recipe.inputItems[i].stacksize);
+		}
+		if(recipe.inputMaterials != null) {
+			for(Mats.MaterialStack req : recipe.inputMaterials) {
+				int idx = containsMaterial(req.material);
+				if(idx >= 0) materials.get(idx).amount -= req.amount;
+			}
+			materials.removeIf(ms -> ms.amount <= 0);
 		}
 	}
 
@@ -372,6 +594,28 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 				}
 			}
 		}
+		if(recipe.outputMaterials != null) {
+			for(Mats.MaterialStack out : recipe.outputMaterials) addToMaterials(out);
+		}
+	}
+
+	/**
+	 * Transforms a component's local coordinates to world coordinates, handling rotation.
+	 */
+	protected BlockPos getComponentWorldPos(ComponentDefinition comp) {
+		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
+		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+
+		int x = xCoord - dir.offsetX * comp.x + rot.offsetX * comp.x;
+		int y = yCoord + comp.y;
+		int z = zCoord - dir.offsetZ * comp.z + rot.offsetZ * comp.z;
+
+		if(dir == ForgeDirection.EAST || dir == ForgeDirection.WEST) {
+			x = xCoord + dir.offsetZ * comp.z - rot.offsetZ * comp.z;
+			z = zCoord + dir.offsetX * comp.x - rot.offsetX * comp.x;
+		}
+
+		return new BlockPos(x, y, z);
 	}
 
 	public boolean checkStructure() {
@@ -381,21 +625,12 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 		this.structureOK = false;
 		if(this.config == null) return false;
 
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
-		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		for(ComponentDefinition comp : config.components) {
 
-			/* vvv precisely the same method used for defining ports vvv */
-			int x = xCoord - dir.offsetX * comp.x + rot.offsetX * comp.x;
-			int y = yCoord + comp.y;
-			int z = zCoord - dir.offsetZ * comp.z + rot.offsetZ * comp.z;
-			/* but for EW directions it just stops working entirely */
-			/* there is absolutely zero reason why this should be required */
-			if(dir == ForgeDirection.EAST || dir == ForgeDirection.WEST) {
-				x = xCoord + dir.offsetZ * comp.z - rot.offsetZ * comp.z;
-				z = zCoord + dir.offsetX * comp.x - rot.offsetX * comp.x;
-			}
-			/* i wholeheartedly believe it is the computer who is wrong here */
+			BlockPos pos = getComponentWorldPos(comp);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
 
 			Block b = worldObj.getBlock(x, y, z);
 			if(b != comp.block) return false;
@@ -408,6 +643,11 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 				TileEntityProxyBase proxy = (TileEntityProxyBase) tile;
 				proxy.cachedPosition = new BlockPos(xCoord, yCoord, zCoord);
 				proxy.markDirty();
+
+				if(proxy instanceof TileEntityProxyCombo && hasMaterialSupport()) {
+					((TileEntityProxyCombo) proxy).moltenMetal = true;
+					proxy.markDirty();
+				}
 
 				for(ForgeDirection facing : ForgeDirection.VALID_DIRECTIONS) {
 					this.connectionPos.add(new DirPos(x + facing.offsetX, y + facing.offsetY, z + facing.offsetZ, facing));
@@ -437,32 +677,29 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 
 		if(this.config == null) return;
 
-		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata());
-		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
-
 		for(ComponentDefinition comp : config.components) {
-
-			int x = xCoord - dir.offsetX * comp.x + rot.offsetX * comp.x;
-			int y = yCoord + comp.y;
-			int z = zCoord - dir.offsetZ * comp.z + rot.offsetZ * comp.z;
-			if(dir == ForgeDirection.EAST || dir == ForgeDirection.WEST) {
-				x = xCoord + dir.offsetZ * comp.z - rot.offsetZ * comp.z;
-				z = zCoord + dir.offsetX * comp.x - rot.offsetX * comp.x;
-			}
-
-			worldObj.setBlock(x, y, z, comp.block, (int) comp.allowedMetas.toArray()[0], 3);
+			BlockPos pos = getComponentWorldPos(comp);
+			worldObj.setBlock(pos.getX(), pos.getY(), pos.getZ(), comp.block, (int) comp.allowedMetas.toArray()[0], 3);
 		}
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		if(this.config == null) return new int[] { };
-		if(this.config.itemInCount > 5) return new int[] { 4, 5, 6, 7, 8, 9, 16, 17, 18, 19, 20, 21 };
-		if(this.config.itemInCount > 4) return new int[] { 4, 5, 6, 7, 8, 16, 17, 18, 19, 20, 21 };
-		if(this.config.itemInCount > 3) return new int[] { 4, 5, 6, 7, 16, 17, 18, 19, 20, 21 };
-		if(this.config.itemInCount > 2) return new int[] { 4, 5, 6, 16, 17, 18, 19, 20, 21 };
-		if(this.config.itemInCount > 1) return new int[] { 4, 5, 16, 17, 18, 19, 20, 21 };
-		if(this.config.itemInCount > 0) return new int[] { 4, 16, 17, 18, 19, 20, 21 };
+		if(this.config == null) return EMPTY_SLOTS;
+		if(this.config.itemInCount != cachedItemInCount || accessibleSlots == null) {
+			accessibleSlots = computeAccessibleSlots(this.config.itemInCount);
+			cachedItemInCount = this.config.itemInCount;
+		}
+		return accessibleSlots;
+	}
+
+	private int[] computeAccessibleSlots(int itemInCount) {
+		if(itemInCount > 5) return new int[] { 4, 5, 6, 7, 8, 9, 16, 17, 18, 19, 20, 21 };
+		if(itemInCount > 4) return new int[] { 4, 5, 6, 7, 8, 16, 17, 18, 19, 20, 21 };
+		if(itemInCount > 3) return new int[] { 4, 5, 6, 7, 16, 17, 18, 19, 20, 21 };
+		if(itemInCount > 2) return new int[] { 4, 5, 6, 16, 17, 18, 19, 20, 21 };
+		if(itemInCount > 1) return new int[] { 4, 5, 16, 17, 18, 19, 20, 21 };
+		if(itemInCount > 0) return new int[] { 4, 16, 17, 18, 19, 20, 21 };
 		return new int[] { 16, 17, 18, 19, 20, 21 };
 	}
 
@@ -502,6 +739,16 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 			if(index != -1) {
 				this.cachedRecipe = CustomMachineRecipes.recipes.get(this.config.recipeKey).get(index);
 			}
+			if(hasMaterialSupport()) {
+				materials.clear();
+				int[] matArray = nbt.getIntArray("materials");
+				if(matArray != null) {
+					for(int i = 0; i < matArray.length / 2; i++) {
+						NTMMaterial mat = Mats.matById.get(matArray[i * 2]);
+						if(mat != null) materials.add(new MaterialStack(mat, matArray[i * 2 + 1]));
+					}
+				}
+			}
 		}
 	}
 
@@ -528,6 +775,51 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 		} else {
 			nbt.setInteger("cachedIndex", -1);
 		}
+		if(hasMaterialSupport()) {
+			int[] matArray = new int[materials.size() * 2];
+			for(int i = 0; i < materials.size(); i++) {
+				matArray[i * 2] = materials.get(i).material.id;
+				matArray[i * 2 + 1] = materials.get(i).amount;
+			}
+			nbt.setIntArray("materials", matArray);
+		}
+	}
+	AxisAlignedBB bb = null;
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+
+		if(bb == null ) {
+
+			if(config!=null && config.customModel!=null){
+				bb = AxisAlignedBB.getBoundingBox(
+					xCoord + config.customModel.model_Bounding_x1,
+					yCoord + config.customModel.model_Bounding_y1,
+					zCoord + config.customModel.model_Bounding_z1,
+					xCoord + config.customModel.model_Bounding_x2,
+					yCoord + config.customModel.model_Bounding_y2,
+					zCoord + config.customModel.model_Bounding_z2
+				);
+			}
+			else {
+				bb = AxisAlignedBB.getBoundingBox(
+					xCoord,
+					yCoord,
+					zCoord,
+					xCoord,
+					yCoord,
+					zCoord
+				);
+			}
+		}
+
+		return bb;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public double getMaxRenderDistanceSquared() {
+		return 65536.0D;
 	}
 
 	@Override
@@ -566,6 +858,46 @@ public class TileEntityCustomMachine extends TileEntityMachinePolluting implemen
 	public Object provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		if(this.config == null) return null;
 		return new GUIMachineCustom(player.inventory, this);
+	}
+
+	@Override
+	public boolean hasPermission(EntityPlayer player) { return player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) <= 256; }
+
+	@Override
+	public void receiveControl(NBTTagCompound nbt) { }
+
+	@Override
+	public void receiveControl(EntityPlayer player, NBTTagCompound nbt) {
+		if(nbt.hasKey("clearMaterials")) {
+			clearMaterialsWithTool(player);
+		}
+	}
+
+	private void clearMaterialsWithTool(EntityPlayer player) {
+		if(!hasMaterialSupport() || materials.isEmpty()) return;
+		ItemStack held = player.inventory.getItemStack();
+		if(!isMaterialClearTool(held)) return;
+
+		for(MaterialStack ms : materials) {
+			if(ms.amount <= 0) continue;
+			ItemStack scrap = ItemScraps.create(ms);
+			if(!player.inventory.addItemStackToInventory(scrap)) {
+				player.dropPlayerItemWithRandomChoice(scrap, true);
+			}
+		}
+		materials.clear();
+		markDirty();
+	}
+
+	private boolean isMaterialClearTool(ItemStack stack) {
+		if(stack == null) return false;
+		Item item = stack.getItem();
+		if(item instanceof ItemTool && ((ItemTool) item).getToolClasses(stack).contains("shovel")) return true;
+		if(item == ModItems.smashing_hammer) return true;
+		if(item == ModItems.centri_stick) return true;
+		if(ToolType.getType(stack) == ToolType.HAND_DRILL) return true;
+		if(item instanceof IDepthRockTool) return true;
+		return false;
 	}
 
 	@Override

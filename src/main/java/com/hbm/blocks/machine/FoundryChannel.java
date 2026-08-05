@@ -143,6 +143,8 @@ public class FoundryChannel extends BlockContainer implements ICrucibleAcceptor 
 		if((b == ModBlocks.foundry_outlet || b == ModBlocks.foundry_slagtap) && meta == dir.ordinal())
 			return true;
 
+		if(b == ModBlocks.cm_port) return true;
+
 		return b == ModBlocks.foundry_channel || b == ModBlocks.foundry_mold;
 	}
 

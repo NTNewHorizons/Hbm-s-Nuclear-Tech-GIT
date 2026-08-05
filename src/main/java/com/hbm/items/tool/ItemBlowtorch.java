@@ -43,6 +43,39 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 	}
 
 	@Override
+	public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public boolean hasContainerItem(ItemStack stack) {
+		return true;
+	}
+
+	@Override
+	public ItemStack getContainerItem(ItemStack stack) {
+		ItemStack copy = stack.copy();
+
+		int damage = ItemTooling.getPendingCraftingDamage(stack);
+		if(copy.hasTagCompound()) {
+			copy.getTagCompound().removeTag(ItemTooling.KEY_CRAFTING_DAMAGE);
+			if(copy.getTagCompound().hasNoTags()) copy.setTagCompound(null);
+		}
+
+		if(copy.getItem() == ModItems.blowtorch) {
+			int fill = this.getFill(copy, Fluids.GAS);
+			this.setFill(copy, Fluids.GAS, Math.max(0, fill - 5 * damage));
+		}
+		if(copy.getItem() == ModItems.acetylene_torch) {
+			int unsat = this.getFill(copy, Fluids.UNSATURATEDS);
+			int oxy = this.getFill(copy, Fluids.OXYGEN);
+			this.setFill(copy, Fluids.UNSATURATEDS, Math.max(0, unsat - 2 * damage));
+			this.setFill(copy, Fluids.OXYGEN, Math.max(0, oxy - 2 * damage));
+		}
+		return copy;
+	}
+
+	@Override
 	public boolean acceptsFluid(FluidType type, ItemStack stack) {
 
 		if(this == ModItems.blowtorch) return type == Fluids.GAS;

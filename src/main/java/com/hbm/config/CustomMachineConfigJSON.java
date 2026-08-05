@@ -24,6 +24,7 @@ import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.inventory.recipes.loader.SerializableRecipe;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemCircuit.EnumCircuitType;
+import com.hbm.lib.RefStrings;
 import com.hbm.main.CraftingManager;
 import com.hbm.main.MainRegistry;
 
@@ -34,6 +35,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class CustomMachineConfigJSON {
 
 	public static final Gson gson = new Gson();
+	public static final org.apache.logging.log4j.Logger logger = MainRegistry.logger;
 	public static HashMap<String, MachineConfiguration> customMachines = new HashMap();
 	public static List<MachineConfiguration> niceList = new ArrayList();
 
@@ -45,7 +47,6 @@ public class CustomMachineConfigJSON {
 		if(!config.exists()) {
 			writeDefault(config);
 		}
-
 		readConfig(config);
 	}
 
@@ -55,88 +56,107 @@ public class CustomMachineConfigJSON {
 			JsonWriter writer = new JsonWriter(new FileWriter(config));
 			writer.setIndent("  ");
 			writer.beginObject();
-			writer.name("machines").beginArray();
+				writer.name("machines").beginArray();
 
-			writer.beginObject();
-			writer.name("recipeKey").value("paperPress");
-			writer.name("unlocalizedName").value("paperPress");
-			writer.name("localization").beginObject();
-			writer.name("de_DE").value("Papierpresse");
-			writer.endObject();
-			writer.name("localizedName").value("Paper Press");
-			writer.name("fluidInCount").value(1);
-			writer.name("fluidInCap").value(1_000);
-			writer.name("itemInCount").value(1);
-			writer.name("fluidOutCount").value(0);
-			writer.name("fluidOutCap").value(0);
-			writer.name("itemOutCount").value(1);
-			writer.name("generatorMode").value(false);
-			writer.name("maxPollutionCap").value(100);
-			writer.name("fluxMode").value(false);
-			writer.name("recipeSpeedMult").value(1.0D);
-			writer.name("recipeConsumptionMult").value(1.0D);
-			writer.name("maxPower").value(10_000L);
-			writer.name("maxHeat").value(0);
+					writer.beginObject();
+						writer.name("recipeKey").value("paperPress");
+						writer.name("unlocalizedName").value("paperPress");
+						writer.name("localization").beginObject();
+							writer.name("de_DE").value("Papierpresse");
+						writer.endObject();
+						writer.name("localizedName").value("Paper Press");
+						writer.name("fluidInCount").value(1);
+						writer.name("fluidInCap").value(1_000);
+						writer.name("itemInCount").value(1);
+						writer.name("fluidOutCount").value(0);
+						writer.name("fluidOutCap").value(0);
+						writer.name("itemOutCount").value(1);
+						writer.name("generatorMode").value(false);
+						writer.name("maxPollutionCap").value(100);
+						writer.name("fluxMode").value(false);
+						writer.name("recipeSpeedMult").value(1.0D);
+						writer.name("recipeConsumptionMult").value(1.0D);
+						writer.name("maxPower").value(10_000L);
+						writer.name("maxHeat").value(0);
+						writer.name("progressSound").value("hbm:block.assemblerOperate");
+						writer.name("materialInCount").value(0);
+						writer.name("materialInCap").value(0);
+						writer.name("materialOut").value(false);
 
-			writer.name("recipeShape").beginArray();
-			writer.value("IPI").value("PCP").value("IPI");
-			writer.endArray();
+						writer.name("recipeShape").beginArray();
+							writer.value("IPI").value("PCP").value("IPI");
+						writer.endArray();
 
-			writer.name("recipeParts").beginArray().setIndent("");
-			writer.value("I");
-			SerializableRecipe.writeAStack(new OreDictStack(OreDictManager.STEEL.ingot()), writer);
-			writer.setIndent("");
-			writer.value("P");
-			SerializableRecipe.writeAStack(new OreDictStack(OreDictManager.STEEL.plate()), writer);
-			writer.setIndent("");
-			writer.value("C");
-			SerializableRecipe.writeAStack(new ComparableStack(ModItems.circuit, 1, EnumCircuitType.BASIC), writer);
-			writer.endArray().setIndent("  ");
+						writer.name("recipeParts").beginArray().setIndent("");
+							writer.value("I");
+							SerializableRecipe.writeAStack(new OreDictStack(OreDictManager.STEEL.ingot()), writer);
+							writer.setIndent("");
+							writer.value("P");
+							SerializableRecipe.writeAStack(new OreDictStack(OreDictManager.STEEL.plate()), writer);
+							writer.setIndent("");
+							writer.value("C");
+							SerializableRecipe.writeAStack(new ComparableStack(ModItems.circuit, 1, EnumCircuitType.BASIC), writer);
+						writer.endArray().setIndent("  ");
 
-			writer.name("components").beginArray();
+						writer.name("components").beginArray();
 
-			for(int x = -1; x <= 1; x++) {
-				for(int y = -1; y <= 1; y++) {
-					for(int z = 0; z <= 2; z++) {
-						if(!(x == 0 && y == 0 && z == 1) && !(x == 0 && z == 0)) {
+							for(int x = -1; x <= 1; x++) {
+								for(int y = -1; y <= 1; y++) {
+									for(int z = 0; z <= 2; z++) {
+										if(!(x == 0 && y == 0 && z == 1) && !(x == 0 && z == 0)) {
+											writer.beginObject().setIndent("");
+												writer.name("block").value(y == 0 ? "hbm:tile.cm_sheet" : "hbm:tile.cm_block");
+												writer.name("x").value(x);
+												writer.name("y").value(y);
+												writer.name("z").value(z);
+												writer.name("metas").beginArray();
+													writer.value(0);
+												writer.endArray();
+											writer.endObject().setIndent("  ");
+										}
+									}
+								}
+							}
+
 							writer.beginObject().setIndent("");
-							writer.name("block").value(y == 0 ? "hbm:tile.cm_sheet" : "hbm:tile.cm_block");
-							writer.name("x").value(x);
-							writer.name("y").value(y);
-							writer.name("z").value(z);
-							writer.name("metas").beginArray();
-							writer.value(0);
-							writer.endArray();
+								writer.name("block").value("hbm:tile.cm_port");
+								writer.name("x").value(0);
+								writer.name("y").value(-1);
+								writer.name("z").value(0);
+								writer.name("metas").beginArray();
+									writer.value(0);
+								writer.endArray();
 							writer.endObject().setIndent("  ");
-						}
-					}
-				}
-			}
 
-			writer.beginObject().setIndent("");
-			writer.name("block").value("hbm:tile.cm_port");
-			writer.name("x").value(0);
-			writer.name("y").value(-1);
-			writer.name("z").value(0);
-			writer.name("metas").beginArray();
-			writer.value(0);
-			writer.endArray();
-			writer.endObject().setIndent("  ");
+							writer.beginObject().setIndent("");
+								writer.name("block").value("hbm:tile.cm_port");
+								writer.name("x").value(0);
+								writer.name("y").value(1);
+								writer.name("z").value(0);
+								writer.name("metas").beginArray();
+									writer.value(0);
+								writer.endArray();
+							writer.endObject().setIndent("  ");
 
-			writer.beginObject().setIndent("");
-			writer.name("block").value("hbm:tile.cm_port");
-			writer.name("x").value(0);
-			writer.name("y").value(1);
-			writer.name("z").value(0);
-			writer.name("metas").beginArray();
-			writer.value(0);
-			writer.endArray();
-			writer.endObject().setIndent("  ");
+						writer.endArray();
 
-			writer.endArray();
-			writer.endObject();
+						writer.name("customModel").beginObject();
+							writer.name("model").value("models/machines/furnace_steel.obj");
+							writer.name("modelTexture").value("textures/models/machines/furnace_steel.png");
+							writer.name("model_x").value(0.0);
+							writer.name("model_y").value(2.0);
+							writer.name("model_z").value(1.0);
+								// Bounding box auto-calculated; use modelRenderPadding to adjust
+								writer.name("modelRenderPadding").beginObject();
+									writer.name("x").value(1.0);
+									writer.name("y").value(2.0);
+									writer.name("z").value(1.0);
+								writer.endObject();
+						writer.endObject();
 
-			writer.endArray();
+					writer.endObject();
+
+				writer.endArray();
 			writer.endObject();
 			writer.close();
 		} catch(IOException e) {
@@ -176,6 +196,10 @@ public class CustomMachineConfigJSON {
 				configuration.recipeConsumptionMult = machineObject.get("recipeConsumptionMult").getAsDouble();
 				configuration.maxPower = machineObject.get("maxPower").getAsLong();
 				if(machineObject.has("maxHeat")) configuration.maxHeat = machineObject.get("maxHeat").getAsInt();
+				if(machineObject.has("progressSound")) configuration.progressSound = machineObject.get("progressSound").getAsString();
+				if(machineObject.has("materialInCount")) configuration.materialInCount = machineObject.get("materialInCount").getAsInt();
+				if(machineObject.has("materialInCap")) configuration.materialInCap = machineObject.get("materialInCap").getAsInt();
+				if(machineObject.has("materialOut")) configuration.materialOut = machineObject.get("materialOut").getAsBoolean();
 
 				if(machineObject.has("recipeShape") && machineObject.has("recipeParts")) {
 					try {
@@ -217,7 +241,9 @@ public class CustomMachineConfigJSON {
 
 				JsonArray components = machineObject.get("components").getAsJsonArray();
 				configuration.components = new ArrayList();
-
+				// Bounding box auto-calculation: track min/max of all component positions
+				double minX = Double.POSITIVE_INFINITY, minY = Double.POSITIVE_INFINITY, minZ = Double.POSITIVE_INFINITY;
+				double maxX = Double.NEGATIVE_INFINITY, maxY = Double.NEGATIVE_INFINITY, maxZ = Double.NEGATIVE_INFINITY;
 				for(int j = 0; j < components.size(); j++) {
 					JsonObject compObject = components.get(j).getAsJsonObject();
 					ComponentDefinition compDef = new ComponentDefinition();
@@ -226,23 +252,90 @@ public class CustomMachineConfigJSON {
 					compDef.y = compObject.get("y").getAsInt();
 					compDef.z = compObject.get("z").getAsInt();
 					compDef.allowedMetas = new HashSet();
+					compDef.metaList = new ArrayList();
 					compDef.metas = compObject.get("metas").getAsJsonArray();
 					for(int k = 0; k < compDef.metas.size(); k++) {
-						compDef.allowedMetas.add(compDef.metas.get(k).getAsInt());
+						int metaVal = compDef.metas.get(k).getAsInt();
+						compDef.allowedMetas.add(metaVal);
+						compDef.metaList.add(metaVal);
 					}
 
 					configuration.components.add(compDef);
+					if(machineObject.has("customModel")) {
+						minX = Math.min(minX, compDef.x);
+						minY = Math.min(minY, compDef.y);
+						minZ = Math.min(minZ, compDef.z);
+						maxX = Math.max(maxX, compDef.x);
+						maxY = Math.max(maxY, compDef.y);
+						maxZ = Math.max(maxZ, compDef.z);
+					}
+				}
+				// Safeguard: if no components had customModel, set sane defaults
+				if(minX == Double.POSITIVE_INFINITY) { minX = -1; minY = 0; minZ = 0; maxX = 1; maxY = 2; maxZ = 1; }
+				configuration.customModel = null;
+				if(machineObject.has("customModel")) {
+					JsonObject modelObject = machineObject.get("customModel").getAsJsonObject();
+					configuration.customModel = new MachineConfiguration.CustomModel();
+					configuration.customModel.customModel = modelObject.get("model").getAsString();
+					configuration.customModel.modelTexture = modelObject.get("modelTexture").getAsString();
+					configuration.customModel.model_x = modelObject.get("model_x").getAsDouble();
+					configuration.customModel.model_y = modelObject.get("model_y").getAsDouble();
+					configuration.customModel.model_z = modelObject.get("model_z").getAsDouble();
+
+				// Read optional modelRenderPadding (simpler alternative to manual bounding box)
+					double padX = 1.0, padY = 2.0, padZ = 1.0;
+				if(modelObject.has("modelRenderPadding")) {
+						JsonObject pad = modelObject.get("modelRenderPadding").getAsJsonObject();
+						if(pad.has("x")) padX = pad.get("x").getAsDouble();
+						if(pad.has("y")) padY = pad.get("y").getAsDouble();
+						if(pad.has("z")) padZ = pad.get("z").getAsDouble();
+					}
+
+					// Auto-calculate bounding box from components + padding
+					// Backward compat: if old fields specified, they override auto-calculation
+					double bbX1 = minX - padX;
+					double bbY1 = minY - padY;
+					double bbZ1 = minZ - padZ;
+					double bbX2 = maxX + padX;
+					double bbY2 = maxY + padY;
+					double bbZ2 = maxZ + padZ;
+					if(modelObject.has("model_Bounding_x1")) bbX1 = modelObject.get("model_Bounding_x1").getAsDouble();
+					if(modelObject.has("model_Bounding_y1")) bbY1 = modelObject.get("model_Bounding_y1").getAsDouble();
+					if(modelObject.has("model_Bounding_z1")) bbZ1 = modelObject.get("model_Bounding_z1").getAsDouble();
+					if(modelObject.has("model_Bounding_x2")) bbX2 = modelObject.get("model_Bounding_x2").getAsDouble();
+					if(modelObject.has("model_Bounding_y2")) bbY2 = modelObject.get("model_Bounding_y2").getAsDouble();
+					if(modelObject.has("model_Bounding_z2")) bbZ2 = modelObject.get("model_Bounding_z2").getAsDouble();
+					configuration.customModel.model_Bounding_x1 = bbX1;
+					configuration.customModel.model_Bounding_y1 = bbY1;
+					configuration.customModel.model_Bounding_z1 = bbZ1;
+					configuration.customModel.model_Bounding_x2 = bbX2;
+					configuration.customModel.model_Bounding_y2 = bbY2;
+					configuration.customModel.model_Bounding_z2 = bbZ2;
 				}
 
-				customMachines.put(configuration.unlocalizedName, configuration);
-				niceList.add(configuration);
+				// Validate parsed configuration
+				MachineConfiguration.ValidationResult vr = configuration.validate();
+				if(!vr.valid) {
+					logger.error("Custom machine '" + configuration.unlocalizedName + "' has validation errors:");
+					for(String err : vr.errors) logger.error("  ERR: " + err);
+					continue;
+				}
+				if(!vr.warnings.isEmpty()) {
+					for(String warn : vr.warnings)
+						logger.warn("Custom machine '" + configuration.unlocalizedName + "': " + warn);
+				}
+
+				if(!(customMachines.size()>0 && customMachines.containsKey(machineObject.get("unlocalizedName").getAsString()))){
+					customMachines.put(configuration.unlocalizedName, configuration);
+					niceList.add(configuration);
+				}
+
 			}
 
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-
 	public static class MachineConfiguration {
 
 		/** The name of the recipe set that this machine can handle */
@@ -267,6 +360,10 @@ public class CustomMachineConfigJSON {
 		public double recipeConsumptionMult = 1D;
 		public long maxPower;
 		public int maxHeat;
+		public String progressSound;
+		public int materialInCount;
+		public int materialInCap;
+		public boolean materialOut;
 
 
 		/** Definitions of blocks that this machine is composed of */
@@ -275,10 +372,68 @@ public class CustomMachineConfigJSON {
 		public static class ComponentDefinition {
 			public Block block;
 			public Set<Integer> allowedMetas;
+			public List<Integer> metaList;
 			public JsonArray metas;
 			public int x;
 			public int y;
 			public int z;
+		}
+		public CustomModel customModel;
+		public static class CustomModel {
+			public String customModel;
+			public String modelTexture;
+			public double model_x;
+			public double model_y;
+			public double model_z;
+			public double model_Bounding_x1;
+			public double model_Bounding_y1;
+			public double model_Bounding_z1;
+			public double model_Bounding_x2;
+			public double model_Bounding_y2;
+			public double model_Bounding_z2;
+
+		}
+
+		/** Validates this machine configuration and returns any errors/warnings found */
+		public ValidationResult validate() {
+			List<String> errors = new ArrayList<String>();
+			List<String> warnings = new ArrayList<String>();
+
+			if(recipeKey == null || recipeKey.isEmpty()) errors.add("recipeKey is required");
+			if(unlocalizedName == null || unlocalizedName.isEmpty()) errors.add("unlocalizedName is required");
+			if(maxPower <= 0) errors.add("maxPower must be > 0, got " + maxPower);
+
+			if(components == null || components.isEmpty()) {
+				errors.add("At least one component is required");
+			} else {
+				for(int i = 0; i < components.size(); i++) {
+					ComponentDefinition c = components.get(i);
+					if(c.block == null) errors.add("Component [" + i + "] has null block");
+					if(c.allowedMetas == null || c.allowedMetas.isEmpty())
+						warnings.add("Component [" + i + "] has no allowed metas");
+				}
+			}
+
+			if(customModel != null) {
+				if(customModel.customModel == null || customModel.customModel.isEmpty())
+					errors.add("customModel.model is required when customModel section is present");
+				if(customModel.modelTexture == null || customModel.modelTexture.isEmpty())
+					errors.add("customModel.modelTexture is required when customModel section is present");
+			}
+
+			return new ValidationResult(errors.isEmpty(), errors, warnings);
+		}
+
+		public static class ValidationResult {
+			public final boolean valid;
+			public final List<String> errors;
+			public final List<String> warnings;
+
+			public ValidationResult(boolean valid, List<String> errors, List<String> warnings) {
+				this.valid = valid;
+				this.errors = errors;
+				this.warnings = warnings;
+			}
 		}
 	}
 }

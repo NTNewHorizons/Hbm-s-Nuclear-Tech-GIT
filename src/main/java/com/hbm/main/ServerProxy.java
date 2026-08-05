@@ -55,6 +55,8 @@ public class ServerProxy {
 	public void registerMissileItems() {
 		MissilePart.registerAllPartsServer();
 	}
+	public void registerCustomMachineModels() { }
+	public void registerCustomMachineSounds() { }
 
 	/** Retired in favor of the version that uses keepAlive */
 	@Deprecated public AudioWrapper getLoopedSound(String sound, float x, float y, float z, float volume, float range, float pitch) { return null; }
@@ -76,7 +78,7 @@ public class ServerProxy {
 	public EntityPlayer me() {
 		return null;
 	}
-	
+
 	public boolean advancedTooltips() { return false; }
 
 	public boolean isVanished(Entity e) {

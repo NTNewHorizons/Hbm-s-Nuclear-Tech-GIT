@@ -17,6 +17,8 @@ import com.hbm.blocks.machine.MachineFan.TileEntityFan;
 import com.hbm.blocks.machine.PistonInserter.TileEntityPistonInserter;
 import com.hbm.blocks.machine.WatzPump.TileEntityWatzPump;
 import com.hbm.blocks.network.FluidPump.TileEntityFluidPump;
+import com.hbm.config.CustomMachineConfigJSON;
+import com.hbm.config.MachineSoundValidator;
 import com.hbm.config.GeneralConfig;
 import com.hbm.dim.CelestialBody;
 import com.hbm.dim.trait.CBT_Atmosphere;
@@ -322,6 +324,7 @@ public class ClientProxy extends ServerProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMachineRadarNT.class, new RenderRadar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMachineRadarLarge.class, new RenderRadarLarge());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMachineRadarScreen.class, new RenderRadarScreen());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMachineSatLink.class, new RenderSatLink());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMachineSeleniumEngine.class, new RenderSelenium());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityReactorResearch.class, new RenderSmallReactor());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTesla.class, new RenderTesla());
@@ -753,6 +756,7 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityRagingVortex.class, new RenderBlackHole());
 		RenderingRegistry.registerEntityRenderingHandler(EntityQuasar.class, new RenderQuasar());
 		RenderingRegistry.registerEntityRenderingHandler(EntityDeathBlast.class, new RenderDeathBlast());
+		RenderingRegistry.registerEntityRenderingHandler(EntityOrbitalLaser.class, new RenderOrbitalLaser());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpear.class, new RenderSpear());
 		RenderingRegistry.registerEntityRenderingHandler(EntityNukeTorex.class, new RenderTorex());
 		//minecarts
@@ -920,7 +924,14 @@ public class ClientProxy extends ServerProxy {
 
 		MinecraftForgeClient.registerItemRenderer(ModItems.missile_custom, new ItemRenderMissile());
 	}
-
+	@Override
+	public void registerCustomMachineModels() {
+		MachineModelRegistry.registerModelPaths();
+	}
+	@Override
+	public void registerCustomMachineSounds() {
+		MachineSoundValidator.validateSounds();
+	}
 	//mk3, only use this one
 	@Override
 	public void effectNT(NBTTagCompound data) {

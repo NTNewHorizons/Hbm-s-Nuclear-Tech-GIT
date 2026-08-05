@@ -1,7 +1,10 @@
 package com.hbm.blocks.machine.pile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import com.hbm.blocks.ILookOverlay;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.MachinePWRController;
 import com.hbm.lib.RefStrings;
@@ -10,6 +13,7 @@ import com.hbm.render.block.ct.CTStitchReceiver;
 import com.hbm.render.block.ct.IBlockCT;
 import com.hbm.tileentity.machine.pile.TileEntityPileBaseMK2;
 import com.hbm.tileentity.machine.pile.TileEntityPileCore;
+import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.block.IToolable;
 import cpw.mods.fml.relauncher.Side;
@@ -24,9 +28,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockPile extends BlockContainer implements IBlockCT, IToolable {
+public class BlockPile extends BlockContainer implements IBlockCT, IToolable, ILookOverlay {
 
 	/** Blank dummy, the pile is mostly composed of that */
 	public static final int META_DUMMY		= 0;
@@ -52,6 +57,7 @@ public class BlockPile extends BlockContainer implements IBlockCT, IToolable {
 	@SideOnly(Side.CLIENT) public CTStitchReceiver recChanIn;
 	@SideOnly(Side.CLIENT) public CTStitchReceiver recChanOut;
 	@SideOnly(Side.CLIENT) public CTStitchReceiver recCon;
+	@SideOnly(Side.CLIENT) public CTStitchReceiver recCore;
 	
 	@SideOnly(Side.CLIENT) protected IIcon iconTop;
 
@@ -76,6 +82,7 @@ public class BlockPile extends BlockContainer implements IBlockCT, IToolable {
 		this.recChanIn = IBlockCT.primeReceiver(reg, RefStrings.MODID + ":pile_block_input", this.blockIcon);
 		this.recChanOut = IBlockCT.primeReceiver(reg, RefStrings.MODID + ":pile_block_output", this.blockIcon);
 		this.recCon = IBlockCT.primeReceiver(reg, RefStrings.MODID + ":pile_block_control_top", this.iconTop);
+		this.recCore = IBlockCT.primeReceiver(reg, RefStrings.MODID + ":pile_block_core", this.iconTop);
 	}
 
 	@Override
@@ -84,25 +91,28 @@ public class BlockPile extends BlockContainer implements IBlockCT, IToolable {
 		if(side == 0 || side == 1) return meta == META_CONTROL ? recCon.fragCache : recTop.fragCache;
 		if(meta == META_FUEL_IN || meta == META_AIR_IN) return recChanIn.fragCache;
 		if(meta == META_FUEL_OUT || meta == META_AIR_OUT) return recChanOut.fragCache;
+		if(meta == META_CORE) return recCore.fragCache;
 		return rec.fragCache;
 	}
 
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
 		
-		TileEntity tile = world.getTileEntity(x, y, z);
-		
-		if(tile instanceof TileEntityPileBaseMK2) {
-			TileEntityPileBaseMK2 pile = (TileEntityPileBaseMK2) tile;
-			world.removeTileEntity(x, y, z);
-			if(pile.coreY >= 0) world.setBlock(x, y, z, ModBlocks.pile_brick);
+		if(!TileEntityPileCore.meltingDown) {
+			TileEntity tile = world.getTileEntity(x, y, z);
 			
-			TileEntityPileCore core = pile.getCore();
-			if(core != null && !core.isInvalid()) core.destroy();
-			
-		} else {
-			world.removeTileEntity(x, y, z);
-			world.setBlock(x, y, z, ModBlocks.pile_brick);
+			if(tile instanceof TileEntityPileBaseMK2) {
+				TileEntityPileBaseMK2 pile = (TileEntityPileBaseMK2) tile;
+				world.removeTileEntity(x, y, z);
+				if(pile.coreY >= 0) world.setBlock(x, y, z, ModBlocks.pile_brick);
+	
+				TileEntityPileCore core = pile.getCore();
+				if(core != null && !core.isInvalid()) core.destroy();
+				
+			} else {
+				world.removeTileEntity(x, y, z);
+				world.setBlock(x, y, z, ModBlocks.pile_brick);
+			}
 		}
 		super.breakBlock(world, x, y, z, block, meta);
 	}
@@ -120,6 +130,7 @@ public class BlockPile extends BlockContainer implements IBlockCT, IToolable {
 			}
 			
 			if(tile instanceof TileEntityPileBaseMK2) {
+				if(world.isRemote) return true;
 				TileEntityPileCore core = ((TileEntityPileBaseMK2) tile).getCore();
 				if(core != null) {
 					ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
@@ -131,5 +142,26 @@ public class BlockPile extends BlockContainer implements IBlockCT, IToolable {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public void printHook(Pre event, World world, int x, int y, int z) {
+		int meta = world.getBlockMetadata(x, y, z);
+		List<String> text = new ArrayList();
+		if(meta == META_FUEL_IN) text.add("Fuel Loading Port");
+		if(meta == META_FUEL_OUT) text.add("Fuel Ejection Port");
+		if(meta == META_AIR_IN) text.add("Air Inlet");
+		if(meta == META_AIR_OUT) text.add("Air Outlet");
+		if(meta == META_CONTROL) text.add("Control Rod Channel");
+		
+		if(meta == META_CORE) {
+			TileEntity tile = world.getTileEntity(x, y, z);
+			if(tile instanceof TileEntityPileCore) {
+				TileEntityPileCore core = (TileEntityPileCore) tile;
+				text.add("Max Temp: " + (int) Math.round(core.highestHeat) + " / " + core.MAX_HEAT + "°C");
+			}
+		}
+		
+		if(!text.isEmpty()) ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 }
