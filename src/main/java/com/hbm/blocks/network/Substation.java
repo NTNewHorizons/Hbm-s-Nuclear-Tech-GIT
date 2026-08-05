@@ -5,6 +5,7 @@ import com.hbm.blocks.ITooltipProvider;
 import com.hbm.tileentity.TileEntityProxyConductor;
 import com.hbm.tileentity.network.TileEntityPylonBase;
 import com.hbm.tileentity.network.TileEntitySubstation;
+import api.hbm.energymk2.CableProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,8 +19,15 @@ import java.util.List;
 
 public class Substation extends BlockDummyable implements ITooltipProvider {
 
-	public Substation(Material mat) {
+	private final CableProperties properties;
+
+	public Substation(Material mat, CableProperties properties) {
 		super(mat);
+		this.properties = properties;
+	}
+
+	public CableProperties getProperties() {
+		return properties;
 	}
 
 	@Override
@@ -38,6 +46,7 @@ public class Substation extends BlockDummyable implements ITooltipProvider {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Quadruple");
 		list.add(EnumChatFormatting.GOLD + "Connection Range: " + EnumChatFormatting.YELLOW + "20m");
+		PylonBase.addVoltageInfo(properties, list);
 	}
 
 	@Override

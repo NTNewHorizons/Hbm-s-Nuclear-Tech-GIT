@@ -7405,6 +7405,7 @@ hbm.voltage.generic=Voltage
 hbm.voltage.unconfigured=unconfigured
 hbm.voltage.amperageLimit=Amperage limit: %s HE/t
 hbm.voltage.loss=Loss: %s HE per cable
+hbm.voltage.pylonLoss=Loss: %s HE per block, decreasing with distance between pylons
 hbm.voltage.wireCutterHint=Screwdriver: click a cable arm to cut it
 hbm.voltage.coreHint=Click an empty core face to add/remove an open wire end
 hbm.voltage.transformerInput=Input: %s, %s HE/t

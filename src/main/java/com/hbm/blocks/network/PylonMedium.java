@@ -4,6 +4,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ITooltipProvider;
 import com.hbm.tileentity.network.TileEntityPylonBase;
 import com.hbm.tileentity.network.TileEntityPylonMedium;
+import api.hbm.energymk2.CableProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,8 +17,15 @@ import java.util.List;
 
 public class PylonMedium extends BlockDummyable implements ITooltipProvider {
 
-	public PylonMedium(Material mat) {
+	private final CableProperties properties;
+
+	public PylonMedium(Material mat, CableProperties properties) {
 		super(mat);
+		this.properties = properties;
+	}
+
+	public CableProperties getProperties() {
+		return properties;
 	}
 
 	@Override
@@ -31,6 +39,7 @@ public class PylonMedium extends BlockDummyable implements ITooltipProvider {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Triple");
 		list.add(EnumChatFormatting.GOLD + "Connection Range: " + EnumChatFormatting.YELLOW + "45m");
+		PylonBase.addVoltageInfo(properties, list);
 	}
 
 	@Override

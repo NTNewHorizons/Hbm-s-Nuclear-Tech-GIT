@@ -47,6 +47,11 @@ public class TileEntityVoltageCable extends TileEntityCableBaseNT implements IVo
 		if(neighbour instanceof TileEntityVoltageTransformer) {
 			return ((TileEntityVoltageTransformer) neighbour).canConnectCable(direction.getOpposite(), getCableProperties().voltage);
 		}
+		if(neighbour instanceof TileEntityPylonBase) {
+			TileEntityPylonBase pylon = (TileEntityPylonBase) neighbour;
+			return pylon.canConnect(direction.getOpposite())
+					&& pylon.getCableProperties().voltage == getCableProperties().voltage;
+		}
 		if(neighbour instanceof TileEntityCableBaseNT) return false;
 		return true;
 	}
@@ -203,6 +208,12 @@ public class TileEntityVoltageCable extends TileEntityCableBaseNT implements IVo
 			} else if(neighbour instanceof TileEntityVoltageTransformer) {
 				TileEntityVoltageTransformer transformer = (TileEntityVoltageTransformer) neighbour;
 				if(transformer.canConnectCable(direction.getOpposite(), getCableProperties().voltage)) {
+					connections.add(new DirPos(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction));
+				}
+			} else if(neighbour instanceof TileEntityPylonBase) {
+				TileEntityPylonBase pylon = (TileEntityPylonBase) neighbour;
+				if(pylon.canConnect(direction.getOpposite())
+						&& pylon.getCableProperties().voltage == getCableProperties().voltage) {
 					connections.add(new DirPos(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction));
 				}
 			}

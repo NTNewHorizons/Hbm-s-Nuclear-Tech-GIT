@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.hbm.tileentity.network.TileEntityPylonBase;
+import com.hbm.tileentity.network.TileEntityVoltageCable;
 import com.hbm.uninos.NodeNet;
 import com.hbm.util.Tuple.Pair;
 
@@ -318,9 +320,10 @@ public class PowerNetMK2 extends NodeNet<IEnergyReceiverMK2, IEnergyProviderMK2,
 		long lossBeforeCable = 0L;
 		long totalLoss = 0L;
 		long maximumPacket = sourceAvailable;
-		for(IVoltageCableMK2 cable : route.cables) {
+		for(int i = 0; i < route.cables.size(); i++) {
+			IVoltageCableMK2 cable = route.cables.get(i);
 			maximumPacket = Math.min(maximumPacket, addClamped(cable.getRemainingTransfer(), lossBeforeCable));
-			totalLoss = addClamped(totalLoss, cable.getCableProperties().lossPerBlock);
+			totalLoss = addClamped(totalLoss, getRouteStepLoss(route.cables, i));
 			lossBeforeCable = totalLoss;
 		}
 
@@ -328,9 +331,10 @@ public class PowerNetMK2 extends NodeNet<IEnergyReceiverMK2, IEnergyProviderMK2,
 		if(packet <= 0) return;
 
 		long throughCable = packet;
-		for(IVoltageCableMK2 cable : route.cables) {
+		for(int i = 0; i < route.cables.size(); i++) {
+			IVoltageCableMK2 cable = route.cables.get(i);
 			throughCable = cable.useTransferCapacity(throughCable);
-			throughCable = Math.max(0L, throughCable - cable.getCableProperties().lossPerBlock);
+			throughCable = Math.max(0L, throughCable - getRouteStepLoss(route.cables, i));
 		}
 
 		provider.usePower(packet);
@@ -342,6 +346,18 @@ public class PowerNetMK2 extends NodeNet<IEnergyReceiverMK2, IEnergyProviderMK2,
 
 	private long addClamped(long first, long second) {
 		return first > Long.MAX_VALUE - second ? Long.MAX_VALUE : first + second;
+	}
+
+	/** Loss paid to get past the element at index i. Regular cables lose their per-block loss, pylon spans lose less per block the farther apart the pylons are. */
+	private long getRouteStepLoss(List<IVoltageCableMK2> cables, int i) {
+		IVoltageCableMK2 cable = cables.get(i);
+		if(cable instanceof TileEntityPylonBase) {
+			if(i + 1 >= cables.size()) return 0L;
+			IVoltageCableMK2 next = cables.get(i + 1);
+			if(!(next instanceof TileEntityPylonBase)) return 0L;
+			return ((TileEntityPylonBase) cable).getSpanLoss(next);
+		}
+		return cable.getCableProperties().lossPerBlock;
 	}
 
 	private World getNetworkWorld() {
@@ -357,7 +373,7 @@ public class PowerNetMK2 extends NodeNet<IEnergyReceiverMK2, IEnergyProviderMK2,
 	private boolean hasVoltageCable(World world) {
 		for(PowerNode node : this.links) {
 			for(BlockPos pos : node.positions) {
-				if(world.getTileEntity(pos.getX(), pos.getY(), pos.getZ()) instanceof IVoltageCableMK2) return true;
+				if(world.getTileEntity(pos.getX(), pos.getY(), pos.getZ()) instanceof TileEntityVoltageCable) return true;
 			}
 		}
 		return false;
