@@ -9,6 +9,7 @@ import api.hbm.energymk2.Nodespace;
 import api.hbm.energymk2.Nodespace.PowerNode;
 import com.hbm.blocks.network.BlockVoltageCable;
 import com.hbm.lib.Library;
+import com.hbm.tileentity.TileEntityProxyBase;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
@@ -52,6 +53,14 @@ public class TileEntityVoltageCable extends TileEntityCableBaseNT implements IVo
 			TileEntityPylonBase pylon = (TileEntityPylonBase) neighbour;
 			return pylon.canConnect(direction.getOpposite())
 					&& pylon.getCableProperties().voltage == getCableProperties().voltage;
+		}
+		if(neighbour instanceof TileEntityProxyBase) {
+			TileEntity core = ((TileEntityProxyBase) neighbour).getTE();
+			if(core instanceof TileEntityPylonBase) {
+				TileEntityPylonBase pylon = (TileEntityPylonBase) core;
+				return pylon.canConnect(direction.getOpposite())
+						&& pylon.getCableProperties().voltage == getCableProperties().voltage;
+			}
 		}
 		if(neighbour instanceof TileEntityCableBaseNT) return false;
 		return true;
@@ -220,6 +229,15 @@ public class TileEntityVoltageCable extends TileEntityCableBaseNT implements IVo
 				if(pylon.canConnect(direction.getOpposite())
 						&& pylon.getCableProperties().voltage == getCableProperties().voltage) {
 					connections.add(new DirPos(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction));
+				}
+			} else if(neighbour instanceof TileEntityProxyBase) {
+				TileEntity core = ((TileEntityProxyBase) neighbour).getTE();
+				if(core instanceof TileEntityPylonBase) {
+					TileEntityPylonBase pylon = (TileEntityPylonBase) core;
+					if(pylon.canConnect(direction.getOpposite())
+							&& pylon.getCableProperties().voltage == getCableProperties().voltage) {
+						connections.add(new DirPos(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction));
+					}
 				}
 			}
 		}

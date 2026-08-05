@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.hbm.tileentity.network.TileEntityPylonBase;
 import com.hbm.tileentity.network.TileEntityVoltageCable;
+import com.hbm.tileentity.TileEntityProxyBase;
 import com.hbm.uninos.NodeNet;
 import com.hbm.util.Tuple.Pair;
 
@@ -450,6 +451,10 @@ public class PowerNetMK2 extends NodeNet<IEnergyReceiverMK2, IEnergyProviderMK2,
 
 	private boolean touchesEnabledCableFace(World world, BlockPos cablePosition, List<DirPos> subscribedPorts, IEnergyHandlerMK2 endpoint) {
 		TileEntity tile = world.getTileEntity(cablePosition.getX(), cablePosition.getY(), cablePosition.getZ());
+		if(tile instanceof TileEntityProxyBase) {
+			TileEntity core = ((TileEntityProxyBase) tile).getTE();
+			if(core instanceof TileEntityPylonBase) tile = core;
+		}
 		if(!(tile instanceof IVoltageCableMK2)) return false;
 		IVoltageCableMK2 cable = (IVoltageCableMK2) tile;
 
