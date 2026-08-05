@@ -393,7 +393,8 @@ public class MainRegistry {
 	@EventHandler
 	public static void load(FMLInitializationEvent event) {
 
-		RodRecipes.registerInit();
+ 		RodRecipes.registerInit();
+ 		MinecraftForge.EVENT_BUS.register(new api.hbm.energymk2.VoltageTooltipHandler());
 
 		statLegendary = new StatBasic("stat.ntmLegendary", new ChatComponentTranslation("stat.ntmLegendary")).registerStat();
 		statMines = new StatBasic("stat.ntmMines", new ChatComponentTranslation("stat.ntmMines")).registerStat();

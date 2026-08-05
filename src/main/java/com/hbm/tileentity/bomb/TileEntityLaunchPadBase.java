@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import api.hbm.energymk2.VoltageCheckedCharging;
 import com.hbm.handler.CompatHandler;
 import com.hbm.tileentity.IFluidCopiable;
 import cpw.mods.fml.common.Optional;
@@ -29,7 +30,6 @@ import com.hbm.inventory.gui.GUILaunchPadLarge;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemMissile;
 import com.hbm.items.weapon.ItemMissile.MissileFuel;
-import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.IRadarCommandReceiver;
@@ -161,7 +161,7 @@ public abstract class TileEntityLaunchPadBase extends TileEntityMachineBase impl
 			
 			this.prevRedstonePower = this.redstonePower;
 			
-			this.power = Library.chargeTEFromItems(slots, 2, power, maxPower);
+			this.power = VoltageCheckedCharging.chargeTEFromItems(this, slots, 2, power, maxPower);
 			tanks[0].loadTank(3, 4, slots);
 			tanks[1].loadTank(5, 6, slots);
 			

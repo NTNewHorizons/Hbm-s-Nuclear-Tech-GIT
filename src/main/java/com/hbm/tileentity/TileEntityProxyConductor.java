@@ -1,8 +1,8 @@
 package com.hbm.tileentity;
 
-import api.hbm.energymk2.IEnergyConnectorMK2;
+import api.hbm.energymk2.IEnergyConductorMK2;
 
-public class TileEntityProxyConductor extends TileEntityProxyBase implements IEnergyConnectorMK2 {
+public class TileEntityProxyConductor extends TileEntityProxyBase implements IEnergyConductorMK2 {
 
 	@Override
 	public boolean canUpdate() {

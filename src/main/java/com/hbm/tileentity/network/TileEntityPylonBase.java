@@ -3,14 +3,23 @@ package com.hbm.tileentity.network;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hbm.blocks.network.ConnectorRedWire;
+import com.hbm.blocks.network.ConnectorRedWireSuper;
+import com.hbm.blocks.network.PylonLarge;
+import com.hbm.blocks.network.PylonMedium;
+import com.hbm.blocks.network.PylonRedWire;
+import com.hbm.blocks.network.Substation;
 import com.hbm.util.ColorUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
+import api.hbm.energymk2.CableProperties;
+import api.hbm.energymk2.IVoltageCableMK2;
 import api.hbm.energymk2.Nodespace;
 import api.hbm.energymk2.Nodespace.PowerNode;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -22,10 +31,13 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
+public abstract class TileEntityPylonBase extends TileEntityCableBaseNT implements IVoltageCableMK2 {
 
 	protected List<int[]> connected = new ArrayList<>();
 	public int color;
+
+	private long transferredThisTick;
+	private boolean exploded;
 
 	public static int canConnect(TileEntityPylonBase first, TileEntityPylonBase second) {
 
@@ -47,6 +59,54 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 				);
 
 		return len >= delta.lengthVector() ? 0 : 3;
+	}
+
+	@Override
+	public CableProperties getCableProperties() {
+		Block block = this.getBlockType();
+		if(block instanceof PylonRedWire) return ((PylonRedWire) block).getProperties();
+		if(block instanceof PylonMedium) return ((PylonMedium) block).getProperties();
+		if(block instanceof PylonLarge) return ((PylonLarge) block).getProperties();
+		if(block instanceof Substation) return ((Substation) block).getProperties();
+		if(block instanceof ConnectorRedWireSuper) return ((ConnectorRedWireSuper) block).getProperties();
+		if(block instanceof ConnectorRedWire) return ((ConnectorRedWire) block).getProperties();
+		throw new IllegalStateException("Pylon tile placed without a pylon block");
+	}
+
+	@Override
+	public void beginPowerTick() {
+		transferredThisTick = 0L;
+	}
+
+	@Override
+	public long getRemainingTransfer() {
+		return Math.max(0L, getCableProperties().maxEnergyPerTick - transferredThisTick);
+	}
+
+	@Override
+	public long useTransferCapacity(long amount) {
+		long used = Math.min(Math.max(0L, amount), getRemainingTransfer());
+		transferredThisTick += used;
+		return used;
+	}
+
+	@Override
+	public void explodeForWrongVoltage(long suppliedVoltage) {
+		if(exploded || worldObj == null || worldObj.isRemote) return;
+		exploded = true;
+		worldObj.createExplosion(null, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 2.0F, true);
+	}
+
+	/** Loss incurred by the wire span leading to the next pylon in a route. Closer pylons lose more per block, longer spans lose less per block. */
+	public long getSpanLoss(IVoltageCableMK2 next) {
+		if(!(next instanceof TileEntity)) return 0L;
+		TileEntity te = (TileEntity) next;
+		double dx = te.xCoord - xCoord;
+		double dy = te.yCoord - yCoord;
+		double dz = te.zCoord - zCoord;
+		double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+		if(distance <= 0D) return 0L;
+		return Math.max(1L, Math.round(getCableProperties().lossPerBlock * Math.sqrt(distance)));
 	}
 
 	public boolean setColor(ItemStack stack) {

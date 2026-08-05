@@ -2,6 +2,7 @@ package com.hbm.blocks.network;
 
 import com.hbm.lib.Library;
 import com.hbm.tileentity.network.TileEntityConnector;
+import api.hbm.energymk2.CableProperties;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,8 +17,15 @@ import java.util.List;
 
 public class ConnectorRedWire extends PylonBase {
 
-	public ConnectorRedWire(Material mat) {
+	private final CableProperties properties;
+
+	public ConnectorRedWire(Material mat, CableProperties properties) {
 		super(mat);
+		this.properties = properties;
+	}
+
+	public CableProperties getProperties() {
+		return properties;
 	}
 
 	@Override
@@ -63,5 +71,6 @@ public class ConnectorRedWire extends PylonBase {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Single");
 		list.add(EnumChatFormatting.GOLD + "Connection Range: " + EnumChatFormatting.YELLOW + "10m");
+		addVoltageInfo(properties, list);
 	}
 }

@@ -22,7 +22,9 @@ import com.hbm.util.DamageResistanceHandler.DamageClass;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
+import api.hbm.energymk2.BatteryVoltageRegistry;
 import api.hbm.energymk2.IBatteryItem;
+import api.hbm.energymk2.VoltageTier;
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
 import api.hbm.tile.IInfoProviderEC;
@@ -238,6 +240,24 @@ public class TileEntityBatterySocket extends TileEntityBatteryBase implements IR
 	public void setPower(long power) {
 		if(slots[0] == null || !(slots[0].getItem() instanceof IBatteryItem)) return;
 		((IBatteryItem) slots[0].getItem()).setCharge(slots[0], power);
+	}
+
+	@Override
+	public long getReceiverVoltage() {
+		return resolveBatteryVoltage();
+	}
+
+	@Override
+	public long getProviderVoltage() {
+		return resolveBatteryVoltage();
+	}
+
+	private long resolveBatteryVoltage() {
+		if(slots[0] != null && slots[0].getItem() instanceof IBatteryItem) {
+			long batteryVoltage = BatteryVoltageRegistry.getVoltage(slots[0], VoltageTier.DEFAULT);
+			if(VoltageTier.isConfigured(batteryVoltage)) return batteryVoltage;
+		}
+		return this.getVoltage();
 	}
 
 	public static long powerFromStack(ItemStack stack) {

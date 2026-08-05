@@ -4,6 +4,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ITooltipProvider;
 import com.hbm.tileentity.network.TileEntityPylonBase;
 import com.hbm.tileentity.network.TileEntityPylonLarge;
+import api.hbm.energymk2.CableProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,8 +19,15 @@ import java.util.List;
 
 public class PylonLarge extends BlockDummyable implements ITooltipProvider {
 
-	public PylonLarge(Material mat) {
+	private final CableProperties properties;
+
+	public PylonLarge(Material mat, CableProperties properties) {
 		super(mat);
+		this.properties = properties;
+	}
+
+	public CableProperties getProperties() {
+		return properties;
 	}
 
 	@Override
@@ -35,6 +43,7 @@ public class PylonLarge extends BlockDummyable implements ITooltipProvider {
 		list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Quadruple");
 		list.add(EnumChatFormatting.GOLD + "Connection Range: " + EnumChatFormatting.YELLOW + "100m");
 		list.add(EnumChatFormatting.GOLD + "This pylon requires a substation!");
+		PylonBase.addVoltageInfo(properties, list);
 	}
 
 	@Override

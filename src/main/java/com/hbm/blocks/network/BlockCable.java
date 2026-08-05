@@ -72,7 +72,7 @@ public class BlockCable extends BlockContainer {
 		setBlockBounds(posX, negX, posY, negY, posZ, negZ);
 	}
 
-	private void setBlockBounds(boolean posX, boolean negX, boolean posY, boolean negY, boolean posZ, boolean negZ) {
+	protected void setBlockBounds(boolean posX, boolean negX, boolean posY, boolean negY, boolean posZ, boolean negZ) {
 
 		float pixel = 0.0625F;
 		float min = pixel * 5.5F;

@@ -13,13 +13,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 /** If it sends energy, use this */
 public interface IEnergyProviderMK2 extends IEnergyHandlerMK2 {
 
+	public default long getProviderPower() { return this.getPower(); }
+	public default void setProviderPower(long power) { this.setPower(power); }
+	public default long getProviderMaxPower() { return this.getMaxPower(); }
+	public default long getProviderVoltage() { return this.getVoltage(); }
+
 	/** Uses up available power, default implementation has no sanity checking, make sure that the requested power is lequal to the current power */
 	public default void usePower(long power) {
-		this.setPower(this.getPower() - power);
+		this.setProviderPower(this.getProviderPower() - power);
 	}
 
 	public default long getProviderSpeed() {
-		return this.getMaxPower();
+		return this.getProviderMaxPower();
 	}
 
 	public default void tryProvide(World world, int x, int y, int z, ForgeDirection dir) {
@@ -34,7 +39,7 @@ public interface IEnergyProviderMK2 extends IEnergyHandlerMK2 {
 				PowerNode node = Nodespace.getNode(world, x, y, z);
 
 				if(node != null && node.net != null) {
-					node.net.addProvider(this);
+					node.net.addProviderAt(this, x, y, z, dir.getOpposite());
 					red = true;
 				}
 			}
@@ -43,10 +48,10 @@ public interface IEnergyProviderMK2 extends IEnergyHandlerMK2 {
 		if(te instanceof IEnergyReceiverMK2 && te != this) {
 			IEnergyReceiverMK2 rec = (IEnergyReceiverMK2) te;
 			if(rec.canConnect(dir.getOpposite()) && rec.allowDirectProvision()) {
-				long provides = Math.min(this.getPower(), this.getProviderSpeed());
-				long receives = Math.min(rec.getMaxPower() - rec.getPower(), rec.getReceiverSpeed());
+				long provides = Math.min(this.getProviderPower(), this.getProviderSpeed());
+				long receives = Math.min(rec.getReceiverMaxPower() - rec.getReceiverPower(), rec.getReceiverSpeed());
 				long toTransfer = Math.min(provides, receives);
-				toTransfer -= rec.transferPower(toTransfer);
+				toTransfer -= rec.transferPowerAtVoltage(toTransfer, this.getProviderVoltage());
 				this.usePower(toTransfer);
 			}
 		}

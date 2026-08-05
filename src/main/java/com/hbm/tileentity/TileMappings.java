@@ -496,6 +496,8 @@ public class TileMappings {
 
 	private static void putNetwork() {
 		put(TileEntityCableBaseNT.class, "tileentity_cable", "tileentity_wirecoated");
+		put(TileEntityVoltageCable.class, "tileentity_voltage_cable");
+		put(TileEntityVoltageTransformer.class, "tileentity_voltage_transformer");
 		put(TileEntityCablePaintable.class, "tileentity_cable_paintable");
 		put(TileEntityCableGauge.class, "tileentity_cable_gauge");
 		put(TileEntityCableSwitch.class, "tileentity_cable_switch");
