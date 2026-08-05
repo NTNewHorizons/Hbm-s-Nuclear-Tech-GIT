@@ -6,6 +6,7 @@ import api.hbm.energymk2.IEnergyProviderMK2;
 import api.hbm.energymk2.IEnergyReceiverMK2;
 import api.hbm.energymk2.Nodespace;
 import api.hbm.energymk2.Nodespace.PowerNode;
+import api.hbm.energymk2.VoltageCheckedCharging;
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
 import api.hbm.tile.IInfoProviderEC;
@@ -183,7 +184,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 
 			long prevPower = this.power;
 
-			power = Library.chargeItemsFromTE(slots, 1, power, getMaxPower());
+			power = VoltageCheckedCharging.chargeItemsFromTE(this, slots, 1, power, getMaxPower());
 
 			// In buffer mode, becomes a cable block and provides power to itself
 			// otherwise, acts like a regular power providing/accepting machine
@@ -228,7 +229,7 @@ public class TileEntityMachineBattery extends TileEntityMachineBase implements I
 				this.markDirty();
 			this.lastRedstone = comp;
 
-			power = Library.chargeTEFromItems(slots, 0, power, getMaxPower());
+			power = VoltageCheckedCharging.chargeTEFromItems(this, slots, 0, power, getMaxPower());
 
 			long avg = (power + prevPower) / 2;
 			this.delta = avg - this.log[0];

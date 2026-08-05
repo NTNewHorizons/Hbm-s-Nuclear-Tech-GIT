@@ -6,6 +6,7 @@ import com.hbm.util.fauxpointtwelve.DirPos;
 
 import api.hbm.energymk2.Nodespace;
 import api.hbm.energymk2.Nodespace.PowerNode;
+import api.hbm.energymk2.VoltageCheckedCharging;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.tileentity.TileEntity;
@@ -48,7 +49,7 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 			
 			long prevPower = this.power;
 			
-			power = Library.chargeItemsFromTE(slots, 1, power, getMaxPower());
+			power = VoltageCheckedCharging.chargeItemsFromTE(this, slots, 1, power, getMaxPower());
 			
 			if(mode == mode_output || mode == mode_buffer) {
 				this.tryProvide(worldObj, xCoord, yCoord - 1, zCoord, ForgeDirection.DOWN);
@@ -67,7 +68,7 @@ public class TileEntityMachineFENSU extends TileEntityMachineBattery {
 				if(node != null && node.hasValidNet()) node.net.removeReceiver(this);
 			}
 			
-			power = Library.chargeTEFromItems(slots, 0, power, getMaxPower());
+			power = VoltageCheckedCharging.chargeTEFromItems(this, slots, 0, power, getMaxPower());
 
 			long avg = (power / 2 + prevPower / 2);
 			this.delta = avg - this.log[0];

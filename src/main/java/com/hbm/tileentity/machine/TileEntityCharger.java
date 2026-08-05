@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import api.hbm.energymk2.BatteryVoltageRegistry;
 import api.hbm.energymk2.IBatteryItem;
 import api.hbm.energymk2.IEnergyReceiverMK2;
+import api.hbm.energymk2.VoltageTier;
 
 import com.hbm.main.NTMSounds;
 import com.hbm.tileentity.IBufPacketReceiver;
