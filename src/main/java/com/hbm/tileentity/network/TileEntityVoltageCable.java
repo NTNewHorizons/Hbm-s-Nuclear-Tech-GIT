@@ -26,6 +26,7 @@ public class TileEntityVoltageCable extends TileEntityCableBaseNT implements IVo
 	private byte disconnectedSides;
 	private byte forcedOpenSides;
 	private byte pendingAirCutResets;
+	private boolean pendingNeighbourRebuild;
 
 	@Override
 	public CableProperties getCableProperties() {
@@ -169,6 +170,10 @@ public class TileEntityVoltageCable extends TileEntityCableBaseNT implements IVo
 
 	@Override
 	public void updateEntity() {
+		if(worldObj != null && !worldObj.isRemote && pendingNeighbourRebuild) {
+			pendingNeighbourRebuild = false;
+			rebuildPowerNode();
+		}
 		super.updateEntity();
 		if(worldObj == null || worldObj.isRemote || pendingAirCutResets == 0) return;
 
@@ -219,6 +224,11 @@ public class TileEntityVoltageCable extends TileEntityCableBaseNT implements IVo
 			}
 		}
 		return new PowerNode(new BlockPos(xCoord, yCoord, zCoord)).setConnections(connections.toArray(new DirPos[connections.size()]));
+	}
+
+	/** Marks the node for a rebuild on the next tick so connections are recomputed against the current neighbours. */
+	public void scheduleNeighbourRebuild() {
+		pendingNeighbourRebuild = true;
 	}
 
 	private void rebuildPowerNode() {

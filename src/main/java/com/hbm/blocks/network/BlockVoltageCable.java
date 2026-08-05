@@ -52,6 +52,7 @@ public class BlockVoltageCable extends BlockCable implements ITooltipProvider, I
 		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile instanceof TileEntityVoltageCable) {
 			((TileEntityVoltageCable) tile).clearCutsForChangedNeighbours();
+			((TileEntityVoltageCable) tile).scheduleNeighbourRebuild();
 		}
 	}
 

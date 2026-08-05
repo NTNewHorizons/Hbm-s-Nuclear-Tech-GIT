@@ -1,5 +1,6 @@
 package com.hbm.uninos;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -79,8 +80,10 @@ public class UniNodespace {
 
 	private static void updateNetworks() {
 
-		for(NodeNet net : activeNodeNets) net.resetTrackers(); //reset has to be done before everything else
-		for(NodeNet net : activeNodeNets) net.update();
+		// snapshot so that networks created or destroyed during update (e.g. overvoltage explosions breaking conductors) can't cause a CME
+		ArrayList<NodeNet> snapshot = new ArrayList(activeNodeNets);
+		for(NodeNet net : snapshot) net.resetTrackers(); //reset has to be done before everything else
+		for(NodeNet net : snapshot) if(net.isValid()) net.update();
 		
 		if(reapTimer <= 0) {
 			activeNodeNets.forEach((net) -> { net.links.removeIf((link) -> { return ((GenNode) link).expired; }); });
