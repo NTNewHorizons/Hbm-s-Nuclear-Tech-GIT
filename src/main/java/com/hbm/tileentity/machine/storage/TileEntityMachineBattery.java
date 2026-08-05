@@ -15,7 +15,6 @@ import com.hbm.blocks.machine.MachineBattery;
 import com.hbm.handler.CompatHandler;
 import com.hbm.inventory.container.ContainerMachineBattery;
 import com.hbm.inventory.gui.GUIMachineBattery;
-import com.hbm.lib.Library;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.IPersistentNBT;
 import com.hbm.tileentity.TileEntityMachineBase;
