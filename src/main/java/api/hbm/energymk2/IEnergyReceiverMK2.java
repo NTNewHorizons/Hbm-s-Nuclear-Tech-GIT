@@ -43,13 +43,15 @@ public interface IEnergyReceiverMK2 extends IEnergyHandlerMK2 {
 	public default long transferPowerAtVoltage(long power, long voltage) {
 		if(power <= 0) return power;
 		if(BURNED_OUT.contains(this)) return power;
-		// Legacy safety: an unconfigured (voltage == 0) source must never punish a configured receiver.
-		// This keeps pre-existing networks fully functional while the voltage system is active by default.
+		// Legacy safety: in legacy and warn modes power must keep flowing, because mixed-tier
+		// networks were perfectly legal before the voltage system and would otherwise be starved.
+		if(VoltageEnforcement.isLegacy()) return this.transferPower(power);
+		// An unconfigured (voltage == 0) source must never punish a configured receiver.
 		if(!VoltageTier.isConfigured(voltage)) return this.transferPower(power);
 		if(!VoltageTier.isConfigured(this.getReceiverVoltage())) return this.transferPower(power);
 		if(voltage != this.getReceiverVoltage()) {
 			this.onOvervoltage(voltage);
-			return power;
+			return VoltageEnforcement.shouldDenyTransfer() ? power : this.transferPower(power);
 		}
 		return this.transferPower(power);
 	}
@@ -63,16 +65,22 @@ public interface IEnergyReceiverMK2 extends IEnergyHandlerMK2 {
 	}
 
 	public default void onOvervoltage(long voltage) {
-		if(!BURNED_OUT.add(this)) return;
+		if(VoltageEnforcement.isLegacy()) return;
 		if(this instanceof TileEntity) {
 			TileEntity te = (TileEntity) this;
 			World world = te.getWorldObj();
 			if(world != null && !world.isRemote) {
-				float strength = MachineVoltageRegistry.getExplosionStrength(this);
-				for(BlockPos pos : this.getMultiblockPositions()) {
-					world.setBlockToAir(pos.getX(), pos.getY(), pos.getZ());
+				if(VoltageEnforcement.isStrict()) {
+					if(!BURNED_OUT.add(this)) return;
+					float strength = MachineVoltageRegistry.getExplosionStrength(this);
+					for(BlockPos pos : this.getMultiblockPositions()) {
+						world.setBlockToAir(pos.getX(), pos.getY(), pos.getZ());
+					}
+					world.createExplosion(null, te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, strength, true);
+				} else {
+					VoltageEnforcement.warnNearby(te, "hbm.voltage.overvoltageWarn",
+							VoltageTier.format(voltage), VoltageTier.format(this.getReceiverVoltage()));
 				}
-				world.createExplosion(null, te.xCoord + 0.5D, te.yCoord + 0.5D, te.zCoord + 0.5D, strength, true);
 			}
 		}
 	}

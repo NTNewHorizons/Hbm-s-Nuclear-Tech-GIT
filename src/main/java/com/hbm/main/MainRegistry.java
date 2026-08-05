@@ -760,11 +760,18 @@ public class MainRegistry {
 		event.registerServerCommand(new CommandCustomize());
 		event.registerServerCommand(new CommandWikiRender()); // TODO: make this shitfuck be clientside
 		event.registerServerCommand(new CommandReapNetworks());
+		event.registerServerCommand(new CommandVoltage());
 		ArcFurnaceRecipes.registerFurnaceSmeltables(); // because we have to wait for other mods to take their merry ass time to register recipes
 	}
 
 	@EventHandler
 	public void serverStart(FMLServerStartedEvent event) {
+
+		if(api.hbm.energymk2.VoltageEnforcement.isLegacy()) {
+			logger.info("Voltage system is disabled or in legacy mode, pre-existing mixed-tier networks keep working untouched.");
+		} else {
+			logger.warn("Voltage system is enabled with enforcement '{}'. Existing mixed-tier networks may be affected. Use /ntmvoltage or the 1.46_enableVoltageSystem / 1.47_voltageEnforcement config entries to change it.", api.hbm.energymk2.VoltageEnforcement.currentModeName());
+		}
 
 		if(GeneralConfig.enableStatReRegistering) {
 			logger.info("Attempting to re-register item stats...");

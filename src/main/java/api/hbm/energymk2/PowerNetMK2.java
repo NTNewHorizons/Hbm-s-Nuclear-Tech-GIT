@@ -35,12 +35,16 @@ public class PowerNetMK2 extends NodeNet<IEnergyReceiverMK2, IEnergyProviderMK2,
 
 	private void punishLegacyVoltageMismatches(List<Pair<IEnergyProviderMK2, Long>> providers, List<Pair<IEnergyReceiverMK2, Long>>[] receivers, long[] demand) {
 
+		if(VoltageEnforcement.isLegacy()) return; // legacy mode: mixed-tier networks keep working exactly as before
+
 		Set<Long> providerVoltages = new HashSet<Long>();
 		for(Pair<IEnergyProviderMK2, Long> p : providers) {
 			long v = p.getKey().getProviderVoltage();
 			if(VoltageTier.isConfigured(v)) providerVoltages.add(v);
 		}
 		if(providerVoltages.isEmpty()) return; // nothing configured providing here, nothing to compare against
+
+		boolean strict = VoltageEnforcement.isStrict();
 
 		for(int i = 0; i < receivers.length; i++) {
 			Iterator<Pair<IEnergyReceiverMK2, Long>> it = receivers[i].iterator();
@@ -52,8 +56,11 @@ public class PowerNetMK2 extends NodeNet<IEnergyReceiverMK2, IEnergyProviderMK2,
 				for(Long providerVoltage : providerVoltages) {
 					if(providerVoltage.longValue() != receiverVoltage) {
 						entry.getKey().onOvervoltage(providerVoltage.longValue());
-						demand[i] -= entry.getValue();
-						it.remove();
+						// in warn mode the mismatch is only reported, power must keep flowing
+						if(strict) {
+							demand[i] -= entry.getValue();
+							it.remove();
+						}
 						break;
 					}
 				}
@@ -304,16 +311,17 @@ public class PowerNetMK2 extends NodeNet<IEnergyReceiverMK2, IEnergyProviderMK2,
 	private void moveAlongRoute(IEnergyProviderMK2 provider, IEnergyReceiverMK2 receiver, VoltageRoute route) {
 		long voltage = route.cables.get(0).getCableProperties().voltage;
 		long sourceAvailable = Math.max(0L, Math.min(provider.getProviderPower(), provider.getProviderSpeed()));
+		boolean deny = VoltageEnforcement.shouldDenyTransfer();
 		for(IVoltageCableMK2 cable : route.cables) {
 			if(cable.getCableProperties().voltage != voltage) {
 				if(sourceAvailable > 0) cable.explodeForWrongVoltage(voltage);
-				return;
+				if(deny) return; // legacy/warn mode: only report, power keeps flowing
 			}
 		}
 		long providerVoltage = provider.getProviderVoltage();
 		if(VoltageTier.isConfigured(providerVoltage) && providerVoltage != voltage && sourceAvailable > 0) {
 			route.cables.get(0).explodeForWrongVoltage(providerVoltage);
-			return;
+			if(deny) return; // legacy/warn mode: mismatched legacy source conducts like before
 		}
 		long demand = getReceiverDemand(receiver);
 		if(sourceAvailable <= 0 || demand <= 0) return;

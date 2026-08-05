@@ -85,6 +85,12 @@ public class GeneralConfig {
 	public static boolean enableSacrilege = false;
 	public static boolean enableHardcoreDarkness = false;
 
+	/** Master switch for the new voltage tier system. When false, the entire system is off and the grid behaves exactly like before it was added (no tier checks anywhere). */
+	public static boolean enableVoltageSystem = true;
+
+	/** Voltage tier enforcement mode: "legacy" (pre-voltage behavior, nothing explodes), "warn" (power still flows, mismatches are reported), "strict" (new rules, mismatches refuse power and explode). Only relevant while enableVoltageSystem is true. */
+	public static String voltageEnforcement = "legacy";
+
 	public static String[] preferredOutputMod = new String[] {RefStrings.MODID};
 
 	public static void loadFromConfig(Configuration config) {
@@ -138,6 +144,16 @@ public class GeneralConfig {
 		enableMachineGravity = config.get(CATEGORY_GENERAL, "1.44_enableMachineGravity", false, "Requires large large machines to have a proper foundation, or else they tilt and break. Independent from the 528 version of this config, which does the same, but only works with 528 enabled.").getBoolean(false);
 		enableUnavoidableGravity = config.get(CATEGORY_GENERAL, "1.45_enableUnavoidableGravity", true, "Requires extra large machines to have a proper foundation, for machines that have gravity by default, rather than by config (only applies to the Big-Ass Tank currently).").getBoolean(true);
 		enableExpensiveMode = config.get(CATEGORY_GENERAL, "1.99_enableExpensiveMode", false, "It does what the name implies.").getBoolean(false);
+
+		enableVoltageSystem = config.get(CATEGORY_GENERAL, "1.46_enableVoltageSystem", true,
+				"Master switch for the new voltage tier system. When false, the entire system is off and the MK2 power grid behaves exactly like it did before the voltage system was added (no tier checks, no explosions, mismatched tiers always transfer power).").getBoolean(true);
+
+		voltageEnforcement = config.get(CATEGORY_GENERAL, "1.47_voltageEnforcement", "legacy",
+				"How strictly the new voltage tier system is enforced on the MK2 power grid. Only relevant while enableVoltageSystem is true.\n"
+				+ "legacy - Power behaves exactly like it did before the voltage system. Old bases keep working, mismatched tiers never block power or explode. Recommended for existing worlds.\n"
+				+ "warn   - Power still flows like in legacy mode, but mismatched voltage connections and battery insertions are reported to nearby players so networks can be upgraded before switching to strict.\n"
+				+ "strict - The full new system: machines only accept matching voltages, overvolted machines and cables explode, and mismatched batteries are refused.").getString();
+		api.hbm.energymk2.VoltageEnforcement.setMode(voltageEnforcement);
 
 		final String CATEGORY_528 = CommonConfig.CATEGORY_528;
 

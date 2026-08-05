@@ -25,8 +25,10 @@ public final class VoltageCheckedCharging {
 				// Legacy batteries have no registered tier and keep working as before,
 				// only a registered, mismatching tier is treated as an overvoltage.
 				if(VoltageTier.isConfigured(batteryVoltage) && batteryVoltage != machineVoltage) {
-					machine.onOvervoltage(batteryVoltage);
-					return power;
+					if(!VoltageEnforcement.isLegacy()) {
+						machine.onOvervoltage(batteryVoltage); // warn or explode depending on mode
+						if(VoltageEnforcement.shouldDenyTransfer()) return power; // strict: refuse the wrong battery
+					}
 				}
 			}
 		}
@@ -44,7 +46,13 @@ public final class VoltageCheckedCharging {
 
 			long machineVoltage = getMachineBlockVoltage(machine);
 			if(VoltageTier.isConfigured(itemVoltage) && VoltageTier.isConfigured(machineVoltage) && itemVoltage != machineVoltage) {
-				return power;
+				if(!VoltageEnforcement.isLegacy()) {
+					if(machine instanceof TileEntity) {
+						VoltageEnforcement.warnNearby((TileEntity) machine, "hbm.voltage.batteryMismatchWarn",
+								VoltageTier.format(itemVoltage), VoltageTier.format(machineVoltage));
+					}
+					if(VoltageEnforcement.shouldDenyTransfer()) return power; // strict: refuse to charge a wrong-tier battery
+				}
 			}
 		}
 

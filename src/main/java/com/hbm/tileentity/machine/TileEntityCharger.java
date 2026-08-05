@@ -7,6 +7,7 @@ import java.util.Random;
 import api.hbm.energymk2.BatteryVoltageRegistry;
 import api.hbm.energymk2.IBatteryItem;
 import api.hbm.energymk2.IEnergyReceiverMK2;
+import api.hbm.energymk2.VoltageEnforcement;
 import api.hbm.energymk2.VoltageTier;
 
 import com.hbm.main.NTMSounds;
@@ -140,7 +141,11 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 					// Only block charging when the charger is voltage-aware AND the battery has a
 					// registered, mismatching tier. Legacy (unconfigured) chargers and batteries are unaffected.
 					if(VoltageTier.isConfigured(chargerVoltage) && VoltageTier.isConfigured(itemVoltage) && itemVoltage != chargerVoltage) {
-						continue;
+						if(VoltageEnforcement.isStrict()) continue; // strict: refuse the wrong battery
+						if(VoltageEnforcement.isWarn()) { // warn: report but charge like before
+							VoltageEnforcement.warnNearby(this, "hbm.voltage.batteryMismatchWarn",
+									VoltageTier.format(itemVoltage), VoltageTier.format(chargerVoltage));
+						}
 					}
 
 					long toCharge = Math.min(battery.getMaxCharge(stack) - battery.getCharge(stack), battery.getChargeRate(stack));

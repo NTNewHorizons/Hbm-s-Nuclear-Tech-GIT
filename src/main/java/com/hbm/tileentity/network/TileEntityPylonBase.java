@@ -17,6 +17,8 @@ import api.hbm.energymk2.CableProperties;
 import api.hbm.energymk2.IVoltageCableMK2;
 import api.hbm.energymk2.Nodespace;
 import api.hbm.energymk2.Nodespace.PowerNode;
+import api.hbm.energymk2.VoltageEnforcement;
+import api.hbm.energymk2.VoltageTier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -93,8 +95,13 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT implemen
 	@Override
 	public void explodeForWrongVoltage(long suppliedVoltage) {
 		if(exploded || worldObj == null || worldObj.isRemote) return;
-		exploded = true;
-		worldObj.createExplosion(null, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 2.0F, true);
+		if(VoltageEnforcement.isStrict()) {
+			exploded = true;
+			worldObj.createExplosion(null, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 2.0F, true);
+		} else if(VoltageEnforcement.isWarn()) {
+			VoltageEnforcement.warnNearby(this, "hbm.voltage.cableOvervoltageWarn",
+					VoltageTier.format(suppliedVoltage), VoltageTier.format(getCableProperties().voltage));
+		}
 	}
 
 	/** Loss incurred by the wire span leading to the next pylon in a route. Closer pylons lose more per block, longer spans lose less per block. */

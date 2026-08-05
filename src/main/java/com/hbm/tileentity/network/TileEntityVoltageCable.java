@@ -7,6 +7,8 @@ import api.hbm.energymk2.CableProperties;
 import api.hbm.energymk2.IVoltageCableMK2;
 import api.hbm.energymk2.Nodespace;
 import api.hbm.energymk2.Nodespace.PowerNode;
+import api.hbm.energymk2.VoltageEnforcement;
+import api.hbm.energymk2.VoltageTier;
 import com.hbm.blocks.network.BlockVoltageCable;
 import com.hbm.lib.Library;
 import com.hbm.tileentity.TileEntityProxyBase;
@@ -277,7 +279,7 @@ public class TileEntityVoltageCable extends TileEntityCableBaseNT implements IVo
 	public long useTransferCapacity(long amount) {
 		long used = Math.min(Math.max(0L, amount), getRemainingTransfer());
 		transferredThisTick += used;
-		if(used > 0L && explodeForDifferentVoltageContact()) return 0L;
+		if(used > 0L && !VoltageEnforcement.isLegacy() && explodeForDifferentVoltageContact() && VoltageEnforcement.shouldDenyTransfer()) return 0L;
 		return used;
 	}
 
@@ -300,8 +302,13 @@ public class TileEntityVoltageCable extends TileEntityCableBaseNT implements IVo
 	@Override
 	public void explodeForWrongVoltage(long suppliedVoltage) {
 		if(exploded || worldObj == null || worldObj.isRemote) return;
-		exploded = true;
-		worldObj.createExplosion(null, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 2.0F, true);
+		if(VoltageEnforcement.isStrict()) {
+			exploded = true;
+			worldObj.createExplosion(null, xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, 2.0F, true);
+		} else if(VoltageEnforcement.isWarn()) {
+			VoltageEnforcement.warnNearby(this, "hbm.voltage.cableOvervoltageWarn",
+					VoltageTier.format(suppliedVoltage), VoltageTier.format(getCableProperties().voltage));
+		}
 	}
 
 	@Override
