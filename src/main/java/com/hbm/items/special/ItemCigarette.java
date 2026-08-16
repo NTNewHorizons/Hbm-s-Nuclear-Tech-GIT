@@ -7,6 +7,7 @@ import com.hbm.handler.threading.PacketThreading;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
+import com.hbm.potion.HbmPotion;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
@@ -99,6 +100,7 @@ public class ItemCigarette extends Item {
 
 			if (this == ModItems.joint) {
 				HbmLivingProps.incrementBlackLung(player, 500);
+				player.addPotionEffect(new PotionEffect(HbmPotion.high.id, 15 * 20, 0));
 				player.addPotionEffect(new PotionEffect(Potion.confusion.id, 15 * 20, 0));
 				player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 15 * 20, 0));
 			}
