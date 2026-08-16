@@ -123,6 +123,8 @@ public class TileEntityMachineOreSlopper extends TileEntityMachineBase implement
 
 			this.consumption = this.consumptionBase + (this.consumptionBase * speed) / 2 + (this.consumptionBase * efficiency);
 
+			this.waterUsed = upgradeManager.getLevel(UpgradeType.CLAUDE) > 0 ? waterUsedBase * 2 : waterUsedBase;
+
 			if(canSlop()) {
 				this.power -= this.consumption;
 				this.progress += 1F / (600 - speed * 150);
@@ -391,7 +393,7 @@ public class TileEntityMachineOreSlopper extends TileEntityMachineBase implement
 
 	@Override
 	public boolean canProvideInfo(UpgradeType type, int level, boolean extendedInfo) {
-		return type == UpgradeType.SPEED || type == UpgradeType.EFFECT;
+		return type == UpgradeType.SPEED || type == UpgradeType.EFFECT || type == UpgradeType.CLAUDE;
 	}
 
 	@Override
@@ -405,6 +407,9 @@ public class TileEntityMachineOreSlopper extends TileEntityMachineBase implement
 			info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey(this.KEY_EFFICIENCY, "+" + (level * 10) + "%"));
 			info.add(EnumChatFormatting.RED + I18nUtil.resolveKey(this.KEY_CONSUMPTION, "+" + (level * 100) + "%"));
 		}
+		if(type == UpgradeType.CLAUDE) {
+			info.add(EnumChatFormatting.GREEN + "2x Slop Output");
+		}
 	}
 
 	@Override
@@ -412,6 +417,7 @@ public class TileEntityMachineOreSlopper extends TileEntityMachineBase implement
 		HashMap<UpgradeType, Integer> upgrades = new HashMap<>();
 		upgrades.put(UpgradeType.SPEED, 3);
 		upgrades.put(UpgradeType.EFFECT, 3);
+		upgrades.put(UpgradeType.CLAUDE, 1);
 		return upgrades;
 	}
 }

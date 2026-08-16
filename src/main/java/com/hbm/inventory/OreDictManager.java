@@ -104,6 +104,7 @@ public class OreDictManager {
 	public static final String KEY_TOOL_TORCH = "ntmtorch";
 	public static final String KEY_TOOL_HAMMER = "ntmhammer";
 	public static final String KEY_TOOL_SAW = "ntmsaw";
+	public static final String KEY_TOOL_CUTTER = "ntmcutter";
 
 	public static final String KEY_GLYPHID_MEAT = "glyphidMeat";
 	public static final String KEY_FLOUR = "foodFlour";
@@ -602,6 +603,7 @@ public class OreDictManager {
 		 * TOOLS
 		 */
 		OreDictionary.registerOre(KEY_TOOL_SCREWDRIVER, new ItemStack(screwdriver, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre(KEY_TOOL_SCREWDRIVER, new ItemStack(screwdriver_steel, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre(KEY_TOOL_SCREWDRIVER, new ItemStack(screwdriver_desh, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre(KEY_TOOL_HANDDRILL, new ItemStack(hand_drill, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre(KEY_TOOL_HANDDRILL, new ItemStack(hand_drill_desh, 1, OreDictionary.WILDCARD_VALUE));
@@ -615,6 +617,9 @@ public class OreDictManager {
 		OreDictionary.registerOre(KEY_TOOL_SAW, new ItemStack(saw_iron, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre(KEY_TOOL_SAW, new ItemStack(saw_steel, 1, OreDictionary.WILDCARD_VALUE));
 		OreDictionary.registerOre(KEY_TOOL_SAW, new ItemStack(saw_desh, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre(KEY_TOOL_CUTTER, new ItemStack(pliers_iron, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre(KEY_TOOL_CUTTER, new ItemStack(pliers_steel, 1, OreDictionary.WILDCARD_VALUE));
+		OreDictionary.registerOre(KEY_TOOL_CUTTER, new ItemStack(pliers_desh, 1, OreDictionary.WILDCARD_VALUE));
 
 		/*
 		 * GLYPHID M E A T

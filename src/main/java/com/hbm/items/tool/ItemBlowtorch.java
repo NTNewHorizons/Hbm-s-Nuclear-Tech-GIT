@@ -14,7 +14,6 @@ import com.hbm.packet.toclient.AuxParticlePacketNT;
 import api.hbm.block.IToolable;
 import api.hbm.block.IToolable.ToolType;
 import api.hbm.fluidmk2.IFillableItem;
-import com.hbm.items.tool.GergToolType;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -34,7 +33,6 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 		this.setCreativeTab(MainRegistry.controlTab);
 
 		ToolType.TORCH.register(new ItemStack(this));
-		GergToolType.WELDING_TORCH.register(new ItemStack(this));
 	}
 
 	@Override
@@ -58,9 +56,10 @@ public class ItemBlowtorch extends Item implements IFillableItem {
 	public ItemStack getContainerItem(ItemStack stack) {
 		ItemStack copy = stack.copy();
 
-		int damage = 1;
-		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("gergDurabilityDamage")) {
-			damage = stack.getTagCompound().getInteger("gergDurabilityDamage");
+		int damage = ItemTooling.getPendingCraftingDamage(stack);
+		if(copy.hasTagCompound()) {
+			copy.getTagCompound().removeTag(ItemTooling.KEY_CRAFTING_DAMAGE);
+			if(copy.getTagCompound().hasNoTags()) copy.setTagCompound(null);
 		}
 
 		if(copy.getItem() == ModItems.blowtorch) {

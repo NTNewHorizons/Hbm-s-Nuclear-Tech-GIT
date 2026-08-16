@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.IModelCustom;
 
-public class SatelliteWar extends Satellite {
+public class SatelliteWar extends SatelliteBase {
 
 	//time to clean up this shit and make it PROPER.
 
@@ -70,6 +70,11 @@ public class SatelliteWar extends Satellite {
 
 	public IModelCustom getModel() {
 		return null;
+	}
+
+	@Override
+	public String getType() {
+		return "WAR";
 	}
 
 }

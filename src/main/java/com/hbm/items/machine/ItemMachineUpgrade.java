@@ -123,7 +123,8 @@ public class ItemMachineUpgrade extends Item {
 		LM_SHREDDER(true),
 		LM_CENTRIFUGE(true),
 		LM_CRYSTALLIZER(true),
-		GS_SPEED;
+		GS_SPEED,
+		CLAUDE;
 		
 		public boolean mutex = false;
 		

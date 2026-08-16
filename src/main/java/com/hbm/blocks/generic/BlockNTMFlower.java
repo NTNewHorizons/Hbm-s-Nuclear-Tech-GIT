@@ -241,7 +241,4 @@ public class BlockNTMFlower extends BlockEnumMulti implements IPlantable, IGrowa
 		
 		return super.getItemDropped(meta, rand, j);
 	}
-
-
-
 }

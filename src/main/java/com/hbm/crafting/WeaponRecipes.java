@@ -29,8 +29,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import com.hbm.crafting.GergRecipeHelper;
-import com.hbm.items.tool.GergToolType;
+
+import api.hbm.block.IToolable.ToolType;
 
 /**
  * For guns, ammo and the like
@@ -41,7 +41,7 @@ public class WeaponRecipes {
 	public static void register() {
 
 		//Weapon mod table
-		GergRecipeHelper.addGergShaped(new ItemStack(ModBlocks.machine_weapon_table, 1), new Object[] { "P P", "TCT", "TST", 'P', GUNMETAL.plate(), 'T', STEEL.ingot(), 'C', Blocks.crafting_table, 'S', STEEL.block() }, GergToolType.WRENCH);
+		ItemToolRecipeHelper.addShaped(new ItemStack(ModBlocks.machine_weapon_table, 1), new Object[] { "P P", "TCT", "TST", 'P', GUNMETAL.plate(), 'T', STEEL.ingot(), 'C', Blocks.crafting_table, 'S', STEEL.block() }, ToolType.WRENCH);
 
 		//SEDNA Parts
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.part_stock, 1, Mats.MAT_WOOD.id), new Object[] { "WWW", "  W", 'W', KEY_PLANKS });

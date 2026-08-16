@@ -6,6 +6,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.network.TileEntityPipelineBase;
 
+import api.hbm.block.IToolable.ToolType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,7 +23,7 @@ public class ItemWrench extends ItemSword {
 
 	public ItemWrench(ToolMaterial mat) {
 		super(mat);
-		GergToolType.WRENCH.register(new ItemStack(this));
+		ToolType.WRENCH.register(new ItemStack(this));
 	}
 
 	@Override
@@ -33,7 +34,12 @@ public class ItemWrench extends ItemSword {
 	@Override
 	public ItemStack getContainerItem(ItemStack stack) {
 		ItemStack copy = stack.copy();
-		copy.setItemDamage(stack.getItemDamage() + 1);
+		int damage = ItemTooling.getPendingCraftingDamage(stack);
+		copy.setItemDamage(stack.getItemDamage() + damage);
+		if(copy.hasTagCompound()) {
+			copy.getTagCompound().removeTag(ItemTooling.KEY_CRAFTING_DAMAGE);
+			if(copy.getTagCompound().hasNoTags()) copy.setTagCompound(null);
+		}
 		return copy;
 	}
 
@@ -57,8 +63,11 @@ public class ItemWrench extends ItemSword {
 			TileEntity te = world.getTileEntity(x, y, z);
 
 			if(te != null && te instanceof TileEntityPipelineBase) {
+				
+				if(stack.stackTagCompound == null)
+					stack.stackTagCompound = new NBTTagCompound();
 
-				if(stack.stackTagCompound == null) {
+				if(!stack.stackTagCompound.hasKey("x")) {
 					stack.stackTagCompound = new NBTTagCompound();
 
 					stack.stackTagCompound.setInteger("x", x);
@@ -90,13 +99,18 @@ public class ItemWrench extends ItemSword {
 							case 3: player.addChatMessage(new ChatComponentText("Pipe error - Pipe anchor is too far away")); break;
 							case 4: player.addChatMessage(new ChatComponentText("Pipe error - Pipe anchor fluid types do not match")); break;
 						}
-						
-						stack.stackTagCompound = null;
+
+						stack.stackTagCompound.removeTag("x");
+						stack.stackTagCompound.removeTag("y");
+						stack.stackTagCompound.removeTag("z");
 
 					} else {
 
+						stack.stackTagCompound.removeTag("x");
+						stack.stackTagCompound.removeTag("y");
+						stack.stackTagCompound.removeTag("z");
+
 						player.addChatMessage(new ChatComponentText("Pipe error"));
-						stack.stackTagCompound = null;
 					}
 				}
 

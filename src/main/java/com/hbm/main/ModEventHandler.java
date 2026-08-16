@@ -88,6 +88,8 @@ import com.hbm.packet.toclient.PlayerInformPacket;
 import com.hbm.packet.toclient.SerializableRecipePacket;
 import com.hbm.particle.helper.BlackPowderCreator;
 import com.hbm.potion.HbmPotion;
+import com.hbm.saveddata.satellites.SatelliteDetector;
+import com.hbm.saveddata.satellites.SatelliteRayScan;
 import com.hbm.tileentity.machine.TileEntityMachineRadarNT;
 import com.hbm.tileentity.machine.rbmk.RBMKDials;
 import com.hbm.tileentity.network.RTTYSystem;
@@ -928,6 +930,10 @@ public class ModEventHandler {
 		if(event.phase == Phase.START) {
 			BossSpawnHandler.rollTheDice(world);
 			TimedGenerator.automaton(world, 100);
+
+			SatelliteDetector.updateSystem(world);
+			if(world.getTotalWorldTime() % 20 == 10)
+				SatelliteRayScan.updateSystem(world);
 
 			updateWaterOpacity(event.world);
 		}

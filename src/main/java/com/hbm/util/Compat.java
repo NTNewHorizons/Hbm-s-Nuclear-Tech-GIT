@@ -265,19 +265,27 @@ public class Compat {
 	private static Class<?> agricraftBlockCrop;
 	private static Class<?> agricraftTileEntityCrop;
 	private static Method agricraftHarvest;
+	private static Method agricraftIsMature;
+	private static Method agricraftGetFruits;
 
+	private static void initAgriCraft() {
+		if(agricraftChecked) return;
+		agricraftChecked = true;
+		try {
+			if(Loader.isModLoaded(MOD_AGRICRAFT)) {
+				agricraftBlockCrop = Class.forName("com.InfinityRaider.AgriCraft.blocks.BlockCrop");
+				agricraftTileEntityCrop = Class.forName("com.InfinityRaider.AgriCraft.tileentity.TileEntityCrop");
+				agricraftHarvest = agricraftBlockCrop.getMethod("harvest", World.class, int.class, int.class, int.class, agricraftTileEntityCrop);
+				agricraftIsMature = agricraftTileEntityCrop.getMethod("isMature");
+				agricraftGetFruits = agricraftTileEntityCrop.getMethod("getFruits");
+				agricraftLoaded = true;
+			}
+		} catch(Exception e) { }
+	}
+
+	/** Harvests the crop in place, letting the drops fall onto the crop sticks. Used by the buzzsaw. */
 	public static boolean harvestAgriCraft(World world, int x, int y, int z) {
-		if(!agricraftChecked) {
-			agricraftChecked = true;
-			try {
-				if(Loader.isModLoaded(MOD_AGRICRAFT)) {
-					agricraftBlockCrop = Class.forName("com.InfinityRaider.AgriCraft.blocks.BlockCrop");
-					agricraftTileEntityCrop = Class.forName("com.InfinityRaider.AgriCraft.tileentity.TileEntityCrop");
-					agricraftHarvest = agricraftBlockCrop.getMethod("harvest", World.class, int.class, int.class, int.class, agricraftTileEntityCrop);
-					agricraftLoaded = true;
-				}
-			} catch(Exception e) { }
-		}
+		initAgriCraft();
 
 		if(!agricraftLoaded) return false;
 
@@ -292,6 +300,37 @@ public class Compat {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Harvests the crop without dropping anything in the world and returns the fruit drops instead,
+	 * so the caller can dispose of them however it wants (e.g. ejecting them from a machine).
+	 * The crop is regressed to its post-harvest growth stage and left in place to regrow.
+	 * Returns null if there is no mature crop at the given position.
+	 */
+	public static ArrayList<ItemStack> collectAgriCraftDrops(World world, int x, int y, int z) {
+		initAgriCraft();
+
+		if(!agricraftLoaded) return null;
+
+		Block b = world.getBlock(x, y, z);
+		if(!agricraftBlockCrop.isInstance(b)) return null;
+
+		TileEntity te = world.getTileEntity(x, y, z);
+		if(!agricraftTileEntityCrop.isInstance(te)) return null;
+
+		try {
+			Object mature = agricraftIsMature.invoke(te);
+			if(mature != null && (Boolean) mature) {
+				Object fruits = agricraftGetFruits.invoke(te);
+				// regresses the plant to the post-harvest stage, same as BlockCrop.harvest does
+				world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+				if(fruits instanceof ArrayList) {
+					return (ArrayList<ItemStack>) fruits;
+				}
+			}
+		} catch(Exception e) { }
+		return null;
 	}
 
 	/** A standard implementation of safely grabbing a tile entity without loading chunks, might have more fluff added to it later on. */

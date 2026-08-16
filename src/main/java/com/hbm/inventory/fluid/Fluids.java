@@ -256,7 +256,7 @@ public class Fluids {
 	public static FluidType LITHYDRO;
 	public static FluidType LITHCARBONATE;
 
-	/* Lagacy names for compatibility purposes */
+	/* Legacy names for compatibility purposes */
 	@Deprecated public static FluidType ACID;	//JAOPCA uses this, apparently
 
 	public static final HashBiMap<String, FluidType> renameMapping = HashBiMap.create();
@@ -979,7 +979,7 @@ public class Fluids {
 		registerCalculatedFuel(SOLVENT, 100_000, 0, null); // flammable, sure, but not combustable
 		registerCalculatedFuel(RADIOSOLVENT, 150_000, 0, null);
 
-		registerCalculatedFuel(SYNGAS, (coalHeat * (1000 /* bucket */ / 100 /* mB per coal */) * flammabilityLow * demandLow * complexityChemplant) * 2.5, 2.25, FuelGrade.GAS); //same as coal oil, +50% bonus
+		registerCalculatedFuel(SYNGAS, (coalHeat * (1000 /* bucket */ / 100 /* mB per coal */) * flammabilityLow * demandLow * complexityChemplant) * 1.5, 1.25, FuelGrade.GAS); //same as coal oil, +50% bonus
 		registerCalculatedFuel(OXYHYDROGEN, 5_000, 3, FuelGrade.GAS); // whatever
 
 		File config = new File(folder.getAbsolutePath() + File.separatorChar + "hbmFluidTraits.json");

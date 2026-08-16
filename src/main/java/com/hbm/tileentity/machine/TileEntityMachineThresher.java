@@ -170,7 +170,14 @@ public class TileEntityMachineThresher extends TileEntityLoadedBase implements I
 							continue;
 						}
 
-						if(Compat.harvestAgriCraft(worldObj, hitX, yCoord, hitZ)) continue;
+						ArrayList<ItemStack> drops = Compat.collectAgriCraftDrops(worldObj, hitX, yCoord, hitZ);
+						if(drops != null) {
+							worldObj.playAuxSFX(2001, hitX, yCoord, hitZ, Block.getIdFromBlock(b) + (meta << 12));
+							for(ItemStack drop : drops) {
+								if(drop != null && drop.getItem() != null) this.dropItem(drop);
+							}
+							continue;
+						}
 
 						// IGrowable also covers anything that accepts bone
 						// meal, so we have to handle actual crops last
