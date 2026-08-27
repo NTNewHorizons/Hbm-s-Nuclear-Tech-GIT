@@ -23,6 +23,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import api.hbm.block.IToolable.ToolType;
+
 /**
  * For mining and utility tools
  * @author hbm
@@ -81,7 +83,7 @@ public class ToolRecipes {
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.mese_axe, 1), new Object[] { " SD", "APS", "FA ", 'S', ModItems.blades_desh, 'D', ModItems.powder_dineutronium, 'A', ModItems.plate_paa, 'P', ModItems.chlorophyte_axe, 'F', ModItems.shimmer_handle });
 
 		//Chainsaws
-		CraftingManager.addRecipeAuto(ItemToolAbilityFueled.getEmptyTool(ModItems.chainsaw), new Object[] { "CCH", "BBP", "CCE", 'H', STEEL.shell(), 'B', ModItems.blades_steel, 'P', ModItems.piston_selenium, 'C', ModBlocks.chain, 'E', ModItems.canister_empty });
+		ItemToolRecipeHelper.addShaped(ItemToolAbilityFueled.getEmptyTool(ModItems.chainsaw), new Object[] { "CC ", "BBP", "CCE", 'B', ModItems.blades_steel, 'P', ModItems.piston_selenium, 'C', ModBlocks.chain, 'E', ModItems.canister_empty }, ToolType.TORCH);
 
 		//Misc
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.crowbar, 1), new Object[] { "II", " I", " I", 'I', STEEL.ingot() });
@@ -138,8 +140,9 @@ public class ToolRecipes {
 
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.toolbox), new Object[] { "CCC", "CIC", 'C', CU.plate(), 'I', IRON.ingot() });
 
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.screwdriver, 1), new Object[] { "  I", " I ", "S  ", 'S', STEEL.ingot(), 'I', IRON.ingot() });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.screwdriver_desh, 1), new Object[] { "  I", " I ", "S  ", 'S', ANY_PLASTIC.ingot(), 'I', DESH.ingot() });
+		ItemToolRecipeHelper.addShaped(new ItemStack(ModItems.pliers_iron, 1), new Object[] { "I I", " S ", 'I', IRON.ingot(), 'S', KEY_STICK }, ToolType.HAMMER);
+		ItemToolRecipeHelper.addShaped(new ItemStack(ModItems.pliers_steel, 1), new Object[] { "S S", " K ", 'S', STEEL.ingot(), 'K', IRON.ingot() }, ToolType.HAMMER);
+		ItemToolRecipeHelper.addShaped(new ItemStack(ModItems.pliers_desh, 1), new Object[] { "D D", " P ", 'D', DESH.ingot(), 'P', POLYMER.ingot() }, 2, ToolType.HAMMER);
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.hand_drill), new Object[] { " D", "S ", " S", 'D', DURA.ingot(), 'S', KEY_STICK });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.hand_drill_desh), new Object[] { " D", "S ", " S", 'D', DESH.ingot(), 'S', ANY_PLASTIC.ingot() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.chemistry_set), new Object[] { "GIG", "GCG", 'G', KEY_ANYGLASS, 'I', IRON.ingot(), 'C', CU.ingot() });
@@ -151,11 +154,11 @@ public class ToolRecipes {
 
 		//Bobmazon
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.bobmazon), new Object[] { Items.book, Items.gold_nugget, Items.string, KEY_BLUE });
-		
+
 		//Blueprints
 		//CraftingManager.addShapelessAuto(new ItemStack(ModItems.blueprint_folder, 1, 0), new Object[] { ModItems.blueprints, ModItems.blueprints, ModItems.blueprints });
 		//CraftingManager.addShapelessAuto(new ItemStack(ModItems.blueprint_folder, 1, 1), new Object[] { ModItems.blueprints, ModItems.blueprints, ModItems.blueprints, ModItems.blueprints, ModItems.blueprints, ModItems.fragment_meteorite });
-		
+
 		//Carts
 		CraftingManager.addRecipeAuto(ItemModMinecart.createCartItem(EnumCartBase.WOOD, EnumMinecart.EMPTY), new Object[] { "P P", "WPW", 'P',KEY_SLAB, 'W', KEY_PLANKS });
 		CraftingManager.addRecipeAuto(ItemModMinecart.createCartItem(EnumCartBase.STEEL, EnumMinecart.EMPTY), new Object[] { "P P", "IPI", 'P', STEEL.plate(), 'I', STEEL.ingot() });
@@ -199,7 +202,136 @@ public class ToolRecipes {
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.schrabidium_shovel, 1), new Object[] { "B", "W", "P", 'B', SA326.block(), 'W', ModItems.desh_shovel, 'P', ANY_PLASTIC.ingot() });
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.schrabidium_hoe, 1), new Object[] { "IW", " S", " S", 'I', SA326.ingot(), 'W', ModItems.desh_hoe, 'S', ANY_PLASTIC.ingot() });
 		}
+
+		// NTNH Recipes
+
+		CraftingManager.addRecipeAuto(
+			new ItemStack(ModItems.plate_iron, 1),
+			new Object[] {
+				" H ",
+				" I ",
+				" I ",
+				'H', KEY_TOOL_HAMMER,
+				'I', IRON.ingot()
+			}
+		);
+
+		CraftingManager.addRecipeAuto(
+			new ItemStack(ModItems.hammer_iron, 1),
+			new Object[] {
+				"II ",
+				"IIS",
+				"II ",
+				'I', IRON.ingot(),
+				'S', KEY_STICK
+			}
+		);
+
+		CraftingManager.addRecipeAuto(
+			new ItemStack(ModItems.hammer_steel, 1),
+			new Object[] {
+				"II ",
+				"IIS",
+				"II ",
+				'I', STEEL.ingot(),
+				'S', IRON.ingot()
+			}
+		);
+
+		ItemToolRecipeHelper.addShaped(
+			new ItemStack(ModItems.hammer_desh, 1),
+			new Object[] {
+				"II ",
+				"IIS",
+				"II ",
+				'I', DESH.ingot(),
+				'S', POLYMER.ingot()
+			}, 2, ToolType.HAMMER
+		);
+
+		ItemToolRecipeHelper.addShaped(
+			new ItemStack(ModItems.wrench, 1),
+			new Object[] {
+				"SSS",
+				"III",
+				" I ",
+				'I', IRON.ingot(),
+				'S', STEEL.ingot()
+			}, ToolType.HAMMER
+		);
+
+		ItemToolRecipeHelper.addShaped(
+			new ItemStack(ModItems.saw_iron, 1),
+			new Object[] {
+				"   ",
+				"SSS",
+				"IIS",
+				'I', IRON.plate(),
+				'S', KEY_STICK
+			}, ToolType.HAMMER
+		);
+
+		ItemToolRecipeHelper.addShaped(
+			new ItemStack(ModItems.saw_steel, 1),
+			new Object[] {
+				"   ",
+				"SSS",
+				"IIS",
+				'I', STEEL.plate(),
+				'S', IRON.ingot()
+			}, ToolType.HAMMER
+		);
+
+		ItemToolRecipeHelper.addShaped(
+			new ItemStack(ModItems.saw_desh, 1),
+			new Object[] {
+				"   ",
+				"SSS",
+				"IIS",
+				'I', DESH.ingot(),
+				'S', POLYMER.ingot()
+			}, 2, ToolType.HAMMER
+		);
+
+		ItemToolRecipeHelper.addShaped(
+			new ItemStack(ModItems.screwdriver, 1),
+			new Object[] {
+				"  I",
+				" I ",
+				"S  ",
+				'I', IRON.ingot(),
+				'S', KEY_STICK
+			}, ToolType.HAMMER, ToolType.SAW
+		);
+
+		ItemToolRecipeHelper.addShaped(
+			new ItemStack(ModItems.screwdriver_steel, 1),
+			new Object[] {
+				"  I",
+				" I ",
+				"S  ",
+				'I', STEEL.ingot(),
+				'S', IRON.ingot()
+			}, ToolType.HAMMER, ToolType.SAW
+		);
+
+		ItemToolRecipeHelper.addShaped(
+			new ItemStack(ModItems.screwdriver_desh, 1),
+			new Object[] {
+				"  I",
+				" I ",
+				"S  ",
+				'I', DESH.ingot(),
+				'S', RUBBER.ingot()
+			}, 2, ToolType.HAMMER, ToolType.SAW
+		);
+
+
+
+
+
 	}
+
 
 	//Common wrappers
 	public static void addSword(Object ingot, Item sword) {
