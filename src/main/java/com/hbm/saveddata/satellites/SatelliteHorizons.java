@@ -2,6 +2,7 @@ package com.hbm.saveddata.satellites;
 
 import java.util.Locale;
 
+import com.hbm.config.SpaceConfig;
 import com.hbm.entity.projectile.EntityTom;
 import com.hbm.main.MainRegistry;
 import com.hbm.saveddata.SatelliteSavedData;
@@ -75,6 +76,9 @@ public class SatelliteHorizons extends SatelliteBase {
 
 
 		EntityTom tom = new EntityTom(world);
+		if(world.provider.dimensionId == SpaceConfig.moonDimension) {
+			tom.setAnnouncementMode(true);
+		}
 		tom.setPosition(x + 0.5, 600, z + 0.5);
 
 		IChunkProvider provider = world.getChunkProvider();
