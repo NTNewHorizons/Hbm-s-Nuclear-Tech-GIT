@@ -482,6 +482,8 @@ public class ModItems {
 	public static Item leaf_pet;
 
 	public static Item undefined;
+	public static Item fluid_display_item;
+	public static Item hbm_fluid_compat;
 
 	public static Item ball_resin;
 	public static Item ingot_dura_steel;
