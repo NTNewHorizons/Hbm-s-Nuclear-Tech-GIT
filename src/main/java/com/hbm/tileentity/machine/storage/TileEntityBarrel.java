@@ -486,23 +486,23 @@ public class TileEntityBarrel extends TileEntityMachineBase implements SimpleCom
 		}
 		@Override
 		protected boolean isFillAllowed(ForgeDirection from) {
-			return (mode == 0 || mode == 1) && !hasExploded;
+			return (mode == 0 || mode == 1) && !hasExploded && tank.getPressure() == 0;
 		}
 		@Override
 		protected boolean isDrainAllowed(ForgeDirection from) {
-			return (mode == 1 || mode == 2) && !hasExploded;
+			return (mode == 1 || mode == 2) && !hasExploded && tank.getPressure() == 0;
 		}
 	};
 
 	public boolean canConnectFluid(ForgeDirection from) { return true; }
 	public boolean isConnectable(ForgeDirection from) { return true; }
 	public boolean canInterface(ForgeDirection from) { return true; }
-	public boolean canInputFluid(ForgeDirection from) { return (mode == 0 || mode == 1) && !hasExploded; }
-	public boolean canOutputFluid(ForgeDirection from) { return (mode == 1 || mode == 2) && !hasExploded; }
-	public boolean canReceiveFrom(ForgeDirection from) { return (mode == 0 || mode == 1) && !hasExploded; }
-	public boolean canSendTo(ForgeDirection from) { return (mode == 1 || mode == 2) && !hasExploded; }
-	public boolean canAcceptFluid(ForgeDirection from) { return (mode == 0 || mode == 1) && !hasExploded; }
-	public boolean canProvideFluid(ForgeDirection from) { return (mode == 1 || mode == 2) && !hasExploded; }
+	public boolean canInputFluid(ForgeDirection from) { return (mode == 0 || mode == 1) && !hasExploded && tank.getPressure() == 0; }
+	public boolean canOutputFluid(ForgeDirection from) { return (mode == 1 || mode == 2) && !hasExploded && tank.getPressure() == 0; }
+	public boolean canReceiveFrom(ForgeDirection from) { return (mode == 0 || mode == 1) && !hasExploded && tank.getPressure() == 0; }
+	public boolean canSendTo(ForgeDirection from) { return (mode == 1 || mode == 2) && !hasExploded && tank.getPressure() == 0; }
+	public boolean canAcceptFluid(ForgeDirection from) { return (mode == 0 || mode == 1) && !hasExploded && tank.getPressure() == 0; }
+	public boolean canProvideFluid(ForgeDirection from) { return (mode == 1 || mode == 2) && !hasExploded && tank.getPressure() == 0; }
 	public boolean isFluidHandler(ForgeDirection from) { return true; }
 
 	@Override

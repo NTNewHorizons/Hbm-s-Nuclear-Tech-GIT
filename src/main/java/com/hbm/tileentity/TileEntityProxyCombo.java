@@ -34,11 +34,15 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import api.ntm1of90.compat.fluid.registry.ForgeFluidAdapterRegistry;
+
 @Optional.InterfaceList({
 		@Optional.Interface(iface = "com.hbm.handler.CompatHandler.OCComponent", modid = "opencomputers"),
 		@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "opencomputers")
 })
 public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergyReceiverMK2, IEnergyConductorMK2, ISidedInventory, IFluidReceiverMK2, IHeatSource, ICrucibleAcceptor, SimpleComponent, OCComponent, IRORValueProvider, IRORInteractive, IFluidHandler {
+
+	public static final boolean DEBUG = false;
 
 	TileEntity tile;
 	boolean inventory;
@@ -571,46 +575,52 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 		return null;
 	}
 
+	/** Core handler: direct IFluidHandler or AutoForgeFluidAdapter for IFluidUserMK2 cores. */
+	private IFluidHandler resolveFluidHandler() {
+		Object core = getCoreObject();
+		if(core instanceof IFluidHandler) {
+			return (IFluidHandler) core;
+		}
+		if(core instanceof TileEntity) {
+			return ForgeFluidAdapterRegistry.getFluidHandler((TileEntity) core);
+		}
+		return null;
+	}
+
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		if(getCoreObject() instanceof IFluidHandler) {
-			return ((IFluidHandler)getCoreObject()).fill(from, resource, doFill);
-		}
-		return 0;
+		IFluidHandler h = resolveFluidHandler();
+		int r = h == null ? 0 : h.fill(from, resource, doFill);
+		if(DEBUG && resource != null) System.out.println("[NTM-DBG] ProxyCombo.fill " + resource.getFluid().getName() + "x" + resource.amount + " do=" + doFill + " handler=" + (h == null ? "null" : h.getClass().getSimpleName()) + " ret=" + r);
+		return r;
 	}
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		if(getCoreObject() instanceof IFluidHandler) {
-			return ((IFluidHandler)getCoreObject()).drain(from, resource, doDrain);
-		}
-		return null;
+		IFluidHandler h = resolveFluidHandler();
+		return h == null ? null : h.drain(from, resource, doDrain);
 	}
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		if(getCoreObject() instanceof IFluidHandler) {
-			return ((IFluidHandler)getCoreObject()).drain(from, maxDrain, doDrain);
-		}
-		return null;
+		IFluidHandler h = resolveFluidHandler();
+		FluidStack r = h == null ? null : h.drain(from, maxDrain, doDrain);
+		if(DEBUG) System.out.println("[NTM-DBG] ProxyCombo.drain " + maxDrain + " handler=" + (h == null ? "null" : h.getClass().getSimpleName()) + " ret=" + (r == null ? "null" : r.getFluid().getName() + "x" + r.amount));
+		return r;
 	}
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		if(getCoreObject() instanceof IFluidHandler) {
-			return ((IFluidHandler)getCoreObject()).canFill(from, fluid);
-		}
-		return false;
+		IFluidHandler h = resolveFluidHandler();
+		return h != null && h.canFill(from, fluid);
 	}
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		if(getCoreObject() instanceof IFluidHandler) {
-			return ((IFluidHandler)getCoreObject()).canDrain(from, fluid);
-		}
-		return false;
+		IFluidHandler h = resolveFluidHandler();
+		return h != null && h.canDrain(from, fluid);
 	}
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		if(getCoreObject() instanceof IFluidHandler) {
-			return ((IFluidHandler)getCoreObject()).getTankInfo(from);
-		}
-		return new FluidTankInfo[0];
+		IFluidHandler h = resolveFluidHandler();
+		FluidTankInfo[] r = h == null ? new FluidTankInfo[0] : h.getTankInfo(from);
+		if(DEBUG) System.out.println("[NTM-DBG] ProxyCombo.getTankInfo handler=" + (h == null ? "null" : h.getClass().getSimpleName()) + " len=" + r.length);
+		return r;
 	}
 }

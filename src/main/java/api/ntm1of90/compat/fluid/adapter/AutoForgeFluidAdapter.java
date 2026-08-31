@@ -22,6 +22,8 @@ import net.minecraftforge.fluids.IFluidHandler;
  */
 public class AutoForgeFluidAdapter implements IFluidHandler {
 
+    public static final boolean DEBUG = false;
+
     static {
         // Initialize the fluid mapping registry
         FluidMappingRegistry.initialize();
@@ -79,6 +81,7 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
 
             // Find a tank that can accept this fluid
             for (FluidTank tank : tanks) {
+                            if (tank.getPressure() != 0) continue; // only unpressurized via Forge
                 // Check if tank is empty or contains the same fluid
                 int currentFill = tank.getFill();
                 FluidType currentType = tank.getTankType();
@@ -139,6 +142,7 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
 
             // Find a tank that contains this fluid
             for (FluidTank tank : tanks) {
+                            if (tank.getPressure() != 0) continue; // only unpressurized via Forge
                 // Check if tank contains the requested fluid
                 int currentFill = tank.getFill();
                 FluidType currentType = tank.getTankType();
@@ -201,6 +205,7 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
 
             // Find a tank that contains fluid
             for (FluidTank tank : tanks) {
+                            if (tank.getPressure() != 0) continue; // only unpressurized via Forge
                 // Check if tank contains fluid
                 int currentFill = tank.getFill();
                 FluidType currentType = tank.getTankType();
@@ -272,6 +277,7 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
 
             // Find a tank that can accept this fluid
             for (FluidTank tank : tanks) {
+                            if (tank.getPressure() != 0) continue; // only unpressurized via Forge
                 // Check if tank is empty or contains the same fluid
                 int currentFill = tank.getFill();
                 FluidType currentType = tank.getTankType();
@@ -310,6 +316,7 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
 
             // Find a tank that contains this fluid
             for (FluidTank tank : tanks) {
+                            if (tank.getPressure() != 0) continue; // only unpressurized via Forge
                 // Check if tank contains the requested fluid
                 int currentFill = tank.getFill();
                 FluidType currentType = tank.getTankType();
@@ -325,18 +332,14 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        // Get all tanks
-        FluidTank[] tanks = fluidUser.getAllTanks();
-        FluidTankInfo[] tankInfo = new FluidTankInfo[tanks.length];
-
-        // Create tank info for each tank
-        for (int i = 0; i < tanks.length; i++) {
-            FluidTank tank = tanks[i];
+        // Get all tanks - only unpressurized exposed via Forge
+        FluidTank[] all = fluidUser.getAllTanks();
+        java.util.List<FluidTankInfo> list = new java.util.ArrayList<>();
+        for (FluidTank tank : all) {
+            if (tank.getPressure() != 0) continue;
             int currentFill = tank.getFill();
             int maxFill = tank.getMaxFill();
             FluidType currentType = tank.getTankType();
-
-            // Create a fluid stack for the current contents
             FluidStack stack = null;
             if (currentFill > 0 && currentType != Fluids.NONE) {
                 Fluid forgeFluid = FluidMappingRegistry.getForgeFluid(currentType);
@@ -344,11 +347,8 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
                     stack = new FluidStack(forgeFluid, toForgeAmount(currentFill));
                 }
             }
-
-            // Create the tank info
-            tankInfo[i] = new FluidTankInfo(stack, toForgeAmount(maxFill));
+            list.add(new FluidTankInfo(stack, toForgeAmount(maxFill)));
         }
-
-        return tankInfo;
+        return list.toArray(new FluidTankInfo[0]);
     }
 }

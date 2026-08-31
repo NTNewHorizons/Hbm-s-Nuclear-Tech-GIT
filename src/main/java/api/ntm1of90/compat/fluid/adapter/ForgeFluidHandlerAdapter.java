@@ -75,6 +75,7 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
         // Find a tank that can accept this fluid
         FluidTank[] tanks = getHbmTanks();
         for (FluidTank tank : tanks) {
+                    if (tank.getPressure() != 0) continue; // only unpressurized
             // Check if tank is empty or contains the same fluid
             int currentFill = tank.getFill();
             FluidType currentType = tank.getTankType();
@@ -127,6 +128,7 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
         // Find a tank that contains this fluid
         FluidTank[] tanks = getHbmTanks();
         for (FluidTank tank : tanks) {
+                    if (tank.getPressure() != 0) continue; // only unpressurized
             // Check if tank contains the requested fluid
             int currentFill = tank.getFill();
             FluidType currentType = tank.getTankType();
@@ -177,6 +179,7 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
         // Find a tank that contains fluid
         FluidTank[] tanks = getHbmTanks();
         for (FluidTank tank : tanks) {
+                    if (tank.getPressure() != 0) continue; // only unpressurized
             // Check if tank contains fluid
             int currentFill = tank.getFill();
             FluidType currentType = tank.getTankType();
@@ -232,6 +235,7 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
         // If fluid is null, treat as generic probe: any capacity available?
         if (fluid == null) {
             for (FluidTank tank : tanks) {
+                        if (tank.getPressure() != 0) continue; // only unpressurized
                 if (tank.getFill() < tank.getMaxFill()) {
                     return true;
                 }
@@ -247,6 +251,7 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
 
         // Find a tank that can accept this specific fluid
         for (FluidTank tank : tanks) {
+                    if (tank.getPressure() != 0) continue; // only unpressurized
             int currentFill = tank.getFill();
             FluidType currentType = tank.getTankType();
             int maxFill = tank.getMaxFill();
@@ -270,6 +275,7 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
         // If fluid is null, treat as generic probe: any fluid present?
         if (fluid == null) {
             for (FluidTank tank : tanks) {
+                        if (tank.getPressure() != 0) continue; // only unpressurized
                 if (tank.getFill() > 0 && tank.getTankType() != Fluids.NONE) {
                     return true;
                 }
@@ -285,6 +291,7 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
 
         // Find a tank that contains this specific fluid
         for (FluidTank tank : tanks) {
+                    if (tank.getPressure() != 0) continue; // only unpressurized
             int currentFill = tank.getFill();
             FluidType currentType = tank.getTankType();
 
@@ -298,18 +305,14 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        // Get the HBM tanks
+        // Get the HBM tanks - only unpressurized
         FluidTank[] hbmTanks = getHbmTanks();
-        FluidTankInfo[] tankInfo = new FluidTankInfo[hbmTanks.length];
-
-        // Create tank info for each tank
-        for (int i = 0; i < hbmTanks.length; i++) {
-            FluidTank tank = hbmTanks[i];
+        java.util.List<FluidTankInfo> list = new java.util.ArrayList<>();
+        for (FluidTank tank : hbmTanks) {
+            if (tank.getPressure() != 0) continue;
             int currentFill = tank.getFill();
             int maxFill = tank.getMaxFill();
             FluidType currentType = tank.getTankType();
-
-            // Create a fluid stack for the current contents
             FluidStack stack = null;
             if (currentFill > 0 && currentType != Fluids.NONE) {
                 Fluid forgeFluid = FluidMappingRegistry.getForgeFluid(currentType);
@@ -317,11 +320,8 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
                     stack = new FluidStack(forgeFluid, toForgeAmount(currentFill));
                 }
             }
-
-            // Create the tank info
-            tankInfo[i] = new FluidTankInfo(stack, toForgeAmount(maxFill));
+            list.add(new FluidTankInfo(stack, toForgeAmount(maxFill)));
         }
-
-        return tankInfo;
+        return list.toArray(new FluidTankInfo[0]);
     }
 }

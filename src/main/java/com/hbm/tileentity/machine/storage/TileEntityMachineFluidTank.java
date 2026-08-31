@@ -598,7 +598,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 	
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		if (resource == null || resource.amount <= 0 || !canFillFrom(from)) {
+		if (resource == null || resource.amount <= 0 || !canFillFrom(from) || tank.getPressure() != 0) {
 			return 0;
 		}
 		com.hbm.inventory.fluid.FluidType ntmFluid = FluidMappingRegistry.getHbmFluidType(resource.getFluid());
@@ -627,7 +627,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		if (resource == null || resource.amount <= 0 || !canDrainFrom(from)) {
+		if (resource == null || resource.amount <= 0 || !canDrainFrom(from) || tank.getPressure() != 0) {
 			return null;
 		}
 		com.hbm.inventory.fluid.FluidType ntmFluid = FluidMappingRegistry.getHbmFluidType(resource.getFluid());
@@ -656,7 +656,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		if (maxDrain <= 0 || !canDrainFrom(from)) {
+		if (maxDrain <= 0 || !canDrainFrom(from) || tank.getPressure() != 0) {
 			return null;
 		}
 		int currentFill = tank.getFill();
@@ -681,7 +681,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		if (this.hasExploded) {
+		if (this.hasExploded || tank.getPressure() != 0) {
 			return false;
 		}
 		if (fluid == null) {
@@ -702,7 +702,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		if (this.hasExploded) {
+		if (this.hasExploded || tank.getPressure() != 0) {
 			return false;
 		}
 		if (fluid == null) {
@@ -722,6 +722,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+		if (tank.getPressure() != 0) return new FluidTankInfo[0];
 		int currentFill = tank.getFill();
 		int maxFill = tank.getMaxFill();
 		com.hbm.inventory.fluid.FluidType currentType = tank.getTankType();

@@ -120,76 +120,9 @@ public class ForgeFluidAdapterRegistry {
      * @return True if the tile entity is blacklisted, false otherwise
      */
     private static boolean isBlacklistedTileEntity(TileEntity tileEntity) {
-        if (tileEntity == null) {
-            return true;
-        }
-
-        // Check the cache first
-        Class<?> tileClass = tileEntity.getClass();
-        if (compatibilityCache.containsKey(tileClass)) {
-            return compatibilityCache.get(tileClass);
-        }
-
-        // Get the class name
-        String className = tileClass.getName();
-
-        // Check against known problematic classes
-        boolean isBlacklisted = className.contains("TileEntityCustomMachine") ||
-            className.contains("TileEntityMachineBase") ||
-            className.contains("TileEntityMachineAssembler") ||
-            className.contains("TileEntityMachineChemplant") ||
-            className.contains("TileEntityMachineFluidTank") ||
-            className.contains("TileEntityMachineTurbine") ||
-            className.contains("TileEntityMachineReactorLarge") ||
-            className.contains("TileEntityMachineReactorSmall") ||
-            className.contains("TileEntityMachineMiningDrill") ||
-            className.contains("TileEntityMachineMiningLaser") ||
-            className.contains("TileEntityMachinePress") ||
-            className.contains("TileEntityMachineCrystallizer") ||
-            className.contains("TileEntityMachineBoiler") ||
-            className.contains("TileEntityMachineElectricFurnace") ||
-            className.contains("TileEntityMachineGenerator") ||
-            className.contains("TileEntityMachineDiesel") ||
-            className.contains("TileEntityMachineCombustionEngine") ||
-            className.contains("TileEntityMachineOilWell") ||
-            className.contains("TileEntityMachineRefinery") ||
-            className.contains("TileEntityMachinePumpjack") ||
-            className.contains("TileEntityMachineGasFlare") ||
-            className.contains("TileEntityMachineCoal") ||
-            className.contains("TileEntityMachineRTG") ||
-            className.contains("TileEntityMachineBattery") ||
-            className.contains("TileEntityMachineTransformer") ||
-            className.contains("TileEntityMachineCapacitor") ||
-            className.contains("TileEntityMachineEMP") ||
-            className.contains("TileEntityMachineRadar") ||
-            className.contains("TileEntityMachineRadio") ||
-            className.contains("TileEntityMachineRadGen") ||
-            className.contains("TileEntityMachineUF6Tank") ||
-            className.contains("TileEntityMachinePuF6Tank") ||
-            className.contains("TileEntityMachineIGenerator") ||
-            className.contains("TileEntityMachineCyclotron") ||
-            className.contains("TileEntityMachineOilDerrick") ||
-            className.contains("TileEntityMachineGasCent") ||
-            className.contains("TileEntityMachineConveyorPress") ||
-            className.contains("TileEntityMachineConveyor") ||
-            className.contains("TileEntityMachineEPress") ||
-            className.contains("TileEntityMachineExcavator") ||
-            className.contains("TileEntityMachineMixer") ||
-            className.contains("TileEntityMachineFluidTank") ||
-            className.contains("TileEntityDummy") ||
-            className.contains("TileEntityProxyBase") ||
-            className.contains("TileEntityProxyInventory") ||
-            className.contains("TileEntityProxyCombo") ||
-            className.contains("TileEntityCable") ||
-            className.contains("TileEntityConnector") ||
-            className.contains("TileEntityPipe") ||
-            className.contains("TileEntityPipeBaseNT") ||
-            className.contains("TileEntityFluidDuct");
-
-        // Cache the result
-        compatibilityCache.put(tileClass, isBlacklisted);
-
-        return isBlacklisted;
+        // All machines now expose Forge fluids via adapter/direct IFluidHandler.
+        // Pressure filtering is handled in the adapters/handlers themselves.
+        return false;
     }
 
     /**
