@@ -49,6 +49,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import api.ntm1of90.compat.fluid.registry.FluidMappingRegistry;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -56,7 +61,7 @@ import java.util.List;
 import java.util.Random;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "opencomputers")})
-public class TileEntityMachineFluidTank extends TileEntityMachineBase implements SimpleComponent, OCComponent, IFluidStandardTransceiverMK2, IPersistentNBT, IOverpressurable, IGUIProvider, IRepairable, IFluidCopiable, IRORValueProvider, IRORInteractive {
+public class TileEntityMachineFluidTank extends TileEntityMachineBase implements SimpleComponent, OCComponent, IFluidStandardTransceiverMK2, IPersistentNBT, IOverpressurable, IGUIProvider, IRepairable, IFluidCopiable, IRORValueProvider, IRORInteractive, IFluidHandler {
 
 	protected FluidNode node;
 	protected FluidType lastType;
@@ -587,5 +592,154 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 			return null;
 		}
 		return null;
+	}
+
+	// ===== Forge Fluid Handler Implementation =====
+	
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+		if (resource == null || resource.amount <= 0 || !canFillFrom(from)) {
+			return 0;
+		}
+		com.hbm.inventory.fluid.FluidType ntmFluid = FluidMappingRegistry.getHbmFluidType(resource.getFluid());
+		if (ntmFluid == com.hbm.inventory.fluid.Fluids.NONE) {
+			return 0;
+		}
+		int currentFill = tank.getFill();
+		com.hbm.inventory.fluid.FluidType currentType = tank.getTankType();
+		if (currentFill > 0 && currentType != ntmFluid) {
+			return 0;
+		}
+		int maxFill = tank.getMaxFill();
+		int fillAmount = Math.min(resource.amount, maxFill - currentFill);
+		if (fillAmount <= 0) {
+			return 0;
+		}
+		if (doFill) {
+			if (currentFill == 0) {
+				tank.setTankType(ntmFluid);
+			}
+			tank.setFill(currentFill + fillAmount);
+			this.markDirty();
+		}
+		return fillAmount;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+		if (resource == null || resource.amount <= 0 || !canDrainFrom(from)) {
+			return null;
+		}
+		com.hbm.inventory.fluid.FluidType ntmFluid = FluidMappingRegistry.getHbmFluidType(resource.getFluid());
+		if (ntmFluid == com.hbm.inventory.fluid.Fluids.NONE) {
+			return null;
+		}
+		int currentFill = tank.getFill();
+		com.hbm.inventory.fluid.FluidType currentType = tank.getTankType();
+		if (currentFill <= 0 || currentType != ntmFluid) {
+			return null;
+		}
+		int drainAmount = Math.min(resource.amount, currentFill);
+		if (drainAmount <= 0) {
+			return null;
+		}
+		if (doDrain) {
+			tank.setFill(currentFill - drainAmount);
+			this.markDirty();
+		}
+		Fluid forgeFluid = FluidMappingRegistry.getForgeFluid(currentType);
+		if (forgeFluid != null) {
+			return new FluidStack(forgeFluid, drainAmount);
+		}
+		return null;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		if (maxDrain <= 0 || !canDrainFrom(from)) {
+			return null;
+		}
+		int currentFill = tank.getFill();
+		com.hbm.inventory.fluid.FluidType currentType = tank.getTankType();
+		if (currentFill <= 0 || currentType == com.hbm.inventory.fluid.Fluids.NONE) {
+			return null;
+		}
+		Fluid forgeFluid = FluidMappingRegistry.getForgeFluid(currentType);
+		if (forgeFluid == null) {
+			return null;
+		}
+		int drainAmount = Math.min(maxDrain, currentFill);
+		if (drainAmount <= 0) {
+			return null;
+		}
+		if (doDrain) {
+			tank.setFill(currentFill - drainAmount);
+			this.markDirty();
+		}
+		return new FluidStack(forgeFluid, drainAmount);
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid) {
+		if (this.hasExploded) {
+			return false;
+		}
+		if (fluid == null) {
+			return tank.getFill() < tank.getMaxFill();
+		}
+		if (!canFillFrom(from)) {
+			return false;
+		}
+		com.hbm.inventory.fluid.FluidType ntmFluid = FluidMappingRegistry.getHbmFluidType(fluid);
+		if (ntmFluid == com.hbm.inventory.fluid.Fluids.NONE) {
+			return false;
+		}
+		int currentFill = tank.getFill();
+		com.hbm.inventory.fluid.FluidType currentType = tank.getTankType();
+		int maxFill = tank.getMaxFill();
+		return currentFill < maxFill && (currentFill <= 0 || currentType == ntmFluid);
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+		if (this.hasExploded) {
+			return false;
+		}
+		if (fluid == null) {
+			return tank.getFill() > 0 && tank.getTankType() != com.hbm.inventory.fluid.Fluids.NONE;
+		}
+		if (!canDrainFrom(from)) {
+			return false;
+		}
+		com.hbm.inventory.fluid.FluidType ntmFluid = FluidMappingRegistry.getHbmFluidType(fluid);
+		if (ntmFluid == com.hbm.inventory.fluid.Fluids.NONE) {
+			return false;
+		}
+		int currentFill = tank.getFill();
+		com.hbm.inventory.fluid.FluidType currentType = tank.getTankType();
+		return currentFill > 0 && currentType == ntmFluid;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+		int currentFill = tank.getFill();
+		int maxFill = tank.getMaxFill();
+		com.hbm.inventory.fluid.FluidType currentType = tank.getTankType();
+		FluidStack stack = null;
+		if (currentFill > 0 && currentType != com.hbm.inventory.fluid.Fluids.NONE) {
+			Fluid forgeFluid = FluidMappingRegistry.getForgeFluid(currentType);
+			if (forgeFluid != null) {
+				stack = new FluidStack(forgeFluid, currentFill);
+			}
+		}
+		return new FluidTankInfo[] { new FluidTankInfo(stack, maxFill) };
+	}
+
+	private boolean canFillFrom(ForgeDirection from) {
+		return !this.hasExploded && (mode == 0 || mode == 1);
+	}
+
+	private boolean canDrainFrom(ForgeDirection from) {
+		return !this.hasExploded && (mode == 1 || mode == 2);
 	}
 }

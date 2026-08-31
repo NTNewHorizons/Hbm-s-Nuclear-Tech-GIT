@@ -292,6 +292,8 @@ public class MainRegistry {
 		// Initialize the adapter registry and capability hook
 		api.ntm1of90.compat.fluid.registry.ForgeFluidAdapterRegistry.initialize();
 		api.ntm1of90.compat.fluid.ForgeFluidCapabilityHook.initialize();
+		// Initialize AE2 fluid compatibility (handles ME fluid cells, terminal colors, etc.)
+		try { api.ntm1of90.compat.ae2.AE2FluidCompat.initialize(); } catch(Exception e) { System.err.println("[NTM] AE2FluidCompat init failed: " + e.getMessage()); }
 		proxy.registerPreRenderInfo();
 		ModBlocks.mainRegistry();
 		ModItems.mainRegistry();
