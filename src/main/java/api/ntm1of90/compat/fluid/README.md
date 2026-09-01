@@ -83,11 +83,11 @@ IIcon inventoryIcon = FluidRegistry.getInventoryIcon("oil");
 
 ## Package Structure
 
-- `adapter`: Contains adapter classes that implement Forge's IFluidHandler interface for HBM's fluid system
-- `bridge`: Contains bridge classes that connect HBM's fluid network to Forge's fluid system
-- `registry`: Contains registry classes for mapping between HBM's FluidType and Forge's Fluid
-- `render`: Contains rendering-related classes for fluid compatibility
-- `util`: Contains utility classes for fluid compatibility
+- `adapter`: Adapter classes implementing Forge's IFluidHandler for HBM tile entities
+- `item`: IFluidContainerItem bridges for NTM fluid container items
+- `registry`: Mapping between HBM's FluidType and Forge's Fluid, adapter registry, texture registry
+- `render`: Fluid rendering (ColoredForgeFluid, color applier, texture mapper)
+- `util`: Fluid conversion (1:1 mB) and localization
 
 ## Implementation Details
 
@@ -95,13 +95,12 @@ The API uses a non-invasive approach to provide compatibility between the two fl
 
 The main components of the API are:
 
-1. **FluidRegistry**: Dynamically loads fluid properties from `Fluids.getAll()` and manages texture registration
+1. **FluidRegistry**: Loads fluid properties from `Fluids.getAll()` and manages texture registration
 2. **FluidMappingRegistry**: Maps between HBM's FluidType and Forge's Fluid
-3. **ForgeFluidAdapterRegistry**: Provides IFluidHandler implementations for HBM tile entities
-4. **ForgeFluidCapabilityHook**: Hooks into Forge's capability system to provide IFluidHandler capabilities for HBM tile entities
-5. **NTMFluidTextureMapper**: Maps fluid textures between the two systems
-6. **NTMFluidLocalization**: Provides localization support for fluid names
-7. **ColoredForgeFluid**: Extends Forge's Fluid class to support HBM's color system
+3. **ForgeFluidAdapterRegistry**: Provides IFluidHandler for every IFluidUserMK2 tile (pressurized tanks excluded)
+4. **ForgeFluidCapabilityHook**: Server-tick registration + bucket right-click handling
+5. **NTMFluidContainerBridge / ItemFluidContainerEmpty / ItemBlockFluidStorage**: container bridges (see item package)
+6. **ColoredForgeFluid**: Forge Fluid carrying HBM's color
 
 ## Notes
 

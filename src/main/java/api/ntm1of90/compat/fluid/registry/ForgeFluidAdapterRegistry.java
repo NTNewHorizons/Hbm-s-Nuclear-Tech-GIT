@@ -1,6 +1,5 @@
 package api.ntm1of90.compat.fluid.registry;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -19,9 +18,6 @@ public class ForgeFluidAdapterRegistry {
 
     // Use a WeakHashMap to avoid memory leaks when tile entities are unloaded
     private static final Map<TileEntity, IFluidHandler> adapterMap = new WeakHashMap<>();
-
-    // Cache of class compatibility to avoid repeated checks
-    private static final Map<Class<?>, Boolean> compatibilityCache = new HashMap<>();
 
     private static boolean initialized = false;
 
@@ -48,39 +44,32 @@ public class ForgeFluidAdapterRegistry {
             return null;
         }
 
-        // If the tile entity already implements IFluidHandler, return it
         if (tileEntity instanceof IFluidHandler) {
             return (IFluidHandler) tileEntity;
         }
 
-        // Check if we already have an adapter for this tile entity
         if (adapterMap.containsKey(tileEntity)) {
             return adapterMap.get(tileEntity);
         }
 
-        // Check if the tile entity is in the blacklist
         if (isBlacklistedTileEntity(tileEntity)) {
             return null;
         }
 
-        // If the tile entity implements IFluidUserMK2, create an adapter
         if (tileEntity instanceof IFluidUserMK2) {
             IFluidUserMK2 fluidUser = (IFluidUserMK2) tileEntity;
 
             // Check if the tile entity has any fluid tanks
             com.hbm.inventory.fluid.tank.FluidTank[] tanks = fluidUser.getAllTanks();
             if (tanks == null || tanks.length == 0) {
-                // No tanks, so no need for fluid compatibility
                 return null;
             }
 
-            // Create an adapter and register it
             IFluidHandler adapter = new AutoForgeFluidAdapter(fluidUser, tileEntity);
             adapterMap.put(tileEntity, adapter);
             return adapter;
         }
 
-        // If the tile entity is a dummy, get the target tile entity
         if (tileEntity instanceof com.hbm.tileentity.machine.TileEntityDummy) {
             com.hbm.tileentity.machine.TileEntityDummy dummy = (com.hbm.tileentity.machine.TileEntityDummy) tileEntity;
             TileEntity target = tileEntity.getWorldObj().getTileEntity(dummy.targetX, dummy.targetY, dummy.targetZ);

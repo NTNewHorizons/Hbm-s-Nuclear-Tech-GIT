@@ -11,9 +11,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 /**
- * Multiblock dummy port. Exposes the core tile's IFluidHandler (direct or via
- * AutoForgeFluidAdapter) so external mods (AE2 buses, pipes) that check
- * tile instanceof IFluidHandler can interact with multiblock machines.
+ * Multiblock dummy port exposing the core tile's IFluidHandler to external mods.
  */
 public class TileEntityDummy extends TileEntity implements IFluidHandler {
 
@@ -33,8 +31,6 @@ public class TileEntityDummy extends TileEntity implements IFluidHandler {
     	}
     }
 
-	public static final boolean DEBUG = false;
-
 	private IFluidHandler getTargetHandler() {
 		if(this.worldObj == null || this.worldObj.isRemote) return null;
 		// re-resolve every second in case the core TE was replaced/repaired
@@ -46,7 +42,6 @@ public class TileEntityDummy extends TileEntity implements IFluidHandler {
 				this.cachedHandler = ForgeFluidAdapterRegistry.getFluidHandler(target);
 			}
 			this.handlerResolved = this.cachedHandler != null;
-			if(DEBUG) System.out.println("[NTM-DBG] Dummy@" + xCoord + "," + yCoord + "," + zCoord + " target=" + (target == null ? "null" : target.getClass().getSimpleName()) + " handler=" + (this.cachedHandler == null ? "null" : this.cachedHandler.getClass().getSimpleName()));
 		}
 		return this.cachedHandler;
 	}
@@ -54,9 +49,7 @@ public class TileEntityDummy extends TileEntity implements IFluidHandler {
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 		IFluidHandler h = getTargetHandler();
-		int r = h == null ? 0 : h.fill(from, resource, doFill);
-		if(DEBUG && resource != null) System.out.println("[NTM-DBG] Dummy.fill " + resource.getFluid().getName() + "x" + resource.amount + " do=" + doFill + " handler=" + (h == null ? "null" : h.getClass().getSimpleName()) + " ret=" + r);
-		return r;
+		return h == null ? 0 : h.fill(from, resource, doFill);
 	}
 
 	@Override

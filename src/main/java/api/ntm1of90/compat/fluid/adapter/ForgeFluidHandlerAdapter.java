@@ -66,17 +66,14 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
             return 0;
         }
 
-        // Convert Forge fluid to NTM fluid
         FluidType ntmFluid = FluidMappingRegistry.getHbmFluidType(resource.getFluid());
         if (ntmFluid == Fluids.NONE) {
             return 0; // Unknown fluid
         }
 
-        // Find a tank that can accept this fluid
         FluidTank[] tanks = getHbmTanks();
         for (FluidTank tank : tanks) {
                     if (tank.getPressure() != 0) continue; // only unpressurized
-            // Check if tank is empty or contains the same fluid
             int currentFill = tank.getFill();
             FluidType currentType = tank.getTankType();
 
@@ -84,7 +81,6 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
                 continue; // Tank contains a different fluid
             }
 
-            // Calculate how much can be filled
             int ntmAmount = toNTMAmount(resource.amount);
             int maxFill = tank.getMaxFill();
             int fillAmount = Math.min(ntmAmount, maxFill - currentFill);
@@ -100,7 +96,6 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
                 }
                 tank.setFill(currentFill + fillAmount);
 
-                // Mark the tile entity as dirty
                 TileEntity tile = getTileEntity();
                 if (tile != null) {
                     tile.markDirty();
@@ -119,17 +114,14 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
             return null;
         }
 
-        // Convert Forge fluid to NTM fluid
         FluidType ntmFluid = FluidMappingRegistry.getHbmFluidType(resource.getFluid());
         if (ntmFluid == Fluids.NONE) {
             return null; // Unknown fluid
         }
 
-        // Find a tank that contains this fluid
         FluidTank[] tanks = getHbmTanks();
         for (FluidTank tank : tanks) {
                     if (tank.getPressure() != 0) continue; // only unpressurized
-            // Check if tank contains the requested fluid
             int currentFill = tank.getFill();
             FluidType currentType = tank.getTankType();
 
@@ -137,7 +129,6 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
                 continue; // Tank is empty or contains a different fluid
             }
 
-            // Calculate how much can be drained
             int ntmAmount = toNTMAmount(resource.amount);
             int drainAmount = Math.min(ntmAmount, currentFill);
 
@@ -150,17 +141,12 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
                 int newFill = currentFill - drainAmount;
                 tank.setFill(newFill);
 
-                // We don't reset the tank type when it's empty anymore
-                // This allows the tank to remember what fluid it contained
-
-                // Mark the tile entity as dirty
                 TileEntity tile = getTileEntity();
                 if (tile != null) {
                     tile.markDirty();
                 }
             }
 
-            // Create a fluid stack for the drained fluid
             Fluid forgeFluid = FluidMappingRegistry.getForgeFluid(currentType);
             if (forgeFluid != null) {
                 return new FluidStack(forgeFluid, toForgeAmount(drainAmount));
@@ -176,11 +162,9 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
             return null;
         }
 
-        // Find a tank that contains fluid
         FluidTank[] tanks = getHbmTanks();
         for (FluidTank tank : tanks) {
                     if (tank.getPressure() != 0) continue; // only unpressurized
-            // Check if tank contains fluid
             int currentFill = tank.getFill();
             FluidType currentType = tank.getTankType();
 
@@ -194,7 +178,6 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
                 continue; // No Forge fluid mapping
             }
 
-            // Calculate how much can be drained
             int ntmDrainAmount = toNTMAmount(maxDrain);
             int drainAmount = Math.min(ntmDrainAmount, currentFill);
 
@@ -207,17 +190,12 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
                 int newFill = currentFill - drainAmount;
                 tank.setFill(newFill);
 
-                // We don't reset the tank type when it's empty anymore
-                // This allows the tank to remember what fluid it contained
-
-                // Mark the tile entity as dirty
                 TileEntity tile = getTileEntity();
                 if (tile != null) {
                     tile.markDirty();
                 }
             }
 
-            // Create a fluid stack for the drained fluid
             return new FluidStack(forgeFluid, toForgeAmount(drainAmount));
         }
 
@@ -232,7 +210,6 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
 
         FluidTank[] tanks = getHbmTanks();
 
-        // If fluid is null, treat as generic probe: any capacity available?
         if (fluid == null) {
             for (FluidTank tank : tanks) {
                         if (tank.getPressure() != 0) continue; // only unpressurized
@@ -243,13 +220,11 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
             return false;
         }
 
-        // Convert Forge fluid to NTM fluid
         FluidType ntmFluid = FluidMappingRegistry.getHbmFluidType(fluid);
         if (ntmFluid == Fluids.NONE) {
             return false; // Unknown fluid
         }
 
-        // Find a tank that can accept this specific fluid
         for (FluidTank tank : tanks) {
                     if (tank.getPressure() != 0) continue; // only unpressurized
             int currentFill = tank.getFill();
@@ -272,7 +247,6 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
 
         FluidTank[] tanks = getHbmTanks();
 
-        // If fluid is null, treat as generic probe: any fluid present?
         if (fluid == null) {
             for (FluidTank tank : tanks) {
                         if (tank.getPressure() != 0) continue; // only unpressurized
@@ -283,7 +257,6 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
             return false;
         }
 
-        // Convert Forge fluid to NTM fluid
         FluidType ntmFluid = FluidMappingRegistry.getHbmFluidType(fluid);
         if (ntmFluid == Fluids.NONE) {
             return false; // Unknown fluid
@@ -305,7 +278,6 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        // Get the HBM tanks - only unpressurized
         FluidTank[] hbmTanks = getHbmTanks();
         java.util.List<FluidTankInfo> list = new java.util.ArrayList<>();
         for (FluidTank tank : hbmTanks) {

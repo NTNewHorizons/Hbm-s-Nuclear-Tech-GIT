@@ -41,11 +41,8 @@ public class NTMFluidContainerBridge {
 	}
 
 	/** All-or-nothing drain, matching vanilla bucket semantics. Swaps the stack to its empty variant on doDrain. */
-	public static final boolean DEBUG = false;
-
 	public static FluidStack drain(ItemStack stack, FluidType type, int maxDrain, boolean doDrain) {
 		FluidStack content = getFluidStack(stack, type);
-		if(DEBUG) System.out.println("[NTM-DBG] drain " + (stack == null ? "null" : stack.getItem().getUnlocalizedName()) + " type=" + (type == null ? "null" : type.getName()) + " content=" + (content == null ? "null" : content.amount) + " maxDrain=" + maxDrain + " do=" + doDrain);
 		if(content == null || maxDrain < content.amount) return null;
 
 		if(doDrain && stack != null && stack.getItem().hasContainerItem(stack)) {

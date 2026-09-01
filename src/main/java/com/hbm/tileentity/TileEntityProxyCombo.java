@@ -42,8 +42,6 @@ import api.ntm1of90.compat.fluid.registry.ForgeFluidAdapterRegistry;
 })
 public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergyReceiverMK2, IEnergyConductorMK2, ISidedInventory, IFluidReceiverMK2, IHeatSource, ICrucibleAcceptor, SimpleComponent, OCComponent, IRORValueProvider, IRORInteractive, IFluidHandler {
 
-	public static final boolean DEBUG = false;
-
 	TileEntity tile;
 	boolean inventory;
 	boolean power;
@@ -590,9 +588,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 		IFluidHandler h = resolveFluidHandler();
-		int r = h == null ? 0 : h.fill(from, resource, doFill);
-		if(DEBUG && resource != null) System.out.println("[NTM-DBG] ProxyCombo.fill " + resource.getFluid().getName() + "x" + resource.amount + " do=" + doFill + " handler=" + (h == null ? "null" : h.getClass().getSimpleName()) + " ret=" + r);
-		return r;
+		return h == null ? 0 : h.fill(from, resource, doFill);
 	}
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
@@ -602,9 +598,7 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 		IFluidHandler h = resolveFluidHandler();
-		FluidStack r = h == null ? null : h.drain(from, maxDrain, doDrain);
-		if(DEBUG) System.out.println("[NTM-DBG] ProxyCombo.drain " + maxDrain + " handler=" + (h == null ? "null" : h.getClass().getSimpleName()) + " ret=" + (r == null ? "null" : r.getFluid().getName() + "x" + r.amount));
-		return r;
+		return h == null ? null : h.drain(from, maxDrain, doDrain);
 	}
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
@@ -619,8 +613,6 @@ public class TileEntityProxyCombo extends TileEntityProxyBase implements IEnergy
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 		IFluidHandler h = resolveFluidHandler();
-		FluidTankInfo[] r = h == null ? new FluidTankInfo[0] : h.getTankInfo(from);
-		if(DEBUG) System.out.println("[NTM-DBG] ProxyCombo.getTankInfo handler=" + (h == null ? "null" : h.getClass().getSimpleName()) + " len=" + r.length);
-		return r;
+		return h == null ? new FluidTankInfo[0] : h.getTankInfo(from);
 	}
 }

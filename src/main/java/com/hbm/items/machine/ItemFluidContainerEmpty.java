@@ -33,8 +33,8 @@ public class ItemFluidContainerEmpty extends ItemCustomLore implements IFluidCon
 		if(type == Fluids.NONE) return 0;
 
 		ItemStack full = FluidContainerRegistry.getFullContainer(stack, type);
-		int content = full == null ? 0 : FluidContainerRegistry.getFluidContent(full, type);
-		if(api.ntm1of90.compat.fluid.item.NTMFluidContainerBridge.DEBUG) System.out.println("[NTM-DBG] fill " + stack.getItem().getUnlocalizedName() + " res=" + resource.getFluid().getName() + "x" + resource.amount + " type=" + type.getName() + " full=" + (full == null ? "null" : full.getItem().getUnlocalizedName()) + " content=" + content);
+		if(full == null) return 0;
+		int content = FluidContainerRegistry.getFluidContent(full, type);
 		if(content <= 0 || resource.amount < content) return 0;
 
 		if(doFill) {

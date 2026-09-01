@@ -1,13 +1,8 @@
 /**
- * Compatibility API for NTM1of90's extensions to HBM's Nuclear Tech Mod.
- *
- * This package contains utilities and APIs for providing compatibility between
- * HBM's Nuclear Tech Mod and other mods.
+ * Compatibility APIs for HBM's Nuclear Tech Mod.
  *
  * Subpackages:
- * - fluid: Contains utilities and APIs for providing compatibility between
- *   HBM's custom fluid system and Forge's standard fluid system.
- * - ae2: Contains utilities and APIs for providing compatibility with
- *   Applied Energistics 2.
+ * - fluid: Forge fluid system compatibility (registry, adapters, rendering, items)
+ * - ae2: AE2 integration hook (passive; IFluidHandler bridge covers rv3-beta-1045)
  */
 package api.ntm1of90.compat;

@@ -45,33 +45,25 @@ public class FluidMappingRegistry {
         // Automatically map all HBM fluids to Forge fluids
         // This ensures that all fluids are correctly mapped without manual listing
         for (FluidType fluidType : Fluids.getAll()) {
-            // Skip NONE fluid as it's a special case
             if (fluidType == Fluids.NONE) {
                 continue;
             }
 
-            // Skip fluids with special traits that shouldn't be mapped
             if (fluidType.hasNoContainer() || fluidType.hasNoID()) {
                 System.out.println("[NTM] Skipping special fluid: " + fluidType.getName());
                 continue;
             }
 
-            // Convert the HBM fluid name to a standard Forge fluid name format
-            // HBM uses uppercase names like "WATER", Forge uses lowercase like "water"
             String forgeName = fluidType.getName().toLowerCase(Locale.US);
 
-            // Register the primary mapping
             registerFluidMapping(forgeName, fluidType);
             mappedCount++;
 
-            // Add common aliases for better compatibility with other mods
             addFluidAliases(fluidType);
         }
 
-        // Count the number of mapped fluids
         mappedCount = forgeToHbmMap.size();
 
-        // Register all HBM fluids with Forge's FluidRegistry
         for (String forgeName : forgeToHbmMap.keySet()) {
             if (net.minecraftforge.fluids.FluidRegistry.getFluid(forgeName) == null) {
                 FluidType hbmFluid = forgeToHbmMap.get(forgeName);
@@ -81,20 +73,13 @@ public class FluidMappingRegistry {
             }
         }
 
-        // All fluids have been registered and mapped
-
         System.out.println("[NTM] Fluid mapping complete! Mapped " + mappedCount + " NTM fluids to Forge fluid system.");
         System.out.println("[NTM] Total number of fluid mappings created: " + forgeToHbmMap.size());
 
-        // Initialize fluid registry
         api.ntm1of90.compat.fluid.registry.FluidRegistry.initialize();
 
-        // Initialize fluid localization
         NTMFluidLocalization.initialize();
 
-        // Fluid inventory rendering is now handled by FluidRegistry
-
-        // Print a detailed summary of all mappings
         printFluidMappingSummary();
 
         initialized = true;
@@ -108,17 +93,13 @@ public class FluidMappingRegistry {
         System.out.println("[NTM] Total NTM fluids mapped: " + hbmToForgeMap.size());
         System.out.println("[NTM] Total Forge fluid mappings: " + forgeToHbmMap.size());
 
-        // Get a set of all unique HBM fluids that have been mapped
         Set<FluidType> mappedHbmFluids = new HashSet<>(hbmToForgeMap.keySet());
         System.out.println("[NTM] NTM Fluids with Forge Mappings: " + mappedHbmFluids.size());
 
-        // Sort the HBM fluids by name for easier reading
         List<FluidType> sortedHbmFluids = new ArrayList<>(mappedHbmFluids);
         sortedHbmFluids.sort((f1, f2) -> f1.getName().compareTo(f2.getName()));
 
-        // Print each HBM fluid and all its Forge mappings
         for (FluidType hbmFluid : sortedHbmFluids) {
-            // Find all Forge names that map to this HBM fluid
             List<String> forgeNames = new ArrayList<>();
             for (Map.Entry<String, FluidType> entry : forgeToHbmMap.entrySet()) {
                 if (entry.getValue() == hbmFluid) {
@@ -126,14 +107,12 @@ public class FluidMappingRegistry {
                 }
             }
 
-            // Sort the Forge names for consistency
             Collections.sort(forgeNames);
 
             // Print the HBM fluid and all its Forge mappings
             System.out.println("[NTM]   - " + hbmFluid.getName() + " -> " + String.join(", ", forgeNames));
         }
 
-        // Check for any HBM fluids that weren't mapped
         List<FluidType> unmappedFluids = new ArrayList<>();
         for (FluidType fluidType : Fluids.getAll()) {
             if (fluidType != Fluids.NONE && !mappedHbmFluids.contains(fluidType)) {
@@ -141,7 +120,6 @@ public class FluidMappingRegistry {
             }
         }
 
-        // Print any unmapped fluids
         if (!unmappedFluids.isEmpty()) {
             System.out.println("\n[NTM] WARNING: The following NTM fluids were not mapped to Forge fluids:");
             for (FluidType fluid : unmappedFluids) {
@@ -190,13 +168,10 @@ public class FluidMappingRegistry {
             registerFluidMapping("carbon_dioxide", fluidType);
         }
 
-        // Handle underscore variants (common in many mods)
         String lowercaseName = name.toLowerCase(Locale.US);
         if (lowercaseName.contains("_")) {
             registerFluidMapping(lowercaseName.replace("_", ""), fluidType);
         } else if (!lowercaseName.contains("_") && lowercaseName.length() > 3) {
-            // Try to add underscores for readability in some cases
-            // This is a heuristic and might not be perfect
             for (String forgeName : net.minecraftforge.fluids.FluidRegistry.getRegisteredFluids().keySet()) {
                 if (forgeName.replace("_", "").equals(lowercaseName)) {
                     registerFluidMapping(forgeName, fluidType);
@@ -237,28 +212,21 @@ public class FluidMappingRegistry {
 
         String fluidName = fluid.getName().toLowerCase(Locale.US);
 
-        // First, check if we already have a direct mapping
         FluidType type = forgeToHbmMap.get(fluidName);
         if (type != null) {
             return type;
         }
 
-        // If not found in our mappings, try to find a matching HBM fluid by name
-        // This is the dynamic part - we don't need manual mappings
-
-        // First pass: Try exact matches and simple transformations
         for (FluidType hbmFluid : Fluids.getAll()) {
             if (hbmFluid == Fluids.NONE) continue;
 
             String hbmName = hbmFluid.getName().toLowerCase(Locale.US);
 
-            // Try exact match first
             if (hbmName.equals(fluidName)) {
                 registerFluidMapping(fluidName, hbmFluid);
                 return hbmFluid;
             }
 
-            // Try removing underscores and comparing
             String cleanHbm = hbmName.replace("_", "");
             String cleanForge = fluidName.replace("_", "");
             if (cleanHbm.equals(cleanForge)) {
@@ -267,25 +235,21 @@ public class FluidMappingRegistry {
             }
         }
 
-        // Second pass: Try more complex matching strategies
         for (FluidType hbmFluid : Fluids.getAll()) {
             if (hbmFluid == Fluids.NONE) continue;
 
             String hbmName = hbmFluid.getName().toLowerCase(Locale.US);
 
-            // Try substring matching (for cases like "crude_oil" vs "oil")
             if (hbmName.contains(fluidName) || fluidName.contains(hbmName)) {
                 registerFluidMapping(fluidName, hbmFluid);
                 return hbmFluid;
             }
 
-            // Try common prefixes/suffixes
             if (fluidName.startsWith("fluid") && fluidName.substring(5).equals(hbmName)) {
                 registerFluidMapping(fluidName, hbmFluid);
                 return hbmFluid;
             }
 
-            // Handle special cases for common mods
             if ((fluidName.equals("fuel") && hbmName.equals("petroleum")) ||
                 (fluidName.equals("ethanol") && hbmName.equals("biofuel")) ||
                 (fluidName.equals("crude_oil") && hbmName.equals("oil"))) {
@@ -294,7 +258,6 @@ public class FluidMappingRegistry {
             }
         }
 
-        // If we still can't find it, log it and return NONE
         System.out.println("[NTM] Unknown Forge fluid: '" + fluid.getName() + "'. No matching NTM fluid found. This fluid will not be usable in NTM machines.");
         return Fluids.NONE;
     }
@@ -308,7 +271,6 @@ public class FluidMappingRegistry {
             return null;
         }
 
-        // First, check if we already have a mapping
         return hbmToForgeMap.get(type);
     }
 
@@ -321,7 +283,6 @@ public class FluidMappingRegistry {
             return null;
         }
 
-        // First, check if we already have a mapping
         String fluidName = hbmToForgeMap.get(type);
         if (fluidName != null) {
             Fluid fluid = net.minecraftforge.fluids.FluidRegistry.getFluid(fluidName);
@@ -330,20 +291,15 @@ public class FluidMappingRegistry {
             }
         }
 
-        // If no mapping exists or the mapped fluid doesn't exist in Forge,
-        // try to find a matching Forge fluid by name
         String hbmName = type.getName().toLowerCase(Locale.US);
 
-        // Try direct lookup first
         Fluid fluid = net.minecraftforge.fluids.FluidRegistry.getFluid(hbmName);
         if (fluid != null) {
             registerFluidMapping(hbmName, type);
             return fluid;
         }
 
-        // First pass: Try exact matches and simple transformations
         for (String forgeName : net.minecraftforge.fluids.FluidRegistry.getRegisteredFluids().keySet()) {
-            // Try removing underscores and comparing
             String cleanHbm = hbmName.replace("_", "");
             String cleanForge = forgeName.replace("_", "");
             if (cleanHbm.equals(cleanForge)) {
@@ -352,7 +308,6 @@ public class FluidMappingRegistry {
             }
         }
 
-        // Second pass: Try more complex matching strategies
         for (String forgeName : net.minecraftforge.fluids.FluidRegistry.getRegisteredFluids().keySet()) {
             // Try substring matching
             if (forgeName.contains(hbmName) || hbmName.contains(forgeName)) {
@@ -360,14 +315,12 @@ public class FluidMappingRegistry {
                 return net.minecraftforge.fluids.FluidRegistry.getFluid(forgeName);
             }
 
-            // Try common prefixes/suffixes
             if (forgeName.startsWith("fluid") && forgeName.substring(5).equals(hbmName)) {
                 registerFluidMapping(forgeName, type);
                 return net.minecraftforge.fluids.FluidRegistry.getFluid(forgeName);
             }
         }
 
-        // Handle special cases for common mods
         if (type == Fluids.PETROIL) {
             Fluid fuelFluid = net.minecraftforge.fluids.FluidRegistry.getFluid("fuel");
             if (fuelFluid != null) {
@@ -388,7 +341,6 @@ public class FluidMappingRegistry {
             }
         }
 
-        // If we can't find a match, register a new Forge fluid with the HBM name
         if (net.minecraftforge.fluids.FluidRegistry.getFluid(hbmName) == null) {
             int color = type.getColor();
             Fluid newFluid = new ColoredForgeFluid(hbmName, color);
@@ -398,7 +350,6 @@ public class FluidMappingRegistry {
             return newFluid;
         }
 
-        // This should never happen now, but just in case
         registerFluidMapping(hbmName, type);
         return null;
     }

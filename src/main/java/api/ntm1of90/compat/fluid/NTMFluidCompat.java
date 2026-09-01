@@ -24,10 +24,8 @@ public class NTMFluidCompat {
      * This should be called during mod initialization
      */
     public static void initialize() {
-        // Register the fluid compat item
         registerFluidCompatItem();
         
-        // Register fluid items for all NTM fluids
         registerFluidItems();
         
         System.out.println("[NTM] Fluid compatibility initialized");
@@ -37,7 +35,6 @@ public class NTMFluidCompat {
      * Register the fluid compat item
      */
     private static void registerFluidCompatItem() {
-        // Register the fluid compat item
         Item fluidCompatItem = NTMFluidCompatItem.getInstance();
         GameRegistry.registerItem(fluidCompatItem, "ntm_fluid_compat");
         ModItems.hbm_fluid_compat = fluidCompatItem;
@@ -51,19 +48,15 @@ public class NTMFluidCompat {
     private static void registerFluidItems() {
         int count = 0;
         
-        // Register fluid items for all NTM fluids
         for (FluidType ntmFluid : Fluids.getAll()) {
             if (ntmFluid == Fluids.NONE) continue;
             
-            // Get the Forge fluid for this NTM fluid
             Fluid forgeFluid = FluidMappingRegistry.getForgeFluid(ntmFluid);
             if (forgeFluid == null) continue;
             
-            // Create an item for this fluid
             ItemStack fluidItem = NTMFluidCompatItem.getItemStackForFluid(forgeFluid);
             if (fluidItem == null) continue;
             
-            // Register the fluid item with the fluid registry
             FluidContainerRegistry.registerFluidContainer(
                 new FluidStack(forgeFluid, FluidContainerRegistry.BUCKET_VOLUME),
                 fluidItem

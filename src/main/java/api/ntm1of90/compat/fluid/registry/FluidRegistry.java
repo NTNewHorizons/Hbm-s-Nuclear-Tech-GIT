@@ -39,13 +39,11 @@ public class FluidRegistry {
      * This should be called during mod initialization.
      */
     public static void initialize() {
-        // Only register for texture stitch events on the client side
         if (cpw.mods.fml.common.FMLCommonHandler.instance().getSide() == cpw.mods.fml.relauncher.Side.CLIENT) {
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new FluidRegistry());
             System.out.println("[NTM] Registered fluid registry for texture stitch events");
         }
 
-        // Load fluid properties from Fluids.java
         loadFluidProperties();
 
         System.out.println("[NTM] Fluid registry initialized with " + fluidProperties.size() + " fluids");
@@ -56,7 +54,6 @@ public class FluidRegistry {
      */
     private static void loadFluidProperties() {
         try {
-            // Create default properties
             defaultProperties = new FluidProperties(
                 "default",
                 0xFFFFFF,
@@ -65,17 +62,13 @@ public class FluidRegistry {
                 "forgefluid/default"
             );
 
-            // Load fluid properties from all HBM fluids
             FluidType[] allFluids = Fluids.getAll();
             for (FluidType hbmFluid : allFluids) {
                 if (hbmFluid == Fluids.NONE) continue;
 
-                // Convert fluid name to lowercase as requested
                 String name = hbmFluid.getName().toLowerCase(Locale.US);
                 int color = hbmFluid.getColor();
 
-                // Generate texture names based on fluid name
-                // Using the same pattern as the original HBM texture system
                 String stillTexture = "forgefluid/" + name;
                 String flowingTexture = "forgefluid/" + name;
                 String inventoryTexture = "forgefluid/" + name;
@@ -100,7 +93,6 @@ public class FluidRegistry {
     public void onTextureStitch(TextureStitchEvent.Pre event) {
         TextureMap map = event.map;
 
-        // Register textures for all HBM fluids
         for (FluidType hbmFluid : Fluids.getAll()) {
             if (hbmFluid == Fluids.NONE) continue;
 
@@ -109,10 +101,8 @@ public class FluidRegistry {
 
             if (forgeFluid != null) {
                 if (map.getTextureType() == 0) {
-                    // For block textures, register the fluid textures
                     registerFluidTextures(map, forgeFluid, fluidName);
                 } else if (map.getTextureType() == 1) {
-                    // For item textures, register the inventory icons
                     registerInventoryIcon(map, forgeFluid, fluidName);
                 }
             }
@@ -128,18 +118,14 @@ public class FluidRegistry {
             // Get the fluid properties
             FluidProperties properties = getFluidProperties(fluidName);
 
-            // Register the textures
             IIcon stillIcon = map.registerIcon(RefStrings.MODID + ":" + properties.stillTexture);
             IIcon flowingIcon = map.registerIcon(RefStrings.MODID + ":" + properties.flowingTexture);
 
-            // Store the icons for later use
             stillIcons.put(fluidName, stillIcon);
             flowingIcons.put(fluidName, flowingIcon);
 
-            // Set the icons on the Forge fluid
             forgeFluid.setIcons(stillIcon, flowingIcon);
 
-            // If this is a ColoredForgeFluid, set the color
             if (forgeFluid instanceof ColoredForgeFluid) {
                 ((ColoredForgeFluid) forgeFluid).setColor(properties.color);
                 ((ColoredForgeFluid) forgeFluid).setHasCustomTexture(true);
@@ -162,13 +148,10 @@ public class FluidRegistry {
             // Get the fluid properties
             FluidProperties properties = getFluidProperties(fluidName);
 
-            // Register the inventory icon
             IIcon icon = map.registerIcon(RefStrings.MODID + ":" + properties.inventoryTexture);
 
-            // Store the icon for later use
             inventoryIcons.put(fluidName, icon);
 
-            // If this is a ColoredForgeFluid, set the inventory icon
             if (forgeFluid instanceof ColoredForgeFluid) {
                 ((ColoredForgeFluid) forgeFluid).setInventoryIcon(icon);
             }
@@ -187,10 +170,8 @@ public class FluidRegistry {
     public static FluidProperties getFluidProperties(String fluidName) {
         fluidName = fluidName.toLowerCase(Locale.US);
 
-        // Try to get the properties from the map
         FluidProperties properties = fluidProperties.get(fluidName);
 
-        // If not found, use the default properties
         if (properties == null) {
             System.out.println("[NTM] No properties found for fluid " + fluidName + ", using defaults");
             properties = defaultProperties;
