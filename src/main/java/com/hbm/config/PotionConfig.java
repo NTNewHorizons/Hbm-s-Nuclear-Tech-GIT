@@ -22,6 +22,7 @@ public class PotionConfig {
 	public static int runID = 76;
 	public static int nitanID = 74;
 	public static int flashbangID = 75;
+	public static int highID = 78;
 
 	
 	public static int potionSickness = 0;
@@ -46,6 +47,7 @@ public class PotionConfig {
 		flashbangID = CommonConfig.createConfigInt(config, CATEGORY_POTION, "8.12_flashbangID", "What potion ID the flashbang effect will have", 75);
 		runID = CommonConfig.createConfigInt(config, CATEGORY_POTION, "8.13_runID", "What potion ID the run effect will have", 76);
 		slipperyID = CommonConfig.createConfigInt(config, CATEGORY_POTION, "8.14_slipperyID", "What potion ID the slippery effect will have", 77);
+		highID = CommonConfig.createConfigInt(config, CATEGORY_POTION, "8.15_highID", "What potion ID the high effect will have", 78);
 
 
 		

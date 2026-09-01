@@ -5485,6 +5485,7 @@ potion.hbm_taint=Tainted
 potion.hbm_nitan=Ambrosia
 potion.hbm_telekinesis=! ! !
 potion.hbm_slippery=Butterfingers
+potion.hbm_high=High
 
 precass.recycle=Recycling of %s
 

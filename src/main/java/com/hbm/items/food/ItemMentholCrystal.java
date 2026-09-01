@@ -2,6 +2,8 @@ package com.hbm.items.food;
 
 import java.util.List;
 
+import com.hbm.potion.HbmPotion;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,6 +42,8 @@ public class ItemMentholCrystal extends ItemFood {
 		player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 10, 10));
 		player.addPotionEffect(new PotionEffect(Potion.blindness.id, 20, 10));
 		player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 3 * 20, 10));
+
+		player.addPotionEffect(new PotionEffect(HbmPotion.high.id, 15 * 20, 0));
 		player.addPotionEffect(new PotionEffect(Potion.confusion.id, 15 * 20, 0));
 
 		if (!world.isRemote) {

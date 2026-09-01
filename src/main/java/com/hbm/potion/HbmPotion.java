@@ -51,6 +51,7 @@ public class HbmPotion extends Potion {
 
 	public static HbmPotion nitan;
 	public static HbmPotion flashbang;
+	public static HbmPotion high;
 
 	public static HbmPotion slippery; //t
 
@@ -75,6 +76,7 @@ public class HbmPotion extends Potion {
 		run = registerPotion(PotionConfig.runID, true, 1118481, "potion.hbm_run", 14, 0);
 		nitan = registerPotion(PotionConfig.nitanID, false, 8388736, "potion.hbm_nitan", 3, 1);
 		flashbang = registerPotion(PotionConfig.flashbangID, false, 0xD0D0D0, "potion.hbm_flashbang", 15, 1);
+		high = registerPotion(PotionConfig.highID, false, 0x00FF00, "potion.hbm_high", 8, 1);
 		slippery = registerPotion(PotionConfig.slipperyID, false, 0xD0D0D0, "potion.hbm_slippery", 15, 0);
 
 	}
