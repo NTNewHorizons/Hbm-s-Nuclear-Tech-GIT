@@ -3701,11 +3701,11 @@ public class ModBlocks {
 		GameRegistry.registerBlock(ladder_steel, ladder_steel.getUnlocalizedName());
 		GameRegistry.registerBlock(trapdoor_steel, trapdoor_steel.getUnlocalizedName());
 
-		register(barrel_plastic);
+		registerFluidStorage(barrel_plastic, 12000);
 		register(barrel_corroded);
-		register(barrel_steel);
-		register(barrel_tcalloy);
-		register(barrel_antimatter);
+		registerFluidStorage(barrel_steel, 16000);
+		registerFluidStorage(barrel_tcalloy, 24000);
+		registerFluidStorage(barrel_antimatter, 16000);
 		register(machine_battery_socket);
 		register(machine_battery_redd);
 		register(machine_battery_potato);
@@ -3739,7 +3739,7 @@ public class ModBlocks {
 		register(machine_vacuum_circuit);
 		register(machine_arc_furnace);
 		register(machine_mixer);
-		register(machine_fluidtank);
+		registerFluidStorage(machine_fluidtank, 256000);
 		register(machine_bat9000);
 		register(machine_bigasstank);
 		register(machine_orbus);
@@ -4055,6 +4055,10 @@ public class ModBlocks {
 
 	private static void register(Block b, Class<? extends ItemBlock> clazz) {
 		GameRegistry.registerBlock(b, clazz, b.getUnlocalizedName());
+	}
+
+	private static void registerFluidStorage(Block b, int capacity) {
+		GameRegistry.registerBlock(b, ItemBlockFluidStorage.class, b.getUnlocalizedName(), capacity);
 	}
 
 	public static void addRemap(String unloc, Block block, int meta) {

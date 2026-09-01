@@ -15,8 +15,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import api.ntm1of90.compat.fluid.item.NTMFluidContainerBridge;
+import net.minecraftforge.fluids.FluidStack;
 
-public class ItemInfiniteFluid extends Item {
+public class ItemInfiniteFluid extends Item implements net.minecraftforge.fluids.IFluidContainerItem {
 
 	private FluidType type;
 	private int amount;
@@ -89,4 +91,30 @@ public class ItemInfiniteFluid extends Item {
 	public int getChance() { return this.chance; }
 	public boolean allowPressure(int pressure) { return this == ModItems.fluid_barrel_infinite || pressure == 0; }
 	public boolean canOperate(ItemStack stack) { return stack.stackTagCompound == null || !stack.stackTagCompound.getBoolean("noAtmo"); }
+
+	// ===== Forge IFluidContainerItem bridge (AE2 filter slots etc.) =====
+
+	@Override
+	public FluidStack getFluid(ItemStack stack) {
+		if(this.type == null || this.type == Fluids.NONE) return null;
+		net.minecraftforge.fluids.Fluid fluid = api.ntm1of90.compat.fluid.registry.FluidMappingRegistry.getForgeFluid(this.type);
+		return fluid == null ? null : new FluidStack(fluid, Math.max(this.amount, 1));
+	}
+
+	@Override
+	public int getCapacity(ItemStack stack) {
+		return this.amount;
+	}
+
+	@Override
+	public int fill(ItemStack stack, FluidStack resource, boolean doFill) {
+		return 0;
+	}
+
+	@Override
+	public FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
+		FluidStack content = getFluid(stack);
+		if(content == null) return null;
+		return maxDrain < content.amount ? null : content;
+	}
 }

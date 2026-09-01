@@ -105,6 +105,7 @@ public class FluidContainerRegistry {
 
 			FluidContainerRegistry.registerContainer(new FluidContainer(new ItemStack(ModItems.fluid_tank_full, 1, id), new ItemStack(ModItems.fluid_tank_empty), type, 1000));
 			FluidContainerRegistry.registerContainer(new FluidContainer(new ItemStack(ModItems.fluid_barrel_full, 1, id), new ItemStack(ModItems.fluid_barrel_empty), type, 16000));
+			FluidContainerRegistry.registerContainer(new FluidContainer(new ItemStack(ModItems.fluid_pack_full, 1, id), new ItemStack(ModItems.fluid_pack_empty), type, 32000));
 		}
 
 		Compat.registerCompatFluidContainers();

@@ -5,6 +5,8 @@ import api.hbm.fluidmk2.FluidNode;
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.ntm1of90.compat.fluid.adapter.ForgeFluidHandlerAdapter;
+import api.ntm1of90.compat.fluid.registry.FluidMappingRegistry;
 
 import java.util.HashSet;
 
@@ -46,13 +48,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "opencomputers")})
-public class TileEntityBarrel extends TileEntityMachineBase implements SimpleComponent, IFluidStandardTransceiverMK2, IPersistentNBT, IGUIProvider, CompatHandler.OCComponent, IFluidCopiable, IRORValueProvider, IRORInteractive, IOverpressurable {
+public class TileEntityBarrel extends TileEntityMachineBase implements SimpleComponent, IFluidStandardTransceiverMK2, IPersistentNBT, IGUIProvider, CompatHandler.OCComponent, IFluidCopiable, IRORValueProvider, IRORInteractive, IOverpressurable, IFluidHandler {
 
 	protected FluidNode node;
 	protected FluidType lastType;
@@ -465,5 +472,61 @@ public class TileEntityBarrel extends TileEntityMachineBase implements SimpleCom
 			return null;
 		}
 		return null;
+	}
+
+	// Forge IFluidHandler implementation
+	private ForgeFluidHandlerAdapter forgeAdapter = new ForgeFluidHandlerAdapter() {
+		@Override
+		protected com.hbm.inventory.fluid.tank.FluidTank[] getHbmTanks() {
+			return new com.hbm.inventory.fluid.tank.FluidTank[] { tank };
+		}
+		@Override
+		protected TileEntity getTileEntity() {
+			return TileEntityBarrel.this;
+		}
+		@Override
+		protected boolean isFillAllowed(ForgeDirection from) {
+			return (mode == 0 || mode == 1) && !hasExploded && tank.getPressure() == 0;
+		}
+		@Override
+		protected boolean isDrainAllowed(ForgeDirection from) {
+			return (mode == 1 || mode == 2) && !hasExploded && tank.getPressure() == 0;
+		}
+	};
+
+	public boolean canConnectFluid(ForgeDirection from) { return true; }
+	public boolean isConnectable(ForgeDirection from) { return true; }
+	public boolean canInterface(ForgeDirection from) { return true; }
+	public boolean canInputFluid(ForgeDirection from) { return (mode == 0 || mode == 1) && !hasExploded && tank.getPressure() == 0; }
+	public boolean canOutputFluid(ForgeDirection from) { return (mode == 1 || mode == 2) && !hasExploded && tank.getPressure() == 0; }
+	public boolean canReceiveFrom(ForgeDirection from) { return (mode == 0 || mode == 1) && !hasExploded && tank.getPressure() == 0; }
+	public boolean canSendTo(ForgeDirection from) { return (mode == 1 || mode == 2) && !hasExploded && tank.getPressure() == 0; }
+	public boolean canAcceptFluid(ForgeDirection from) { return (mode == 0 || mode == 1) && !hasExploded && tank.getPressure() == 0; }
+	public boolean canProvideFluid(ForgeDirection from) { return (mode == 1 || mode == 2) && !hasExploded && tank.getPressure() == 0; }
+	public boolean isFluidHandler(ForgeDirection from) { return true; }
+
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+		return forgeAdapter.fill(from, resource, doFill);
+	}
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+		return forgeAdapter.drain(from, resource, doDrain);
+	}
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		return forgeAdapter.drain(from, maxDrain, doDrain);
+	}
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid) {
+		return forgeAdapter.canFill(from, fluid);
+	}
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+		return forgeAdapter.canDrain(from, fluid);
+	}
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+		return forgeAdapter.getTankInfo(from);
 	}
 }
