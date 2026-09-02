@@ -5,15 +5,20 @@ import java.util.List;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.explosion.vanillant.standard.ExplosionEffectTiny;
 import com.hbm.lib.Library;
+import com.hbm.main.MainRegistry;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 
 import api.hbm.conveyor.IConveyorBelt;
 import api.hbm.conveyor.IEnterableBlock;
+import com.hbm.blocks.network.BlockConveyorBase;
+import com.hbm.blocks.network.CranePartitioner;
+import com.hbm.blocks.network.CraneSplitter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,6 +32,31 @@ public abstract class EntityMovingConveyorObject extends Entity {
 	@SideOnly(Side.CLIENT) protected double velocityX;
 	@SideOnly(Side.CLIENT) protected double velocityY;
 	@SideOnly(Side.CLIENT) protected double velocityZ;
+
+	public static final double HITBOX_RADIUS = 0.1875;
+
+	public static final int CRAM_CHECK_TICKS = 1 * 20;
+	public static final int CRAM_CHECK_LIMIT = 25;
+	private boolean blocked = false;
+
+	public static boolean isCrammed(World world, int x, int y, int z) {
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).contract(HITBOX_RADIUS, HITBOX_RADIUS, HITBOX_RADIUS);
+		List<EntityMovingConveyorObject> objs = world.getEntitiesWithinAABB(EntityMovingConveyorObject.class, box);
+		return objs.size() > CRAM_CHECK_LIMIT;
+	}
+
+	public static ForgeDirection getConveyorOutputDirection(World world, Block block, int x, int y, int z, Vec3 itemPos) {
+		if(block instanceof BlockConveyorBase) {
+			return ((BlockConveyorBase) block).getOutputDirection(world, x, y, z);
+		} else if(block instanceof CraneSplitter) {
+			return ((CraneSplitter) block).getTravelDirection(world, x, y, z, itemPos).getOpposite();
+		} else if(block instanceof CranePartitioner) {
+			return ((CranePartitioner) block).getTravelDirection(world, x, y, z, itemPos).getOpposite();
+		} else if(block instanceof IConveyorBelt) {
+			return ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)).getOpposite();
+		}
+		return ForgeDirection.UNKNOWN;
+	}
 
 	public EntityMovingConveyorObject(World world) {
 		super(world);
@@ -74,34 +104,38 @@ public abstract class EntityMovingConveyorObject extends Entity {
 		}
 
 		if(!worldObj.isRemote) {
-			
+
 			ticksExisted++;
 			
 			if(this.ticksExisted <= 5) {
 				return;
 			}
-			
-			// cram check every 20s
-			if((ticksExisted + this.getEntityId()) % 400 == 0) {
-				List<EntityMovingConveyorObject> objs = worldObj.getEntitiesWithinAABB(EntityMovingConveyorObject.class, this.boundingBox.expand(0.125, 0.125, 0.125));
-				if(objs.size() >= 25) {
-					for(EntityMovingConveyorObject obj : objs) obj.setDead();
-					ExplosionVNT vnt = new ExplosionVNT(worldObj, posX, posY + 0.125, posZ, 1, this);
-					vnt.setSFX(new ExplosionEffectTiny());
-					vnt.explode();
-					int x = (int) Math.floor(posX);
-					int y = (int) Math.floor(posY);
-					int z = (int) Math.floor(posZ);
-					if(worldObj.getBlock(x, y, z) instanceof IConveyorBelt) worldObj.func_147480_a(x, y, z, false);
-				}
-			}
 
+			final boolean firstUpdate = ticksExisted == 6;
+			
 			int blockX = (int) Math.floor(posX);
 			int blockY = (int) Math.floor(posY);
 			int blockZ = (int) Math.floor(posZ);
-			
-			Block b = worldObj.getBlock(blockX, blockY, blockZ);
-			boolean isOnConveyor = b instanceof IConveyorBelt && ((IConveyorBelt) b).canItemStay(worldObj, blockX, blockY, blockZ, Vec3.createVectorHelper(posX, posY, posZ));
+
+			Block block = worldObj.getBlock(blockX, blockY, blockZ);
+
+			if((firstUpdate || ((ticksExisted + this.getEntityId()) % CRAM_CHECK_TICKS == 0)) && block instanceof IConveyorBelt) {
+				ForgeDirection dir = getConveyorOutputDirection(worldObj, block, blockX, blockY, blockZ, Vec3.createVectorHelper(posX, posY, posZ));
+				if(dir != ForgeDirection.UNKNOWN) {
+					boolean isForwardCrammed = isCrammed(worldObj, blockX + dir.offsetX, blockY + dir.offsetY, blockZ + dir.offsetZ);
+
+					if (blocked != isForwardCrammed) {
+						AxisAlignedBB blockHere = AxisAlignedBB.getBoundingBox(blockX, blockY, blockZ, blockX + 1, blockY + 1, blockZ + 1).contract(HITBOX_RADIUS, HITBOX_RADIUS, HITBOX_RADIUS);
+						List<EntityMovingConveyorObject> objsHere = worldObj.getEntitiesWithinAABB(EntityMovingConveyorObject.class, blockHere);
+
+						for (EntityMovingConveyorObject obj : objsHere) {
+							obj.blocked = isForwardCrammed;
+						}
+					}
+				}
+			}
+
+			boolean isOnConveyor = block instanceof IConveyorBelt && ((IConveyorBelt) block).canItemStay(worldObj, blockX, blockY, blockZ, Vec3.createVectorHelper(posX, posY, posZ));
 			
 			if(!isOnConveyor) {
 				
@@ -110,14 +144,14 @@ public abstract class EntityMovingConveyorObject extends Entity {
 				}
 			} else {
 				
-				Vec3 target = ((IConveyorBelt) b).getTravelLocation(worldObj, blockX, blockY, blockZ, Vec3.createVectorHelper(posX, posY, posZ), getMoveSpeed());
+				Vec3 target = ((IConveyorBelt) block).getTravelLocation(worldObj, blockX, blockY, blockZ, Vec3.createVectorHelper(posX, posY, posZ), getMoveSpeed());
 				this.motionX = target.xCoord - posX;
 				this.motionY = target.yCoord - posY;
 				this.motionZ = target.zCoord - posZ;
 			}
 			
 			BlockPos lastPos = new BlockPos(posX, posY, posZ);
-			this.moveEntity(motionX, motionY, motionZ);
+			if (!blocked) this.moveEntity(motionX, motionY, motionZ);
 			BlockPos newPos = new BlockPos(posX, posY, posZ);
 			
 			if(!lastPos.equals(newPos)) {
