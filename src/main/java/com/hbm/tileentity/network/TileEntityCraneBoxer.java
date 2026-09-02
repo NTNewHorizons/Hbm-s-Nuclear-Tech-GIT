@@ -1,6 +1,7 @@
 package com.hbm.tileentity.network;
 
 import api.hbm.conveyor.IConveyorBelt;
+import com.hbm.entity.item.EntityMovingConveyorObject;
 import com.hbm.entity.item.EntityMovingPackage;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.inventory.container.ContainerCraneBoxer;
@@ -51,7 +52,7 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 				Block b = worldObj.getBlock(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
 				IConveyorBelt belt = null;
 				
-				if(b instanceof IConveyorBelt) {
+				if(b instanceof IConveyorBelt && !EntityMovingConveyorObject.isCrammed(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ)) {
 					belt = (IConveyorBelt) b;
 				}
 				
@@ -118,7 +119,7 @@ public class TileEntityCraneBoxer extends TileEntityCraneBase implements IGUIPro
 				Block b = worldObj.getBlock(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
 				IConveyorBelt belt = null;
 				
-				if(b instanceof IConveyorBelt) {
+				if(b instanceof IConveyorBelt && !EntityMovingConveyorObject.isCrammed(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ)) {
 					belt = (IConveyorBelt) b;
 				}
 				

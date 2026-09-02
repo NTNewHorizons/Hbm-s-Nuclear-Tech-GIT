@@ -8,6 +8,7 @@ import api.hbm.conveyor.IEnterableBlock;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.blocks.ITooltipProvider;
+import com.hbm.entity.item.EntityMovingConveyorObject;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.network.TileEntityCraneSplitter;
@@ -88,7 +89,26 @@ public class CraneSplitter extends BlockDummyable implements IConveyorBelt, IEnt
 		return renderID;
 	}
 
-	@Override public boolean canItemEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorItem entity) { return getTravelDirection(world, x, y, z, null) == dir; }
+	@Override
+	public boolean canItemEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorItem entity) {
+		if(getTravelDirection(world, x, y, z, null) != dir) return false;
+		int[] core = this.findCore(world, x, y, z);
+		if(core == null) return false;
+		int coreX = core[0];
+		int coreY = core[1];
+		int coreZ = core[2];
+		TileEntity tile = world.getTileEntity(coreX, coreY, coreZ);
+		if(!(tile instanceof TileEntityCraneSplitter)) return false;
+		TileEntityCraneSplitter splitter = (TileEntityCraneSplitter) tile;
+		ForgeDirection rot = ForgeDirection.getOrientation(splitter.getBlockMetadata() - offset).getRotation(ForgeDirection.DOWN);
+
+		if(EntityMovingConveyorObject.isCrammed(world, coreX, coreY, coreZ) ||
+		   EntityMovingConveyorObject.isCrammed(world, coreX + rot.offsetX, coreY, coreZ + rot.offsetZ)) {
+			return false;
+		}
+
+		return true;
+	}
 	@Override public boolean canPackageEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorPackage entity) { return false; }
 	@Override public void onPackageEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorPackage entity) { }
 
