@@ -607,7 +607,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 		}
 		int currentFill = tank.getFill();
 		com.hbm.inventory.fluid.FluidType currentType = tank.getTankType();
-		if (currentFill > 0 && currentType != ntmFluid) {
+		if (currentType != com.hbm.inventory.fluid.Fluids.NONE && currentType != ntmFluid) {
 			return 0;
 		}
 		int maxFill = tank.getMaxFill();
@@ -616,7 +616,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 			return 0;
 		}
 		if (doFill) {
-			if (currentFill == 0) {
+			if (currentType == com.hbm.inventory.fluid.Fluids.NONE) {
 				tank.setTankType(ntmFluid);
 			}
 			tank.setFill(currentFill + fillAmount);
@@ -697,7 +697,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 		int currentFill = tank.getFill();
 		com.hbm.inventory.fluid.FluidType currentType = tank.getTankType();
 		int maxFill = tank.getMaxFill();
-		return currentFill < maxFill && (currentFill <= 0 || currentType == ntmFluid);
+		return currentFill < maxFill && (currentType == com.hbm.inventory.fluid.Fluids.NONE || currentType == ntmFluid);
 	}
 
 	@Override

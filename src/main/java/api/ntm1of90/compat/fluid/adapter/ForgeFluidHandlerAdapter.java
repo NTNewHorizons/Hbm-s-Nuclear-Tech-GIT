@@ -77,7 +77,7 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
             int currentFill = tank.getFill();
             FluidType currentType = tank.getTankType();
 
-            if (currentFill > 0 && currentType != ntmFluid) {
+            if (currentType != Fluids.NONE && currentType != ntmFluid) {
                 continue; // Tank contains a different fluid
             }
 
@@ -231,7 +231,7 @@ public abstract class ForgeFluidHandlerAdapter implements IFluidHandler {
             FluidType currentType = tank.getTankType();
             int maxFill = tank.getMaxFill();
 
-            if (currentFill < maxFill && (currentFill <= 0 || currentType == ntmFluid)) {
+            if (currentFill < maxFill && (currentType == Fluids.NONE || currentType == ntmFluid)) {
                 return true; // Tank can accept the fluid
             }
         }
