@@ -33,6 +33,10 @@ import com.hbm.items.ItemEnums.EnumChunkType;
 import com.hbm.items.ItemEnums.EnumCokeType;
 import com.hbm.items.ItemEnums.EnumTarType;
 import com.hbm.items.special.ItemBedrockOre.EnumBedrockOre;
+import com.hbm.items.special.ItemBedrockOreNew;
+import com.hbm.items.special.ItemBedrockOreNew.BedrockOreGrade;
+import com.hbm.items.special.ItemBedrockOreNew.CelestialBedrockOre;
+import com.hbm.items.special.ItemBedrockOreNew.CelestialBedrockOreType;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.Compat;
 
@@ -367,6 +371,29 @@ public class OreDictManager {
 	public static final DictFrame ANY_ASH = new DictFrame("Ash");
 
 
+	private static String toPascalCase(String value) {
+		StringBuilder result = new StringBuilder();
+
+		for (String part : value.toLowerCase().split("_")) {
+			if (!part.isEmpty()) {
+				result.append(Character.toUpperCase(part.charAt(0)))
+					.append(part.substring(1));
+			}
+		}
+
+		return result.toString();
+	}
+
+	private static void registerBedrockOres() {
+		for(BedrockOreGrade grade : BedrockOreGrade.values()) {
+			for(CelestialBedrockOreType type : CelestialBedrockOre.getAllTypes()) {
+				ItemStack stack = ItemBedrockOreNew.make(grade, type);
+
+				OreDictionary.registerOre("bedrockoreGrade" + toPascalCase(grade.toString()), stack);
+			}
+		}
+	}
+
 	public static void registerOres() {
 
 		/*
@@ -641,6 +668,8 @@ public class OreDictManager {
 			if(mat.autogen.contains(MaterialShapes.STOCK)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.STOCK.name() + name, new ItemStack(ModItems.part_stock, 1, mat.id));
 			if(mat.autogen.contains(MaterialShapes.GRIP)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.GRIP.name() + name, new ItemStack(ModItems.part_grip, 1, mat.id));
 		}
+
+		registerBedrockOres();
 
 		for(EnumBedrockOre ore : EnumBedrockOre.values()) {
 			OreDictionary.registerOre("ore" + ore.oreName, new ItemStack(ModItems.ore_enriched, 1, ore.ordinal()));
