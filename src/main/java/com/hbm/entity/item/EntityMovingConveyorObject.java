@@ -42,7 +42,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
 	public static boolean isCrammed(World world, int x, int y, int z) {
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).contract(HITBOX_RADIUS, HITBOX_RADIUS, HITBOX_RADIUS);
 		List<EntityMovingConveyorObject> objs = world.getEntitiesWithinAABB(EntityMovingConveyorObject.class, box);
-		return objs.size() > CRAM_CHECK_LIMIT;
+		return objs.size() >= CRAM_CHECK_LIMIT;
 	}
 
 	public static ForgeDirection getConveyorOutputDirection(World world, Block block, int x, int y, int z, Vec3 itemPos) {
