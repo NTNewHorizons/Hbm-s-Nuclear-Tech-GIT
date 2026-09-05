@@ -188,8 +188,9 @@ public class FluidMappingRegistry {
         // Check if this mapping already exists
         FluidType existingType = forgeToHbmMap.get(forgeName);
         if (existingType != null && existingType != hbmType) {
-            System.out.println("[NTM] Warning: Overriding existing fluid mapping for '" + forgeName + "' from " +
-                existingType.getName() + " to " + hbmType.getName());
+            System.out.println("[NTM] Refusing to remap '" + forgeName + "': keeping " +
+                existingType.getName() + ", rejecting " + hbmType.getName());
+            return;
         }
 
         forgeToHbmMap.put(forgeName, hbmType);
@@ -218,7 +219,7 @@ public class FluidMappingRegistry {
         }
 
         for (FluidType hbmFluid : Fluids.getAll()) {
-            if (hbmFluid == Fluids.NONE) continue;
+            if (hbmFluid == Fluids.NONE || hbmFluid.hasNoContainer() || hbmFluid.hasNoID()) continue;
 
             String hbmName = hbmFluid.getName().toLowerCase(Locale.US);
 
@@ -236,11 +237,11 @@ public class FluidMappingRegistry {
         }
 
         for (FluidType hbmFluid : Fluids.getAll()) {
-            if (hbmFluid == Fluids.NONE) continue;
+            if (hbmFluid == Fluids.NONE || hbmFluid.hasNoContainer() || hbmFluid.hasNoID()) continue;
 
             String hbmName = hbmFluid.getName().toLowerCase(Locale.US);
 
-            if (hbmName.contains(fluidName) || fluidName.contains(hbmName)) {
+            if (hbmName.startsWith(fluidName) || fluidName.startsWith(hbmName)) {
                 registerFluidMapping(fluidName, hbmFluid);
                 return hbmFluid;
             }
@@ -310,7 +311,7 @@ public class FluidMappingRegistry {
 
         for (String forgeName : net.minecraftforge.fluids.FluidRegistry.getRegisteredFluids().keySet()) {
             // Try substring matching
-            if (forgeName.contains(hbmName) || hbmName.contains(forgeName)) {
+            if (forgeName.startsWith(hbmName) || hbmName.startsWith(forgeName)) {
                 registerFluidMapping(forgeName, type);
                 return net.minecraftforge.fluids.FluidRegistry.getFluid(forgeName);
             }
@@ -350,7 +351,6 @@ public class FluidMappingRegistry {
             return newFluid;
         }
 
-        registerFluidMapping(hbmName, type);
         return null;
     }
 }
