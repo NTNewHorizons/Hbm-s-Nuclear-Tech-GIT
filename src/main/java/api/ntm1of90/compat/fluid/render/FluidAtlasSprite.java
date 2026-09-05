@@ -46,7 +46,7 @@ public class FluidAtlasSprite extends TextureAtlasSprite {
 
 		BufferedImage image = null;
 		try {
-			image = this.readImage(this.fluid.getTexture());
+			image = this.readImage(manager, this.fluid.getTexture());
 			this.applyTint(image);
 		} catch(Exception ex) {
 			com.hbm.main.MainRegistry.logger.warn("Failed to load fluid texture " + this.fluid.getTexture() + ", using solid color fallback.");
@@ -66,12 +66,12 @@ public class FluidAtlasSprite extends TextureAtlasSprite {
 		return false; // we just did the loading ourselves
 	}
 
-	private BufferedImage readImage(ResourceLocation location) throws IOException {
-		InputStream stream = Minecraft.getMinecraft().getResourceManager().getResource(location).getInputStream();
-		BufferedImage image = ImageIO.read(stream);
-		stream.close();
-		if(image == null) throw new IOException("ImageIO returned null for " + location);
-		return image;
+	private BufferedImage readImage(IResourceManager manager, ResourceLocation location) throws IOException {
+		try (InputStream stream = manager.getResource(location).getInputStream()) {
+			BufferedImage image = ImageIO.read(stream);
+			if(image == null) throw new IOException("ImageIO returned null for " + location);
+			return image;
+		}
 	}
 
 	// same tint application as FluidTank.renderTank
