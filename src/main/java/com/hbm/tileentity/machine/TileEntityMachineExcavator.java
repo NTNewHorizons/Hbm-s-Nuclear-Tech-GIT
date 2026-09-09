@@ -74,6 +74,8 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 	protected int ticksWorked = 0;
 	protected int targetDepth = 0; //0 is the first block below null position
+	protected boolean richSipped = false;
+	protected int veinRichBlocks = 0;
 	protected boolean bedrockDrilling = false;
 
 	public float drillRotation = 0F;
@@ -253,6 +255,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 			boolean ignoreAll = true;
 			float combinedHardness = 0F;
+			boolean ringHasRich = false;
 			BlockPos bedrockOre = null;
 			bedrockDrilling = false;
 
@@ -284,6 +287,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 						// rich ore: one block-time per stage left
 						if(b instanceof BlockRichOre) {
+							ringHasRich = true;
 							combinedHardness += b.getBlockHardness(worldObj, x, y, z) * (worldObj.getBlockMetadata(x, y, z) + 1);
 						} else {
 							combinedHardness += b.getBlockHardness(worldObj, x, y, z);
@@ -297,11 +301,22 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 				int ticksToWork = (int) Math.ceil(combinedHardness / this.speed);
 
+				// rich blobs pace the cycle at 100% speed, scaled by drill speed:
+				// 3s per single sip, 3.1s per blob block on a vein pass (measured last pass)
+				if(ringHasRich) {
+					EnumDrillType drillType = this.getInstalledDrill();
+					boolean veinActive = this.enableVeinMiner && drillType != null && drillType.vein;
+					int richFloor = veinActive ? veinRichBlocks * 62 : 60;
+					ticksToWork = Math.max(ticksToWork, (int) Math.ceil(richFloor / this.speed));
+				}
+
 				if(ticksWorked >= ticksToWork) {
 
 					if(bedrockOre == null) {
 						// shared visited set: one sip per block per operation
 						recursionBrake.clear();
+						richSipped = false;
+						veinRichBlocks = 0;
 						breakBlocks(ring);
 						buildWall(ring + 1, ring == radius && this.enableWalling);
 						if(ring == radius) mineOuterOres(ring + 1);
@@ -420,8 +435,19 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 		Block b = worldObj.getBlock(x, y, z);
 
+		EnumDrillType drillType = this.getInstalledDrill();
+		boolean veinActive = this.enableVeinMiner && drillType != null && drillType.vein;
+
+		// vein off: sip a single rich block per operation, the rest wait for later cycles
+		if(b instanceof BlockRichOre && !veinActive) {
+			if(richSipped) return;
+			breakSingleBlock(b, x, y, z);
+			richSipped = true;
+			return;
+		}
+
 	// rich blobs always vein-mine whole
-		if(b instanceof BlockRichOre || (this.enableVeinMiner && this.getInstalledDrill() != null && this.getInstalledDrill().vein)) {
+		if(b instanceof BlockRichOre || veinActive) {
 
 			if(isOre(x, y, z, b) || b instanceof BlockRichOre) {
 				// already sipped this pass, skip
@@ -492,6 +518,8 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 			}
 
 			breakSingleBlock(target, px, py, pz);
+
+			if(target instanceof BlockRichOre) veinRichBlocks++;
 
 			if(px < minX) minX = px;
 			if(px > maxX) maxX = px;

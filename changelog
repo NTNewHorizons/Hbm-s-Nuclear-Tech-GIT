@@ -1,3 +1,10 @@
+## Added
+* Depletable rich iron and copper ores: metadata tracks richness, final unit turns the block to stone, no silk harvest
+* Rich ore chunks (smelt/shred/centrifuge exactly like regular ores: x1/x2/x3)
+* Per-variant ore richness config (default 250 units), exact counts kept in world save
+* Rich ores rename as they deplete (Rich / Half-Depleted / Almost Depleted) in inventory and on the crosshair overlay
+* Large Mining Drill mines rich blobs: one chunk per 3s alone, or the whole blob at 3.1s per block with vein miner on, scaled by drillbit speed
+
 ## Changed
 * Machines no longer tilt at all when unsupported in orbit
 
