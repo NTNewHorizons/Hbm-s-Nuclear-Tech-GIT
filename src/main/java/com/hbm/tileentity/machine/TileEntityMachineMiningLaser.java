@@ -10,6 +10,8 @@ import java.util.List;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockOreFluid;
+import com.hbm.blocks.generic.BlockRichOre;
+import com.hbm.blocks.generic.OreRichnessHelper;
 import com.hbm.dim.SolarSystem;
 import com.hbm.inventory.UpgradeManagerNT;
 import com.hbm.inventory.RecipesCommon.AStack;
@@ -287,6 +289,19 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 
 		if(b == Blocks.lit_redstone_ore)
 			b = Blocks.redstone_ore;
+
+		// rich ore: sip one unit, bypass upgrade processing
+		if(b instanceof BlockRichOre) {
+			ItemStack drained = OreRichnessHelper.drainOneUnit(worldObj, targetX, targetY, targetZ, fortune);
+
+			if(drained != null) {
+				worldObj.spawnEntityInWorld(new EntityItem(worldObj, targetX + 0.5, targetY + 0.5, targetZ + 0.5, drained));
+			}
+
+			suckDrops();
+			breakProgress = 0;
+			return;
+		}
 
 		ItemStack stack = new ItemStack(b, 1, meta);
 

@@ -6,6 +6,8 @@ import java.util.*;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockDepth;
+import com.hbm.blocks.generic.BlockRichOre;
+import com.hbm.blocks.generic.OreRichnessHelper;
 import com.hbm.blocks.generic.BlockBedrockOreTE.TileEntityBedrockOre;
 import com.hbm.blocks.network.CraneInserter;
 import com.hbm.entity.item.EntityMovingItem;
@@ -280,7 +282,12 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 						ignoreAll = false;
 
-						combinedHardness += b.getBlockHardness(worldObj, x, y, z);
+						// rich ore: one block-time per unit left
+						if(b instanceof BlockRichOre) {
+							combinedHardness += b.getBlockHardness(worldObj, x, y, z) * OreRichnessHelper.getUnitsRemaining(worldObj, x, y, z);
+						} else {
+							combinedHardness += b.getBlockHardness(worldObj, x, y, z);
+						}
 					}
 				}
 			}
@@ -293,6 +300,8 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 				if(ticksWorked >= ticksToWork) {
 
 					if(bedrockOre == null) {
+						// shared visited set: one sip per block per operation
+						recursionBrake.clear();
 						breakBlocks(ring);
 						buildWall(ring + 1, ring == radius && this.enableWalling);
 						if(ring == radius) mineOuterOres(ring + 1);
@@ -411,17 +420,20 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 		Block b = worldObj.getBlock(x, y, z);
 
-		if(this.enableVeinMiner && this.getInstalledDrill().vein) {
+	// rich blobs always vein-mine whole
+		if(b instanceof BlockRichOre || (this.enableVeinMiner && this.getInstalledDrill() != null && this.getInstalledDrill().vein)) {
 
-			if(isOre(x, y, z, b)) {
+			if(isOre(x, y, z, b) || b instanceof BlockRichOre) {
+				// already sipped this pass, skip
+				if(recursionBrake.contains(new BlockPos(x, y, z))) return;
+
 				minX = x;
 				minY = y;
 				minZ = z;
 				maxX = x;
 				maxY = y;
 				maxZ = z;
-				breakRecursively(x, y, z, 10);
-				recursionBrake.clear();
+				breakRecursively(x, y, z);
 
 				/* move all excavated items to the last drillable position which is also within collection range */
 				List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX + 1, maxY + 1, maxZ + 1));
@@ -453,40 +465,68 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 	private HashSet<BlockPos> recursionBrake = new HashSet();
 	private int minX = 0, minY = 0, minZ = 0, maxX = 0, maxY = 0, maxZ = 0;
-	protected void breakRecursively(int x ,int y, int z, int depth) {
 
-		if(depth < 0) return;
-		BlockPos pos = new BlockPos(x, y, z);
-		if(recursionBrake.contains(pos)) return;
-		recursionBrake.add(pos);
+	// iterative whole-blob flood fill, visited-set bounded (no stack overflow)
+	protected void breakRecursively(int x ,int y, int z) {
 
-		Block b = worldObj.getBlock(x, y, z);
+		Block target = worldObj.getBlock(x, y, z);
 
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-			int ix = x + dir.offsetX;
-			int iy = y + dir.offsetY;
-			int iz = z + dir.offsetZ;
+		ArrayDeque<BlockPos> queue = new ArrayDeque<>();
+		queue.add(new BlockPos(x, y, z));
 
-			if(worldObj.getBlock(ix, iy, iz) == b) {
-				breakRecursively(ix, iy, iz, depth - 1);
+		while(!queue.isEmpty()) {
+			BlockPos pos = queue.poll();
+
+			int px = pos.getX();
+			int py = pos.getY();
+			int pz = pos.getZ();
+
+			if(py < 0 || py > 255) continue;
+			// type check before visited-marking, or neighbors get skipped
+			if(worldObj.getBlock(px, py, pz) != target) continue;
+
+			if(!recursionBrake.add(pos)) continue;
+
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+				queue.add(new BlockPos(px + dir.offsetX, py + dir.offsetY, pz + dir.offsetZ));
 			}
-		}
 
-		breakSingleBlock(b, x, y, z);
+			breakSingleBlock(target, px, py, pz);
 
-		if(x < minX) minX = x;
-		if(x > maxX) maxX = x;
-		if(y < minY) minY = y;
-		if(y > maxY) maxY = y;
-		if(z < minZ) minZ = z;
-		if(z > maxZ) maxZ = z;
+			if(px < minX) minX = px;
+			if(px > maxX) maxX = px;
+			if(py < minY) minY = py;
+			if(py > maxY) maxY = py;
+			if(pz < minZ) minZ = pz;
+			if(pz > maxZ) maxZ = pz;
 
-		if(this.enableWalling) {
-			worldObj.setBlock(x, y, z, ModBlocks.barricade);
+			// only shore up real holes, never surviving blocks
+			if(this.enableWalling && worldObj.isAirBlock(px, py, pz)) {
+				worldObj.setBlock(px, py, pz, ModBlocks.barricade);
+			}
 		}
 	}
 
 	protected void breakSingleBlock(Block b, int x ,int y, int z) {
+
+		// rich ore: sip one unit, block stays until depleted
+		if(b instanceof BlockRichOre) {
+			ItemStack drained = OreRichnessHelper.drainOneUnit(worldObj, x, y, z, this.getFortuneLevel());
+
+			List<ItemStack> richItems = new ArrayList();
+
+			if(drained != null) richItems.add(drained);
+
+			if(this.enableCrusher) {
+				richItems = this.applyCrusher(richItems);
+			}
+
+			for(ItemStack item : richItems) {
+				worldObj.spawnEntityInWorld(new EntityItem(worldObj, x + 0.5, y + 0.5, z + 0.5, item));
+			}
+
+			return;
+		}
 
 		List<ItemStack> items = b.getDrops(worldObj, x, y, z, worldObj.getBlockMetadata(x, y, z), this.getFortuneLevel());
 
@@ -505,20 +545,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 		if(this.enableCrusher) {
 
-			List<ItemStack> list = new ArrayList();
-
-			for(ItemStack stack : items) {
-				ItemStack crushed = ShredderRecipes.getShredderResult(stack).copy();
-
-				if(crushed.getItem() == ModItems.scrap || crushed.getItem() == ModItems.dust) {
-					list.add(stack);
-				} else {
-					crushed.stackSize *= stack.stackSize;
-					list.add(crushed);
-				}
-			}
-
-			items = list;
+			items = this.applyCrusher(items);
 		}
 
 		if(b == ModBlocks.barricade)
@@ -529,6 +556,24 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 		}
 
 		worldObj.func_147480_a(x, y, z, false);
+	}
+
+	protected List<ItemStack> applyCrusher(List<ItemStack> items) {
+
+		List<ItemStack> list = new ArrayList();
+
+		for(ItemStack stack : items) {
+			ItemStack crushed = ShredderRecipes.getShredderResult(stack).copy();
+
+			if(crushed.getItem() == ModItems.scrap || crushed.getItem() == ModItems.dust) {
+				list.add(stack);
+			} else {
+				crushed.stackSize *= stack.stackSize;
+				list.add(crushed);
+			}
+		}
+
+		return list;
 	}
 
 	/** builds a wall along the specified ring, replacing fluid blocks. if wallEverything is set, it will also wall off replacable blocks like air or grass */
@@ -565,7 +610,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 					Block b = worldObj.getBlock(x, y, z);
 
-					if(!this.shouldIgnoreBlock(b, x, y, z) && this.isOre(x, y, z, b)) {
+					if(!this.shouldIgnoreBlock(b, x, y, z) && (this.isOre(x, y, z, b) || b instanceof BlockRichOre)) {
 						tryMineAtLocation(x, y, z);
 					}
 				}
