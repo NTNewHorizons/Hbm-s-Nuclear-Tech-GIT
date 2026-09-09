@@ -125,6 +125,9 @@ public class WorldConfig {
 	public static int copperClusterSpawn = 4;
 	public static int alexandriteSpawn = 100;
 
+	public static int richIronUnits = 250;
+	public static int richCopperUnits = 250;
+
 	public static int limestoneSpawn = 1;
 
 	public static int netherUraniumuSpawn = 8;
@@ -300,6 +303,9 @@ public class WorldConfig {
 		titaniumClusterSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.C01_titaniumClusterSpawn", "Amount of titanium cluster veins per chunk", 2);
 		aluminiumClusterSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.C02_aluminiumClusterSpawn", "Amount of aluminium cluster veins per chunk", 3);
 		copperClusterSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.C03_copperClusterSpawn", "Amount of copper cluster veins per chunk", 4);
+
+		richIronUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R00_richIronUnits", "Units in a fresh rich iron ore block", richIronUnits, 1, 100000);
+		richCopperUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R01_richCopperUnits", "Units in a fresh rich copper ore block", richCopperUnits, 1, 100000);
 
 		limestoneSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.L02_limestoneSpawn", "Amount of limestone block veins per chunk", 1);
 

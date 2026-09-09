@@ -282,9 +282,9 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 						ignoreAll = false;
 
-						// rich ore: one block-time per unit left
+						// rich ore: one block-time per stage left
 						if(b instanceof BlockRichOre) {
-							combinedHardness += b.getBlockHardness(worldObj, x, y, z) * OreRichnessHelper.getUnitsRemaining(worldObj, x, y, z);
+							combinedHardness += b.getBlockHardness(worldObj, x, y, z) * (worldObj.getBlockMetadata(x, y, z) + 1);
 						} else {
 							combinedHardness += b.getBlockHardness(worldObj, x, y, z);
 						}
