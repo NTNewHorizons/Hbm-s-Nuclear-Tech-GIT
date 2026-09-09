@@ -389,7 +389,7 @@ public class OreDictManager {
 			for(CelestialBedrockOreType type : CelestialBedrockOre.getAllTypes()) {
 				ItemStack stack = ItemBedrockOreNew.make(grade, type);
 
-				OreDictionary.registerOre("bedrockoreGrade" + toPascalCase(grade.toString()), stack);
+				OreDictionary.registerOre("oreBedrock" + toPascalCase(grade.toString()), stack);
 			}
 		}
 	}
@@ -658,6 +658,7 @@ public class OreDictManager {
 			if(mat.autogen.contains(MaterialShapes.SHELL)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.SHELL.name() + name, new ItemStack(ModItems.shell, 1, mat.id));
 			if(mat.autogen.contains(MaterialShapes.PIPE)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.PIPE.name() + name, new ItemStack(ModItems.pipe, 1, mat.id));
 			if(mat.autogen.contains(MaterialShapes.FRAGMENT)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.FRAGMENT.name() + name, new ItemStack(ModItems.bedrock_ore_fragment, 1, mat.id));
+			if(mat.autogen.contains(MaterialShapes.FRAGMENT)) for(String name : mat.names) OreDictionary.registerOre("oreBedrockFragment" + name, new ItemStack(ModItems.bedrock_ore_fragment, 1, mat.id)); // TODO: to be changed in MaterialShapes.FRAGMENT in the future but here for now to keep it backwards compatible
 			if(mat.autogen.contains(MaterialShapes.WIRE)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.WIRE.name() + name, new ItemStack(ModItems.wire_fine, 1, mat.id));
 
 			if(mat.autogen.contains(MaterialShapes.LIGHTBARREL)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.LIGHTBARREL.name() + name, new ItemStack(ModItems.part_barrel_light, 1, mat.id));
