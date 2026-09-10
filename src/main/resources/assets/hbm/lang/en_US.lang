@@ -961,6 +961,7 @@ damage.exact.fall=Fall damage
 damage.exact.laser=Laser
 damage.exact.onfire=Afterburn
 damage.other=Other
+damage.netherSafe=Protects from Nether heat
 
 death.attack.acid=%1$s fell into acid.
 death.attack.acidPlayer=%1$s was dissolved by %2$s.
