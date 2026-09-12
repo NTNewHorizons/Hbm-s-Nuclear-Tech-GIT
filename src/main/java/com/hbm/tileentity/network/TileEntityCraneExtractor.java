@@ -3,6 +3,7 @@ package com.hbm.tileentity.network;
 import api.hbm.conveyor.IConveyorBelt;
 import api.hbm.conveyor.IEnterableBlock;
 
+import com.hbm.entity.item.EntityMovingConveyorObject;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.inventory.container.ContainerCraneExtractor;
 import com.hbm.inventory.gui.GUICraneExtractor;
@@ -100,7 +101,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 
 				IConveyorBelt belt = null;
 				
-				if(b instanceof IConveyorBelt) {
+				if(b instanceof IConveyorBelt  && !EntityMovingConveyorObject.isCrammed(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ)) {
 					belt = (IConveyorBelt) b;
 				}
 					

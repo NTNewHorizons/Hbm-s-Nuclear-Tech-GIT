@@ -5,6 +5,7 @@ import api.hbm.conveyor.IConveyorItem;
 import api.hbm.conveyor.IConveyorPackage;
 import api.hbm.conveyor.IEnterableBlock;
 import com.hbm.blocks.ITooltipProvider;
+import com.hbm.entity.item.EntityMovingConveyorObject;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.inventory.recipes.CrystallizerRecipes;
 import com.hbm.lib.RefStrings;
@@ -153,7 +154,7 @@ public class CranePartitioner extends BlockContainer implements IConveyorBelt, I
 		@Override
 		public void updateEntity() {
 
-			if(!worldObj.isRemote) {
+			if(!worldObj.isRemote && !EntityMovingConveyorObject.isCrammed(worldObj, xCoord, yCoord, zCoord)) {
 
 				List<ItemStack> stacks = new ArrayList<>();
 				for(int i = 0; i < INPUT_COUNT; i++) if(slots[i] != null) stacks.add(slots[i]);

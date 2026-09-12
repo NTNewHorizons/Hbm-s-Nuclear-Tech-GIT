@@ -1,6 +1,8 @@
 package com.hbm.tileentity.network;
 
 import api.hbm.conveyor.IConveyorBelt;
+
+import com.hbm.entity.item.EntityMovingConveyorObject;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.inventory.container.ContainerCraneUnboxer;
 import com.hbm.inventory.gui.GUICraneUnboxer;
@@ -65,7 +67,7 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
 				ForgeDirection outputSide = getInputSide(); // note the switcheroo!
 				Block b = worldObj.getBlock(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
 				
-				if(b instanceof IConveyorBelt) {
+				if(b instanceof IConveyorBelt && !EntityMovingConveyorObject.isCrammed(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ)) {
 					
 					IConveyorBelt belt = (IConveyorBelt) b;
 					
