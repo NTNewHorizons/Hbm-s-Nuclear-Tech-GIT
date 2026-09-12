@@ -6,6 +6,7 @@ import com.hbm.inventory.fluid.Fluids;
 import api.ntm1of90.compat.fluid.render.ColoredForgeFluid;
 import api.ntm1of90.compat.fluid.registry.FluidRegistry;
 import api.ntm1of90.compat.fluid.util.NTMFluidLocalization;
+import com.hbm.util.FluidDebug;
 import net.minecraftforge.fluids.Fluid;
 
 import java.util.ArrayList;
@@ -260,6 +261,8 @@ public class FluidMappingRegistry {
         }
 
         System.out.println("[NTM] Unknown Forge fluid: '" + fluid.getName() + "'. No matching NTM fluid found. This fluid will not be usable in NTM machines.");
+        FluidDebug.eventStack("mapping.unknown|" + fluid.getName(),
+            "MAPPING unknown Forge fluid '" + fluid.getName() + "' requested by " + FluidDebug.callerHint());
         return Fluids.NONE;
     }
 
@@ -348,6 +351,8 @@ public class FluidMappingRegistry {
             net.minecraftforge.fluids.FluidRegistry.registerFluid(newFluid);
             registerFluidMapping(hbmName, type);
             System.out.println("[NTM] Created new Forge fluid '" + hbmName + "' for NTM fluid '" + type.getName() + "' with color 0x" + Integer.toHexString(color));
+            FluidDebug.eventStack("mapping.created|" + hbmName,
+                "MAPPING lazily created Forge fluid '" + hbmName + "' for NTM " + FluidDebug.describe(type) + " requested by " + FluidDebug.callerHint());
             return newFluid;
         }
 

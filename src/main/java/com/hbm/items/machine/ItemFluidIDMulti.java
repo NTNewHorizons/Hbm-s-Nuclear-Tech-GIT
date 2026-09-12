@@ -11,6 +11,7 @@ import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toclient.PlayerInformPacket;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.util.ChatBuilder;
+import com.hbm.util.FluidDebug;
 import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
@@ -44,7 +45,10 @@ public class ItemFluidIDMulti extends Item implements IItemFluidIdentifier, IIte
 		FluidType type = getType(stack, true);
 		if(type == null || type == Fluids.NONE || type.hasNoID()) return null;
 		net.minecraftforge.fluids.Fluid fluid = FluidMappingRegistry.getForgeFluid(type);
-		return fluid == null ? null : new FluidStack(fluid, 1000);
+		FluidStack result = fluid == null ? null : new FluidStack(fluid, 1000);
+		FluidDebug.event("identifier.getfluid|" + type.getName(),
+			"IDENTIFIER primary=" + FluidDebug.describe(type) + " -> " + FluidDebug.describeForgeStack(result) + " requested by " + FluidDebug.callerHint());
+		return result;
 	}
 
 	@Override

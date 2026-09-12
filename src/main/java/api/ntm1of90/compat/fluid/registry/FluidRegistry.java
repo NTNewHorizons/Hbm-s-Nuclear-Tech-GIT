@@ -11,6 +11,7 @@ import com.hbm.inventory.fluid.Fluids;
 
 import api.ntm1of90.compat.fluid.render.ColoredForgeFluid;
 import api.ntm1of90.compat.fluid.render.FluidAtlasSprite;
+import com.hbm.util.FluidDebug;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,7 +22,8 @@ import net.minecraftforge.fluids.Fluid;
 /*
  * Stitches every NTM fluid into the block atlas via a custom loader sprite, sourced from the
  * fluid's GUI texture. Icons are only applied to NTM-owned fluids (ColoredForgeFluid) so
- * fluids provided by other mods keep their own textures.
+ * fluids provided by other mods keep their own textures. Only NONE is excluded; NOCON/NOID
+ * fluids are covered too since AE2 crashes on icon-less fluids.
  */
 public class FluidRegistry {
 
@@ -49,7 +51,9 @@ public class FluidRegistry {
         preparedFluids.clear();
 
         for (FluidType type : Fluids.getAll()) {
-            if (!isValid(type)) continue;
+            // NONE is never exposed, but every other fluid needs a sprite (AE2 NPE-crashes
+            // on icon-less fluids, and counterparts are handed out even for NOCON/NOID fluids).
+            if (type == Fluids.NONE) continue;
             if (!(FluidMappingRegistry.getForgeFluid(type) instanceof ColoredForgeFluid)) continue;
 
             String spriteName = FluidAtlasSprite.getSpriteName(type);
@@ -77,11 +81,21 @@ public class FluidRegistry {
             flowingIcons.put(key, icon);
             inventoryIcons.put(key, icon);
         }
-    }
 
-    // special fluids and NONE are not exposed to the Forge fluid system
-    private static boolean isValid(FluidType type) {
-        return type != Fluids.NONE && !type.hasNoContainer() && !type.hasNoID();
+        StringBuilder missing = FluidDebug.isEnabled() ? new StringBuilder() : null;
+        if (missing != null) {
+            for (FluidType type : Fluids.getAll()) {
+                if (type == Fluids.NONE) continue;
+                Fluid fluid = FluidMappingRegistry.getForgeFluid(type);
+                if (fluid instanceof ColoredForgeFluid && !stillIcons.containsKey(type.getName().toLowerCase(Locale.US))) {
+                    if (missing.length() > 0) missing.append(", ");
+                    missing.append(type.getName());
+                }
+            }
+            FluidDebug.event("stitch.summary",
+                "STITCH prepared " + preparedFluids.size() + " fluid sprites"
+                + (missing.length() > 0 ? "; STILL ICON-LESS (AE2-crash risk): " + missing : "; all NTM Forge fluids have icons"));
+        }
     }
 
     @SideOnly(Side.CLIENT)

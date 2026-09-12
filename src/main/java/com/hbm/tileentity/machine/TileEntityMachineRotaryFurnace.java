@@ -25,6 +25,7 @@ import com.hbm.module.ModuleBurnTime;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
 import com.hbm.tileentity.*;
 import com.hbm.util.CrucibleUtil;
+import com.hbm.util.FluidDebug;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
@@ -92,6 +93,13 @@ public class TileEntityMachineRotaryFurnace extends TileEntityMachinePolluting i
 		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 
 		if(!worldObj.isRemote) {
+
+			FluidDebug.checkRotaryTanks(this, tanks);
+
+			// Fixed tanks: re-assert every tick (cf. TileEntitySteamEngine). No-op when correct;
+			// self-heals saves corrupted into NONE-ghosts by external handlers.
+			tanks[1].setTankType(Fluids.STEAM);
+			tanks[2].setTankType(Fluids.SPENTSTEAM);
 
 			tanks[0].setType(3, slots);
 
@@ -251,6 +259,7 @@ public class TileEntityMachineRotaryFurnace extends TileEntityMachinePolluting i
 		} else {
 			this.output = null;
 		}
+		FluidDebug.logRotaryLoad(this, tanks, "deserialize");
 	}
 
 	@Override
@@ -267,6 +276,7 @@ public class TileEntityMachineRotaryFurnace extends TileEntityMachinePolluting i
 			NTMMaterial mat = Mats.matById.get(nbt.getInteger("outType"));
 			this.output = new MaterialStack(mat, nbt.getInteger("outAmount"));
 		}
+		FluidDebug.logRotaryLoad(this, tanks, "readFromNBT");
 	}
 
 	@Override
