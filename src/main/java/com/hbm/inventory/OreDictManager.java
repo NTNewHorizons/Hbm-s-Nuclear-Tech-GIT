@@ -33,6 +33,10 @@ import com.hbm.items.ItemEnums.EnumChunkType;
 import com.hbm.items.ItemEnums.EnumCokeType;
 import com.hbm.items.ItemEnums.EnumTarType;
 import com.hbm.items.special.ItemBedrockOre.EnumBedrockOre;
+import com.hbm.items.special.ItemBedrockOreNew;
+import com.hbm.items.special.ItemBedrockOreNew.BedrockOreGrade;
+import com.hbm.items.special.ItemBedrockOreNew.CelestialBedrockOre;
+import com.hbm.items.special.ItemBedrockOreNew.CelestialBedrockOreType;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.Compat;
 
@@ -367,6 +371,29 @@ public class OreDictManager {
 	public static final DictFrame ANY_ASH = new DictFrame("Ash");
 
 
+	private static String toPascalCase(String value) {
+		StringBuilder result = new StringBuilder();
+
+		for (String part : value.toLowerCase().split("_")) {
+			if (!part.isEmpty()) {
+				result.append(Character.toUpperCase(part.charAt(0)))
+					.append(part.substring(1));
+			}
+		}
+
+		return result.toString();
+	}
+
+	private static void registerBedrockOres() {
+		for(BedrockOreGrade grade : BedrockOreGrade.values()) {
+			for(CelestialBedrockOreType type : CelestialBedrockOre.getAllTypes()) {
+				ItemStack stack = ItemBedrockOreNew.make(grade, type);
+
+				OreDictionary.registerOre("oreBedrock" + toPascalCase(grade.toString()), stack);
+			}
+		}
+	}
+
 	public static void registerOres() {
 
 		/*
@@ -631,6 +658,7 @@ public class OreDictManager {
 			if(mat.autogen.contains(MaterialShapes.SHELL)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.SHELL.name() + name, new ItemStack(ModItems.shell, 1, mat.id));
 			if(mat.autogen.contains(MaterialShapes.PIPE)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.PIPE.name() + name, new ItemStack(ModItems.pipe, 1, mat.id));
 			if(mat.autogen.contains(MaterialShapes.FRAGMENT)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.FRAGMENT.name() + name, new ItemStack(ModItems.bedrock_ore_fragment, 1, mat.id));
+			if(mat.autogen.contains(MaterialShapes.FRAGMENT)) for(String name : mat.names) OreDictionary.registerOre("oreBedrockFragment" + name, new ItemStack(ModItems.bedrock_ore_fragment, 1, mat.id)); // TODO: to be changed in MaterialShapes.FRAGMENT in the future but here for now to keep it backwards compatible
 			if(mat.autogen.contains(MaterialShapes.WIRE)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.WIRE.name() + name, new ItemStack(ModItems.wire_fine, 1, mat.id));
 
 			if(mat.autogen.contains(MaterialShapes.LIGHTBARREL)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.LIGHTBARREL.name() + name, new ItemStack(ModItems.part_barrel_light, 1, mat.id));
@@ -641,6 +669,8 @@ public class OreDictManager {
 			if(mat.autogen.contains(MaterialShapes.STOCK)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.STOCK.name() + name, new ItemStack(ModItems.part_stock, 1, mat.id));
 			if(mat.autogen.contains(MaterialShapes.GRIP)) for(String name : mat.names) OreDictionary.registerOre(MaterialShapes.GRIP.name() + name, new ItemStack(ModItems.part_grip, 1, mat.id));
 		}
+
+		registerBedrockOres();
 
 		for(EnumBedrockOre ore : EnumBedrockOre.values()) {
 			OreDictionary.registerOre("ore" + ore.oreName, new ItemStack(ModItems.ore_enriched, 1, ore.ordinal()));

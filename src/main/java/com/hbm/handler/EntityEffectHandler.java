@@ -120,8 +120,12 @@ public class EntityEffectHandler {
 				}
 			}
 			//only sets players on fire so mod compatibility doesnt die
-			if(entity instanceof EntityPlayer && !entity.isImmuneToFire() && entity.worldObj.provider instanceof WorldProviderHell) {
-				entity.setFire(5);
+			if(entity instanceof EntityPlayer) {
+				if(ArmorUtil.checkForFireProtection(entity)) {
+					entity.extinguish();
+				} else if(entity.worldObj.provider instanceof WorldProviderHell) {
+					entity.setFire(5);
+				}
 			}
 
 			BiomeGenBase biome = entity.worldObj.getBiomeGenForCoords((int) Math.floor(entity.posX), (int) Math.floor(entity.posZ));
