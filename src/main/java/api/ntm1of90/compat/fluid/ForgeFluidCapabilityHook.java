@@ -20,6 +20,9 @@ public class ForgeFluidCapabilityHook {
 
     private static boolean initialized = false;
 
+    private int tickCounter = 0;
+    private static final int SCAN_INTERVAL_TICKS = 20;
+
     /**
      * Initialize the hook
      */
@@ -92,19 +95,45 @@ public class ForgeFluidCapabilityHook {
             return;
         }
 
-        for (net.minecraft.world.WorldServer world : net.minecraft.server.MinecraftServer.getServer().worldServers) {
-            for (Object obj : world.loadedTileEntityList) {
-                if (obj instanceof TileEntity) {
+        tickCounter++;
+        if ((tickCounter % SCAN_INTERVAL_TICKS) != 0) {
+            return;
+        }
+
+        net.minecraft.server.MinecraftServer server = net.minecraft.server.MinecraftServer.getServer();
+        if (server == null || server.worldServers == null) {
+            return;
+        }
+
+        for (net.minecraft.world.WorldServer world : server.worldServers) {
+            if (world == null || world.loadedTileEntityList == null) {
+                continue;
+            }
+
+            // Snapshot to avoid ConcurrentModificationException
+            final Object[] snapshot;
+            try {
+                snapshot = world.loadedTileEntityList.toArray();
+            } catch (Exception e) {
+                continue;
+            }
+
+            for (Object obj : snapshot) {
+                try {
+                    if (!(obj instanceof TileEntity)) {
+                        continue;
+                    }
                     TileEntity tileEntity = (TileEntity) obj;
 
                     if (tileEntity == null || tileEntity.isInvalid()) {
                         continue;
                     }
 
-                    // If the tile entity implements IFluidUserMK2 but not IFluidHandler,
                     if (tileEntity instanceof IFluidUserMK2 && !(tileEntity instanceof IFluidHandler)) {
                         ForgeFluidAdapterRegistry.getFluidHandler(tileEntity);
                     }
+                } catch (Exception e) {
+                    continue;
                 }
             }
         }
