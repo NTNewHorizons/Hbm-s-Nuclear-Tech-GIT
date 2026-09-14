@@ -300,4 +300,29 @@ public class Mats {
 
 		return format.trim();
 	}
+
+	// rich ore chunk shape for depletable ores (icons and names autogen from this)
+	static {
+		MAT_IRON.autogen.add(ORECHUNK);
+		MAT_COPPER.autogen.add(ORECHUNK);
+		MAT_ALUMINIUM.autogen.add(ORECHUNK);
+		MAT_ASBESTOS.autogen.add(ORECHUNK);
+		MAT_BERYLLIUM.autogen.add(ORECHUNK);
+		MAT_COAL.autogen.add(ORECHUNK);
+		MAT_DIAMOND.autogen.add(ORECHUNK);
+		MAT_FLUORITE.autogen.add(ORECHUNK);
+		MAT_GOLD.autogen.add(ORECHUNK);
+		MAT_LAPIS.autogen.add(ORECHUNK);
+		MAT_LEAD.autogen.add(ORECHUNK);
+		MAT_LIGNITE.autogen.add(ORECHUNK);
+		MAT_LITHIUM.autogen.add(ORECHUNK);
+		MAT_KNO.autogen.add(ORECHUNK);
+		MAT_REDSTONE.autogen.add(ORECHUNK);
+		MAT_SULFUR.autogen.add(ORECHUNK);
+		MAT_THORIUM.autogen.add(ORECHUNK);
+		MAT_TITANIUM.autogen.add(ORECHUNK);
+		MAT_TUNGSTEN.autogen.add(ORECHUNK);
+		MAT_URANIUM.autogen.add(ORECHUNK);
+		MAT_ZINC.autogen.add(ORECHUNK);
+	}
 }

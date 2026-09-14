@@ -17,6 +17,7 @@ import com.google.common.collect.Multimap;
 import com.hbm.blocks.IStepTickReceiver;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockAshes;
+import com.hbm.blocks.generic.BlockRichOre;
 import com.hbm.blocks.machine.BlockBeamBase;
 import com.hbm.blocks.generic.BlockPedestal;
 import com.hbm.config.GeneralConfig;
@@ -1667,6 +1668,11 @@ public class ModEventHandler {
 		HbmPlayerProps.getData(event.original).serialize(buf);
 		HbmPlayerProps.getData(event.entityPlayer).deserialize(buf);
 		buf.release();
+	}
+
+	@SubscribeEvent
+	public void onBreakSpeed(net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed event) {
+		if(event.block instanceof BlockRichOre) event.newSpeed = event.originalSpeed / 2.5F;
 	}
 
 	@SubscribeEvent

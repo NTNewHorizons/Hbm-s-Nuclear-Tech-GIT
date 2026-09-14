@@ -143,6 +143,19 @@ public class HbmWorldGen implements IWorldGenerator {
 
 		if(WorldConfig.overworldOre) {
 
+			// TODO: rich ore blob generation (Factorio-style surface patches of BlockRichOre, one material per blob,
+			// richness from WorldConfig rich*Units, only the listed biomes and heights; quartz/coltan/cobalt deferred):
+			// aluminium: jungle + cold taiga variants, y0-60, uncommon, cloud/standard | asbestos: cold taiga variants, y16-48, rare, cloud
+			// beryllium: extreme hills + ice mountains, y0-40, very rare, cloud | coal: extreme hills + stone beach, y20-60, uncommon, cloud
+			// copper: birch forest + plains variants, y16-52, uncommon, cloud | diamond: extreme hills + cold taiga variants, y5-13, very rare, standard
+			// fluorite: ocean + roofed forest, y16-48, rare, cloud | gold: desert + jungle variants, y0-40, rare, cloud/standard
+			// iron: plains + savanna variants, y16-52, uncommon, cloud | lapis: all biomes, ~y16, rare, standard
+			// lead: forests, y16-48, rare, cloud | lignite: swamp, y26-54, common, standard | lithium: mesa variants, y16-48, rare, cloud
+			// niter: desert variants, y16-48, rare, cloud | redstone: birch/forest/mesa/savanna variants, y0-32, uncommon, cloud
+			// sulfur: mesa + swamp variants, y10-50, common, cloud/standard | thorium: savanna variants, y0-40, uncommon, cloud
+			// titanium: desert + jungle + mesa variants, y0-40, rare, cloud | tungsten: extreme hills + ice mountains, y16-48, rare, cloud
+			// uranium: ocean + cold taiga variants, y0-48, uncommon, cloud | zinc: forests, y0-40, uncommon, cloud
+
 			DepthDeposit.generateConditionOverworld(world, i, 0, 3, j, 5, 0.6D, ModBlocks.cluster_depth_iron, rand, 24);
 			DepthDeposit.generateConditionOverworld(world, i, 0, 3, j, 5, 0.6D, ModBlocks.cluster_depth_titanium, rand, 32);
 			DepthDeposit.generateConditionOverworld(world, i, 0, 3, j, 5, 0.6D, ModBlocks.cluster_depth_tungsten, rand, 32);

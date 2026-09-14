@@ -127,6 +127,25 @@ public class WorldConfig {
 
 	public static int richIronUnits = 250;
 	public static int richCopperUnits = 250;
+	public static int richAluminiumUnits = 250;
+	public static int richAsbestosUnits = 250;
+	public static int richBerylliumUnits = 250;
+	public static int richCoalUnits = 250;
+	public static int richDiamondUnits = 250;
+	public static int richFluoriteUnits = 250;
+	public static int richGoldUnits = 250;
+	public static int richLapisUnits = 250;
+	public static int richLeadUnits = 250;
+	public static int richLigniteUnits = 250;
+	public static int richLithiumUnits = 250;
+	public static int richNiterUnits = 250;
+	public static int richRedstoneUnits = 250;
+	public static int richSulfurUnits = 250;
+	public static int richThoriumUnits = 250;
+	public static int richTitaniumUnits = 250;
+	public static int richTungstenUnits = 250;
+	public static int richUraniumUnits = 250;
+	public static int richZincUnits = 250;
 
 	public static int limestoneSpawn = 1;
 
@@ -306,6 +325,25 @@ public class WorldConfig {
 
 		richIronUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R00_richIronUnits", "Units in a fresh rich iron ore block", richIronUnits, 1, 100000);
 		richCopperUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R01_richCopperUnits", "Units in a fresh rich copper ore block", richCopperUnits, 1, 100000);
+		richAluminiumUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R02_richAluminiumUnits", "Units in a fresh rich aluminium ore block", richAluminiumUnits, 1, 100000);
+		richAsbestosUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R03_richAsbestosUnits", "Units in a fresh rich asbestos ore block", richAsbestosUnits, 1, 100000);
+		richBerylliumUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R04_richBerylliumUnits", "Units in a fresh rich beryllium ore block", richBerylliumUnits, 1, 100000);
+		richCoalUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R05_richCoalUnits", "Units in a fresh rich coal ore block", richCoalUnits, 1, 100000);
+		richDiamondUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R06_richDiamondUnits", "Units in a fresh rich diamond ore block", richDiamondUnits, 1, 100000);
+		richFluoriteUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R07_richFluoriteUnits", "Units in a fresh rich fluorite ore block", richFluoriteUnits, 1, 100000);
+		richGoldUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R08_richGoldUnits", "Units in a fresh rich gold ore block", richGoldUnits, 1, 100000);
+		richLapisUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R09_richLapisUnits", "Units in a fresh rich lapis ore block", richLapisUnits, 1, 100000);
+		richLeadUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R10_richLeadUnits", "Units in a fresh rich lead ore block", richLeadUnits, 1, 100000);
+		richLigniteUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R11_richLigniteUnits", "Units in a fresh rich lignite ore block", richLigniteUnits, 1, 100000);
+		richLithiumUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R12_richLithiumUnits", "Units in a fresh rich lithium ore block", richLithiumUnits, 1, 100000);
+		richNiterUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R13_richNiterUnits", "Units in a fresh rich niter ore block", richNiterUnits, 1, 100000);
+		richRedstoneUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R14_richRedstoneUnits", "Units in a fresh rich redstone ore block", richRedstoneUnits, 1, 100000);
+		richSulfurUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R15_richSulfurUnits", "Units in a fresh rich sulfur ore block", richSulfurUnits, 1, 100000);
+		richThoriumUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R16_richThoriumUnits", "Units in a fresh rich thorium ore block", richThoriumUnits, 1, 100000);
+		richTitaniumUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R17_richTitaniumUnits", "Units in a fresh rich titanium ore block", richTitaniumUnits, 1, 100000);
+		richTungstenUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R18_richTungstenUnits", "Units in a fresh rich tungsten ore block", richTungstenUnits, 1, 100000);
+		richUraniumUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R19_richUraniumUnits", "Units in a fresh rich uranium ore block", richUraniumUnits, 1, 100000);
+		richZincUnits = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R20_richZincUnits", "Units in a fresh rich zinc ore block", richZincUnits, 1, 100000);
 
 		limestoneSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.L02_limestoneSpawn", "Amount of limestone block veins per chunk", 1);
 

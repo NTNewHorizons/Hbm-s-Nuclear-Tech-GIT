@@ -458,7 +458,11 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 
 	public double getBreakSpeed(int speed) {
 
-		float hardness = worldObj.getBlock(targetX, targetY, targetZ).getBlockHardness(worldObj, targetX, targetY, targetZ) * 15 / speed;
+		Block target = worldObj.getBlock(targetX, targetY, targetZ);
+		float hardness = target.getBlockHardness(worldObj, targetX, targetY, targetZ) * 15 / speed;
+
+		// rich ore: one block-time per stage left, 2.5x slower by hand-laser parity
+		if(target instanceof BlockRichOre) hardness *= (worldObj.getBlockMetadata(targetX, targetY, targetZ) + 1) * 2.5F;
 
 		if(hardness == 0)
 			return 1;

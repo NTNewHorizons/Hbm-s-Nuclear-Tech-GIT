@@ -2,8 +2,11 @@ package com.hbm.blocks.generic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.hbm.blocks.ILookOverlay;
+import com.hbm.inventory.material.Mats;
+import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.items.ModItems;
 import com.hbm.render.block.RenderBlockMultipass;
 import com.hbm.saveddata.RichOreData;
@@ -33,8 +36,68 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 public class BlockRichOre extends BlockOre implements ILookOverlay {
 
 	public enum RichOreType {
-		IRON,
-		COPPER
+		IRON(3.0F, 5.0F),
+		COPPER(5.0F, 10.0F),
+		ALUMINIUM(5.0F, 10.0F),
+		ASBESTOS(5.0F, 15.0F),
+		BERYLLIUM(5.0F, 15.0F),
+		COAL(3.0F, 5.0F),
+		DIAMOND(3.0F, 5.0F),
+		FLUORITE(5.0F, 10.0F),
+		GOLD(3.0F, 5.0F),
+		LAPIS(3.0F, 5.0F),
+		LEAD(5.0F, 10.0F),
+		LIGNITE(5.0F, 15.0F),
+		LITHIUM(5.0F, 10.0F),
+		NITER(5.0F, 10.0F),
+		REDSTONE(3.0F, 5.0F),
+		SULFUR(5.0F, 10.0F),
+		THORIUM(5.0F, 10.0F),
+		TITANIUM(5.0F, 10.0F),
+		TUNGSTEN(5.0F, 10.0F),
+		URANIUM(5.0F, 10.0F),
+		ZINC(5.0F, 10.0F);
+		// quartz, coltan and cobalt rich ores deferred, see the blob generation TODO in HbmWorldGen
+
+		public final float hardness;
+		public final float resistance;
+
+		private RichOreType(float hardness, float resistance) {
+			this.hardness = hardness;
+			this.resistance = resistance;
+		}
+
+		public String blockName() {
+			return "ore_rich_" + this.name().toLowerCase(Locale.US);
+		}
+
+		// material id doubles as the autogen chunk metadata
+		public int matId() {
+			switch(this) {
+			case IRON: return Mats.MAT_IRON.id;
+			case COPPER: return Mats.MAT_COPPER.id;
+			case ALUMINIUM: return Mats.MAT_ALUMINIUM.id;
+			case ASBESTOS: return Mats.MAT_ASBESTOS.id;
+			case BERYLLIUM: return Mats.MAT_BERYLLIUM.id;
+			case COAL: return Mats.MAT_COAL.id;
+			case DIAMOND: return Mats.MAT_DIAMOND.id;
+			case FLUORITE: return Mats.MAT_FLUORITE.id;
+			case GOLD: return Mats.MAT_GOLD.id;
+			case LAPIS: return Mats.MAT_LAPIS.id;
+			case LEAD: return Mats.MAT_LEAD.id;
+			case LIGNITE: return Mats.MAT_LIGNITE.id;
+			case LITHIUM: return Mats.MAT_LITHIUM.id;
+			case NITER: return Mats.MAT_KNO.id;
+			case REDSTONE: return Mats.MAT_REDSTONE.id;
+			case SULFUR: return Mats.MAT_SULFUR.id;
+			case THORIUM: return Mats.MAT_THORIUM.id;
+			case TITANIUM: return Mats.MAT_TITANIUM.id;
+			case TUNGSTEN: return Mats.MAT_TUNGSTEN.id;
+		case URANIUM: return Mats.MAT_URANIUM.id;
+		case ZINC: return Mats.MAT_ZINC.id;
+		default: throw new IllegalStateException("unhandled rich ore " + this);
+		}
+	}
 	}
 
 	// units in a fresh block
@@ -49,14 +112,13 @@ public class BlockRichOre extends BlockOre implements ILookOverlay {
 	public BlockRichOre(RichOreType type) {
 		super(Material.rock);
 		this.type = type;
-		this.setHardness(type == RichOreType.IRON ? 3.0F : 5.0F);
-		this.setResistance(type == RichOreType.IRON ? 5.0F : 10.0F);
+		this.setHardness(type.hardness);
+		this.setResistance(type.resistance);
 		this.setStepSound(soundTypeStone);
 	}
 
 	public ItemStack getChunkStack() {
-		if(type == RichOreType.IRON) return new ItemStack(ModItems.chunk_rich_iron);
-		return new ItemStack(ModItems.chunk_rich_copper);
+		return new ItemStack(ModItems.chunk_rich, 1, type.matId());
 	}
 
 	@Override
@@ -117,7 +179,7 @@ public class BlockRichOre extends BlockOre implements ILookOverlay {
 
 	@Override
 	public int damageDropped(int meta) {
-		return 0;
+		return type.matId();
 	}
 
 	@Override
@@ -148,7 +210,7 @@ public class BlockRichOre extends BlockOre implements ILookOverlay {
 	@Override
 	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
 		if(!world.isRemote) {
-			int units = OreRichnessHelper.getUnitsRemaining(world, x, y, z);
+			int units = Math.min(OreRichnessHelper.getUnitsRemaining(world, x, y, z), 64 * 8);
 
 			while(units > 0) {
 				int n = Math.min(units, 64);
@@ -200,14 +262,14 @@ public class BlockRichOre extends BlockOre implements ILookOverlay {
 		list.add(new ItemStack(item, 1, MAX_UNITS - 1));
 	}
 
-	// tiers by stage: 5-7 rich, 2-4 half-depleted, 0-1 almost depleted
+	// tiers by stage: 5-7 rich, 2-4 half-depleted, 0-1 almost depleted, material name from Mats
 	@Override
 	public String getOverrideDisplayName(ItemStack stack) {
 		int meta = clampMeta(stack.getItemDamage());
-		if(meta >= 5) return null;
-
-		String base = "tile." + (type == RichOreType.IRON ? "ore_rich_iron" : "ore_rich_copper");
-		return StatCollector.translateToLocal(base + (meta >= 2 ? ".half.name" : ".low.name")).trim();
+		NTMMaterial mat = Mats.matById.get(type.matId());
+		String matName = mat != null ? StatCollector.translateToLocal(mat.getUnlocalizedName()) : type.name();
+		String tier = meta >= 5 ? "name" : meta >= 2 ? "half.name" : "low.name";
+		return StatCollector.translateToLocalFormatted("tile.ore_rich." + tier, matName).trim();
 	}
 
 	@Override

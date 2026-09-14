@@ -4,6 +4,8 @@ import java.util.Random;
 
 import com.hbm.blocks.generic.BlockRichOre.RichOreType;
 import com.hbm.config.WorldConfig;
+import com.hbm.inventory.material.Mats;
+import com.hbm.items.ModItems;
 import com.hbm.saveddata.RichOreData;
 
 import net.minecraft.block.Block;
@@ -24,8 +26,30 @@ public class OreRichnessHelper {
 	}
 
 	public static int getMaxUnits(BlockRichOre ore) {
-		int max = ore.type == RichOreType.IRON ? WorldConfig.richIronUnits : WorldConfig.richCopperUnits;
-		return Math.max(1, max);
+		switch(ore.type) {
+		case IRON: return Math.max(1, WorldConfig.richIronUnits);
+		case COPPER: return Math.max(1, WorldConfig.richCopperUnits);
+		case ALUMINIUM: return Math.max(1, WorldConfig.richAluminiumUnits);
+		case ASBESTOS: return Math.max(1, WorldConfig.richAsbestosUnits);
+		case BERYLLIUM: return Math.max(1, WorldConfig.richBerylliumUnits);
+		case COAL: return Math.max(1, WorldConfig.richCoalUnits);
+		case DIAMOND: return Math.max(1, WorldConfig.richDiamondUnits);
+		case FLUORITE: return Math.max(1, WorldConfig.richFluoriteUnits);
+		case GOLD: return Math.max(1, WorldConfig.richGoldUnits);
+		case LAPIS: return Math.max(1, WorldConfig.richLapisUnits);
+		case LEAD: return Math.max(1, WorldConfig.richLeadUnits);
+		case LIGNITE: return Math.max(1, WorldConfig.richLigniteUnits);
+		case LITHIUM: return Math.max(1, WorldConfig.richLithiumUnits);
+		case NITER: return Math.max(1, WorldConfig.richNiterUnits);
+		case REDSTONE: return Math.max(1, WorldConfig.richRedstoneUnits);
+		case SULFUR: return Math.max(1, WorldConfig.richSulfurUnits);
+		case THORIUM: return Math.max(1, WorldConfig.richThoriumUnits);
+		case TITANIUM: return Math.max(1, WorldConfig.richTitaniumUnits);
+		case TUNGSTEN: return Math.max(1, WorldConfig.richTungstenUnits);
+		case URANIUM: return Math.max(1, WorldConfig.richUraniumUnits);
+		case ZINC: return Math.max(1, WorldConfig.richZincUnits);
+		default: throw new IllegalStateException("unhandled rich ore " + ore.type);
+		}
 	}
 
 	// exact units left; untouched blocks read as the configured full value
