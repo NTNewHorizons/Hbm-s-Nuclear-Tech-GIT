@@ -132,7 +132,7 @@ public class RichOreBlob {
 			int veins = 5 + rand.nextInt(5);
 			for(int v = 0; v < veins; v++) {
 				double a = rand.nextDouble() * Math.PI * 2;
-				int dist = 6 + rand.nextInt(8);
+				int dist = 4 + rand.nextInt(6);
 				int hx = x + (int) (Math.cos(a) * dist);
 				int hz = z + (int) (Math.sin(a) * dist);
 				int hy = Math.max(2, Math.min(250, y + rand.nextInt(9) - 4));
@@ -141,12 +141,10 @@ public class RichOreBlob {
 		}
 	}
 
-	// grows a vein where every placed block touches another by face, so a miner
-	// can always suck the whole patch. only stone is replaced, but the walk
-	// continues through anything, so gaps never split the vein.
+	// grows a face-connected vein from placed neighbors; non-stone is a dead end
 	private static void growVein(World world, Random rand, int x, int y, int z, VeinDef def, boolean advanced) {
 		int size = Math.max(1, def.blobSize);
-		int target = (size + rand.nextInt(size)) * (advanced ? 2 : 1);
+		int target = Math.min((size + rand.nextInt(size)) * (advanced ? 2 : 1), 512);
 		int bound = advanced ? 12 : 8;
 		int vRad = def.flat ? 2 : 4;
 
@@ -172,7 +170,7 @@ public class RichOreBlob {
 			int nz = cur.getZ() + dir.offsetZ;
 
 			if(ny < 1 || ny > 250) continue;
-			if(Math.abs(nx - x) > bound || Math.abs(ny - y) > bound || Math.abs(nz - z) > bound) continue;
+			if(Math.abs(nx - x) > bound || Math.abs(nz - z) > bound) continue;
 			if(Math.abs(ny - y) > vRad) continue;
 
 			Triplet<Integer, Integer, Integer> next = new Triplet<>(nx, ny, nz);
@@ -188,6 +186,7 @@ public class RichOreBlob {
 
 	private static boolean matches(BiomeGenBase biome, String[] list) {
 		if(list.length == 0) return true;
+		if(biome.biomeName == null) return false;
 		String name = norm(biome.biomeName);
 		for(String s : list) if(name.equals(s)) return true;
 		return false;

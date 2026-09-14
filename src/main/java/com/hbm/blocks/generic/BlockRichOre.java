@@ -30,7 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 /**
- * Depletable ore (iron/copper): metadata is richness, final unit turns to stone.
+ * Depletable ore (21 types): metadata is richness stage, final unit turns to stone.
  * Extends BlockOre only for rendering.
  */
 public class BlockRichOre extends BlockOre implements ILookOverlay {
@@ -92,7 +92,7 @@ public class BlockRichOre extends BlockOre implements ILookOverlay {
 			case SULFUR: return Mats.MAT_SULFUR.id;
 			case THORIUM: return Mats.MAT_THORIUM.id;
 			case TITANIUM: return Mats.MAT_TITANIUM.id;
-			case TUNGSTEN: return Mats.MAT_TUNGSTEN.id;
+		case TUNGSTEN: return Mats.MAT_TUNGSTEN.id;
 		case URANIUM: return Mats.MAT_URANIUM.id;
 		case ZINC: return Mats.MAT_ZINC.id;
 		default: throw new IllegalStateException("unhandled rich ore " + this);
@@ -191,8 +191,8 @@ public class BlockRichOre extends BlockOre implements ILookOverlay {
 			return true;
 		}
 
-		// nothing drops, nothing depletes
-		if(!willHarvest) return false;
+		// clearers remove without drops; map entry goes with the block
+		if(!willHarvest) return super.removedByPlayer(world, player, x, y, z, willHarvest);
 
 		OreRichnessHelper.consumeOneUnit(world, x, y, z);
 		this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
@@ -200,8 +200,7 @@ public class BlockRichOre extends BlockOre implements ILookOverlay {
 		return false;
 	}
 
-	// explosions release all remaining units at once
-	// explosions pay every remaining unit; the generic chance-drop path is disabled below
+	// explosions release all remaining units at once (capped); the generic chance-drop path is disabled below
 	@Override
 	public boolean canDropFromExplosion(Explosion explosion) {
 		return false;
@@ -243,11 +242,12 @@ public class BlockRichOre extends BlockOre implements ILookOverlay {
 		return new ItemStack(this, 1, clampMeta(world.getBlockMetadata(x, y, z)));
 	}
 
-	// placement is always a fresh full block; the block is unobtainable in survival anyway
+	// placement seeds the map from the item stage, so pick-place stays honest
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		if(!world.isRemote) RichOreData.forWorld(world).remove(x, y, z);
-		world.setBlockMetadataWithNotify(x, y, z, MAX_UNITS - 1, 2);
+		int meta = clampMeta(stack.getItemDamage());
+		world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+		if(!world.isRemote) RichOreData.forWorld(world).set(x, y, z, Math.max(1, (meta + 1) * OreRichnessHelper.getMaxUnits(this) / MAX_UNITS));
 	}
 
 	@Override

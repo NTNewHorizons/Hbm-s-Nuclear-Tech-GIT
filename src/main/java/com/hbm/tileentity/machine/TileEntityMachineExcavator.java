@@ -271,7 +271,6 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 							combinedHardness = 60 * 20 * 5;
 							bedrockOre = new BlockPos(x, y, z);
 							bedrockDrilling = true;
-							enableCrusher = false;
 							ignoreAll = false;
 							break;
 						}
@@ -306,7 +305,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 				if(ringHasRich) {
 					EnumDrillType drillType = this.getInstalledDrill();
 					boolean veinActive = this.enableVeinMiner && drillType != null && drillType.vein;
-					int richFloor = veinActive ? veinRichBlocks * 62 : 60;
+					int richFloor = veinActive ? Math.max(62, veinRichBlocks * 62) : 60;
 					ticksToWork = Math.max(ticksToWork, (int) Math.ceil(richFloor / this.speed));
 				}
 
@@ -512,6 +511,9 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 			if(worldObj.getBlock(px, py, pz) != target) continue;
 
 			if(!recursionBrake.add(pos)) continue;
+
+			// bound whole-blob floods on absurd veins
+			if(recursionBrake.size() > 4096) break;
 
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 				queue.add(new BlockPos(px + dir.offsetX, py + dir.offsetY, pz + dir.offsetZ));

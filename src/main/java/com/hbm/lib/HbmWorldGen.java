@@ -219,7 +219,7 @@ public class HbmWorldGen implements IWorldGenerator {
 			}
 		}
 
-		RichOreBlob.generateBlobs(world, rand, i, j);
+		if(WorldConfig.overworldOre) RichOreBlob.generateBlobs(world, rand, i, j);
 
 		boolean enableDungeons = world.getWorldInfo().isMapFeaturesEnabled();
 		if(GeneralConfig.enableDungeons == 1) enableDungeons = true;

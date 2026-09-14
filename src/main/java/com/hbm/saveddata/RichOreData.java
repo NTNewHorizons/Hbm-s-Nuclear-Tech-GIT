@@ -72,7 +72,9 @@ public class RichOreData extends WorldSavedData {
 		for(int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound entry = list.getCompoundTagAt(i);
 			if(entry.getInteger("u") <= 0) continue;
-			units.put(new RichPos(entry.getInteger("x"), entry.getInteger("y"), entry.getInteger("z")), entry.getInteger("u"));
+			int y = entry.getInteger("y");
+			if(y < 0 || y > 255) continue;
+			units.put(new RichPos(entry.getInteger("x"), y, entry.getInteger("z")), entry.getInteger("u"));
 		}
 	}
 

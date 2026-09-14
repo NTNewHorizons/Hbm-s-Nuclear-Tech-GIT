@@ -60,10 +60,12 @@ public class OreRichnessHelper {
 		BlockRichOre ore = (BlockRichOre) b;
 		Integer stored = RichOreData.forWorld(world).get(x, y, z);
 
-		if(stored != null && stored.intValue() > 0) return Math.min(stored.intValue(), getMaxUnits(ore));
-		if(stored != null) RichOreData.forWorld(world).remove(x, y, z);
-
-		return getMaxUnits(ore);
+		if(stored == null) return getMaxUnits(ore);
+		if(stored.intValue() <= 0) {
+			RichOreData.forWorld(world).remove(x, y, z);
+			return 0;
+		}
+		return Math.min(stored.intValue(), getMaxUnits(ore));
 	}
 
 	// display stage 0..7 for an exact count; identical to meta+1 while max is 8
