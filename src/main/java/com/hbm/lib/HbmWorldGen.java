@@ -143,19 +143,6 @@ public class HbmWorldGen implements IWorldGenerator {
 
 		if(WorldConfig.overworldOre) {
 
-			// TODO: rich ore blob generation (Factorio-style surface patches of BlockRichOre, one material per blob,
-			// richness from WorldConfig rich*Units, only the listed biomes and heights; quartz/coltan/cobalt deferred):
-			// aluminium: jungle + cold taiga variants, y0-60, uncommon, cloud/standard | asbestos: cold taiga variants, y16-48, rare, cloud
-			// beryllium: extreme hills + ice mountains, y0-40, very rare, cloud | coal: extreme hills + stone beach, y20-60, uncommon, cloud
-			// copper: birch forest + plains variants, y16-52, uncommon, cloud | diamond: extreme hills + cold taiga variants, y5-13, very rare, standard
-			// fluorite: ocean + roofed forest, y16-48, rare, cloud | gold: desert + jungle variants, y0-40, rare, cloud/standard
-			// iron: plains + savanna variants, y16-52, uncommon, cloud | lapis: all biomes, ~y16, rare, standard
-			// lead: forests, y16-48, rare, cloud | lignite: swamp, y26-54, common, standard | lithium: mesa variants, y16-48, rare, cloud
-			// niter: desert variants, y16-48, rare, cloud | redstone: birch/forest/mesa/savanna variants, y0-32, uncommon, cloud
-			// sulfur: mesa + swamp variants, y10-50, common, cloud/standard | thorium: savanna variants, y0-40, uncommon, cloud
-			// titanium: desert + jungle + mesa variants, y0-40, rare, cloud | tungsten: extreme hills + ice mountains, y16-48, rare, cloud
-			// uranium: ocean + cold taiga variants, y0-48, uncommon, cloud | zinc: forests, y0-40, uncommon, cloud
-
 			DepthDeposit.generateConditionOverworld(world, i, 0, 3, j, 5, 0.6D, ModBlocks.cluster_depth_iron, rand, 24);
 			DepthDeposit.generateConditionOverworld(world, i, 0, 3, j, 5, 0.6D, ModBlocks.cluster_depth_titanium, rand, 32);
 			DepthDeposit.generateConditionOverworld(world, i, 0, 3, j, 5, 0.6D, ModBlocks.cluster_depth_tungsten, rand, 32);
@@ -172,23 +159,23 @@ public class HbmWorldGen implements IWorldGenerator {
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.rareSpawn, 6, 30, 10, ModBlocks.ore_gneiss_rare, ModBlocks.stone_gneiss);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.gassshaleSpawn * 3, 10, 30, 10, ModBlocks.ore_gneiss_gas, ModBlocks.stone_gneiss);
 
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.uraniumSpawn, 5, 5, 20, ModBlocks.ore_uranium);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.thoriumSpawn, 5, 5, 25, ModBlocks.ore_thorium);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.titaniumSpawn, 6, 5, 30, ModBlocks.ore_titanium);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.sulfurSpawn, 8, 5, 30, ModBlocks.ore_sulfur);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.aluminiumSpawn, 6, 5, 40, ModBlocks.ore_aluminium);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.copperSpawn, 6, 5, 45, ModBlocks.ore_copper);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.uraniumSpawn, 5, 5, 20, ModBlocks.ore_uranium);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.thoriumSpawn, 5, 5, 25, ModBlocks.ore_thorium);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.titaniumSpawn, 6, 5, 30, ModBlocks.ore_titanium);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.sulfurSpawn, 8, 5, 30, ModBlocks.ore_sulfur);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.aluminiumSpawn, 6, 5, 40, ModBlocks.ore_aluminium);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.copperSpawn, 6, 5, 45, ModBlocks.ore_copper);
 			// DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.nickelSpawn, 6, 5, 10, ModBlocks.ore_nickel);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.zincSpawn, 6, 5, 32, ModBlocks.ore_zinc);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.zincSpawn, 6, 5, 32, ModBlocks.ore_zinc);
 			// DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.mineralSpawn, 10, 12, 32, ModBlocks.ore_mineral);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.fluoriteSpawn, 4, 5, 45, ModBlocks.ore_fluorite);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.niterSpawn, 6, 5, 30, ModBlocks.ore_niter);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.tungstenSpawn, 8, 5, 30, ModBlocks.ore_tungsten);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.leadSpawn, 9, 5, 30, ModBlocks.ore_lead);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.berylliumSpawn, 4, 5, 30, ModBlocks.ore_beryllium);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.fluoriteSpawn, 4, 5, 45, ModBlocks.ore_fluorite);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.niterSpawn, 6, 5, 30, ModBlocks.ore_niter);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.tungstenSpawn, 8, 5, 30, ModBlocks.ore_tungsten);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.leadSpawn, 9, 5, 30, ModBlocks.ore_lead);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.berylliumSpawn, 4, 5, 30, ModBlocks.ore_beryllium);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.rareSpawn, 5, 5, 20, ModBlocks.ore_rare);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.ligniteSpawn, 24, 35, 25, ModBlocks.ore_lignite);
-			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.asbestosSpawn, 4, 16, 16, ModBlocks.ore_asbestos);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.ligniteSpawn, 24, 35, 25, ModBlocks.ore_lignite);
+			if(RichOreBlob.classicVeins()) DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.asbestosSpawn, 4, 16, 16, ModBlocks.ore_asbestos);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.cinnebarSpawn, 4, 8, 16, ModBlocks.ore_cinnebar);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.cobaltSpawn, 4, 4, 8, ModBlocks.ore_cobalt);
 
@@ -231,6 +218,8 @@ public class HbmWorldGen implements IWorldGenerator {
 				}
 			}
 		}
+
+		RichOreBlob.generateBlobs(world, rand, i, j);
 
 		boolean enableDungeons = world.getWorldInfo().isMapFeaturesEnabled();
 		if(GeneralConfig.enableDungeons == 1) enableDungeons = true;

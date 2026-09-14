@@ -101,6 +101,7 @@ import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.world.PlanetGen;
+import com.hbm.world.feature.RichOreBlob;
 import com.hbm.world.generator.TimedGenerator;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -976,6 +977,20 @@ public class ModEventHandler {
 	public void onGenerateOre(GenerateMinable event) {
 		if(event.world.provider instanceof WorldProviderCelestial && event.world.provider.dimensionId != 0) {
 			WorldGeneratorCelestial.onGenerateOre(event);
+		}
+
+		if(event.world.provider.dimensionId == 0 && RichOreBlob.overrideVanilla()) {
+			switch(event.type) {
+			case COAL:
+			case IRON:
+			case GOLD:
+			case REDSTONE:
+			case LAPIS:
+			case DIAMOND:
+				event.setResult(Result.DENY);
+				break;
+			default: break;
+			}
 		}
 	}
 
