@@ -18,6 +18,7 @@ public class MaterialShapes {
 	public static final MaterialShapes NUGGET = new MaterialShapes(8, "nugget", "tiny");
 	public static final MaterialShapes TINY = new MaterialShapes(8, "tiny").noAutogen();
 	public static final MaterialShapes FRAGMENT = new MaterialShapes(8, "bedrockorefragment");
+	public static final MaterialShapes ORECHUNK = new MaterialShapes(8, "oreChunk").noAutogen();
 	public static final MaterialShapes DUSTTINY = new MaterialShapes(NUGGET.quantity, "dustTiny");
 	public static final MaterialShapes WIRE = new MaterialShapes(9, "wireFine");
 	public static final MaterialShapes BOLT = new MaterialShapes(9, "bolt");

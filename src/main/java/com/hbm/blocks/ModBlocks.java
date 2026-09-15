@@ -102,6 +102,28 @@ public class ModBlocks {
 	public static Block ore_fire;
 	public static Block ore_shale;
 
+	public static Block ore_rich_iron;
+	public static Block ore_rich_copper;
+	public static Block ore_rich_aluminium;
+	public static Block ore_rich_asbestos;
+	public static Block ore_rich_beryllium;
+	public static Block ore_rich_coal;
+	public static Block ore_rich_diamond;
+	public static Block ore_rich_fluorite;
+	public static Block ore_rich_gold;
+	public static Block ore_rich_lapis;
+	public static Block ore_rich_lead;
+	public static Block ore_rich_lignite;
+	public static Block ore_rich_lithium;
+	public static Block ore_rich_niter;
+	public static Block ore_rich_redstone;
+	public static Block ore_rich_sulfur;
+	public static Block ore_rich_thorium;
+	public static Block ore_rich_titanium;
+	public static Block ore_rich_tungsten;
+	public static Block ore_rich_uranium;
+	public static Block ore_rich_zinc;
+
 	public static Block ore_bedrock;
 	public static Block ore_volcano;
 
@@ -1458,6 +1480,29 @@ public class ModBlocks {
 		ore_fire = new BlockOre(Material.rock).setBlockName("ore_fire").setCreativeTab(MainRegistry.blockTab).setHardness(0.4F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":ore_fire");
 		ore_shale = new BlockOre(Material.rock).setBlockName("ore_shale").setCreativeTab(MainRegistry.blockTab).setHardness(1.5F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":ore_shale");
 
+		// depletable ores: metadata = remaining units
+		ore_rich_iron = new BlockRichOre(BlockRichOre.RichOreType.IRON).setBlockName("ore_rich_iron").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_iron");
+		ore_rich_copper = new BlockRichOre(BlockRichOre.RichOreType.COPPER).setBlockName("ore_rich_copper").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_copper");
+		ore_rich_aluminium = new BlockRichOre(BlockRichOre.RichOreType.ALUMINIUM).setBlockName("ore_rich_aluminium").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_aluminium");
+		ore_rich_asbestos = new BlockRichOre(BlockRichOre.RichOreType.ASBESTOS).setBlockName("ore_rich_asbestos").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_asbestos");
+		ore_rich_beryllium = new BlockRichOre(BlockRichOre.RichOreType.BERYLLIUM).setBlockName("ore_rich_beryllium").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_beryllium");
+		ore_rich_coal = new BlockRichOre(BlockRichOre.RichOreType.COAL).setBlockName("ore_rich_coal").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_coal");
+		ore_rich_diamond = new BlockRichOre(BlockRichOre.RichOreType.DIAMOND).setBlockName("ore_rich_diamond").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_diamond");
+		ore_rich_fluorite = new BlockRichOre(BlockRichOre.RichOreType.FLUORITE).setBlockName("ore_rich_fluorite").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_fluorite");
+		ore_rich_gold = new BlockRichOre(BlockRichOre.RichOreType.GOLD).setBlockName("ore_rich_gold").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_gold");
+		ore_rich_lapis = new BlockRichOre(BlockRichOre.RichOreType.LAPIS).setBlockName("ore_rich_lapis").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_lapis");
+		ore_rich_lead = new BlockRichOre(BlockRichOre.RichOreType.LEAD).setBlockName("ore_rich_lead").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_lead");
+		ore_rich_lignite = new BlockRichOre(BlockRichOre.RichOreType.LIGNITE).setBlockName("ore_rich_lignite").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_lignite");
+		ore_rich_lithium = new BlockRichOre(BlockRichOre.RichOreType.LITHIUM).setBlockName("ore_rich_lithium").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_lithium");
+		ore_rich_niter = new BlockRichOre(BlockRichOre.RichOreType.NITER).setBlockName("ore_rich_niter").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_niter");
+		ore_rich_redstone = new BlockRichOre(BlockRichOre.RichOreType.REDSTONE).setBlockName("ore_rich_redstone").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_redstone");
+		ore_rich_sulfur = new BlockRichOre(BlockRichOre.RichOreType.SULFUR).setBlockName("ore_rich_sulfur").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_sulfur");
+		ore_rich_thorium = new BlockRichOre(BlockRichOre.RichOreType.THORIUM).setBlockName("ore_rich_thorium").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_thorium");
+		ore_rich_titanium = new BlockRichOre(BlockRichOre.RichOreType.TITANIUM).setBlockName("ore_rich_titanium").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_titanium");
+		ore_rich_tungsten = new BlockRichOre(BlockRichOre.RichOreType.TUNGSTEN).setBlockName("ore_rich_tungsten").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_tungsten");
+		ore_rich_uranium = new BlockRichOre(BlockRichOre.RichOreType.URANIUM).setBlockName("ore_rich_uranium").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_uranium");
+		ore_rich_zinc = new BlockRichOre(BlockRichOre.RichOreType.ZINC).setBlockName("ore_rich_zinc").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":ore_rich_zinc");
+
 		cluster_iron = new BlockCluster(Material.rock).setBlockName("cluster_iron").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(15.0F).setBlockTextureName(RefStrings.MODID + ":cluster_iron");
 		cluster_titanium = new BlockCluster(Material.rock).setBlockName("cluster_titanium").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(15.0F).setBlockTextureName(RefStrings.MODID + ":cluster_titanium");
 		cluster_aluminium = new BlockCluster(Material.rock).setBlockName("cluster_aluminium").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(15.0F).setBlockTextureName(RefStrings.MODID + ":cluster_aluminium");
@@ -2769,6 +2814,27 @@ public class ModBlocks {
 		GameRegistry.registerBlock(ore_glowstone, ItemBlockBase.class, ore_glowstone.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_niter, ItemBlockBase.class, ore_niter.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_copper, ItemBlockBase.class, ore_copper.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_iron, ItemBlockBase.class, ore_rich_iron.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_copper, ItemBlockBase.class, ore_rich_copper.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_aluminium, ItemBlockBase.class, ore_rich_aluminium.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_asbestos, ItemBlockBase.class, ore_rich_asbestos.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_beryllium, ItemBlockBase.class, ore_rich_beryllium.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_coal, ItemBlockBase.class, ore_rich_coal.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_diamond, ItemBlockBase.class, ore_rich_diamond.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_fluorite, ItemBlockBase.class, ore_rich_fluorite.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_gold, ItemBlockBase.class, ore_rich_gold.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_lapis, ItemBlockBase.class, ore_rich_lapis.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_lead, ItemBlockBase.class, ore_rich_lead.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_lignite, ItemBlockBase.class, ore_rich_lignite.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_lithium, ItemBlockBase.class, ore_rich_lithium.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_niter, ItemBlockBase.class, ore_rich_niter.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_redstone, ItemBlockBase.class, ore_rich_redstone.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_sulfur, ItemBlockBase.class, ore_rich_sulfur.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_thorium, ItemBlockBase.class, ore_rich_thorium.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_titanium, ItemBlockBase.class, ore_rich_titanium.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_tungsten, ItemBlockBase.class, ore_rich_tungsten.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_uranium, ItemBlockBase.class, ore_rich_uranium.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_rich_zinc, ItemBlockBase.class, ore_rich_zinc.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_nickel, ItemBlockBase.class, ore_nickel.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_mineral, ItemBlockBase.class, ore_mineral.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_zinc, ItemBlockBase.class, ore_zinc.getUnlocalizedName());

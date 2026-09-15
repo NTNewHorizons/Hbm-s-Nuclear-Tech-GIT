@@ -3,8 +3,11 @@ package com.hbm.items.armor;
 import java.util.List;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.BlockRichOre;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.threading.PacketThreading;
+import com.hbm.inventory.material.Mats;
+import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.items.ISatChip;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
 import com.hbm.saveddata.SatelliteSavedData;
@@ -19,6 +22,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -97,6 +101,13 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
 						if(addIf(ModBlocks.crate_can, b, 1, aX, seg, aZ, null, 0x800000, player)) hits++;
 						if(addIf(ModBlocks.ore_bedrock, b, 1, aX, seg, aZ, "Bedrock Ore", 0xff0000, player)) hits++;
 
+						if(b instanceof BlockRichOre && player.getRNG().nextInt(200) == 0) {
+							NTMMaterial mat = Mats.matById.get(((BlockRichOre) b).type.matId());
+							String label = mat != null ? "Rich " + StatCollector.translateToLocal(mat.getUnlocalizedName()) : "Rich Ore";
+							mark(aX, seg, aZ, label, 0x00ff00, player);
+							hits++;
+						}
+
 						if(hits > 100) return;
 					}
 				}
@@ -107,16 +118,20 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
 	private boolean addIf(Block target, Block b, int chance, int x, int y, int z, String label, int color, EntityPlayerMP player) {
 
 		if(target == b && player.getRNG().nextInt(chance) == 0) {
-			NBTTagCompound data = new NBTTagCompound();
-			data.setString("type", "marker");
-			data.setInteger("color", color);
-			data.setInteger("expires", 15_000);
-			data.setDouble("dist", 300D);
-			if(label != null) data.setString("label", label);
-			PacketThreading.createSendToThreadedPacket(new AuxParticlePacketNT(data, x, y, z), player);
+			mark(x, y, z, label, color, player);
 			return true;
 		}
 
 		return false;
+	}
+
+	private void mark(int x, int y, int z, String label, int color, EntityPlayerMP player) {
+		NBTTagCompound data = new NBTTagCompound();
+		data.setString("type", "marker");
+		data.setInteger("color", color);
+		data.setInteger("expires", 15_000);
+		data.setDouble("dist", 300D);
+		if(label != null) data.setString("label", label);
+		PacketThreading.createSendToThreadedPacket(new AuxParticlePacketNT(data, x, y, z), player);
 	}
 }

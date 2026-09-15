@@ -10,6 +10,8 @@ import java.util.List;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockOreFluid;
+import com.hbm.blocks.generic.BlockRichOre;
+import com.hbm.blocks.generic.OreRichnessHelper;
 import com.hbm.dim.SolarSystem;
 import com.hbm.inventory.UpgradeManagerNT;
 import com.hbm.inventory.RecipesCommon.AStack;
@@ -288,6 +290,19 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 		if(b == Blocks.lit_redstone_ore)
 			b = Blocks.redstone_ore;
 
+		// rich ore: sip one unit, bypass upgrade processing
+		if(b instanceof BlockRichOre) {
+			ItemStack drained = OreRichnessHelper.drainOneUnit(worldObj, targetX, targetY, targetZ, fortune);
+
+			if(drained != null) {
+				worldObj.spawnEntityInWorld(new EntityItem(worldObj, targetX + 0.5, targetY + 0.5, targetZ + 0.5, drained));
+			}
+
+			suckDrops();
+			breakProgress = 0;
+			return;
+		}
+
 		ItemStack stack = new ItemStack(b, 1, meta);
 
 		if(stack != null && stack.getItem() != null) {
@@ -443,7 +458,11 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 
 	public double getBreakSpeed(int speed) {
 
-		float hardness = worldObj.getBlock(targetX, targetY, targetZ).getBlockHardness(worldObj, targetX, targetY, targetZ) * 15 / speed;
+		Block target = worldObj.getBlock(targetX, targetY, targetZ);
+		float hardness = target.getBlockHardness(worldObj, targetX, targetY, targetZ) * 15 / speed;
+
+		// rich ore: one block-time per stage left, 2.5x slower by hand-laser parity
+		if(target instanceof BlockRichOre) hardness *= (worldObj.getBlockMetadata(targetX, targetY, targetZ) + 1) * 2.5F;
 
 		if(hardness == 0)
 			return 1;
