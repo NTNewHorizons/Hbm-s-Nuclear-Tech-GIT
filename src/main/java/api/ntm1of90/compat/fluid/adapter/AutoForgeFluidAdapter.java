@@ -4,6 +4,7 @@ import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 
+import api.hbm.fluidmk2.IFluidReceiverMK2;
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
 import api.hbm.fluidmk2.IFluidStandardSenderMK2;
 import api.hbm.fluidmk2.IFluidUserMK2;
@@ -81,7 +82,7 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
                 FluidType currentType = tank.getTankType();
                 int maxFill = tank.getMaxFill();
 
-                if (currentFill < maxFill && (currentFill <= 0 || currentType == ntmFluid)) {
+                if (currentFill < maxFill && (canAcceptInto(tank, ntmFluid))) {
                     int ntmAmount = toNTMAmount(resource.amount);
                     int fillAmount = Math.min(ntmAmount, maxFill - currentFill);
 
@@ -91,7 +92,7 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
 
                     // Fill the tank
                     if (doFill) {
-                        if (currentFill == 0) {
+                        if (currentType == Fluids.NONE) {
                             tank.setTankType(ntmFluid);
                         }
                         tank.setFill(currentFill + fillAmount);
@@ -253,7 +254,7 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
                 FluidType currentType = tank.getTankType();
                 int maxFill = tank.getMaxFill();
 
-                if (currentFill < maxFill && (currentFill <= 0 || currentType == ntmFluid)) {
+                if (currentFill < maxFill && (canAcceptInto(tank, ntmFluid))) {
                     return true; // Tank can accept the fluid
                 }
             }
@@ -315,5 +316,15 @@ public class AutoForgeFluidAdapter implements IFluidHandler {
             list.add(new FluidTankInfo(stack, toForgeAmount(maxFill)));
         }
         return list.toArray(new FluidTankInfo[0]);
+    }
+
+    /** Typed tanks keep their type even when empty; untyped tanks require machine demand (recipe buffers). */
+    private boolean canAcceptInto(FluidTank tank, FluidType ntmFluid) {
+        FluidType currentType = tank.getTankType();
+        if (currentType != Fluids.NONE && currentType != ntmFluid) return false;
+        if (currentType == Fluids.NONE && fluidUser instanceof IFluidReceiverMK2) {
+            return ((IFluidReceiverMK2) fluidUser).getDemand(ntmFluid, tank.getPressure()) > 0;
+        }
+        return true;
     }
 }
