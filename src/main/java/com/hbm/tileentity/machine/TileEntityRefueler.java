@@ -8,6 +8,7 @@ import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.TileEntityLoadedBase;
+import com.hbm.util.BackhandCompat;
 import com.hbm.util.BobMathUtil;
 
 import api.hbm.fluid.IFluidStandardReceiver;
@@ -50,25 +51,10 @@ public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidSt
 
 			for(EntityPlayer player : players) {
 				for(int i = 0; i < 5; i++) {
-
-					ItemStack stack = player.getEquipmentInSlot(i);
-					if(stack == null) continue;
-
-					if(fillFillable(stack)) {
-						isOperating = true;
-					}
-
-					if(stack.getItem() instanceof ItemArmor && ArmorModHandler.hasMods(stack)) {
-						for(ItemStack mod : ArmorModHandler.pryMods(stack)) {
-							if(mod == null) continue;
-
-							if(fillFillable(mod)) {
-								ArmorModHandler.applyMod(stack, mod);
-								isOperating = true;
-							}
-						}
-					}
+					fillEquipment(player.getEquipmentInSlot(i));
 				}
+
+				fillEquipment(BackhandCompat.getOffhandItem(player));
 			}
 
 			if(isOperating) {
@@ -105,6 +91,25 @@ public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidSt
 		}
 
 
+	}
+
+	private void fillEquipment(ItemStack stack) {
+		if(stack == null) return;
+
+		if(fillFillable(stack)) {
+			isOperating = true;
+		}
+
+		if(stack.getItem() instanceof ItemArmor && ArmorModHandler.hasMods(stack)) {
+			for(ItemStack mod : ArmorModHandler.pryMods(stack)) {
+				if(mod == null) continue;
+
+				if(fillFillable(mod)) {
+					ArmorModHandler.applyMod(stack, mod);
+					isOperating = true;
+				}
+			}
+		}
 	}
 
 	private boolean fillFillable(ItemStack stack) {

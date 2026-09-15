@@ -10,6 +10,7 @@ import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.main.NTMSounds;
 import com.hbm.tileentity.IBufPacketReceiver;
 import com.hbm.tileentity.TileEntityLoadedBase;
+import com.hbm.util.BackhandCompat;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -43,14 +44,10 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 			for(EntityPlayer player : players) {
 
 				for(int i = 0; i < 5; i++) {
-
-					ItemStack stack = player.getEquipmentInSlot(i);
-
-					if(stack != null && stack.getItem() instanceof IBatteryItem) {
-						IBatteryItem battery = (IBatteryItem) stack.getItem();
-						charge += Math.min(battery.getMaxCharge(stack) - battery.getCharge(stack), battery.getChargeRate(stack));
-					}
+					charge += getChargeDemand(player.getEquipmentInSlot(i));
 				}
+
+				charge += getChargeDemand(BackhandCompat.getOffhandItem(player));
 			}
 
 			particles = lastOp > 0;
@@ -125,22 +122,30 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 		for(EntityPlayer player : players) {
 
 			for(int i = 0; i < 5; i++) {
-
-				ItemStack stack = player.getEquipmentInSlot(i);
-
-				if(stack != null && stack.getItem() instanceof IBatteryItem) {
-					IBatteryItem battery = (IBatteryItem) stack.getItem();
-
-					long toCharge = Math.min(battery.getMaxCharge(stack) - battery.getCharge(stack), battery.getChargeRate(stack));
-					toCharge = Math.min(toCharge, Math.max(power / 5, 1));
-					battery.chargeBattery(stack, toCharge);
-					power -= toCharge;
-
-					lastOp = 4;
-				}
+				power = chargeStack(player.getEquipmentInSlot(i), power);
 			}
+
+			power = chargeStack(BackhandCompat.getOffhandItem(player), power);
 		}
 
 		return power;
+	}
+
+	private long getChargeDemand(ItemStack stack) {
+		if(stack == null || !(stack.getItem() instanceof IBatteryItem)) return 0;
+
+		IBatteryItem battery = (IBatteryItem) stack.getItem();
+		return Math.min(battery.getMaxCharge(stack) - battery.getCharge(stack), battery.getChargeRate(stack));
+	}
+
+	private long chargeStack(ItemStack stack, long power) {
+		if(stack == null || !(stack.getItem() instanceof IBatteryItem)) return power;
+
+		IBatteryItem battery = (IBatteryItem) stack.getItem();
+		long toCharge = Math.min(battery.getMaxCharge(stack) - battery.getCharge(stack), battery.getChargeRate(stack));
+		toCharge = Math.min(toCharge, Math.max(power / 5, 1));
+		battery.chargeBattery(stack, toCharge);
+		lastOp = 4;
+		return power - toCharge;
 	}
 }
