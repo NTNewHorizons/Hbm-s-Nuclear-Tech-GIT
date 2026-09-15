@@ -78,6 +78,8 @@ public class PacketDispatcher {
 
 		//Glyphid dance music control
 		wrapper.registerMessage(GlyphidDancePacket.Handler.class, GlyphidDancePacket.class, i++, Side.CLIENT);
+
+		wrapper.registerMessage(AnnouncementPacket.Handler.class, AnnouncementPacket.class, i++, Side.CLIENT);
 	}
 
 }

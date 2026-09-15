@@ -25,10 +25,42 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
 
-public class ItemFluidIDMulti extends Item implements IItemFluidIdentifier, IItemControlReceiver, IGUIProvider {
+import api.ntm1of90.compat.fluid.registry.FluidMappingRegistry;
+
+public class ItemFluidIDMulti extends Item implements IItemFluidIdentifier, IItemControlReceiver, IGUIProvider, IFluidContainerItem {
 
 	IIcon overlayIcon;
+
+	/**
+	 * Forge fluid bridge: lets AE2 (ae2fc filter/partition slots via Util.getFluidFromItem),
+	 * pipes and other machines read the identifier's primary fluid directly from the item.
+	 */
+	@Override
+	public FluidStack getFluid(ItemStack stack) {
+		if(stack == null || stack.getItem() != this) return null;
+		FluidType type = getType(stack, true);
+		if(type == null || type == Fluids.NONE || type.hasNoID()) return null;
+		net.minecraftforge.fluids.Fluid fluid = FluidMappingRegistry.getForgeFluid(type);
+		return fluid == null ? null : new FluidStack(fluid, 1000);
+	}
+
+	@Override
+	public int getCapacity(ItemStack stack) {
+		return 1000;
+	}
+
+	@Override
+	public int fill(ItemStack stack, FluidStack resource, boolean doFill) {
+		return 0; // identifier is read-only
+	}
+
+	@Override
+	public FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
+		return null; // identifier is read-only
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)

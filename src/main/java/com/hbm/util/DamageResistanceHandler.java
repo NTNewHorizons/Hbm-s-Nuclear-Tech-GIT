@@ -302,6 +302,7 @@ public class DamageResistanceHandler {
 					toAdd.add(I18nUtil.resolveKey("damage.exact." + entry.getKey()) + ": " + entry.getValue().threshold + "/" + ((int)(entry.getValue().resistance * 100)) + "%");
 				}
 				if(stats.otherResistance != null) toAdd.add(I18nUtil.resolveKey("damage.other") + ": " + stats.otherResistance.threshold + "/" + ((int)(stats.otherResistance.resistance * 100)) + "%");
+				if(protectsFromNether(stats)) toAdd.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("damage.netherSafe"));
 				
 				if(!toAdd.isEmpty()) {
 					desc.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("damage.inset"));
@@ -329,12 +330,18 @@ public class DamageResistanceHandler {
 				toAdd.add(I18nUtil.resolveKey("damage.exact." + entry.getKey()) + ": " + entry.getValue().threshold + "/" + ((int)(entry.getValue().resistance * 100)) + "%");
 			}
 			if(stats.otherResistance != null) toAdd.add(I18nUtil.resolveKey("damage.other") + ": " + stats.otherResistance.threshold + "/" + ((int)(stats.otherResistance.resistance * 100)) + "%");
+			if(protectsFromNether(stats)) toAdd.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("damage.netherSafe"));
 			
 			if(!toAdd.isEmpty()) {
 				desc.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("damage.item"));
 				desc.addAll(toAdd);
 			}
 		}
+	}
+
+	private static boolean protectsFromNether(ResistanceStats stats) {
+		Resistance resistance = stats.getResistance(DamageSource.onFire);
+		return resistance != null && (resistance.threshold >= 1F || resistance.resistance >= 1F);
 	}
 	
 	public static void serialize(JsonWriter writer) throws IOException {

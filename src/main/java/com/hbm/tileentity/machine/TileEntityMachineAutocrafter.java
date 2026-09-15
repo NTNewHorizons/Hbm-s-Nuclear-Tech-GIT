@@ -351,7 +351,8 @@ public class TileEntityMachineAutocrafter extends TileEntityMachineBase implemen
 		TileEntity tile = this;
 		IInventory inv = this;
 		int slot = nbt.getInteger("slot");
-		if(slot > 8) return;
+		int[] filterRange = this.getFilterSlots();
+		if(slot < filterRange[0] || slot >= filterRange[1]) return;
 		NBTTagCompound stack = nbt.getCompoundTag("stack");
 		ItemStack item = ItemStack.loadItemStackFromNBT(stack);
 		inv.setInventorySlotContents(slot, item);

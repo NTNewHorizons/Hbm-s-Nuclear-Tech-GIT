@@ -35,6 +35,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -574,5 +575,9 @@ public class ArmorUtil {
 		}
 
 		return false;
+	}
+
+	public static boolean checkForFireProtection(EntityLivingBase entity) {
+		return entity != null && (entity.isImmuneToFire() || DamageResistanceHandler.calculateDamage(entity, DamageSource.onFire, 1, 0, 0) <= 0);
 	}
 }

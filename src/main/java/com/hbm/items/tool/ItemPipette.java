@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemPipette extends Item implements IFillableItem {
+public class ItemPipette extends Item implements IFillableItem, net.minecraftforge.fluids.IFluidContainerItem {
 
 	public ItemPipette() {
 		this.canRepair = false;
@@ -50,7 +50,7 @@ public class ItemPipette extends Item implements IFillableItem {
 		return Fluids.fromID(stack.stackTagCompound.getShort("type"));
 	}
 
-	public short getCapacity(ItemStack stack) {
+	public short getContainerCapacity(ItemStack stack) {
 		if(!stack.hasTagCompound()) {
 			initNBT(stack);
 		}
@@ -87,9 +87,9 @@ public class ItemPipette extends Item implements IFillableItem {
 			if(this.getFill(stack) == 0) {
 				int a;
 				if(this == ModItems.pipette_laboratory)
-					a = !player.isSneaking() ? Math.min(this.getCapacity(stack) + 1, 50) : Math.max(this.getCapacity(stack) - 1, 1);
+					a = !player.isSneaking() ? Math.min(this.getContainerCapacity(stack) + 1, 50) : Math.max(this.getContainerCapacity(stack) - 1, 1);
 				else 
-					a = !player.isSneaking() ? Math.min(this.getCapacity(stack) + 50, 1_000) : Math.max(this.getCapacity(stack) - 50, 50);
+					a = !player.isSneaking() ? Math.min(this.getContainerCapacity(stack) + 50, 1_000) : Math.max(this.getContainerCapacity(stack) - 50, 50);
 				stack.stackTagCompound.setShort("capacity", (short) a);
 				player.addChatMessage(new ChatComponentText(a + "/" + this.getMaxFill() + "mB"));
 			} else {
@@ -110,7 +110,7 @@ public class ItemPipette extends Item implements IFillableItem {
 		if(this == ModItems.pipette)
 			list.add(I18nUtil.resolveKey("desc.item.pipette.noCorrosive"));
 		list.add("Fluid: " + this.getType(stack).getLocalizedName());
-		list.add("Amount: " + this.getFill(stack) + "/" + this.getCapacity(stack) + "mB (" + this.getMaxFill() + "mB)");
+		list.add("Amount: " + this.getFill(stack) + "/" + this.getContainerCapacity(stack) + "mB (" + this.getMaxFill() + "mB)");
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class ItemPipette extends Item implements IFillableItem {
 		if(this.getFill(stack) == 0)
 			this.setFill(stack, type, (short) 0);
 
-		int req = this.getCapacity(stack) - this.getFill(stack);
+		int req = this.getContainerCapacity(stack) - this.getFill(stack);
 		int toFill = Math.min(req, amount);
 
 		this.setFill(stack, type, (short) (this.getFill(stack) + toFill));
@@ -207,4 +207,49 @@ public class ItemPipette extends Item implements IFillableItem {
 	public FluidType getFirstFluidType(ItemStack stack) {
 		return this.getType(stack);
 	}
+
+	// Forge IFluidContainerItem bridge for AE2 terminal fill/drain
+	@Override
+	public net.minecraftforge.fluids.FluidStack getFluid(ItemStack stack) {
+		FluidType type = getType(stack);
+		int fill = getFill(stack);
+		if(type == Fluids.NONE || fill <= 0) return null;
+		net.minecraftforge.fluids.Fluid fluid = api.ntm1of90.compat.fluid.registry.FluidMappingRegistry.getForgeFluid(type);
+		return fluid == null ? null : new net.minecraftforge.fluids.FluidStack(fluid, fill);
+	}
+
+	@Override
+	public int getCapacity(ItemStack stack) {
+		return getContainerCapacity(stack);
+	}
+
+	@Override
+	public int fill(ItemStack stack, net.minecraftforge.fluids.FluidStack resource, boolean doFill) {
+		if(resource == null || resource.amount <= 0) return 0;
+		FluidType type = api.ntm1of90.compat.fluid.registry.FluidMappingRegistry.getHbmFluidType(resource.getFluid());
+		if(type == Fluids.NONE) return 0;
+		int currentFill = getFill(stack);
+		FluidType current = getType(stack);
+		int room = getContainerCapacity(stack) - currentFill;
+		if(room <= 0 || (currentFill > 0 && current != type)) return 0;
+		int amount = Math.min(room, resource.amount);
+		if(doFill) {
+			setFill(stack, type, (short) (currentFill + amount));
+		}
+		return amount;
+	}
+
+	@Override
+	public net.minecraftforge.fluids.FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
+		net.minecraftforge.fluids.FluidStack content = getFluid(stack);
+		if(content == null) return null;
+		int amount = Math.min(content.amount, maxDrain);
+		if(doDrain) {
+			FluidType type = getType(stack);
+			int remaining = content.amount - amount;
+			setFill(stack, remaining <= 0 ? Fluids.NONE : type, (short) remaining);
+		}
+		return new net.minecraftforge.fluids.FluidStack(content.getFluid(), amount);
+	}
+
 }

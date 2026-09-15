@@ -10,10 +10,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import api.ntm1of90.compat.fluid.item.NTMFluidContainerBridge;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
-public class ItemFluidTank extends Item {
+public class ItemFluidTank extends Item implements IFluidContainerItem {
 
 	protected IIcon overlayIcon;
 
@@ -84,5 +87,29 @@ public class ItemFluidTank extends Item {
 			if(j < 0) j = 16777215;
 			return j;
 		}
+	}
+
+	// ===== Forge IFluidContainerItem bridge (AE2 filter slots etc.) =====
+
+	@Override
+	public FluidStack getFluid(ItemStack stack) {
+		if(stack == null || stack.getItem() != this) return null;
+		return NTMFluidContainerBridge.getFluidStack(stack, NTMFluidContainerBridge.getTypeFromDamage(stack));
+	}
+
+	@Override
+	public int getCapacity(ItemStack stack) {
+		return NTMFluidContainerBridge.getCapacity(stack, NTMFluidContainerBridge.getTypeFromDamage(stack));
+	}
+
+	@Override
+	public int fill(ItemStack stack, FluidStack resource, boolean doFill) {
+		return 0;
+	}
+
+	@Override
+	public FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
+		if(stack == null || stack.getItem() != this) return null;
+		return NTMFluidContainerBridge.drain(stack, NTMFluidContainerBridge.getTypeFromDamage(stack), maxDrain, doDrain);
 	}
 }

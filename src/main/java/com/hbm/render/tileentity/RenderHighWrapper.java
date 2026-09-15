@@ -23,6 +23,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 
+import com.hbm.potion.HbmPotion;
+
 public class RenderHighWrapper extends TileEntitySpecialRenderer implements IItemRendererProvider {
 
 	private final TileEntitySpecialRenderer wrapped;
@@ -99,7 +101,7 @@ public class RenderHighWrapper extends TileEntitySpecialRenderer implements IIte
 	@Override
 	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float inter) {
 		boolean isHigh = Minecraft.getMinecraft().thePlayer != null
-				&& Minecraft.getMinecraft().thePlayer.isPotionActive(Potion.confusion);
+				&& Minecraft.getMinecraft().thePlayer.isPotionActive(HbmPotion.high);
 		updateHighAnimation(isHigh);
 
 		boolean active = (currentSpeed > 0.0f);
