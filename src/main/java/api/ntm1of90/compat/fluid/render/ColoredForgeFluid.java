@@ -5,6 +5,7 @@ import com.hbm.inventory.fluid.trait.FT_Gaseous;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Viscous;
 
 import api.ntm1of90.compat.fluid.util.NTMFluidLocalization;
+import com.hbm.util.FluidDebug;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.IIcon;
@@ -53,14 +54,33 @@ public class ColoredForgeFluid extends Fluid {
     @SideOnly(Side.CLIENT)
     public IIcon getStillIcon() {
         IIcon icon = NTMFluidTextureMapper.getStillIcon(getName());
-        return icon != null ? icon : super.getStillIcon();
+        if(icon != null) return icon;
+        icon = super.getStillIcon();
+        if(icon != null) return icon;
+        // Never hand null to external renderers (AE2 NPEs); also covers post-stitch registrations.
+        FluidDebug.event("fluidicon.fallback|" + getName(),
+            "ICON fallback to water for icon-less Forge fluid '" + getName() + "' rendered by " + FluidDebug.callerHint());
+        net.minecraftforge.fluids.Fluid water = net.minecraftforge.fluids.FluidRegistry.WATER;
+        if(water != null) {
+            IIcon fallback = water.getStillIcon();
+            if(fallback != null) return fallback;
+        }
+        return null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getFlowingIcon() {
         IIcon icon = NTMFluidTextureMapper.getFlowingIcon(getName());
-        return icon != null ? icon : super.getFlowingIcon();
+        if(icon != null) return icon;
+        icon = super.getFlowingIcon();
+        if(icon != null) return icon;
+        net.minecraftforge.fluids.Fluid water = net.minecraftforge.fluids.FluidRegistry.WATER;
+        if(water != null) {
+            IIcon fallback = water.getFlowingIcon();
+            if(fallback != null) return fallback;
+        }
+        return null;
     }
 
     @SideOnly(Side.CLIENT)
