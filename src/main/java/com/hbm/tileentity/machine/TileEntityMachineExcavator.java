@@ -75,7 +75,6 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 	protected int ticksWorked = 0;
 	protected int targetDepth = 0; //0 is the first block below null position
 	protected boolean richSipped = false;
-	protected int veinRichBlocks = 0;
 	protected boolean bedrockDrilling = false;
 
 	public float drillRotation = 0F;
@@ -256,6 +255,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 			boolean ignoreAll = true;
 			float combinedHardness = 0F;
 			boolean ringHasRich = false;
+			int richSeedX = 0, richSeedY = 0, richSeedZ = 0;
 			BlockPos bedrockOre = null;
 			bedrockDrilling = false;
 
@@ -287,6 +287,9 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 						// rich ore: one block-time per stage left
 						if(b instanceof BlockRichOre) {
 							ringHasRich = true;
+							richSeedX = x;
+							richSeedY = y;
+							richSeedZ = z;
 							combinedHardness += b.getBlockHardness(worldObj, x, y, z) * (worldObj.getBlockMetadata(x, y, z) + 1);
 						} else {
 							combinedHardness += b.getBlockHardness(worldObj, x, y, z);
@@ -301,11 +304,15 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 				int ticksToWork = (int) Math.ceil(combinedHardness / this.speed);
 
 				// rich blobs pace the cycle at 100% speed, scaled by drill speed:
-				// 3s per single sip, 3.1s per blob block on a vein pass (measured last pass)
+				// 3s per single sip, 2.9s per blob block on a vein pass of 6+ blocks
 				if(ringHasRich) {
 					EnumDrillType drillType = this.getInstalledDrill();
 					boolean veinActive = this.enableVeinMiner && drillType != null && drillType.vein;
-					int richFloor = veinActive ? Math.max(62, veinRichBlocks * 62) : 60;
+					int richFloor = 60;
+					if(veinActive) {
+						int richCount = countRichConnected(worldObj.getBlock(richSeedX, richSeedY, richSeedZ), richSeedX, richSeedY, richSeedZ);
+						richFloor = richCount >= 6 ? richCount * 58 : 62;
+					}
 					ticksToWork = Math.max(ticksToWork, (int) Math.ceil(richFloor / this.speed));
 				}
 
@@ -315,7 +322,6 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 						// shared visited set: one sip per block per operation
 						recursionBrake.clear();
 						richSipped = false;
-						veinRichBlocks = 0;
 						breakBlocks(ring);
 						buildWall(ring + 1, ring == radius && this.enableWalling);
 						if(ring == radius) mineOuterOres(ring + 1);
@@ -445,7 +451,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 			return;
 		}
 
-	// rich blobs always vein-mine whole
+		// rich blobs always vein-mine whole
 		if(b instanceof BlockRichOre || veinActive) {
 
 			if(isOre(x, y, z, b) || b instanceof BlockRichOre) {
@@ -458,7 +464,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 				maxX = x;
 				maxY = y;
 				maxZ = z;
-				breakRecursively(x, y, z);
+				breakRecursively(x, y, z, b instanceof BlockRichOre ? Integer.MAX_VALUE : 10);
 
 				/* move all excavated items to the last drillable position which is also within collection range */
 				List<EntityItem> items = worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX + 1, maxY + 1, maxZ + 1));
@@ -491,16 +497,53 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 	private HashSet<BlockPos> recursionBrake = new HashSet();
 	private int minX = 0, minY = 0, minZ = 0, maxX = 0, maxY = 0, maxZ = 0;
 
-	// iterative whole-blob flood fill, visited-set bounded (no stack overflow)
-	protected void breakRecursively(int x ,int y, int z) {
+	// count-only flood for pacing: same reach as the drain, no breaking
+	protected int countRichConnected(Block target, int x, int y, int z) {
+		if(!(target instanceof BlockRichOre)) return 0;
+
+		HashSet<BlockPos> seen = new HashSet<>();
+		ArrayDeque<BlockPos> queue = new ArrayDeque<>();
+		queue.add(new BlockPos(x, y, z));
+
+		int count = 0;
+
+		while(!queue.isEmpty()) {
+			BlockPos pos = queue.poll();
+
+			int px = pos.getX();
+			int py = pos.getY();
+			int pz = pos.getZ();
+
+			if(py < 0 || py > 255) continue;
+			if(worldObj.getBlock(px, py, pz) != target) continue;
+			if(!seen.add(pos)) continue;
+
+			count++;
+			if(count >= 4096) break;
+
+			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+				queue.add(new BlockPos(px + dir.offsetX, py + dir.offsetY, pz + dir.offsetZ));
+			}
+		}
+
+		return count;
+	}
+
+	// iterative flood fill: whole blob for rich ores, depth-10 like before for normal veins
+	protected void breakRecursively(int x ,int y, int z, int maxDepth) {
 
 		Block target = worldObj.getBlock(x, y, z);
 
 		ArrayDeque<BlockPos> queue = new ArrayDeque<>();
+		ArrayDeque<Integer> depths = new ArrayDeque<>();
 		queue.add(new BlockPos(x, y, z));
+		depths.add(maxDepth);
 
 		while(!queue.isEmpty()) {
 			BlockPos pos = queue.poll();
+			int depth = depths.poll();
+
+			if(depth < 0) continue;
 
 			int px = pos.getX();
 			int py = pos.getY();
@@ -517,11 +560,10 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 				queue.add(new BlockPos(px + dir.offsetX, py + dir.offsetY, pz + dir.offsetZ));
+				depths.add(depth - 1);
 			}
 
 			breakSingleBlock(target, px, py, pz);
-
-			if(target instanceof BlockRichOre) veinRichBlocks++;
 
 			if(px < minX) minX = px;
 			if(px > maxX) maxX = px;
@@ -641,7 +683,12 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 					Block b = worldObj.getBlock(x, y, z);
 
 					if(!this.shouldIgnoreBlock(b, x, y, z) && (this.isOre(x, y, z, b) || b instanceof BlockRichOre)) {
-						tryMineAtLocation(x, y, z);
+						EnumDrillType outerDrill = this.getInstalledDrill();
+						if(this.enableVeinMiner && outerDrill != null && outerDrill.vein) {
+							if(!recursionBrake.contains(new BlockPos(x, y, z))) breakSingleBlock(b, x, y, z);
+						} else {
+							tryMineAtLocation(x, y, z);
+						}
 					}
 				}
 			}

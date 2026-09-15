@@ -171,6 +171,7 @@ public class WorldConfig {
 
 	public static boolean enableRichOres = true;
 	public static boolean richOreAdvanced = false;
+	public static int richAdvRarityMult = 4;
 
 	public static int limestoneSpawn = 1;
 
@@ -391,7 +392,8 @@ public class WorldConfig {
 		richUraniumBlobSize = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R42_richUraniumBlobSize", "Rich uranium vein size in blocks", richUraniumBlobSize, 1, 1000);
 		richZincBlobSize = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R43_richZincBlobSize", "Rich zinc vein size in blocks", richZincBlobSize, 1, 1000);
 		enableRichOres = CommonConfig.createConfigBool(config, CATEGORY_OREGEN, "2.R21_enableRichOres", "Master switch for rich ore blob generation", true);
-		richOreAdvanced = CommonConfig.createConfigBool(config, CATEGORY_OREGEN, "2.R22_richOreAdvanced", "Advanced rich ore generation: rare rich blobs with regular ore halos, overriding scattered veins and vanilla ores", false);
+		richOreAdvanced = CommonConfig.createConfigBool(config, CATEGORY_OREGEN, "2.R22_richOreAdvanced", "[WIP/BETA] Advanced rich ore generation: rare rich blobs with regular ore halos, overriding scattered veins and vanilla ores", false);
+		richAdvRarityMult = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.R45_richAdvRarityMult", "Advanced mode rarity divisor applied to rich ore deposits", richAdvRarityMult, 1, 64);
 
 		limestoneSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.L02_limestoneSpawn", "Amount of limestone block veins per chunk", 1);
 
