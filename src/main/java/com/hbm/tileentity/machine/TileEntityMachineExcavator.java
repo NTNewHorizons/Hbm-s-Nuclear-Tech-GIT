@@ -10,6 +10,7 @@ import com.hbm.blocks.generic.BlockRichOre;
 import com.hbm.blocks.generic.OreRichnessHelper;
 import com.hbm.blocks.generic.BlockBedrockOreTE.TileEntityBedrockOre;
 import com.hbm.blocks.network.CraneInserter;
+import com.hbm.entity.item.EntityMovingConveyorObject;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.inventory.UpgradeManagerNT;
@@ -828,6 +829,10 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 	/** moves all items onto a connected conveyor belt */
 	protected void supplyConveyor(IConveyorBelt belt, List<ItemStack> items, int x, int y, int z) {
+
+		if(EntityMovingConveyorObject.isCrammed(worldObj, x, y, z)) {
+			return;
+		}
 
 		Random rand = worldObj.rand;
 
