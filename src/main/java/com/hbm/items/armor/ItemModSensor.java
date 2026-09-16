@@ -2,9 +2,13 @@ package com.hbm.items.armor;
 
 import java.util.List;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+
 import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.ArmorModHandler;
 
+import cpw.mods.fml.common.Optional;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,7 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-public class ItemModSensor extends ItemArmorMod {
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
+public class ItemModSensor extends ItemArmorMod implements IBauble {
 
 	public ItemModSensor() {
 		super(ArmorModHandler.extra, true, true, true, true);
@@ -71,5 +76,37 @@ public class ItemModSensor extends ItemArmorMod {
 		} else if(poison) {
 			entity.worldObj.playSoundAtEntity(entity, "hbm:item.techBoop", 2F, 1.5F);
 		}
+	}
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public BaubleType getBaubleType(ItemStack stack) {
+		return BaubleType.BELT;
+	}
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
+		modUpdate(entity, null);
+	}
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public void onEquipped(ItemStack stack, EntityLivingBase entity) { }
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public void onUnequipped(ItemStack stack, EntityLivingBase entity) { }
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public boolean canEquip(ItemStack stack, EntityLivingBase entity) {
+		return true;
+	}
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) {
+		return true;
 	}
 }

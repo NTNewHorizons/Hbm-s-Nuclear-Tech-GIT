@@ -12,8 +12,10 @@ import com.hbm.tileentity.IBufPacketReceiver;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.util.AE2Compat;
 import com.hbm.util.BackhandCompat;
+import com.hbm.util.BaublesCompat;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -49,6 +51,13 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 				}
 
 				charge += getChargeDemand(BackhandCompat.getOffhandItem(player));
+
+				IInventory baubles = BaublesCompat.getBaubles(player);
+				if(baubles != null) {
+					for(int i = 0; i < baubles.getSizeInventory(); i++) {
+						charge += getChargeDemand(baubles.getStackInSlot(i));
+					}
+				}
 			}
 
 			particles = lastOp > 0;
@@ -127,6 +136,13 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 			}
 
 			power = chargeStack(BackhandCompat.getOffhandItem(player), power);
+
+			IInventory baubles = BaublesCompat.getBaubles(player);
+			if(baubles != null) {
+				for(int i = 0; i < baubles.getSizeInventory(); i++) {
+					power = chargeStack(baubles.getStackInSlot(i), power);
+				}
+			}
 		}
 
 		return power;

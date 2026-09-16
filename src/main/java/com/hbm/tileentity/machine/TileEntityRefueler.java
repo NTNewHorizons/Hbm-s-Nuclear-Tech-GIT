@@ -9,12 +9,14 @@ import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.util.BackhandCompat;
+import com.hbm.util.BaublesCompat;
 import com.hbm.util.BobMathUtil;
 
 import api.hbm.fluid.IFluidStandardReceiver;
 import api.hbm.fluidmk2.IFillableItem;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,6 +57,13 @@ public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidSt
 				}
 
 				fillEquipment(BackhandCompat.getOffhandItem(player));
+
+				IInventory baubles = BaublesCompat.getBaubles(player);
+				if(baubles != null) {
+					for(int i = 0; i < baubles.getSizeInventory(); i++) {
+						fillEquipment(baubles.getStackInSlot(i));
+					}
+				}
 			}
 
 			if(isOperating) {

@@ -3,8 +3,12 @@ package com.hbm.items.tool;
 import java.util.List;
 import java.util.Random;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+
 import com.hbm.main.MainRegistry;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -13,6 +17,7 @@ import net.minecraft.client.renderer.texture.TextureCompass;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +25,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class ItemColtanCompass extends Item {
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
+public class ItemColtanCompass extends Item implements IBauble {
 
 	public int lastX = 0;
 	public int lastZ = 0;
@@ -36,7 +42,10 @@ public class ItemColtanCompass extends Item {
 
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean inhand) {
-		
+		tickCompass(stack, world, entity);
+	}
+
+	private void tickCompass(ItemStack stack, World world, Entity entity) {
 		if(world.isRemote) {
 			if(stack.hasTagCompound()) {
 				lastX = stack.stackTagCompound.getInteger("colX");
@@ -65,6 +74,32 @@ public class ItemColtanCompass extends Item {
 			}
 		}
 	}
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public BaubleType getBaubleType(ItemStack stack) { return BaubleType.BELT; }
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
+		tickCompass(stack, entity.worldObj, entity);
+	}
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public void onEquipped(ItemStack stack, EntityLivingBase entity) { }
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public void onUnequipped(ItemStack stack, EntityLivingBase entity) { }
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public boolean canEquip(ItemStack stack, EntityLivingBase entity) { return true; }
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) { return true; }
 
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {

@@ -297,6 +297,7 @@ public class MainRegistry {
 		proxy.registerPreRenderInfo();
 		ModBlocks.mainRegistry();
 		ModItems.mainRegistry();
+		BaublesCompat.init();
 		ModBiomes.init();
 		proxy.registerRenderInfo();
 		HbmWorld.mainRegistry();

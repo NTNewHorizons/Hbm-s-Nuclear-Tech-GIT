@@ -2,9 +2,16 @@ package com.hbm.items.special;
 
 import java.util.List;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import baubles.api.expanded.BaubleExpandedSlots;
+import baubles.api.expanded.IBaubleExpanded;
+
 import com.hbm.main.MainRegistry;
 
+import cpw.mods.fml.common.Optional;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,15 +19,55 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
-public class ItemPolaroid extends Item {
+@SuppressWarnings("unused")
+@Optional.InterfaceList({
+		@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
+		@Optional.Interface(iface = "baubles.api.expanded.IBaubleExpanded", modid = "Baubles|Expanded")
+})
+public class ItemPolaroid extends Item implements IBauble, IBaubleExpanded {
 	
     @Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
-    	if(entity instanceof EntityPlayer)
-    		if(((EntityPlayer)entity).getHealth() < 10F) {
-    			((EntityPlayer) entity).addPotionEffect(new PotionEffect(Potion.resistance.id, 10, 2));
-    		}
+		tickPolaroid(entity);
     }
+
+	private void tickPolaroid(Entity entity) {
+		if(!(entity instanceof EntityPlayer)) return;
+		EntityPlayer player = (EntityPlayer) entity;
+		if(player.getHealth() < 10F) player.addPotionEffect(new PotionEffect(Potion.resistance.id, 10, 2));
+	}
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public BaubleType getBaubleType(ItemStack stack) { return BaubleType.AMULET; }
+
+	@Override
+	@Optional.Method(modid = "Baubles|Expanded")
+	public String[] getBaubleTypes(ItemStack stack) {
+		return new String[] { BaubleExpandedSlots.charmType };
+	}
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
+		tickPolaroid(entity);
+	}
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public void onEquipped(ItemStack stack, EntityLivingBase entity) { }
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public void onUnequipped(ItemStack stack, EntityLivingBase entity) { }
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public boolean canEquip(ItemStack stack, EntityLivingBase entity) { return true; }
+
+	@Override
+	@Optional.Method(modid = "Baubles")
+	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) { return true; }
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
