@@ -164,6 +164,23 @@ public class CraneInserter extends BlockCraneBase implements IEnterableBlock {
 		return contents;
 	}
 
+	public static boolean canAddAllToInventory(IInventory inv, int[] access, int side, ItemStack... stacks) {
+		if(inv == null || stacks == null) return false;
+
+		ItemStack[] contents = copyContents(inv);
+		boolean hasItems = false;
+
+		for(ItemStack stack : stacks) {
+			if(stack == null || stack.stackSize <= 0) continue;
+			hasItems = true;
+
+			ItemStack remainder = addToInventory(inv, access, stack.copy(), side, contents);
+			if(remainder != null && remainder.stackSize > 0) return false;
+		}
+
+		return hasItems;
+	}
+
 	private boolean canAcceptAll(World world, int x, int y, int z, TileEntityCraneInserter inserter, ItemStack[] stacks) {
 		ForgeDirection outputDirection = getOutputSide(world, x, y, z);
 		TileEntity output = world.getTileEntity(x + outputDirection.offsetX, y + outputDirection.offsetY, z + outputDirection.offsetZ);
