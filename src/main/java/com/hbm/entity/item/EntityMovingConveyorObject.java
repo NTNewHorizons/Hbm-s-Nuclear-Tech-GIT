@@ -190,6 +190,10 @@ public abstract class EntityMovingConveyorObject extends Entity {
 	}
 
 	public abstract void enterBlock(IEnterableBlock enterable, BlockPos pos, ForgeDirection dir);
+
+	protected void retreatFromRejectedBlock() {
+		this.setPosition(posX - motionX, posY - motionY, posZ - motionZ);
+	}
 	
 	public void enterBlockFalling(IEnterableBlock enterable, BlockPos pos) {
 		this.enterBlock(enterable, pos.add(0, -1, 0), ForgeDirection.UP);
