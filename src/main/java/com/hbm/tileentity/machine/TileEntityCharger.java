@@ -176,7 +176,7 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 		}
 
 		if(AE2Compat.isEnergyStorage(stack)) {
-			long budget = Math.max(power / 5, 1);
+			long budget = Math.min(AE2Compat.getChargeRate(), Math.max(power / 5, 1));
 			long remaining = AE2Compat.charge(stack, budget);
 			long consumed = Math.max(0, budget - remaining);
 			if(consumed > 0) lastOp = 4;
