@@ -20,7 +20,6 @@ import com.hbm.tileentity.network.RTTYSystem;
 import com.hbm.tileentity.network.RTTYSystem.RTTYChannel;
 import com.hbm.util.BaublesCompat;
 
-import cpw.mods.fml.common.Optional;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +31,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemRTTYPager extends Item implements IItemControlReceiver, IGUIProvider, IBauble {
 	
 	public static final String KEY_CHANNEL = "chan";
@@ -68,30 +66,24 @@ public class ItemRTTYPager extends Item implements IItemControlReceiver, IGUIPro
 	}
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public BaubleType getBaubleType(ItemStack stack) { return BaubleType.BELT; }
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
 		int slot = entity instanceof EntityPlayer ? BaublesCompat.getCombinedSlot((EntityPlayer) entity, stack) : 0;
 		tickPager(stack, entity.worldObj, entity, slot);
 	}
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public void onEquipped(ItemStack stack, EntityLivingBase entity) { }
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public void onUnequipped(ItemStack stack, EntityLivingBase entity) { }
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public boolean canEquip(ItemStack stack, EntityLivingBase entity) { return true; }
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) { return true; }
 
 	@Override

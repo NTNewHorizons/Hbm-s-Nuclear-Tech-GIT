@@ -11,7 +11,6 @@ import com.hbm.packet.toclient.PlayerInformPacket;
 import com.hbm.util.ChatBuilder;
 import com.hbm.util.i18n.I18nUtil;
 
-import cpw.mods.fml.common.Optional;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemPollutionDetector extends Item implements IBauble {
 
 	@Override
@@ -51,33 +49,27 @@ public class ItemPollutionDetector extends Item implements IBauble {
 	}
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public BaubleType getBaubleType(ItemStack stack) {
 		return BaubleType.BELT;
 	}
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
 		tickDetector(entity.worldObj, entity);
 	}
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public void onEquipped(ItemStack stack, EntityLivingBase entity) { }
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public void onUnequipped(ItemStack stack, EntityLivingBase entity) { }
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public boolean canEquip(ItemStack stack, EntityLivingBase entity) {
 		return true;
 	}
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) {
 		return true;
 	}

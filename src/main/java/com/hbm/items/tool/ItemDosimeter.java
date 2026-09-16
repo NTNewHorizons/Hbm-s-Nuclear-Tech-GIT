@@ -11,7 +11,6 @@ import com.hbm.extprop.HbmLivingProps;
 import com.hbm.main.NTMSounds;
 import com.hbm.util.ContaminationUtil;
 
-import cpw.mods.fml.common.Optional;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +18,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemDosimeter extends Item implements IBauble {
 
 	Random rand = new Random();
@@ -59,31 +57,25 @@ public class ItemDosimeter extends Item implements IBauble {
 	}
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public BaubleType getBaubleType(ItemStack stack) {
 		return BaubleType.BELT;
 	}
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
 		tickDosimeter(entity.worldObj, entity);
 	}
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public void onEquipped(ItemStack stack, EntityLivingBase entity) { }
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public void onUnequipped(ItemStack stack, EntityLivingBase entity) { }
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public boolean canEquip(ItemStack stack, EntityLivingBase entity) { return true; }
 
 	@Override
-	@Optional.Method(modid = "Baubles")
 	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) { return true; }
 
 	@Override
