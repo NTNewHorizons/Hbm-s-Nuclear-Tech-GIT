@@ -10,11 +10,15 @@ import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.main.NTMSounds;
 import com.hbm.tileentity.IBufPacketReceiver;
 import com.hbm.tileentity.TileEntityLoadedBase;
+import com.hbm.util.AE2Compat;
+import baubles.api.BaublesApi;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+import xonin.backhand.api.core.BackhandUtils;
 
 public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyReceiverMK2, IBufPacketReceiver {
 
@@ -43,12 +47,15 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 			for(EntityPlayer player : players) {
 
 				for(int i = 0; i < 5; i++) {
+					charge += getChargeDemand(player.getEquipmentInSlot(i));
+				}
 
-					ItemStack stack = player.getEquipmentInSlot(i);
+				charge += getChargeDemand(BackhandUtils.getOffhandItem(player));
 
-					if(stack != null && stack.getItem() instanceof IBatteryItem) {
-						IBatteryItem battery = (IBatteryItem) stack.getItem();
-						charge += Math.min(battery.getMaxCharge(stack) - battery.getCharge(stack), battery.getChargeRate(stack));
+				IInventory baubles = BaublesApi.getBaubles(player);
+				if(baubles != null) {
+					for(int i = 0; i < baubles.getSizeInventory(); i++) {
+						charge += getChargeDemand(baubles.getStackInSlot(i));
 					}
 				}
 			}
@@ -125,20 +132,55 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 		for(EntityPlayer player : players) {
 
 			for(int i = 0; i < 5; i++) {
+				power = chargeStack(player.getEquipmentInSlot(i), power);
+			}
 
-				ItemStack stack = player.getEquipmentInSlot(i);
+			power = chargeStack(BackhandUtils.getOffhandItem(player), power);
 
-				if(stack != null && stack.getItem() instanceof IBatteryItem) {
-					IBatteryItem battery = (IBatteryItem) stack.getItem();
-
-					long toCharge = Math.min(battery.getMaxCharge(stack) - battery.getCharge(stack), battery.getChargeRate(stack));
-					toCharge = Math.min(toCharge, Math.max(power / 5, 1));
-					battery.chargeBattery(stack, toCharge);
-					power -= toCharge;
-
-					lastOp = 4;
+			IInventory baubles = BaublesApi.getBaubles(player);
+			if(baubles != null) {
+				for(int i = 0; i < baubles.getSizeInventory(); i++) {
+					power = chargeStack(baubles.getStackInSlot(i), power);
 				}
 			}
+		}
+
+		return power;
+	}
+
+	private long getChargeDemand(ItemStack stack) {
+		if(stack == null) return 0;
+
+		if(stack.getItem() instanceof IBatteryItem) {
+			IBatteryItem battery = (IBatteryItem) stack.getItem();
+			return Math.min(battery.getMaxCharge(stack) - battery.getCharge(stack), battery.getChargeRate(stack));
+		}
+
+		if(AE2Compat.isEnergyStorage(stack)) {
+			return AE2Compat.getChargeDemand(stack);
+		}
+
+		return 0;
+	}
+
+	private long chargeStack(ItemStack stack, long power) {
+		if(stack == null || power <= 0) return power;
+
+		if(stack.getItem() instanceof IBatteryItem) {
+			IBatteryItem battery = (IBatteryItem) stack.getItem();
+			long toCharge = Math.min(battery.getMaxCharge(stack) - battery.getCharge(stack), battery.getChargeRate(stack));
+			toCharge = Math.min(toCharge, Math.max(power / 5, 1));
+			battery.chargeBattery(stack, toCharge);
+			if(toCharge > 0) lastOp = 4;
+			return power - toCharge;
+		}
+
+		if(AE2Compat.isEnergyStorage(stack)) {
+			long budget = Math.min(AE2Compat.getChargeRate(), Math.max(power / 5, 1));
+			long remaining = AE2Compat.charge(stack, budget);
+			long consumed = Math.max(0, budget - remaining);
+			if(consumed > 0) lastOp = 4;
+			return power - consumed;
 		}
 
 		return power;
