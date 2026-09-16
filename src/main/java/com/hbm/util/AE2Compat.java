@@ -13,6 +13,8 @@ import net.minecraft.item.ItemStack;
  */
 public final class AE2Compat {
 
+	private static final double ITEM_CHARGE_RATE_AE = 12_000D;
+
 	private AE2Compat() { }
 
 	/**
@@ -32,7 +34,14 @@ public final class AE2Compat {
 		if(!storage.getPowerFlow(stack).hasPermission(AccessRestriction.WRITE)) return 0;
 
 		double missing = Math.max(0, storage.getAEMaxPower(stack) - storage.getAECurrentPower(stack));
-		return ceilToLong(aeToHeLossless(missing));
+		return Math.min(ceilToLong(aeToHeLossless(missing)), getChargeRate());
+	}
+
+	/**
+	 * Returns the fixed AE2 item charge rate of 12,000 AE/t in HE/t.
+	 */
+	public static long getChargeRate() {
+		return ceilToLong(aeToHeLossless(ITEM_CHARGE_RATE_AE));
 	}
 
 	/**
