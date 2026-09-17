@@ -33,16 +33,27 @@ public abstract class EntityMovingConveyorObject extends Entity {
 	@SideOnly(Side.CLIENT) protected double velocityY;
 	@SideOnly(Side.CLIENT) protected double velocityZ;
 
-	public static final double HITBOX_RADIUS = 0.1875;
-
 	public static final int CRAM_CHECK_TICKS = 1 * 20;
 	public static final int CRAM_CHECK_LIMIT = 25;
 	private boolean blocked = false;
 
 	public static boolean isCrammed(World world, int x, int y, int z) {
-		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).contract(HITBOX_RADIUS, HITBOX_RADIUS, HITBOX_RADIUS);
+		return getObjectsOnBlock(world, x, y, z).size() >= CRAM_CHECK_LIMIT;
+	}
+
+	private static List<EntityMovingConveyorObject> getObjectsOnBlock(World world, int x, int y, int z) {
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
 		List<EntityMovingConveyorObject> objs = world.getEntitiesWithinAABB(EntityMovingConveyorObject.class, box);
-		return objs.size() >= CRAM_CHECK_LIMIT;
+		
+		// Include objects resting exactly on a belt edge by using a large hitbox then checking for which block they're on
+		for(int i = objs.size() - 1; i >= 0; i--) {
+			EntityMovingConveyorObject obj = objs.get(i);
+			if(obj.isDead || Math.floor(obj.posX) != x || Math.floor(obj.posY) != y || Math.floor(obj.posZ) != z) {
+				objs.remove(i);
+			}
+		}
+
+		return objs;
 	}
 
 	public static ForgeDirection getConveyorOutputDirection(World world, Block block, int x, int y, int z, Vec3 itemPos) {
@@ -125,8 +136,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
 					boolean isForwardCrammed = isCrammed(worldObj, blockX + dir.offsetX, blockY + dir.offsetY, blockZ + dir.offsetZ);
 
 					if (blocked != isForwardCrammed) {
-						AxisAlignedBB blockHere = AxisAlignedBB.getBoundingBox(blockX, blockY, blockZ, blockX + 1, blockY + 1, blockZ + 1).contract(HITBOX_RADIUS, HITBOX_RADIUS, HITBOX_RADIUS);
-						List<EntityMovingConveyorObject> objsHere = worldObj.getEntitiesWithinAABB(EntityMovingConveyorObject.class, blockHere);
+						List<EntityMovingConveyorObject> objsHere = getObjectsOnBlock(worldObj, blockX, blockY, blockZ);
 
 						for (EntityMovingConveyorObject obj : objsHere) {
 							obj.blocked = isForwardCrammed;
