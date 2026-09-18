@@ -6,6 +6,7 @@ import api.hbm.conveyor.IConveyorPackage;
 import api.hbm.conveyor.IEnterableBlock;
 import com.hbm.blocks.IBlockMultiPass;
 import com.hbm.blocks.ITooltipProvider;
+import com.hbm.entity.item.EntityMovingConveyorObject;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.entity.item.EntityMovingPackage;
 import com.hbm.items.tool.ItemConveyorWand;
@@ -21,7 +22,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -116,8 +116,31 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 		return 7;
 	}
 
-	@Override public boolean canItemEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorItem entity) { return true; }
-	@Override public boolean canPackageEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorPackage entity) { return true; }
+	@Override
+	public boolean canItemEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorItem entity) {
+		return entity != null && canRouteAll(world, x, y, z, entity.getItemStack());
+	}
+
+	@Override
+	public boolean canPackageEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorPackage entity) {
+		return entity != null && canRouteAll(world, x, y, z, entity.getItemStacks());
+	}
+
+	private boolean canRouteAll(World world, int x, int y, int z, ItemStack... stacks) {
+		TileEntity te = world.getTileEntity(x, y, z);
+		if(!(te instanceof TileEntityCraneRouter) || stacks == null) return false;
+
+		TileEntityCraneRouter router = (TileEntityCraneRouter) te;
+		boolean hasItems = false;
+
+		for(ItemStack stack : stacks) {
+			if(stack == null || stack.stackSize <= 0) continue;
+			hasItems = true;
+			if(getOutputDir(router, stack.copy()) == ForgeDirection.UNKNOWN) return false;
+		}
+
+		return hasItems;
+	}
 
 	@Override
 	public void onItemEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorItem entity) {
@@ -127,9 +150,7 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 			ForgeDirection d = ForgeDirection.getOrientation(i);
 			List<ItemStack> list = sort[i];
 			
-			if(d == ForgeDirection.UNKNOWN) {
-				for(ItemStack stack : list) world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, stack));
-			} else {
+			if(d != ForgeDirection.UNKNOWN) {
 				for(ItemStack stack : list) sendOnRoute(world, x, y, z, stack, d);
 			}
 		}
@@ -144,15 +165,13 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 			belt = (IConveyorBelt) block;
 		}
 
-		if(belt != null) {
+		if(belt != null && !EntityMovingConveyorObject.isCrammed(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) {
 			EntityMovingItem moving = new EntityMovingItem(world);
 			Vec3 pos = Vec3.createVectorHelper(x + 0.5 + dir.offsetX * 0.55, y + 0.5 + dir.offsetY * 0.55, z + 0.5 + dir.offsetZ * 0.55);
 			Vec3 snap = belt.getClosestSnappingPosition(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, pos);
 			moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 			moving.setItemStack(item);
 			world.spawnEntityInWorld(moving);
-		} else {
-			world.spawnEntityInWorld(new EntityItem(world, x + 0.5 + dir.offsetX * 0.55, y + 0.5 + dir.offsetY * 0.55, z + 0.5 + dir.offsetZ * 0.55, item));
 		}
 	}
 
@@ -165,23 +184,19 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 			List<ItemStack> list = sort[i];
 			if(list.isEmpty()) continue;
 
-			if(d == ForgeDirection.UNKNOWN) {
-				for(ItemStack stack : list) world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, stack));
-			} else {
+			if(d != ForgeDirection.UNKNOWN) {
 				
 				IConveyorBelt belt = null;
 				Block block = world.getBlock(x + d.offsetX, y + d.offsetY, z + d.offsetZ);
 				if(block instanceof IConveyorBelt) belt = (IConveyorBelt) block;
 
-				if(belt != null) {
+				if(belt != null && !EntityMovingConveyorObject.isCrammed(world, x + d.offsetX, y + d.offsetY, z + d.offsetZ)) {
 					EntityMovingPackage moving = new EntityMovingPackage(world);
 					Vec3 pos = Vec3.createVectorHelper(x + 0.5 + d.offsetX * 0.55, y + 0.5 + d.offsetY * 0.55, z + 0.5 + d.offsetZ * 0.55);
 					Vec3 snap = belt.getClosestSnappingPosition(world, x + d.offsetX, y + d.offsetY, z + d.offsetZ, pos);
 					moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 					moving.setItemStacks(list.toArray(new ItemStack[0]));
 					world.spawnEntityInWorld(moving);
-				} else {
-					for(ItemStack stack : list) world.spawnEntityInWorld(new EntityItem(world, x + 0.5 + d.offsetX * 0.55, y + 0.5 + d.offsetY * 0.55, z + 0.5 + d.offsetZ * 0.55, stack));
 				}
 			}
 		}
@@ -256,7 +271,24 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 			return ForgeDirection.UNKNOWN;
 		}
 
+		for(int i = validDirs.size() - 1; i >= 0; i--) {
+			if(!isRouteAvailable(router, validDirs.get(i))) validDirs.remove(i);
+		}
+
+		if(validDirs.isEmpty()) {
+			return ForgeDirection.UNKNOWN;
+		}
+
 		int i = router.getWorldObj().rand.nextInt(validDirs.size());
 		return validDirs.get(i);
+	}
+
+	private static boolean isRouteAvailable(TileEntityCraneRouter router, ForgeDirection dir) {
+		int x = router.xCoord + dir.offsetX;
+		int y = router.yCoord + dir.offsetY;
+		int z = router.zCoord + dir.offsetZ;
+		Block block = router.getWorldObj().getBlock(x, y, z);
+
+		return block instanceof IConveyorBelt && !EntityMovingConveyorObject.isCrammed(router.getWorldObj(), x, y, z);
 	}
 }
