@@ -75,6 +75,7 @@ public class MachineCrucible extends BlockDummyable implements ICrucibleAcceptor
 				player.inventoryContainer.detectAndSendChanges();
 				crucible.recipeStack.clear();
 				crucible.wasteStack.clear();
+				crucible.progress = 0;
 				crucible.markDirty();
 				
 			} else {

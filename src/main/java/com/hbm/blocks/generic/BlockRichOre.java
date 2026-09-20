@@ -1,8 +1,10 @@
 package com.hbm.blocks.generic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.inventory.material.Mats;
@@ -27,6 +29,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 /**
@@ -102,6 +105,9 @@ public class BlockRichOre extends BlockOre implements ILookOverlay {
 
 	// units in a fresh block
 	public static final int MAX_UNITS = 8;
+
+	// hand vein-mining applies to 3 rich blocks max per swing (one tick); fake players exempt
+	private static final HashMap<UUID, long[]> veinCounts = new HashMap<>();
 
 	public final RichOreType type;
 
@@ -194,10 +200,27 @@ public class BlockRichOre extends BlockOre implements ILookOverlay {
 		// clearers remove without drops; map entry goes with the block
 		if(!willHarvest) return super.removedByPlayer(world, player, x, y, z, willHarvest);
 
+		if(!(player instanceof FakePlayer) && !allowVeinBreak(world, player)) return false;
+
 		OreRichnessHelper.consumeOneUnit(world, x, y, z);
 		this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
 
 		return false;
+	}
+
+	private static boolean allowVeinBreak(World world, EntityPlayer player) {
+		long tick = world.getTotalWorldTime();
+		long[] entry = veinCounts.get(player.getUniqueID());
+
+		if(entry == null || entry[0] != tick) {
+			if(veinCounts.size() > 1024) veinCounts.clear();
+			entry = new long[] { tick, 0 };
+			veinCounts.put(player.getUniqueID(), entry);
+		}
+
+		if(entry[1] >= 3) return false;
+		entry[1]++;
+		return true;
 	}
 
 	// explosions release all remaining units at once (capped); the generic chance-drop path is disabled below

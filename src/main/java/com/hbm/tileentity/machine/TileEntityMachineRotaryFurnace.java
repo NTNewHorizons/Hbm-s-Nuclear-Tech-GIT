@@ -136,7 +136,10 @@ public class TileEntityMachineRotaryFurnace extends TileEntityMachinePolluting i
 				if(this.burnTime <= 0 && slots[4] != null && TileEntityFurnace.isItemFuel(slots[4])) {
 					this.burnHeat = burnModule.getMod(slots[4], burnModule.getModHeat());
 					this.maxBurnTime = this.burnTime = burnModule.getBurnTime(slots[4]) / 2;
-					this.decrStackSize(4, 1);
+					slots[4].stackSize--;
+					if(slots[4].stackSize <= 0) {
+						slots[4] = slots[4].getItem().getContainerItem(slots[4]);
+					}
 					this.markChanged();
 				}
 
