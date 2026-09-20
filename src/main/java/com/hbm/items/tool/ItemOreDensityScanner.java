@@ -1,5 +1,8 @@
 package com.hbm.items.tool;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+
 import com.hbm.dim.CelestialBody;
 import com.hbm.dim.WorldProviderCelestial;
 import com.hbm.inventory.FluidStack;
@@ -13,17 +16,21 @@ import com.hbm.util.ChatBuilder;
 import com.hbm.world.feature.BedrockOre;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-public class ItemOreDensityScanner extends Item {
+public class ItemOreDensityScanner extends Item implements IBauble {
 
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean bool) {
-		
+		tickScanner(world, entity);
+	}
+
+	private void tickScanner(World world, Entity entity) {
 		if(!(entity instanceof EntityPlayerMP) || world.getTotalWorldTime() % 5 != 0) return;
 		
 		EntityPlayerMP player = (EntityPlayerMP) entity;
@@ -58,6 +65,32 @@ public class ItemOreDensityScanner extends Item {
 		}
 		
 		PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(builder.flush(), 777 + ItemBedrockOreNew.CelestialBedrockOre.getTotalTypeCount(), 4000), player);
+	}
+
+	@Override
+	public BaubleType getBaubleType(ItemStack stack) {
+		return BaubleType.BELT;
+	}
+
+	@Override
+	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
+		tickScanner(entity.worldObj, entity);
+	}
+
+	@Override
+	public void onEquipped(ItemStack stack, EntityLivingBase entity) { }
+
+	@Override
+	public void onUnequipped(ItemStack stack, EntityLivingBase entity) { }
+
+	@Override
+	public boolean canEquip(ItemStack stack, EntityLivingBase entity) {
+		return true;
+	}
+
+	@Override
+	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) {
+		return true;
 	}
 	
 	public static String translateDensity(double density) {

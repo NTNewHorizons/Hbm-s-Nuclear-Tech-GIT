@@ -12,13 +12,16 @@ import com.hbm.util.BobMathUtil;
 
 import api.hbm.fluid.IFluidStandardReceiver;
 import api.hbm.fluidmk2.IFillableItem;
+import baubles.api.BaublesApi;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+import xonin.backhand.api.core.BackhandUtils;
 
 public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidStandardReceiver {
 
@@ -50,23 +53,15 @@ public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidSt
 
 			for(EntityPlayer player : players) {
 				for(int i = 0; i < 5; i++) {
+					fillEquipment(player.getEquipmentInSlot(i));
+				}
 
-					ItemStack stack = player.getEquipmentInSlot(i);
-					if(stack == null) continue;
+				fillEquipment(BackhandUtils.getOffhandItem(player));
 
-					if(fillFillable(stack)) {
-						isOperating = true;
-					}
-
-					if(stack.getItem() instanceof ItemArmor && ArmorModHandler.hasMods(stack)) {
-						for(ItemStack mod : ArmorModHandler.pryMods(stack)) {
-							if(mod == null) continue;
-
-							if(fillFillable(mod)) {
-								ArmorModHandler.applyMod(stack, mod);
-								isOperating = true;
-							}
-						}
+				IInventory baubles = BaublesApi.getBaubles(player);
+				if(baubles != null) {
+					for(int i = 0; i < baubles.getSizeInventory(); i++) {
+						fillEquipment(baubles.getStackInSlot(i));
 					}
 				}
 			}
@@ -105,6 +100,25 @@ public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidSt
 		}
 
 
+	}
+
+	private void fillEquipment(ItemStack stack) {
+		if(stack == null) return;
+
+		if(fillFillable(stack)) {
+			isOperating = true;
+		}
+
+		if(stack.getItem() instanceof ItemArmor && ArmorModHandler.hasMods(stack)) {
+			for(ItemStack mod : ArmorModHandler.pryMods(stack)) {
+				if(mod == null) continue;
+
+				if(fillFillable(mod)) {
+					ArmorModHandler.applyMod(stack, mod);
+					isOperating = true;
+				}
+			}
+		}
 	}
 
 	private boolean fillFillable(ItemStack stack) {
