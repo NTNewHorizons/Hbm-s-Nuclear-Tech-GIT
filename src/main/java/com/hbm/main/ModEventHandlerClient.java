@@ -263,7 +263,7 @@ public class ModEventHandlerClient {
 
 			if(!(ArmorFSB.hasFSBArmor(player) && ((ArmorFSB)player.inventory.armorInventory[2].getItem()).customGeiger)) {
 
-				if(player.inventory.hasItem(ModItems.geiger_counter)) {
+				if(player.inventory.hasItem(ModItems.geiger_counter) || BaublesCompat.hasItem(player, ModItems.geiger_counter)) {
 
 					float rads = HbmLivingProps.getRadiation(player);
 

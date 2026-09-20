@@ -1,5 +1,6 @@
 package com.hbm.main;
 
+import baubles.api.expanded.BaubleExpandedSlots;
 import com.google.common.collect.ImmutableList;
 import com.hbm.blocks.BlockEnums.EnumStoneType;
 import com.hbm.blocks.ModBlocks;
@@ -106,7 +107,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = RefStrings.MODID, name = RefStrings.NAME, version = RefStrings.VERSION)
+@Mod(
+	modid = RefStrings.MODID,
+	name = RefStrings.NAME,
+	version = RefStrings.VERSION,
+	dependencies = "required-after:backhand;required-after:appliedenergistics2;required-after:Baubles;required-after:Baubles|Expanded"
+)
 public class MainRegistry {
 
 	@Instance(RefStrings.MODID)
@@ -297,6 +303,7 @@ public class MainRegistry {
 		proxy.registerPreRenderInfo();
 		ModBlocks.mainRegistry();
 		ModItems.mainRegistry();
+		BaubleExpandedSlots.tryAssignSlotsUpToMinimum(BaubleExpandedSlots.charmType, 1);
 		ModBiomes.init();
 		proxy.registerRenderInfo();
 		HbmWorld.mainRegistry();

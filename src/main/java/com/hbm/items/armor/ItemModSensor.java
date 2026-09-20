@@ -2,6 +2,9 @@ package com.hbm.items.armor;
 
 import java.util.List;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+
 import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.ArmorModHandler;
 
@@ -13,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-public class ItemModSensor extends ItemArmorMod {
+public class ItemModSensor extends ItemArmorMod implements IBauble {
 
 	public ItemModSensor() {
 		super(ArmorModHandler.extra, true, true, true, true);
@@ -71,5 +74,31 @@ public class ItemModSensor extends ItemArmorMod {
 		} else if(poison) {
 			entity.worldObj.playSoundAtEntity(entity, "hbm:item.techBoop", 2F, 1.5F);
 		}
+	}
+
+	@Override
+	public BaubleType getBaubleType(ItemStack stack) {
+		return BaubleType.BELT;
+	}
+
+	@Override
+	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
+		modUpdate(entity, null);
+	}
+
+	@Override
+	public void onEquipped(ItemStack stack, EntityLivingBase entity) { }
+
+	@Override
+	public void onUnequipped(ItemStack stack, EntityLivingBase entity) { }
+
+	@Override
+	public boolean canEquip(ItemStack stack, EntityLivingBase entity) {
+		return true;
+	}
+
+	@Override
+	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) {
+		return true;
 	}
 }
