@@ -67,7 +67,7 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
 				ForgeDirection outputSide = getInputSide(); // note the switcheroo!
 				Block b = worldObj.getBlock(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
 				
-				if(b instanceof IConveyorBelt && !EntityMovingConveyorObject.isCrammed(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ)) {
+				if(b instanceof IConveyorBelt) {
 					
 					IConveyorBelt belt = (IConveyorBelt) b;
 					
@@ -77,7 +77,6 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
 						if(stack != null){
 							stack = stack.copy();
 							int toSend = Math.min(amount, stack.stackSize);
-							decrStackSize(i, toSend);
 							stack.stackSize = toSend;
 							
 							EntityMovingItem moving = new EntityMovingItem(worldObj);
@@ -85,7 +84,11 @@ public class TileEntityCraneUnboxer extends TileEntityCraneBase implements IGUIP
 							Vec3 snap = belt.getClosestSnappingPosition(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ, pos);
 							moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 							moving.setItemStack(stack);
-							worldObj.spawnEntityInWorld(moving);
+							if(EntityMovingConveyorObject.trySendToConveyor(worldObj,
+									xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ,
+									outputSide.getOpposite(), moving)) {
+								decrStackSize(i, toSend);
+							}
 							break;
 						}
 					}

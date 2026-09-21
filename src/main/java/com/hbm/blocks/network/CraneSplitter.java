@@ -102,12 +102,10 @@ public class CraneSplitter extends BlockDummyable implements IConveyorBelt, IEnt
 		TileEntityCraneSplitter splitter = (TileEntityCraneSplitter) tile;
 		ForgeDirection rot = ForgeDirection.getOrientation(splitter.getBlockMetadata() - offset).getRotation(ForgeDirection.DOWN);
 
-		if(EntityMovingConveyorObject.isCrammed(world, coreX, coreY, coreZ) ||
-		   EntityMovingConveyorObject.isCrammed(world, coreX + rot.offsetX, coreY, coreZ + rot.offsetZ)) {
-			return false;
-		}
+		boolean leftCrammed = EntityMovingConveyorObject.isCrammed(world, coreX, coreY, coreZ);
+		boolean rightCrammed = EntityMovingConveyorObject.isCrammed(world, coreX + rot.offsetX, coreY, coreZ + rot.offsetZ);
 
-		return true;
+		return !leftCrammed || !rightCrammed;
 	}
 	@Override public boolean canPackageEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorPackage entity) { return false; }
 	@Override public void onPackageEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorPackage entity) { }
@@ -124,10 +122,18 @@ public class CraneSplitter extends BlockDummyable implements IConveyorBelt, IEnt
 		TileEntityCraneSplitter splitter = (TileEntityCraneSplitter) tile;
 		ForgeDirection rot = ForgeDirection.getOrientation(splitter.getBlockMetadata() - offset).getRotation(ForgeDirection.DOWN);
 
-		ItemStack[] splits = splitter.splitStack(entity.getItemStack());
+		boolean leftCrammed = EntityMovingConveyorObject.isCrammed(world, x, y, z);
+		boolean rightCrammed = EntityMovingConveyorObject.isCrammed(world, x + rot.offsetX, y, z + rot.offsetZ);
 
-		spawnMovingItem(world, x, y, z, splits[0]);
-		spawnMovingItem(world, x + rot.offsetX, y, z + rot.offsetZ, splits[1]);
+		if(leftCrammed) {
+			spawnMovingItem(world, x + rot.offsetX, y, z + rot.offsetZ, entity.getItemStack().copy());
+		} else if(rightCrammed) {
+			spawnMovingItem(world, x, y, z, entity.getItemStack().copy());
+		} else {
+			ItemStack[] splits = splitter.splitStack(entity.getItemStack());
+			spawnMovingItem(world, x, y, z, splits[0]);
+			spawnMovingItem(world, x + rot.offsetX, y, z + rot.offsetZ, splits[1]);
+		}
 	}
 
 	private void spawnMovingItem(World world, int x, int y, int z, ItemStack stack) {

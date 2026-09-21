@@ -41,6 +41,44 @@ public abstract class EntityMovingConveyorObject extends Entity {
 		return getObjectsOnBlock(world, x, y, z).size() >= CRAM_CHECK_LIMIT;
 	}
 
+	public static boolean canSendToConveyor(World world, int x, int y, int z, ForgeDirection dir, EntityMovingItem item) {
+		Block block = world.getBlock(x, y, z);
+		if(!(block instanceof IConveyorBelt)) return false;
+		if(block instanceof IEnterableBlock) return ((IEnterableBlock) block).canItemEnter(world, x, y, z, dir, item);
+		return !isCrammed(world, x, y, z);
+	}
+
+	public static boolean canSendToConveyor(World world, int x, int y, int z, ForgeDirection dir, EntityMovingPackage item) {
+		Block block = world.getBlock(x, y, z);
+		if(!(block instanceof IConveyorBelt)) return false;
+		if(block instanceof IEnterableBlock) return ((IEnterableBlock) block).canPackageEnter(world, x, y, z, dir, item);
+		return !isCrammed(world, x, y, z);
+	}
+
+	public static boolean trySendToConveyor(World world, int x, int y, int z, ForgeDirection dir, EntityMovingItem item) {
+		if(!canSendToConveyor(world, x, y, z, dir, item)) return false;
+
+		world.spawnEntityInWorld(item);
+		Block block = world.getBlock(x, y, z);
+		if(block instanceof IEnterableBlock) {
+			((IEnterableBlock) block).onItemEnter(world, x, y, z, dir, item);
+			item.setDead();
+		}
+		return true;
+	}
+
+	public static boolean trySendToConveyor(World world, int x, int y, int z, ForgeDirection dir, EntityMovingPackage item) {
+		if(!canSendToConveyor(world, x, y, z, dir, item)) return false;
+
+		world.spawnEntityInWorld(item);
+		Block block = world.getBlock(x, y, z);
+		if(block instanceof IEnterableBlock) {
+			((IEnterableBlock) block).onPackageEnter(world, x, y, z, dir, item);
+			item.setDead();
+		}
+		return true;
+	}
+
 	private static List<EntityMovingConveyorObject> getObjectsOnBlock(World world, int x, int y, int z) {
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
 		List<EntityMovingConveyorObject> objs = world.getEntitiesWithinAABB(EntityMovingConveyorObject.class, box);

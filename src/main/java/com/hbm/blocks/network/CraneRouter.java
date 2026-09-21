@@ -118,15 +118,15 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 
 	@Override
 	public boolean canItemEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorItem entity) {
-		return entity != null && canRouteAll(world, x, y, z, entity.getItemStack());
+		return entity != null && canRouteAll(world, x, y, z, false, entity.getItemStack());
 	}
 
 	@Override
 	public boolean canPackageEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorPackage entity) {
-		return entity != null && canRouteAll(world, x, y, z, entity.getItemStacks());
+		return entity != null && canRouteAll(world, x, y, z, true, entity.getItemStacks());
 	}
 
-	private boolean canRouteAll(World world, int x, int y, int z, ItemStack... stacks) {
+	private boolean canRouteAll(World world, int x, int y, int z, boolean packaged, ItemStack... stacks) {
 		TileEntity te = world.getTileEntity(x, y, z);
 		if(!(te instanceof TileEntityCraneRouter) || stacks == null) return false;
 
@@ -136,7 +136,7 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 		for(ItemStack stack : stacks) {
 			if(stack == null || stack.stackSize <= 0) continue;
 			hasItems = true;
-			if(getOutputDir(router, stack.copy()) == ForgeDirection.UNKNOWN) return false;
+			if(getOutputDir(router, stack.copy(), packaged) == ForgeDirection.UNKNOWN) return false;
 		}
 
 		return hasItems;
@@ -144,7 +144,7 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 
 	@Override
 	public void onItemEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorItem entity) {
-		List<ItemStack>[] sort = this.sort(world, x, y, z, entity.getItemStack());
+		List<ItemStack>[] sort = this.sort(world, x, y, z, false, entity.getItemStack());
 
 		for(int i = 0; i < 7; i++) {
 			ForgeDirection d = ForgeDirection.getOrientation(i);
@@ -165,19 +165,20 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 			belt = (IConveyorBelt) block;
 		}
 
-		if(belt != null && !EntityMovingConveyorObject.isCrammed(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) {
+		if(belt != null) {
 			EntityMovingItem moving = new EntityMovingItem(world);
 			Vec3 pos = Vec3.createVectorHelper(x + 0.5 + dir.offsetX * 0.55, y + 0.5 + dir.offsetY * 0.55, z + 0.5 + dir.offsetZ * 0.55);
 			Vec3 snap = belt.getClosestSnappingPosition(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, pos);
 			moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 			moving.setItemStack(item);
-			world.spawnEntityInWorld(moving);
+			EntityMovingConveyorObject.trySendToConveyor(world,
+					x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, dir.getOpposite(), moving);
 		}
 	}
 
 	@Override
 	public void onPackageEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorPackage entity) {
-		List<ItemStack>[] sort = this.sort(world, x, y, z, entity.getItemStacks());
+		List<ItemStack>[] sort = this.sort(world, x, y, z, true, entity.getItemStacks());
 
 		for(int i = 0; i < 7; i++) {
 			ForgeDirection d = ForgeDirection.getOrientation(i);
@@ -190,13 +191,14 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 				Block block = world.getBlock(x + d.offsetX, y + d.offsetY, z + d.offsetZ);
 				if(block instanceof IConveyorBelt) belt = (IConveyorBelt) block;
 
-				if(belt != null && !EntityMovingConveyorObject.isCrammed(world, x + d.offsetX, y + d.offsetY, z + d.offsetZ)) {
+				if(belt != null) {
 					EntityMovingPackage moving = new EntityMovingPackage(world);
 					Vec3 pos = Vec3.createVectorHelper(x + 0.5 + d.offsetX * 0.55, y + 0.5 + d.offsetY * 0.55, z + 0.5 + d.offsetZ * 0.55);
 					Vec3 snap = belt.getClosestSnappingPosition(world, x + d.offsetX, y + d.offsetY, z + d.offsetZ, pos);
 					moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 					moving.setItemStacks(list.toArray(new ItemStack[0]));
-					world.spawnEntityInWorld(moving);
+					EntityMovingConveyorObject.trySendToConveyor(world,
+							x + d.offsetX, y + d.offsetY, z + d.offsetZ, d.getOpposite(), moving);
 				}
 			}
 		}
@@ -211,13 +213,17 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 	 * with each direction having a list of items being output in that direction. Index 6 is used for UNKNOWN, i.e. unsortable items.
 	 * Returned lists are populated with COPIES of the original stacks. */
 	public static List<ItemStack>[] sort(World world, int x, int y, int z, ItemStack... stacks) {
+		return sort(world, x, y, z, false, stacks);
+	}
+
+	private static List<ItemStack>[] sort(World world, int x, int y, int z, boolean packaged, ItemStack... stacks) {
 		TileEntityCraneRouter router = (TileEntityCraneRouter) world.getTileEntity(x, y, z);
 		List<ItemStack>[] output = new List[7];
 		for(int i = 0; i < 7; i++) output[i] = new ArrayList();
 		
 		for(ItemStack stack : stacks) {
 			if(stack == null) continue;
-			ForgeDirection dir = getOutputDir(router, stack.copy());
+			ForgeDirection dir = getOutputDir(router, stack.copy(), packaged);
 			output[dir.ordinal()].add(stack);
 		}
 		
@@ -225,6 +231,10 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 	}
 	
 	public static ForgeDirection getOutputDir(TileEntityCraneRouter router, ItemStack stack) {
+		return getOutputDir(router, stack, false);
+	}
+
+	private static ForgeDirection getOutputDir(TileEntityCraneRouter router, ItemStack stack, boolean packaged) {
 		List<ForgeDirection> validDirs = new ArrayList();
 
 		//check filters for all sides
@@ -272,7 +282,7 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 		}
 
 		for(int i = validDirs.size() - 1; i >= 0; i--) {
-			if(!isRouteAvailable(router, validDirs.get(i))) validDirs.remove(i);
+			if(!isRouteAvailable(router, validDirs.get(i), stack, packaged)) validDirs.remove(i);
 		}
 
 		if(validDirs.isEmpty()) {
@@ -283,12 +293,19 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 		return validDirs.get(i);
 	}
 
-	private static boolean isRouteAvailable(TileEntityCraneRouter router, ForgeDirection dir) {
+	private static boolean isRouteAvailable(TileEntityCraneRouter router, ForgeDirection dir, ItemStack stack, boolean packaged) {
 		int x = router.xCoord + dir.offsetX;
 		int y = router.yCoord + dir.offsetY;
 		int z = router.zCoord + dir.offsetZ;
-		Block block = router.getWorldObj().getBlock(x, y, z);
 
-		return block instanceof IConveyorBelt && !EntityMovingConveyorObject.isCrammed(router.getWorldObj(), x, y, z);
+		if(packaged) {
+			EntityMovingPackage moving = new EntityMovingPackage(router.getWorldObj());
+			moving.setItemStacks(new ItemStack[] { stack });
+			return EntityMovingConveyorObject.canSendToConveyor(router.getWorldObj(), x, y, z, dir.getOpposite(), moving);
+		}
+
+		EntityMovingItem moving = new EntityMovingItem(router.getWorldObj());
+		moving.setItemStack(stack);
+		return EntityMovingConveyorObject.canSendToConveyor(router.getWorldObj(), x, y, z, dir.getOpposite(), moving);
 	}
 }
