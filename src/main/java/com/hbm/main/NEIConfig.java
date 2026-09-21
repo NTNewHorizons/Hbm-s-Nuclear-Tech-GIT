@@ -22,7 +22,7 @@ import com.hbm.items.special.ItemBedrockOreNew.CelestialBedrockOre;
 import com.hbm.items.special.ItemBedrockOreNew.CelestialBedrockOreType;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmoSecret;
-import com.hbm.lib.RefStrings;
+import com.hbm.lib.Tags;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -151,6 +151,6 @@ public class NEIConfig implements IConfigureNEI {
 
 	@Override
 	public String getVersion() {
-		return RefStrings.VERSION;
+		return Tags.VERSION;
 	}
 }

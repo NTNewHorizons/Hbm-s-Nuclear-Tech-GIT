@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hbm.lib.RefStrings;
+import com.hbm.lib.Tags;
 import com.hbm.main.MainRegistry;
 
 public class HTTPHandler {
@@ -55,7 +55,7 @@ public class HTTPHandler {
 
 				String sub = line.substring(begin + 1, end);
 
-				newVersion = !RefStrings.VERSION.equals(sub);
+				newVersion = !Tags.VERSION.equals(sub);
 				versionNumber = sub;
 				MainRegistry.logger.info("Found version " + sub);
 				break;

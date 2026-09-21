@@ -1,0 +1,19 @@
+import groovy.json.JsonOutput
+
+// The convention plugin expands the standard mcmod.info fields. Keep this
+// project's existing, long contributor list as a JSON-safe custom field.
+def creditsFile = layout.projectDirectory.file('credits.txt').asFile
+
+tasks.named('processResources').configure {
+    inputs.file(creditsFile)
+
+    doLast {
+        def credits = creditsFile.readLines('UTF-8')
+            .collect { it.trim() }
+            .findAll { !it.isEmpty() && !it.startsWith('#') }
+            .join(', ')
+        def creditsJson = JsonOutput.toJson(credits)
+        def mcmodInfo = new File(outputs.files.singleFile, 'mcmod.info')
+        mcmodInfo.text = mcmodInfo.getText('UTF-8').replace('@CREDITS@', creditsJson)
+    }
+}

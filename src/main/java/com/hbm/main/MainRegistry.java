@@ -34,6 +34,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
 import com.hbm.lib.HbmWorld;
 import com.hbm.lib.RefStrings;
+import com.hbm.lib.Tags;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.potion.HbmPotion;
 import com.hbm.saveddata.satellites.XSatelliteRegistry;
@@ -110,7 +111,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 @Mod(
 	modid = RefStrings.MODID,
 	name = RefStrings.NAME,
-	version = RefStrings.VERSION,
+	version = Tags.VERSION,
 	dependencies = "required-after:backhand;required-after:appliedenergistics2;required-after:Baubles;required-after:Baubles|Expanded"
 )
 public class MainRegistry {

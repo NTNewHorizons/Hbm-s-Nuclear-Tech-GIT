@@ -1,6 +1,6 @@
 package com.hbm.handler;
 
-import com.hbm.lib.RefStrings;
+import com.hbm.lib.Tags;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.world.chunk.Chunk;
@@ -13,7 +13,13 @@ public class BlockMigrations {
 	
 	public static int buildNumber() {
 		if(buildNumber != -1) return buildNumber;
-		String versionString = RefStrings.VERSION.substring(RefStrings.VERSION.indexOf('(') + 1, RefStrings.VERSION.indexOf(')'));
+		String versionString = Tags.VERSION;
+		int buildMarker = versionString.indexOf("_X");
+		if(buildMarker >= 0) {
+			versionString = versionString.substring(buildMarker + 2).split("[^0-9]", 2)[0];
+		} else if(versionString.indexOf('(') >= 0 && versionString.indexOf(')') > versionString.indexOf('(')) {
+			versionString = versionString.substring(versionString.indexOf('(') + 1, versionString.indexOf(')'));
+		}
 		try {
 			buildNumber = Integer.parseInt(versionString);
 		} catch(Exception ex) { }
