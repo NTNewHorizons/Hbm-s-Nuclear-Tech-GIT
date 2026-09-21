@@ -46,8 +46,19 @@ function Invoke-Git {
         [string] $WorkingDirectory
     )
 
-    $result = & git -C $WorkingDirectory @Arguments 2>&1
-    if ($LASTEXITCODE -ne 0) {
+    # Git writes normal progress messages (including worktree creation) to
+    # stderr. With ErrorActionPreference=Stop, PowerShell otherwise turns
+    # those messages into NativeCommandError before we can inspect the exit code.
+    $previousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $result = & git -C $WorkingDirectory @Arguments 2>&1
+        $exitCode = $LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $previousErrorActionPreference
+    }
+
+    if ($exitCode -ne 0) {
         throw "git $($Arguments -join ' ') failed:`n$($result -join [Environment]::NewLine)"
     }
     return ($result -join [Environment]::NewLine).Trim()
