@@ -953,6 +953,14 @@ public class ResourceManager {
 	public static final ResourceLocation glyphid_blaster_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_blaster.png");
 	public static final ResourceLocation glyphid_scout_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_scout.png");
 	public static final ResourceLocation glyphid_nuclear_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_nuclear.png");
+	public static final ResourceLocation glyphid_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_tame.png");
+	public static final ResourceLocation glyphid_brawler_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_brawler_tame.png");
+	public static final ResourceLocation glyphid_behemoth_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_behemoth_tame.png");
+	public static final ResourceLocation glyphid_brenda_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_brenda_tame.png");
+	public static final ResourceLocation glyphid_bombardier_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_bombardier_tame.png");
+	public static final ResourceLocation glyphid_blaster_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_blaster_tame.png");
+	public static final ResourceLocation glyphid_scout_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_scout_tame.png");
+	public static final ResourceLocation glyphid_nuclear_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_nuclear_tame.png");
 	public static final ResourceLocation scutter_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/lob2.png");
 	public static final ResourceLocation tankbot_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/robtex.png");
 	public static final ResourceLocation liquidator_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/liqtex.png");
@@ -966,6 +974,7 @@ public class ResourceManager {
 	public static final ResourceLocation bfangel_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/bfa_body.png");
 
 	public static final ResourceLocation glyphid_digger_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_digger.png");
+	public static final ResourceLocation glyphid_digger_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_digger_tame.png");
 	
 	//PILE
 	public static final ResourceLocation pile_loader_tex = new ResourceLocation(RefStrings.MODID, "textures/models/pile/pile_loader.png");
