@@ -109,7 +109,7 @@ function Invoke-GradleBuild {
         Push-Location $Worktree
         try {
             $timer = [Diagnostics.Stopwatch]::StartNew()
-            & $wrapper clean build --no-daemon --no-build-cache --console=plain *> $LogFile
+            $null = & $wrapper clean build --no-daemon --no-build-cache --console=plain *> $LogFile
             $exitCode = $LASTEXITCODE
             $timer.Stop()
         } finally {
