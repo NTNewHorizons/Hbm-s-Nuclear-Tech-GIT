@@ -624,7 +624,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 			this.markDirty();
 		}
 		FluidDebug.event("fluidtank.fill|" + FluidDebug.tileKey(this) + "|" + ntmFluid.getName(),
-			"FLUIDTANK fill " + FluidDebug.describeTile(this) + " side=" + from + " " + FluidDebug.describeForgeStack(resource) + " doFill=" + doFill + " => " + fillAmount + " by " + FluidDebug.callerHint());
+			() -> "FLUIDTANK fill " + FluidDebug.describeTile(this) + " side=" + from + " " + FluidDebug.describeForgeStack(resource) + " doFill=" + doFill + " => " + fillAmount + " by " + FluidDebug.callerHint());
 		return fillAmount;
 	}
 
@@ -654,7 +654,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 		if (forgeFluid != null) {
 			FluidStack drained = new FluidStack(forgeFluid, drainAmount);
 			FluidDebug.event("fluidtank.drain|" + FluidDebug.tileKey(this) + "|" + ntmFluid.getName(),
-				"FLUIDTANK drain " + FluidDebug.describeTile(this) + " side=" + from + " " + FluidDebug.describeForgeStack(resource) + " doDrain=" + doDrain + " => " + FluidDebug.describeForgeStack(drained) + " by " + FluidDebug.callerHint());
+				() -> "FLUIDTANK drain " + FluidDebug.describeTile(this) + " side=" + from + " " + FluidDebug.describeForgeStack(resource) + " doDrain=" + doDrain + " => " + FluidDebug.describeForgeStack(drained) + " by " + FluidDebug.callerHint());
 			return drained;
 		}
 		return null;
@@ -684,7 +684,7 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 		}
 		FluidStack drainedAll = new FluidStack(forgeFluid, drainAmount);
 		FluidDebug.event("fluidtank.drainall|" + FluidDebug.tileKey(this) + "|" + currentType.getName(),
-			"FLUIDTANK drain-all " + FluidDebug.describeTile(this) + " side=" + from + " maxDrain=" + maxDrain + " doDrain=" + doDrain + " => " + FluidDebug.describeForgeStack(drainedAll) + " by " + FluidDebug.callerHint());
+			() -> "FLUIDTANK drain-all " + FluidDebug.describeTile(this) + " side=" + from + " maxDrain=" + maxDrain + " doDrain=" + doDrain + " => " + FluidDebug.describeForgeStack(drainedAll) + " by " + FluidDebug.callerHint());
 		return drainedAll;
 	}
 
@@ -742,8 +742,10 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 				stack = new FluidStack(forgeFluid, currentFill);
 			}
 		}
+		final FluidStack stackFinal = stack;
+		final int maxFillFinal = maxFill;
 		FluidDebug.event("fluidtank.tankinfo|" + FluidDebug.tileKey(this),
-			"FLUIDTANK getTankInfo " + FluidDebug.describeTile(this) + " side=" + from + " => [" + (stack == null ? "empty" : FluidDebug.describeForgeStack(stack)) + "/" + maxFill + "] by " + FluidDebug.callerHint());
+			() -> "FLUIDTANK getTankInfo " + FluidDebug.describeTile(this) + " side=" + from + " => [" + (stackFinal == null ? "empty" : FluidDebug.describeForgeStack(stackFinal)) + "/" + maxFillFinal + "] by " + FluidDebug.callerHint());
 		return new FluidTankInfo[] { new FluidTankInfo(stack, maxFill) };
 	}
 

@@ -69,7 +69,7 @@ public class ForgeFluidAdapterRegistry {
             IFluidHandler adapter = new AutoForgeFluidAdapter(fluidUser, tileEntity);
             adapterMap.put(tileEntity, adapter);
             FluidDebug.event("adapter.created|" + FluidDebug.tileKey(tileEntity),
-                "ADAPTER created AutoForgeFluidAdapter for " + FluidDebug.describeTile(tileEntity) + " with " + tanks.length + " tank(s) requested by " + FluidDebug.callerHint());
+                () -> "ADAPTER created AutoForgeFluidAdapter for " + FluidDebug.describeTile(tileEntity) + " with " + tanks.length + " tank(s) requested by " + FluidDebug.callerHint());
             return adapter;
         }
 

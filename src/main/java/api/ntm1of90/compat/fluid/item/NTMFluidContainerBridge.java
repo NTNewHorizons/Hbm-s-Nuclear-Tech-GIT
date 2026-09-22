@@ -35,12 +35,12 @@ public class NTMFluidContainerBridge {
 		net.minecraftforge.fluids.Fluid fluid = FluidMappingRegistry.getForgeFluid(type);
 		if(fluid == null) {
 			FluidDebug.event("container.unmapped|" + (type == null ? "null" : type.getName()),
-				"CONTAINER no Forge fluid for " + FluidDebug.describe(type) + " requested by " + FluidDebug.callerHint());
+				() -> "CONTAINER no Forge fluid for " + FluidDebug.describe(type) + " requested by " + FluidDebug.callerHint());
 			return null;
 		}
 		FluidStack result = new FluidStack(fluid, getContentAmount(stack, type));
 		FluidDebug.event("container.getfluid|" + type.getName(),
-			"CONTAINER " + (stack == null ? "null" : stack.getUnlocalizedName()) + " -> " + FluidDebug.describeForgeStack(result) + " requested by " + FluidDebug.callerHint());
+			() -> "CONTAINER " + (stack == null ? "null" : stack.getUnlocalizedName()) + " -> " + FluidDebug.describeForgeStack(result) + " requested by " + FluidDebug.callerHint());
 		return result;
 	}
 

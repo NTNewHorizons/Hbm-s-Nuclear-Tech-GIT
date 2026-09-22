@@ -47,7 +47,7 @@ public class ItemFluidIDMulti extends Item implements IItemFluidIdentifier, IIte
 		net.minecraftforge.fluids.Fluid fluid = FluidMappingRegistry.getForgeFluid(type);
 		FluidStack result = fluid == null ? null : new FluidStack(fluid, 1000);
 		FluidDebug.event("identifier.getfluid|" + type.getName(),
-			"IDENTIFIER primary=" + FluidDebug.describe(type) + " -> " + FluidDebug.describeForgeStack(result) + " requested by " + FluidDebug.callerHint());
+			() -> "IDENTIFIER primary=" + FluidDebug.describe(type) + " -> " + FluidDebug.describeForgeStack(result) + " requested by " + FluidDebug.callerHint());
 		return result;
 	}
 

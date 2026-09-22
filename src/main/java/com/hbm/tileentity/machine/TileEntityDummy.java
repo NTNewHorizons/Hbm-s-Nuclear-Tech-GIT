@@ -46,7 +46,7 @@ public class TileEntityDummy extends TileEntity implements IFluidHandler {
 			this.handlerResolved = this.cachedHandler != null;
 			if(this.cachedHandler != prev) {
 				FluidDebug.event("dummy.resolve|" + FluidDebug.tileKey(this),
-					"DUMMY handler " + (this.cachedHandler == null ? "lost" : "resolved to " + this.cachedHandler.getClass().getSimpleName())
+					() -> "DUMMY handler " + (this.cachedHandler == null ? "lost" : "resolved to " + this.cachedHandler.getClass().getSimpleName())
 					+ " for port " + FluidDebug.describeTile(this) + " -> target " + (target == null ? "null" : FluidDebug.describeTile(target)));
 			}
 		}

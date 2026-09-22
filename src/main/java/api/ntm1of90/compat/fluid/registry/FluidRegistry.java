@@ -53,6 +53,8 @@ public class FluidRegistry {
         for (FluidType type : Fluids.getAll()) {
             // NONE is never exposed, but every other fluid needs a sprite (AE2 NPE-crashes
             // on icon-less fluids, and counterparts are handed out even for NOCON/NOID fluids).
+            // Forge registration for all of these now happens in common init
+            // (FluidMappingRegistry.initialize); this stitch is purely cosmetic here.
             if (type == Fluids.NONE) continue;
             if (!(FluidMappingRegistry.getForgeFluid(type) instanceof ColoredForgeFluid)) continue;
 
@@ -93,7 +95,7 @@ public class FluidRegistry {
                 }
             }
             FluidDebug.event("stitch.summary",
-                "STITCH prepared " + preparedFluids.size() + " fluid sprites"
+                () -> "STITCH prepared " + preparedFluids.size() + " fluid sprites"
                 + (missing.length() > 0 ? "; STILL ICON-LESS (AE2-crash risk): " + missing : "; all NTM Forge fluids have icons"));
         }
     }

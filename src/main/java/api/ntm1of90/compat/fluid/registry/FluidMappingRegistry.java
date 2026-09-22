@@ -74,6 +74,31 @@ public class FluidMappingRegistry {
             }
         }
 
+        // Explicitly register Forge fluids for special NOCON/NOID fluid types (SPENTSTEAM, SMOKE,
+        // PLASMA_*, GAS_WATZ, ...) which the mapping loop above intentionally skips. Doing this in
+        // common init makes both logical sides agree on the Forge registry contents; previously
+        // clients depended on the texture-stitch loop incidentally creating these via getForgeFluid().
+        for (FluidType fluidType : Fluids.getAll()) {
+            if (fluidType == Fluids.NONE) {
+                continue;
+            }
+            if (getForgeFluidName(fluidType) != null) {
+                continue;
+            }
+
+            String hbmName = fluidType.getName().toLowerCase(java.util.Locale.US);
+            if (net.minecraftforge.fluids.FluidRegistry.getFluid(hbmName) != null) {
+                continue;
+            }
+
+            Fluid newFluid = new ColoredForgeFluid(hbmName, fluidType);
+            net.minecraftforge.fluids.FluidRegistry.registerFluid(newFluid);
+            registerFluidMapping(hbmName, fluidType);
+            FluidDebug.event("mapping.special|" + hbmName,
+                () -> "MAPPING explicitly registered special/NOCON/NOID Forge fluid '" + hbmName
+                    + "' for NTM " + FluidDebug.describe(fluidType));
+        }
+
         System.out.println("[NTM] Fluid mapping complete! Mapped " + mappedCount + " NTM fluids to Forge fluid system.");
         System.out.println("[NTM] Total number of fluid mappings created: " + forgeToHbmMap.size());
 
@@ -262,7 +287,7 @@ public class FluidMappingRegistry {
 
         System.out.println("[NTM] Unknown Forge fluid: '" + fluid.getName() + "'. No matching NTM fluid found. This fluid will not be usable in NTM machines.");
         FluidDebug.eventStack("mapping.unknown|" + fluid.getName(),
-            "MAPPING unknown Forge fluid '" + fluid.getName() + "' requested by " + FluidDebug.callerHint());
+            () -> "MAPPING unknown Forge fluid '" + fluid.getName() + "' requested by " + FluidDebug.callerHint());
         return Fluids.NONE;
     }
 
@@ -352,7 +377,7 @@ public class FluidMappingRegistry {
             registerFluidMapping(hbmName, type);
             System.out.println("[NTM] Created new Forge fluid '" + hbmName + "' for NTM fluid '" + type.getName() + "' with color 0x" + Integer.toHexString(color));
             FluidDebug.eventStack("mapping.created|" + hbmName,
-                "MAPPING lazily created Forge fluid '" + hbmName + "' for NTM " + FluidDebug.describe(type) + " requested by " + FluidDebug.callerHint());
+                () -> "MAPPING lazily created Forge fluid '" + hbmName + "' for NTM " + FluidDebug.describe(type) + " requested by " + FluidDebug.callerHint());
             return newFluid;
         }
 

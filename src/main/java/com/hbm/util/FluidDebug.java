@@ -1,6 +1,7 @@
 package com.hbm.util;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 import com.hbm.config.GeneralConfig;
 import com.hbm.inventory.fluid.FluidType;
@@ -22,6 +23,9 @@ public class FluidDebug {
 	private static final ConcurrentHashMap<String, Long> suppressed = new ConcurrentHashMap<String, Long>();
 	private static final long COOLDOWN_MS = 10_000L;
 	private static final int MAX_FRAMES = 24;
+	/** Tracking maps are pruned once they exceed this many keys so long sessions cannot leak. */
+	private static final int MAX_TRACKED_KEYS = 2048;
+	private static final long STALE_MS = 60_000L;
 
 	public static boolean isEnabled() {
 		if(GeneralConfig.enableFluidDebugLogging) return true;
@@ -113,6 +117,7 @@ public class FluidDebug {
 	public static void event(String key, String msg) {
 		if(!isEnabled()) return;
 		try {
+			pruneIfNeeded();
 			if(shouldLog(key)) {
 				Long dropped = suppressed.remove(key);
 				MainRegistry.logger.warn("[FluidDebug] " + msg + (dropped != null && dropped > 0 ? " (+" + dropped + " similar suppressed)" : ""));
@@ -123,10 +128,20 @@ public class FluidDebug {
 		} catch(Throwable t) { }
 	}
 
+	/**
+	 * Lazy variant of {@link #event(String, String)}. The message supplier is only invoked when
+	 * debugging is enabled, so expensive descriptions/stack traces are never built otherwise.
+	 */
+	public static void event(String key, Supplier<String> msg) {
+		if(!isEnabled()) return;
+		event(key, msg.get());
+	}
+
 	/** Throttled event line with a filtered stack trace (rare, important events only). */
 	public static void eventStack(String key, String msg) {
 		if(!isEnabled()) return;
 		try {
+			pruneIfNeeded();
 			if(shouldLog(key)) {
 				Long dropped = suppressed.remove(key);
 				MainRegistry.logger.warn("[FluidDebug] " + msg + (dropped != null && dropped > 0 ? " (+" + dropped + " similar suppressed)" : "") + "\n" + filteredStack());
@@ -135,6 +150,12 @@ public class FluidDebug {
 				suppressed.put(key, count == null ? 1L : count + 1L);
 			}
 		} catch(Throwable t) { }
+	}
+
+	/** Lazy variant of {@link #eventStack(String, String)}. */
+	public static void eventStack(String key, Supplier<String> msg) {
+		if(!isEnabled()) return;
+		eventStack(key, msg.get());
 	}
 
 	/** Logs whenever a tank ends up as NONE with fill > 0. Quiet otherwise. */
@@ -210,6 +231,25 @@ public class FluidDebug {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Keeps the tracking maps bounded on long-running servers: drops cooldown entries that are
+	 * older than {@link #STALE_MS}, and clears the suppression counters once they grow past
+	 * {@link #MAX_TRACKED_KEYS}. Only runs once a map actually grows large, so the common path
+	 * stays allocation-free.
+	 */
+	private static void pruneIfNeeded() {
+		try {
+			if(lastLog.size() > MAX_TRACKED_KEYS) {
+				long cutoff = System.currentTimeMillis() - STALE_MS;
+				lastLog.entrySet().removeIf(e -> e.getValue() == null || e.getValue() < cutoff);
+				if(lastLog.size() > MAX_TRACKED_KEYS) lastLog.clear();
+			}
+			if(suppressed.size() > MAX_TRACKED_KEYS) {
+				suppressed.clear();
+			}
+		} catch(Throwable t) { }
 	}
 
 	private static String filteredStack() {

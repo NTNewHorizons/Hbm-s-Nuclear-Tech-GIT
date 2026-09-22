@@ -59,13 +59,26 @@ public class ColoredForgeFluid extends Fluid {
         if(icon != null) return icon;
         // Never hand null to external renderers (AE2 NPEs); also covers post-stitch registrations.
         FluidDebug.event("fluidicon.fallback|" + getName(),
-            "ICON fallback to water for icon-less Forge fluid '" + getName() + "' rendered by " + FluidDebug.callerHint());
+            () -> "ICON fallback to water for icon-less Forge fluid '" + getName() + "' rendered by " + FluidDebug.callerHint());
         net.minecraftforge.fluids.Fluid water = net.minecraftforge.fluids.FluidRegistry.WATER;
         if(water != null) {
             IIcon fallback = water.getStillIcon();
             if(fallback != null) return fallback;
         }
-        return null;
+        // Water's icon can itself be null during early init. TextureMap.getAtlasSprite(String)
+        // is guaranteed non-null: it returns the missing-image sprite when the name is absent,
+        // so this is the ultimate fallback that guarantees a usable icon.
+        try {
+            net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getMinecraft();
+            if(mc != null) {
+                net.minecraft.client.renderer.texture.TextureMap map = mc.getTextureMapBlocks();
+                if(map != null) {
+                    net.minecraft.util.IIcon fallback = map.getAtlasSprite(getName());
+                    if(fallback != null) return fallback;
+                }
+            }
+        } catch(Throwable t) { }
+        return null;   // unreachable in practice, kept as a last resort
     }
 
     @Override
@@ -80,7 +93,20 @@ public class ColoredForgeFluid extends Fluid {
             IIcon fallback = water.getFlowingIcon();
             if(fallback != null) return fallback;
         }
-        return null;
+        // Water's icon can itself be null during early init. TextureMap.getAtlasSprite(String)
+        // is guaranteed non-null: it returns the missing-image sprite when the name is absent,
+        // so this is the ultimate fallback that guarantees a usable icon.
+        try {
+            net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getMinecraft();
+            if(mc != null) {
+                net.minecraft.client.renderer.texture.TextureMap map = mc.getTextureMapBlocks();
+                if(map != null) {
+                    net.minecraft.util.IIcon fallback = map.getAtlasSprite(getName());
+                    if(fallback != null) return fallback;
+                }
+            }
+        } catch(Throwable t) { }
+        return null;   // unreachable in practice, kept as a last resort
     }
 
     @SideOnly(Side.CLIENT)
