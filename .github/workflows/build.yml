@@ -97,7 +97,10 @@ jobs:
         tag="${{ steps.release_tag.outputs.tag }}"
         jar=$(ls ./build/libs/HBM-NTM-*.jar | head -n 1)
 
-        gh release create "$tag" "$jar" \
+        # gh interprets asset paths as glob patterns, so escape the [ ] in the jar name
+        asset=$(printf '%s' "$jar" | sed 's/[][?*\\]/\\&/g')
+
+        gh release create "$tag" "$asset" \
           --title "$tag" \
           --notes "Automated release build for the spacetravel-two-pointfive branch. Build number: ${{ steps.calculate_days.outputs.days }}" \
           --prerelease
