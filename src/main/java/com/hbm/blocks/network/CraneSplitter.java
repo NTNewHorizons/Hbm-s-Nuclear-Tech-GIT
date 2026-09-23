@@ -139,7 +139,8 @@ public class CraneSplitter extends BlockDummyable implements IConveyorBelt, IEnt
 		} else if(rightCrammed) {
 			spawnMovingItem(world, x, y, z, entity.getItemStack().copy(), dir, laneOffset);
 		} else {
-			ItemStack[] splits = splitter.splitStack(entity.getItemStack());
+			int lane = laneOffset < -0.15 ? 0 : laneOffset > 0.15 ? 2 : 1;
+			ItemStack[] splits = splitter.splitStack(entity.getItemStack(), lane);
 			spawnMovingItem(world, x, y, z, splits[0], dir, laneOffset);
 			spawnMovingItem(world, x + rot.offsetX, y, z + rot.offsetZ, splits[1], dir, laneOffset);
 		}
