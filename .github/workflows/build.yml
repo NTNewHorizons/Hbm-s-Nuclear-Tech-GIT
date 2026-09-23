@@ -18,6 +18,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: release-${{ github.ref }}
+      cancel-in-progress: false
     permissions:
       contents: write
 
@@ -68,23 +71,29 @@ jobs:
       run: |
         days=${{ steps.calculate_days.outputs.days }}
         base_tag="1.0.27_X${days}"
-        tag="$base_tag"
+        # escape regex metacharacters (the dots) so the match is exact
+        escaped=$(printf '%s' "$base_tag" | sed 's/[][\.^$*+?(){}|]/\\&/g')
 
-        # If the base tag already exists, append _1, _2, ... based on how many
-        # releases were already made with this base tag
-        if git ls-remote --exit-code --tags origin "refs/tags/${base_tag}" >/dev/null 2>&1; then
-          highest=0
-          while IFS= read -r line; do
-            name="${line##*refs/tags/}"
-            name="${name%^{}}"
-            if [[ "$name" =~ ^"${base_tag}"_([0-9]+)$ ]]; then
-              num="${BASH_REMATCH[1]}"
-              if (( num > highest )); then
-                highest=$num
-              fi
+        found=0
+        highest=0
+        while IFS= read -r line; do
+          name="${line##*refs/tags/}"
+          name="${name%"^{}"}"   # strip peeled annotated-tag suffix — quoted properly this time
+          if [[ "$name" == "$base_tag" ]]; then
+            found=1              # base tag taken → next must be at least _1
+          elif [[ "$name" =~ ^${escaped}_([0-9]+)$ ]]; then
+            found=1
+            num="${BASH_REMATCH[1]}"
+            if (( num > highest )); then
+              highest=$num
             fi
-          done < <(git ls-remote --tags origin)
+          fi
+        done < <(git ls-remote --tags origin "refs/tags/${base_tag}*")
+
+        if (( found )); then
           tag="${base_tag}_$((highest + 1))"
+        else
+          tag="$base_tag"
         fi
 
         echo "tag=$tag" >> "$GITHUB_OUTPUT"
