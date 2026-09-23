@@ -179,6 +179,11 @@ public class EntityGlyphid extends EntityMob implements IResistanceProvider, ISu
 	public void onUpdate() {
 		super.onUpdate();
 
+		//tamed glyphids are passive pets, don't cull them when the game is set to peaceful
+		if(isTamed() && !worldObj.isRemote && worldObj.difficultySetting == EnumDifficulty.PEACEFUL && this.getHealth() > 0) {
+			this.isDead = false;
+		}
+
 		if(isDancing()) {
 			if(worldObj.isRemote) {
 				rotationYaw += 12F;
