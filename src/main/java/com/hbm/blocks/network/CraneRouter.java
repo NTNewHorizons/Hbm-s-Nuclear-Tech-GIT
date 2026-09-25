@@ -22,10 +22,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -145,19 +147,34 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 	@Override
 	public void onItemEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorItem entity) {
 		List<ItemStack>[] sort = this.sort(world, x, y, z, false, entity.getItemStack());
+		double laneOffset = getLaneOffset(x, z, dir, entity);
 
 		for(int i = 0; i < 7; i++) {
 			ForgeDirection d = ForgeDirection.getOrientation(i);
 			List<ItemStack> list = sort[i];
 			
 			if(d != ForgeDirection.UNKNOWN) {
-				for(ItemStack stack : list) sendOnRoute(world, x, y, z, stack, d);
+				for(ItemStack stack : list) sendOnRoute(world, x, y, z, stack, d, laneOffset);
 			}
 		}
 		
 	}
 
+	private double getLaneOffset(int x, int z, ForgeDirection dir, Object entity) {
+		double laneOffset = 0;
+		if(entity instanceof Entity) {
+			Entity moving = (Entity) entity;
+			if(dir.offsetX != 0) laneOffset = moving.posZ - (z + 0.5);
+			if(dir.offsetZ != 0) laneOffset = moving.posX - (x + 0.5);
+		}
+		return MathHelper.clamp_double(laneOffset, -0.5, 0.5);
+	}
+
 	protected void sendOnRoute(World world, int x, int y, int z, ItemStack item, ForgeDirection dir) {
+		sendOnRoute(world, x, y, z, item, dir, 0);
+	}
+
+	protected void sendOnRoute(World world, int x, int y, int z, ItemStack item, ForgeDirection dir, double laneOffset) {
 		IConveyorBelt belt = null;
 		Block block = world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
 
@@ -168,6 +185,8 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 		if(belt != null) {
 			EntityMovingItem moving = new EntityMovingItem(world);
 			Vec3 pos = Vec3.createVectorHelper(x + 0.5 + dir.offsetX * 0.55, y + 0.5 + dir.offsetY * 0.55, z + 0.5 + dir.offsetZ * 0.55);
+			if(dir.offsetX != 0) pos.zCoord += laneOffset;
+			if(dir.offsetZ != 0) pos.xCoord += laneOffset;
 			Vec3 snap = belt.getClosestSnappingPosition(world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, pos);
 			moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 			moving.setItemStack(item);
@@ -179,6 +198,7 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 	@Override
 	public void onPackageEnter(World world, int x, int y, int z, ForgeDirection dir, IConveyorPackage entity) {
 		List<ItemStack>[] sort = this.sort(world, x, y, z, true, entity.getItemStacks());
+		double laneOffset = getLaneOffset(x, z, dir, entity);
 
 		for(int i = 0; i < 7; i++) {
 			ForgeDirection d = ForgeDirection.getOrientation(i);
@@ -194,6 +214,8 @@ public class CraneRouter extends BlockContainer implements IBlockMultiPass, IEnt
 				if(belt != null) {
 					EntityMovingPackage moving = new EntityMovingPackage(world);
 					Vec3 pos = Vec3.createVectorHelper(x + 0.5 + d.offsetX * 0.55, y + 0.5 + d.offsetY * 0.55, z + 0.5 + d.offsetZ * 0.55);
+					if(d.offsetX != 0) pos.zCoord += laneOffset;
+					if(d.offsetZ != 0) pos.xCoord += laneOffset;
 					Vec3 snap = belt.getClosestSnappingPosition(world, x + d.offsetX, y + d.offsetY, z + d.offsetZ, pos);
 					moving.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
 					moving.setItemStacks(list.toArray(new ItemStack[0]));
