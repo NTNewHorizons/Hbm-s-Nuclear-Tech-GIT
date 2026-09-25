@@ -10,6 +10,7 @@ import com.hbm.blocks.generic.BlockRichOre;
 import com.hbm.blocks.generic.OreRichnessHelper;
 import com.hbm.blocks.generic.BlockBedrockOreTE.TileEntityBedrockOre;
 import com.hbm.blocks.network.CraneInserter;
+import com.hbm.entity.item.EntityMovingConveyorObject;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.inventory.UpgradeManagerNT;
@@ -383,7 +384,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 			/* try to place on conveyor belt */
 			Block b = worldObj.getBlock(x, y, z);
 			if(b instanceof IConveyorBelt) {
-				supplyConveyor((IConveyorBelt) b, stacks, x, y, z);
+				supplyConveyor((IConveyorBelt) b, stacks, x, y, z, dir.getOpposite());
 			}
 
 			if(stack.stackSize <= 0) return;
@@ -720,7 +721,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 
 		Block b = worldObj.getBlock(x, y, z);
 		if(b instanceof IConveyorBelt) {
-			supplyConveyor((IConveyorBelt) b, items, x, y, z);
+			supplyConveyor((IConveyorBelt) b, items, x, y, z, dir.getOpposite());
 		}
 
 		items.removeIf(i -> i == null || i.stackSize <= 0);
@@ -760,7 +761,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 		/* try to place on conveyor belt */
 		Block b = worldObj.getBlock(x, y, z);
 		if(b instanceof IConveyorBelt) {
-			supplyConveyor((IConveyorBelt) b, stacks, x, y, z);
+			supplyConveyor((IConveyorBelt) b, stacks, x, y, z, dir.getOpposite());
 		}
 
 		items.removeIf(i -> i.isDead || i.getEntityItem().stackSize <= 0);
@@ -827,8 +828,7 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 	}
 
 	/** moves all items onto a connected conveyor belt */
-	protected void supplyConveyor(IConveyorBelt belt, List<ItemStack> items, int x, int y, int z) {
-
+	protected void supplyConveyor(IConveyorBelt belt, List<ItemStack> items, int x, int y, int z, ForgeDirection inputSide) {
 		Random rand = worldObj.rand;
 
 		for(ItemStack item : items) {
@@ -841,10 +841,10 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 			EntityMovingItem moving = new EntityMovingItem(worldObj);
 			moving.setPosition(base.xCoord, vec.yCoord, base.zCoord);
 			moving.setItemStack(item.copy());
-			worldObj.spawnEntityInWorld(moving);
-			item.stackSize = 0;
-
-			chuteTimer = 40;
+			if(EntityMovingConveyorObject.trySendToConveyor(worldObj, x, y, z, inputSide, moving)) {
+				item.stackSize = 0;
+				chuteTimer = 40;
+			}
 		}
 	}
 

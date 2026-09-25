@@ -3,6 +3,7 @@ package com.hbm.tileentity.network;
 import api.hbm.conveyor.IConveyorBelt;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.network.CraneInserter;
+import com.hbm.entity.item.EntityMovingConveyorObject;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.inventory.container.ContainerCraneGrabber;
 import com.hbm.inventory.gui.GUICraneGrabber;
@@ -104,15 +105,17 @@ public class TileEntityCraneGrabber extends TileEntityCraneBase implements IGUIP
 						boolean match = this.matchesFilter(stack);
 						if(this.isWhitelist && !match || !this.isWhitelist && match) continue;
 
-						lastGrabbedTick = worldObj.getTotalWorldTime();
-
 						Vec3 pos = Vec3.createVectorHelper(xCoord + 0.5 + outputSide.offsetX * 0.55, yCoord + 0.5 + outputSide.offsetY * 0.55, zCoord + 0.5 + outputSide.offsetZ * 0.55);
 						Vec3 snap = belt.getClosestSnappingPosition(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ, pos);
 						EntityMovingItem newItem = new EntityMovingItem(worldObj);
 						newItem.setItemStack(item.getItemStack().copy());
 						newItem.setPosition(snap.xCoord, snap.yCoord, snap.zCoord);
-						item.setDead();
-						worldObj.spawnEntityInWorld(newItem);
+						if(EntityMovingConveyorObject.trySendToConveyor(worldObj,
+								xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ,
+								outputSide.getOpposite(), newItem)) {
+							item.setDead();
+							lastGrabbedTick = worldObj.getTotalWorldTime();
+						}
 						break;
 					}
 
