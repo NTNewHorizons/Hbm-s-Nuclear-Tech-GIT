@@ -58,7 +58,7 @@ public class EntityChunkLoader {
 		}
 
 		forcedChunks.clear();
-		forcedChunks.addAll(desiredChunks);
+		forcedChunks.addAll(ticket.getChunkList());
 	}
 
 	public void clear() {
