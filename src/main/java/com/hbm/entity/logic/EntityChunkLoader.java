@@ -37,20 +37,23 @@ public class EntityChunkLoader {
 	}
 
 	public void loadChunk(int chunkX, int chunkZ) {
+		loadChunks(Collections.singleton(new ChunkCoordIntPair(chunkX, chunkZ)));
+	}
+
+	public void loadChunks(Set<ChunkCoordIntPair> desiredChunks) {
 		if(entity.worldObj.isRemote || ticket == null) return;
 
-		Set<ChunkCoordIntPair> desiredChunks = Collections.singleton(new ChunkCoordIntPair(chunkX, chunkZ));
 		if(forcedChunks.equals(desiredChunks)) return;
-
-		for(ChunkCoordIntPair chunk : desiredChunks) {
-			if(!forcedChunks.contains(chunk)) {
-				ForgeChunkManager.forceChunk(ticket, chunk);
-			}
-		}
 
 		for(ChunkCoordIntPair chunk : forcedChunks) {
 			if(!desiredChunks.contains(chunk)) {
 				ForgeChunkManager.unforceChunk(ticket, chunk);
+			}
+		}
+
+		for(ChunkCoordIntPair chunk : desiredChunks) {
+			if(!forcedChunks.contains(chunk)) {	
+				ForgeChunkManager.forceChunk(ticket, chunk);
 			}
 		}
 
@@ -59,7 +62,9 @@ public class EntityChunkLoader {
 	}
 
 	public void clear() {
-		if(!entity.worldObj.isRemote && ticket != null) {
+		if(entity.worldObj.isRemote) return;
+
+		if(ticket != null) {
 			ForgeChunkManager.releaseTicket(ticket);
 			ticket = null;
 		}
