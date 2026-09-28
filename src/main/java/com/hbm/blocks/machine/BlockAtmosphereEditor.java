@@ -72,9 +72,9 @@ public class BlockAtmosphereEditor extends BlockContainer implements IToolable, 
 
 		List<String> text = new ArrayList<String>();
 
-		text.add(I18nUtil.resolveKey("overlay.block_atmosphere_editor.state_s", (editor.isOn ? "RUNNING" : "OFF")));
+		text.add(I18nUtil.resolveKey("overlay.block_atmosphere_editor.state_s", (editor.isOn ? I18nUtil.resolveKey("gui.block_atmosphere_editor.running") : I18nUtil.resolveKey("gui.block_atmosphere_editor.off"))));
 		text.add(I18nUtil.resolveKey("overlay.block_atmosphere_editor.current_gas_s_s", editor.fluid.getLocalizedName(), pressure));
-		text.add(I18nUtil.resolveKey("overlay.block_atmosphere_editor.current_mode_s", (editor.isEmitting ? "EMITTING" : "CAPTURING")));
+		text.add(I18nUtil.resolveKey("overlay.block_atmosphere_editor.current_mode_s", (editor.isEmitting ? I18nUtil.resolveKey("gui.block_atmosphere_editor.emitting") : I18nUtil.resolveKey("gui.block_atmosphere_editor.capturing"))));
 		text.add(I18nUtil.resolveKey("overlay.block_atmosphere_editor.current_throughput_s", Math.pow(10, editor.throughputFactor) / AstronomyUtil.MB_PER_ATM));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);

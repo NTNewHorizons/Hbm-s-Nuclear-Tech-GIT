@@ -1,5 +1,7 @@
 package com.hbm.inventory.gui;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -42,7 +44,7 @@ public class GUITransporterRocket extends GuiInfoContainer {
 		transporterName.setTextColor(0x00ff00);
 		transporterName.setDisabledTextColour(0x00ff00);
 		transporterName.setEnableBackgroundDrawing(false);
-		transporterName.setText(transporter.getTransporterName());
+		transporterName.setText(I18nUtil.resolveKey(transporter.getTransporterName()));
 	}
 
 	@Override

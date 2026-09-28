@@ -89,7 +89,7 @@ public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 		
 		List<String> text = new ArrayList();
 		text.add(I18nUtil.resolveKey("overlay.machine_sat_link.freq_s", link.freq));
-		text.add(I18nUtil.resolveKey("overlay.machine_sat_link.connected_s", (link.connected ? (EnumChatFormatting.GREEN + "Yes") : (EnumChatFormatting.RED + "No"))));
+		text.add(I18nUtil.resolveKey("overlay.machine_sat_link.connected_s", (link.connected ? (EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.machine_sat_link.yes")) : (EnumChatFormatting.RED + I18nUtil.resolveKey("gui.machine_sat_link.no")))));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

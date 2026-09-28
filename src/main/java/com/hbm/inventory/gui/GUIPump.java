@@ -1,5 +1,7 @@
 package com.hbm.inventory.gui;
 
+import java.util.Locale;
+
 import org.lwjgl.input.Keyboard;
 
 import com.hbm.blocks.network.FluidPump.TileEntityFluidPump;
@@ -45,7 +47,7 @@ public class GUIPump extends GuiScreen {
 
 		buttonPressure = new GuiButton(0, this.width / 2 - 50, 100, 90, 20, pressure + I18nUtil.resolveKey("gui.guipump.pu"));
 
-		buttonPriority = new GuiButton(1, this.width / 2 + 50, 100, 90, 20, pump.priority.name());
+		buttonPriority = new GuiButton(1, this.width / 2 + 50, 100, 90, 20, I18nUtil.resolveKey("gui.connection_priority." + pump.priority.name().toLowerCase(Locale.US)));
 	}
 
 	@Override
@@ -104,7 +106,7 @@ public class GUIPump extends GuiScreen {
 		if(buttonPriority.mousePressed(mc, mouseX, mouseY)) {
 			this.priority++;
 			if(priority >= ConnectionPriority.values().length) priority = 0;
-			buttonPriority.displayString = EnumUtil.grabEnumSafely(ConnectionPriority.class, priority).name();
+			buttonPriority.displayString = I18nUtil.resolveKey("gui.connection_priority." + EnumUtil.grabEnumSafely(ConnectionPriority.class, priority).name().toLowerCase(Locale.US));
 			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 		}
 	}

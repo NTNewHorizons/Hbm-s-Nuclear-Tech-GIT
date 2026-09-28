@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -14,6 +15,7 @@ for raw in LANG.read_text(encoding="utf-8").splitlines():
         existing[key] = value
 
 generated = {}
+obsolete = set()
 
 def snake(value):
     value = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", value)
@@ -29,12 +31,13 @@ def visible(value):
     if not re.search(r"[A-Za-z]{2,}", value): return False
     if re.fullmatch(r"[a-z0-9_.:/-]+", value): return False
     if value.startswith(("textures/", "hbm:", "tile.", "item.", "gui.", "commands.")): return False
+    if "." in value and not value.endswith(".") and re.fullmatch(r"[A-Za-z0-9_.:/-]+", value): return False
     if re.fullmatch(r"(?:HE|TU|PU|mB|kg|HP|KyU|RAD|RAD/s|DPS|X|Y|Z|N|E|S|W)", value): return False
     return True
 
 def key_for(kind, cls, value):
     words = snake(re.sub(r"§.", "", value))[:56].strip("_") or "text"
-    base = f"{kind}.{snake(cls)}.{words}"
+    base = f"{kind}.{snake(cls)}.{words}" if cls else f"{kind}.{words}"
     key = base
     index = 2
     while key in existing and existing[key] != value or key in generated and generated[key] != value:
@@ -97,6 +100,22 @@ def matching(text, open_pos):
                 if depth == 0: return i
     return -1
 
+def matching_delim(text, open_pos, opening, closing):
+    depth, quote, escape = 0, False, False
+    for i in range(open_pos, len(text)):
+        char = text[i]
+        if quote:
+            if escape: escape = False
+            elif char == "\\": escape = True
+            elif char == '"': quote = False
+        else:
+            if char == '"': quote = True
+            elif char == opening: depth += 1
+            elif char == closing:
+                depth -= 1
+                if depth == 0: return i
+    return -1
+
 def replace_call(line, marker, kind, cls, call):
     pos = line.find(marker)
     if pos < 0: return line, False
@@ -133,6 +152,8 @@ def add_import(text, statement):
 def localize_literals_in_calls(text, cls):
     markers = ("drawCustomInfoStat(", "drawCreativeTabHoveringText(", "drawLeftAligned(",
                "drawRightAligned(", ".drawString(", "drawStringWithShadow(", "drawCenteredString(",
+               "displayTooltip(", "func_146283_a(", "addCommandHistory(", "list.add(", "text.add(", "lines.add(",
+               "toolTip.add(", "info.add(", "label.add(", "tip.add(", "tty.add(",
                "new GuiButton(", "new FolderButton(", "setStackDisplayName(")
     changed = False
     for marker in markers:
@@ -165,8 +186,140 @@ def localize_command_usage(text, cls):
         return match.group(1) + f'"{key}"' + match.group(3)
     return pattern.subn(replace, text)
 
+def localize_display_setters(text):
+    changed = False
+    def replace(match):
+        nonlocal changed
+        method, token = match.group(1), match.group(2)
+        value = java_string(token)
+        if not visible(value): return match.group(0)
+        kind = "item.missile_part.title" if method == "setTitle" else "item.missile_part.witty"
+        changed = True
+        return f'.{method}("{key_for(kind, "", value)}")'
+    return re.sub(r'\.(setTitle|setWittyText)\(("(?:\\.|[^"\\])*")\)', replace, text), changed
+
+def localize_gui_arrays(text, cls):
+    cursor, changed = 0, False
+    while True:
+        pos = text.find("new String[]", cursor)
+        if pos < 0: break
+        open_pos = text.find("{", pos)
+        if open_pos < 0: break
+        close_pos = matching_delim(text, open_pos, "{", "}")
+        if close_pos < 0: break
+        body = text[open_pos + 1:close_pos]
+        def replace(match):
+            nonlocal changed
+            value = java_string(match.group(0))
+            if not visible(value): return match.group(0)
+            changed = True
+            return f'I18nUtil.resolveKey("{key_for("gui", cls, value)}")'
+        new_body = re.sub(r'"(?:\\.|[^"\\])*"', replace, body)
+        text = text[:open_pos + 1] + new_body + text[close_pos:]
+        cursor = open_pos + len(new_body) + 1
+    return text, changed
+
+def localize_collectible_enum(path, text):
+    specs = {
+        "BlockSnowglobe.java": ((0, "label"), (1, "inscription")),
+        "BlockPlushie.java": ((1, "inscription"),),
+        "BlockBobble.java": ((2, "contribution"), (3, "inscription")),
+        "ItemHolotapeImage.java": ((0, "color"), (2, "text")),
+        "ItemCassette.java": ((0, "title"),),
+    }
+    if path.name not in specs: return text
+    prefix = {"BlockSnowglobe.java": "snowglobe", "BlockPlushie.java": "plushie", "BlockBobble.java": "bobble",
+              "ItemHolotapeImage.java": "holotape", "ItemCassette.java": "cassette"}[path.name]
+    output = []
+    for line in text.splitlines(keepends=True):
+        constant = re.match(r"\s*([A-Z][A-Z0-9_]*)\s*\(", line)
+        if not constant:
+            output.append(line)
+            continue
+        tokens = list(re.finditer(r'"(?:\\.|[^"\\])*"', line))
+        replacements = []
+        for index, suffix in specs[path.name]:
+            if index >= len(tokens): continue
+            token = tokens[index]
+            value = java_string(token.group(0))
+            if not visible(value): continue
+            key = f"{prefix}.{constant.group(1).lower()}.{suffix}"
+            generated[key] = value
+            replacements.append((token.start(), token.end(), f'"{key}"'))
+        for start, end, replacement in reversed(replacements):
+            line = line[:start] + replacement + line[end:]
+        output.append(line)
+    return "".join(output)
+
+def localize_nei_names(path, text):
+    if "/handler/nei/" not in path.as_posix(): return text, False
+    key = f"nei.{snake(path.stem)}.name"
+    changed, direct = False, False
+    def replace_super(match):
+        nonlocal changed
+        value = java_string(match.group(1))
+        if not visible(value): return match.group(0)
+        generated[key] = value
+        changed = True
+        return f'super("{key}"'
+    text = re.sub(r'super\(("(?:\\.|[^"\\])*")', replace_super, text)
+    pattern = re.compile(r'(getRecipeName\s*\(\s*\)\s*\{\s*return\s+)"([^"\n]+)"(\s*;)', re.S)
+    def replace_return(match):
+        nonlocal changed, direct
+        value = match.group(2)
+        if not visible(value): return match.group(0)
+        generated[key] = value
+        changed = direct = True
+        return match.group(1) + f'I18nUtil.resolveKey("{key}")' + match.group(3)
+    text = pattern.sub(replace_return, text)
+    return text, direct
+
+def localize_rtg_facts(path, text):
+    if path.name != "ItemRTGPellet.java": return text
+    match = re.search(r'(private static final String\[\] facts\s*=\s*new String\[\]\s*\{)(.*?)(\};)', text, re.S)
+    if not match: return text
+    body = match.group(2)
+    index = 0
+    def replace(token):
+        nonlocal index
+        value = java_string(token.group(0))
+        key = f"item.rtg.fact.{index}"
+        index += 1
+        generated[key] = value
+        return f'"{key}"'
+    body = re.sub(r'"(?:\\.|[^"\\])*"', replace, body)
+    return text[:match.start(2)] + body + text[match.end(2):]
+
+def localize_rbmk_names(path, text):
+    if path.name != "ModItems.java": return text
+    def replace(match):
+        value = java_string(match.group(2))
+        key = f"item.rbmk_fuel_name.{snake(value)}"
+        generated[key] = value
+        return match.group(1) + f'"{key}"'
+    return re.sub(r'(new ItemRBMK(?:Pellet|Rod)\()((?:"(?:\\.|[^"\\])*") )?', lambda m: m.group(0), text) if False else re.sub(r'(new ItemRBMK(?:Pellet|Rod)\()("(?:\\.|[^"\\])*")', replace, text)
+
 def process(path):
-    old = path.read_text(encoding="utf-8")
+    source = path.read_text(encoding="utf-8")
+    old = source
+    try:
+        base = subprocess.check_output(["git", "show", f"HEAD:{path.relative_to(ROOT)}"], cwd=ROOT).decode("utf-8", "replace")
+        base_keys = re.findall(r'I18nUtil\.resolveKey\("([A-Za-z0-9_.:/-]+)"', base)
+    except subprocess.CalledProcessError:
+        base_keys = []
+    def restore_nested(match):
+        generated_key = match.group(1)
+        original_key = existing.get(generated_key, "")
+        prefix = f"gui.{snake(path.stem)}."
+        suffix = generated_key[len(prefix):] if generated_key.startswith(prefix) else ""
+        candidates = [key for key in base_keys if snake(key) == suffix]
+        if not original_key and len(candidates) == 1:
+            original_key = candidates[0]
+        if "." not in original_key or not re.fullmatch(r"[A-Za-z0-9_.:/-]+", original_key):
+            return match.group(0)
+        obsolete.add(generated_key)
+        return f'I18nUtil.resolveKey("{original_key}"'
+    old = re.sub(r'I18nUtil\.resolveKey\(I18nUtil\.resolveKey\("([^"]+)"\)', restore_nested, old)
     cls = path.stem
     out, need_i18n, need_chat = [], False, False
     for line in old.splitlines(keepends=True):
@@ -233,6 +386,15 @@ def process(path):
     text = "".join(out)
     text, call_changed = localize_literals_in_calls(text, cls)
     need_i18n |= call_changed
+    text, _ = localize_display_setters(text)
+    text = localize_collectible_enum(path, text)
+    text, nei_i18n = localize_nei_names(path, text)
+    need_i18n |= nei_i18n
+    text = localize_rtg_facts(path, text)
+    text = localize_rbmk_names(path, text)
+    if "/inventory/gui/" in path.as_posix():
+        text, array_changed = localize_gui_arrays(text, cls)
+        need_i18n |= array_changed
     if "/commands/" in path.as_posix():
         text, _ = localize_command_usage(text, cls)
     if need_i18n: text = add_import(text, "import com.hbm.util.i18n.I18nUtil;")
@@ -240,12 +402,12 @@ def process(path):
         text = add_import(text, "import net.minecraft.util.ChatComponentTranslation;")
         if "ChatComponentText" not in text.replace("import net.minecraft.util.ChatComponentText;", ""):
             text = text.replace("import net.minecraft.util.ChatComponentText;\n", "")
-    if text != old:
+    if text != source:
         path.write_text(text, encoding="utf-8")
         return 1
     return 0
 
-changed = sum(process(path) for path in JAVA.rglob("*.java") if "/items/" not in path.as_posix())
+changed = sum(process(path) for path in JAVA.rglob("*.java"))
 
 fragment = ROOT / ".i18n-work/items.lang"
 if fragment.exists():
@@ -258,5 +420,9 @@ if generated:
     with LANG.open("a", encoding="utf-8") as handle:
         handle.write("\n# Scripted hardcoded string localization\n")
         for key in sorted(generated): handle.write(f"{key}={generated[key]}\n")
+
+if obsolete:
+    lines = LANG.read_text(encoding="utf-8").splitlines()
+    LANG.write_text("\n".join(line for line in lines if not any(line.startswith(key + "=") for key in obsolete)) + "\n", encoding="utf-8")
 
 print(f"changed_files={changed} new_keys={len(generated)}")

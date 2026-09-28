@@ -197,7 +197,7 @@ public class TileEntityRadioTelex extends TileEntityLoadedBase implements IContr
 			if(!rxBuffer[i].isEmpty()) text.add(rxBuffer[i]);
 		}
 		ItemStackUtil.addTooltipToStack(stack, text.toArray(new String[0]));
-		stack.setStackDisplayName(I18nUtil.resolveKey("item.name.tile_entity_radio_telex.message"));
+		I18nUtil.setItemName(stack, "item.name.tile_entity_radio_telex.message");
 		worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord + 0.5, yCoord + 1, zCoord + 0.5, stack));
 	}
 

@@ -361,7 +361,7 @@ public class GUIAnvil extends GuiContainer {
 		for(AStack stack : recipe.input) {
 			if(stack instanceof ComparableStack)  {
 				ItemStack input = ((ComparableStack) stack).toStack();
-				try { list.add(input.getDisplayName().toLowerCase(Locale.US)); } catch(Exception ex) { list.add("I AM ERROR"); }
+				try { list.add(input.getDisplayName().toLowerCase(Locale.US)); } catch(Exception ex) { list.add(I18nUtil.resolveKey("gui.guianvil.i_am_error")); }
 
 			} else if(stack instanceof OreDictStack) {
 				OreDictStack input = (OreDictStack) stack;
@@ -369,7 +369,7 @@ public class GUIAnvil extends GuiContainer {
 
 				if(ores.size() > 0) {
 					for(ItemStack ore : ores) {
-						try { list.add(ore.getDisplayName().toLowerCase(Locale.US)); } catch(Exception ex) { list.add("I AM ERROR"); }
+						try { list.add(ore.getDisplayName().toLowerCase(Locale.US)); } catch(Exception ex) { list.add(I18nUtil.resolveKey("gui.guianvil.i_am_error")); }
 					}
 				}
 			}

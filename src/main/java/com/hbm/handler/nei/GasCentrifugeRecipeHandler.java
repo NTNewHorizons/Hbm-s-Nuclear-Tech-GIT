@@ -23,6 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GasCentrifugeRecipeHandler extends TemplateRecipeHandler implements ICompatNHNEI {
 	@Override
@@ -83,7 +84,7 @@ public class GasCentrifugeRecipeHandler extends TemplateRecipeHandler implements
 
 	@Override
 	public String getRecipeName() {
-		return "Gas Centrifuge";
+		return I18nUtil.resolveKey("nei.gas_centrifuge_recipe_handler.name");
 	}
 
 	@Override

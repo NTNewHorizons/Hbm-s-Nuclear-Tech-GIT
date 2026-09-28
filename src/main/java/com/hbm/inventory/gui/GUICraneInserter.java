@@ -17,6 +17,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUICraneInserter extends GuiInfoContainer {
 	
@@ -36,7 +37,7 @@ public class GUICraneInserter extends GuiInfoContainer {
 		super.drawScreen(x, y, interp);
 
 		if(guiLeft + 151 <= x && guiLeft + 151 + 18 > x && guiTop + 34 < y && guiTop + 34 + 18 >= y) {
-			this.func_146283_a(Arrays.asList(new String[] { "Destroy overflow: " + (inserter.destroyer ? EnumChatFormatting.GREEN + "ON" : EnumChatFormatting.RED + "OFF") }), x, y);
+			this.func_146283_a(Arrays.asList(new String[] { I18nUtil.resolveKey("gui.guicrane_inserter.destroy_overflow") + (inserter.destroyer ? EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.guicrane_inserter.on") : EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guicrane_inserter.off")) }), x, y);
 		}
 	}
 

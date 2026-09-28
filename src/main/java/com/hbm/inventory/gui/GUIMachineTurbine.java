@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIMachineTurbine extends GuiInfoContainer {
 
@@ -34,7 +35,7 @@ public class GUIMachineTurbine extends GuiInfoContainer {
 		
 		if(diFurnace.tanks[1].getTankType() == Fluids.NONE) {
 			
-			String[] text2 = new String[] { "Error: Invalid fluid!" };
+			String[] text2 = new String[] { I18nUtil.resolveKey("gui.guimachine_turbine.error_invalid_fluid") };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
 		}
 		

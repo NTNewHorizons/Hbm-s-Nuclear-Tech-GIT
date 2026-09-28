@@ -132,7 +132,7 @@ public class GUILaunchPadLarge extends GuiInfoContainer {
 		int color = 0xffffff;
 		if(launchpad.state == launchpad.STATE_MISSING) {
 			GL11.glScaled(0.5, 0.5, 1);
-			text = "Not ready";
+			text = I18nUtil.resolveKey("gui.launch_pad.not_ready");
 			color = 0xff0000;
 		}
 		if(launchpad.state == launchpad.STATE_LOADING) {

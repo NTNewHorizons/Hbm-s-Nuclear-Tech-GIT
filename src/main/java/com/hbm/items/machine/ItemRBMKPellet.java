@@ -81,7 +81,7 @@ public class ItemRBMKPellet extends ItemNuclearWaste {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		super.addInformation(stack, player, list, bool);
 
-		list.add(EnumChatFormatting.ITALIC + this.fullName);
+		list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey(this.fullName));
 		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_r_b_m_k_pellet.1"));
 
 		int meta = rectify(stack.getItemDamage());

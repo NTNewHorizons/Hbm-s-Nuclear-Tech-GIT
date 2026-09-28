@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 public class VacuumCircuitHandler extends NEIUniversalHandler {
 
     public VacuumCircuitHandler() {
-		super("Vacuum Solderer", ModBlocks.machine_vacuum_circuit, VacuumCircuitRecipes.getRecipes());
+		super("nei.vacuum_circuit_handler.name", ModBlocks.machine_vacuum_circuit, VacuumCircuitRecipes.getRecipes());
 	}
 
 	@Override

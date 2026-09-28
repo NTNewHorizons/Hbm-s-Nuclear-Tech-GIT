@@ -1,5 +1,7 @@
 package com.hbm.inventory.gui;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -114,7 +116,7 @@ public class GUITransporterLinker extends GuiScreen {
 
 		String coordinates = "x: " + linkFromTransporter.x + ", z: " + linkFromTransporter.z;
 		int width = fontRendererObj.getStringWidth(coordinates);
-		fontRendererObj.drawStringWithShadow(linkFromTransporter.name, textLeftX, guiTop + 13, 0x00ff00);
+		fontRendererObj.drawStringWithShadow(I18nUtil.resolveKey(linkFromTransporter.name), textLeftX, guiTop + 13, 0x00ff00);
 		fontRendererObj.drawStringWithShadow(coordinates, textRightX - width, guiTop + 23, 0x00ff00);
 		
 		// Draw linkable transporters
@@ -128,7 +130,7 @@ public class GUITransporterLinker extends GuiScreen {
 
 			coordinates = "x: " + transporter.x + ", z: " + transporter.z;
 			width = fontRendererObj.getStringWidth(coordinates);
-			fontRendererObj.drawStringWithShadow(transporter.name, textLeftX, y - 1, 0x00ff00);
+			fontRendererObj.drawStringWithShadow(I18nUtil.resolveKey(transporter.name), textLeftX, y - 1, 0x00ff00);
 			fontRendererObj.drawStringWithShadow(coordinates, textRightX - width, y + 9, 0x00ff00);
 		}
 	}
@@ -259,7 +261,7 @@ public class GUITransporterLinker extends GuiScreen {
 		for(TransporterInfo transporter : transporters) {
 			if(transporter.equals(linkFromTransporter)) continue;
 			if(transporter.linkedTo != null && !transporter.linkedTo.equals(linkFromTransporter)) continue;
-			if(transporter.name.toLowerCase(Locale.US).contains(subs)) {
+			if(I18nUtil.resolveKey(transporter.name).toLowerCase(Locale.US).contains(subs)) {
 				visibleTransporters.add(transporter);
 			}
 		}

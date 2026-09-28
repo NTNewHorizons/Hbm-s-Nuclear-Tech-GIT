@@ -33,7 +33,7 @@ public class ItemReactorSensor extends Item {
 				stack.stackTagCompound = new NBTTagCompound();
 
 			if(!world.isRemote) {
-				SendMessage(player,"Position Set!");
+				SendMessage(player, "item.message.reactor_sensor.position_set");
 			}
 
 			stack.stackTagCompound.setInteger("x", x);
@@ -62,7 +62,7 @@ public class ItemReactorSensor extends Item {
 			if(entity == null) return false;
 
 			if(!world.isRemote) {
-				SendMessage(player,"Stardar Linked!");
+				SendMessage(player, "item.message.reactor_sensor.stardar_linked");
 				entity.TryLink(stack);
 			}
 
@@ -79,7 +79,7 @@ public class ItemReactorSensor extends Item {
 		player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 			.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 			.next("] ").color(EnumChatFormatting.DARK_AQUA)
-			.next(text).color(EnumChatFormatting.GREEN).flush());
+			.nextTranslation(text).color(EnumChatFormatting.GREEN).flush());
 	}
 
 	@Override

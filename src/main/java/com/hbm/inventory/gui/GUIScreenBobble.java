@@ -10,6 +10,7 @@ import com.hbm.blocks.generic.BlockBobble.BobbleType;
 import com.hbm.blocks.generic.BlockBobble.TileEntityBobble;
 import com.hbm.main.NTMSounds;
 import com.hbm.util.Tuple.Pair;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
@@ -60,7 +61,7 @@ public class GUIScreenBobble extends GuiScreen {
 		
 		int nextLevel = (int)top + 10;
 
-		String bobbleTitle = "Nuclear Tech Commemorative Bobblehead";
+		String bobbleTitle = I18nUtil.resolveKey("gui.bobble.title");
 		this.fontRendererObj.drawStringWithShadow(bobbleTitle, (int)(left + sizeX / 2 - this.fontRendererObj.getStringWidth(bobbleTitle) / 2), nextLevel, 0x00ff00);
 		
 		nextLevel += 10;
@@ -74,13 +75,13 @@ public class GUIScreenBobble extends GuiScreen {
 		
 		if(this.bobble.type.contribution != null) {
 
-			String title = "Has contributed";
+			String title = I18nUtil.resolveKey("gui.bobble.contributed");
 			this.fontRendererObj.drawStringWithShadow(title, (int)(left + sizeX / 2 - this.fontRendererObj.getStringWidth(title) / 2), nextLevel, 0x00ff00);
 			
 			nextLevel += 10;
 
 
-			String[] list = this.bobble.type.contribution.split("\\$");
+			String[] list = I18nUtil.resolveKey(this.bobble.type.contribution).split("\\$");
 			for(String text : list) {
 				this.fontRendererObj.drawStringWithShadow(text, (int)(left + sizeX / 2 - this.fontRendererObj.getStringWidth(text) / 2), nextLevel, 0x009900);
 				nextLevel += 10;
@@ -91,12 +92,12 @@ public class GUIScreenBobble extends GuiScreen {
 		
 		if(this.bobble.type.inscription != null) {
 
-			String title = "On the bottom is the following inscription:";
+			String title = I18nUtil.resolveKey("gui.collectible.inscription");
 			this.fontRendererObj.drawStringWithShadow(title, (int)(left + sizeX / 2 - this.fontRendererObj.getStringWidth(title) / 2), nextLevel, 0x00ff00);
 			
 			nextLevel += 10;
 
-			String[] list = this.bobble.type.inscription.split("\\$");
+			String[] list = I18nUtil.resolveKey(this.bobble.type.inscription).split("\\$");
 			for(String text : list) {
 				this.fontRendererObj.drawStringWithShadow(text, (int)(left + sizeX / 2 - this.fontRendererObj.getStringWidth(text) / 2), nextLevel, 0x009900);
 				nextLevel += 10;

@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 public class GrenadeRecipeHandler  extends NEIUniversalHandler {
 
 	public GrenadeRecipeHandler() {
-		super("Grenade Crafting", Blocks.crafting_table, new ArrayList());
+		super("nei.grenade_recipe_handler.name", Blocks.crafting_table, new ArrayList());
 	}
 
 	@Override

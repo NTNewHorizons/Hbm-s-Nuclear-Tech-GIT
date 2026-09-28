@@ -103,7 +103,7 @@ public class SILEXRecipeHandler extends TemplateRecipeHandler implements ICompat
 
 	@Override
 	public String getRecipeName() {
-		return "SILEX";
+		return I18nUtil.resolveKey("nei.silexrecipe_handler.name");
 	}
 
 	@Override

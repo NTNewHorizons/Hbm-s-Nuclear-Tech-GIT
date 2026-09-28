@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIMachineReactorBreeding extends GuiInfoContainer {
 	
@@ -29,9 +30,9 @@ public class GUIMachineReactorBreeding extends GuiInfoContainer {
 		super.drawScreen(mouseX, mouseY, f);
 		
 		String[] text = new String[] {
-				"The reactor has to recieve",
-				"neutron flux from adjacent",
-				"research reactors to breed."
+				I18nUtil.resolveKey("gui.guimachine_reactor_breeding.the_reactor_has_to_recieve"),
+				I18nUtil.resolveKey("gui.guimachine_reactor_breeding.neutron_flux_from_adjacent"),
+				I18nUtil.resolveKey("gui.guimachine_reactor_breeding.research_reactors_to_breed")
 		};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 16, 16, 16, guiLeft - 8, guiTop + 16 + 16, text);
 	}

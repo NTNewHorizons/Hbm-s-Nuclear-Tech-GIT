@@ -127,7 +127,7 @@ public class Meteorite {
 				// Star Blaster
 				world.createExplosion(null, x + 0.5, y + 0.5, z + 0.5, 10F, !safe);
 				ItemStack stack = new ItemStack(ModItems.gun_b92);
-				stack.setStackDisplayName(I18nUtil.resolveKey("item.name.meteorite.star_blaster"));
+				I18nUtil.setItemName(stack, "item.name.meteorite.star_blaster");
 				EntityItem blaster = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, stack);
 				world.spawnEntityInWorld(blaster);
 				return;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.items.ModItems;
 import com.hbm.util.ItemStackUtil;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -63,8 +64,8 @@ public class ItemKitCustom extends ItemKitNBT {
 		setColor(stack, color1, 1);
 		setColor(stack, color2, 2);
 		
-		if(lore != null) ItemStackUtil.addTooltipToStack(stack, lore.split("\\$"));
-		stack.setStackDisplayName(EnumChatFormatting.RESET + name);
+		if(lore != null) stack.getTagCompound().setString(I18nUtil.ITEM_LORE_KEY, lore);
+		I18nUtil.setItemName(stack, name);
 		ItemStackUtil.addStacksToNBT(stack, contents);
 		
 		return stack;

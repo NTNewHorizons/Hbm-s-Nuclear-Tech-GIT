@@ -20,6 +20,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIMachineLaunchTable extends GuiInfoContainer {
 
@@ -40,16 +41,16 @@ public class GUIMachineLaunchTable extends GuiInfoContainer {
 
 		launcher.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 116, guiTop + 36, 16, 34);
 		launcher.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 36, 16, 34);
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 88 - 52, 16, 52, new String[] { "Solid Fuel: " + launcher.solid + "l" });
+		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 88 - 52, 16, 52, new String[] { I18nUtil.resolveKey("gui.guimachine_launch_table.solid_fuel") + launcher.solid + "l" });
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 113, 34, 6, launcher.power, launcher.maxPower);
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 7, guiTop + 98, 18, 18, new String[] { "Size 10 & 10/15" });
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 25, guiTop + 98, 18, 18, new String[] { "Size 15 & 15/20" });
-		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 43, guiTop + 98, 18, 18, new String[] { "Size 20" });
+		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 7, guiTop + 98, 18, 18, new String[] { I18nUtil.resolveKey("gui.guimachine_launch_table.size_10_10_15") });
+		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 25, guiTop + 98, 18, 18, new String[] { I18nUtil.resolveKey("gui.guimachine_launch_table.size_15_15_20") });
+		this.drawCustomInfo(this, mouseX, mouseY, guiLeft + 43, guiTop + 98, 18, 18, new String[] { I18nUtil.resolveKey("gui.guimachine_launch_table.size_20") });
 
-		String[] text = new String[] { "Accepts custom missiles", "of all sizes, as long as the", "correct size setting is selected." };
+		String[] text = new String[] { I18nUtil.resolveKey("gui.guimachine_launch_table.accepts_custom_missiles"), I18nUtil.resolveKey("gui.guimachine_launch_table.of_all_sizes_as_long_as_the"), I18nUtil.resolveKey("gui.guimachine_launch_table.correct_size_setting_is_selected") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 		
-		String[] text1 = new String[] { "Detonator can only trigger center block." };
+		String[] text1 = new String[] { I18nUtil.resolveKey("gui.guimachine_launch_table.detonator_can_only_trigger_center_block") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
 	}
 

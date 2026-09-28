@@ -78,7 +78,7 @@ public class GUIMachinePlasmaForge extends GuiInfoContainer {
 				list.set(cycle, selected);
 			}
 			
-			lines.add(new Object[] {"Booster Isotope:"});
+			lines.add(new Object[] {I18nUtil.resolveKey("gui.guimachine_plasma_forge.booster_isotope")});
 			
 			if(list.size() < 10) {
 				lines.add(list.toArray());

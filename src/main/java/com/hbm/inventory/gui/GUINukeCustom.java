@@ -12,6 +12,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUINukeCustom extends GuiInfoContainer {
 	
@@ -32,48 +33,48 @@ public class GUINukeCustom extends GuiInfoContainer {
 		
 		String[] text;
 		
-		text = new String[] { EnumChatFormatting.YELLOW + "Conventional Explosives (Level " + testNuke.tnt + "/" + Math.min(testNuke.tnt, NukeCustom.maxTnt) + ")",
-				"Caps at " + NukeCustom.maxTnt,
-				"N²-like above level 75",
-				EnumChatFormatting.ITALIC + "\"Goes boom\"" };
+		text = new String[] { EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guinuke_custom.conventional_explosives_level") + testNuke.tnt + "/" + Math.min(testNuke.tnt, NukeCustom.maxTnt) + ")",
+				I18nUtil.resolveKey("gui.guinuke_custom.caps_at") + NukeCustom.maxTnt,
+				I18nUtil.resolveKey("gui.guinuke_custom.n_like_above_level_75"),
+				EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.guinuke_custom.goes_boom") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 16, guiTop + 89, 18, 18, mouseX, mouseY, text);
 		
-		text = new String[] { EnumChatFormatting.YELLOW + "Nuclear (Level " + testNuke.nuke + "/" + testNuke.getNukeAdj() + ")",
-				"Requires TNT level 16",
-				"Caps at " + NukeCustom.maxNuke,
-				"Has fallout",
-				EnumChatFormatting.ITALIC + "\"Now I am become death, destroyer of worlds.\"" };
+		text = new String[] { EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guinuke_custom.nuclear_level") + testNuke.nuke + "/" + testNuke.getNukeAdj() + ")",
+				I18nUtil.resolveKey("gui.guinuke_custom.requires_tnt_level_16"),
+				I18nUtil.resolveKey("gui.guinuke_custom.caps_at") + NukeCustom.maxNuke,
+				I18nUtil.resolveKey("gui.guinuke_custom.has_fallout"),
+				EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.guinuke_custom.now_i_am_become_death_destroyer_of_worlds") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 34, guiTop + 89, 18, 18, mouseX, mouseY, text);
 		
-		text = new String[] { EnumChatFormatting.YELLOW + "Thermonuclear (Level " + testNuke.hydro + "/" + testNuke.getHydroAdj() + ")",
-				"Requires nuclear level 100",
-				"Caps at " + NukeCustom.maxHydro,
-				"Reduces added fallout by salted stage by 75%",
-				EnumChatFormatting.ITALIC + "\"And for my next trick, I'll make",
-				EnumChatFormatting.ITALIC + "the island of Elugelab disappear!\"" };
+		text = new String[] { EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guinuke_custom.thermonuclear_level") + testNuke.hydro + "/" + testNuke.getHydroAdj() + ")",
+				I18nUtil.resolveKey("gui.guinuke_custom.requires_nuclear_level_100"),
+				I18nUtil.resolveKey("gui.guinuke_custom.caps_at") + NukeCustom.maxHydro,
+				I18nUtil.resolveKey("gui.guinuke_custom.reduces_added_fallout_by_salted_stage_by_75"),
+				EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.guinuke_custom.and_for_my_next_trick_i_ll_make"),
+				EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.guinuke_custom.the_island_of_elugelab_disappear") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 52, guiTop + 89, 18, 18, mouseX, mouseY, text);
 		
-		text = new String[] { EnumChatFormatting.YELLOW + "Antimatter (Level " + testNuke.amat + "/" + testNuke.getAmatAdj() + ")",
-				"Caps at " + NukeCustom.maxAmat,
-				EnumChatFormatting.ITALIC + "\"Antimatter, Balefire, whatever.\"" };
+		text = new String[] { EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guinuke_custom.antimatter_level") + testNuke.amat + "/" + testNuke.getAmatAdj() + ")",
+				I18nUtil.resolveKey("gui.guinuke_custom.caps_at") + NukeCustom.maxAmat,
+				EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.guinuke_custom.antimatter_balefire_whatever") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 70, guiTop + 89, 18, 18, mouseX, mouseY, text);
 		
-		text = new String[] { EnumChatFormatting.YELLOW + "Salted (Level " + testNuke.dirty + "/" + Math.min(testNuke.dirty, 100) + ")",
-				"Extends fallout of nuclear and",
-				"thermonuclear stages",
-				"Caps at 100",
-				EnumChatFormatting.ITALIC + "\"Not to be confused with tablesalt.\"" };
+		text = new String[] { EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guinuke_custom.salted_level") + testNuke.dirty + "/" + Math.min(testNuke.dirty, 100) + ")",
+				I18nUtil.resolveKey("gui.guinuke_custom.extends_fallout_of_nuclear_and"),
+				I18nUtil.resolveKey("gui.guinuke_custom.thermonuclear_stages"),
+				I18nUtil.resolveKey("gui.guinuke_custom.caps_at_100"),
+				EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.guinuke_custom.not_to_be_confused_with_tablesalt") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 88, guiTop + 89, 18, 18, mouseX, mouseY, text);
 		
-		text = new String[] { EnumChatFormatting.YELLOW + "Schrabidium (Level " + testNuke.schrab + "/" + testNuke.getSchrabAdj() + ")",
-				"Requires nuclear level 50",
-				"Caps at " + NukeCustom.maxSchrab,
-				EnumChatFormatting.ITALIC + "\"For the hundredth time,",
-				EnumChatFormatting.ITALIC + "you can't bypass these caps!\"" };
+		text = new String[] { EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guinuke_custom.schrabidium_level") + testNuke.schrab + "/" + testNuke.getSchrabAdj() + ")",
+				I18nUtil.resolveKey("gui.guinuke_custom.requires_nuclear_level_50"),
+				I18nUtil.resolveKey("gui.guinuke_custom.caps_at") + NukeCustom.maxSchrab,
+				EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.guinuke_custom.for_the_hundredth_time"),
+				EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.guinuke_custom.you_can_t_bypass_these_caps") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 106, guiTop + 89, 18, 18, mouseX, mouseY, text);
 		
-		text = new String[] { EnumChatFormatting.YELLOW + "Ice cream (Level unknown)",
-				EnumChatFormatting.ITALIC + "\"Probably not ice cream but the label came off.\"" };
+		text = new String[] { EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guinuke_custom.ice_cream_level_unknown"),
+				EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.guinuke_custom.probably_not_ice_cream_but_the_label_came_off") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 142, guiTop + 89, 18, 18, mouseX, mouseY, text);
 	}
 	

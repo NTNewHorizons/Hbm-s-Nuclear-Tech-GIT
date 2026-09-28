@@ -21,8 +21,8 @@ public class ItemDesingator extends Item implements IDesignatorItem {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.stackTagCompound != null) {
 			list.add(I18nUtil.resolveKey("item.tooltip.item_desingator.1"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.1", itemstack.stackTagCompound.getInteger("xCoord")));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.3", itemstack.stackTagCompound.getInteger("zCoord")));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.1", itemstack.stackTagCompound.getInteger(I18nUtil.resolveKey("gui.item_desingator.x_coord"))));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.3", itemstack.stackTagCompound.getInteger(I18nUtil.resolveKey("gui.item_desingator.z_coord"))));
 		} else {
 			list.add(I18nUtil.resolveKey("item.tooltip.item_desingator.2"));
 		}

@@ -80,7 +80,7 @@ public class BlockAtmosphericCompressor extends BlockDummyable implements ILookO
 
 		List<String> text = new ArrayList<String>();
 		if(!CelestialBody.hasTrait(world, CBT_Atmosphere.class)) {
-			text.add(((EnumChatFormatting.RED + "ERROR: ")) + EnumChatFormatting.RESET + I18nUtil.resolveKey("CANNOT COLLECT IN VACUUM"));
+			text.add(((EnumChatFormatting.RED + I18nUtil.resolveKey("gui.block_atmospheric_compressor.error"))) + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.block_atmospheric_compressor.cannot_collect_in_vacuum"));
 		} else {
 			text.add(I18nUtil.resolveKey("overlay.block_atmospheric_compressor.s_power_s_he", (tower.power < tower.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(tower.power)));
 			text.add(I18nUtil.resolveKey("overlay.block_atmospheric_compressor.s_s_s_s_sm_b", ((EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, I18nUtil.resolveKey("hbmfluid." + tower.tank.getTankType().getName().toLowerCase()), tower.tank.getFill(), tower.tank.getMaxFill()));

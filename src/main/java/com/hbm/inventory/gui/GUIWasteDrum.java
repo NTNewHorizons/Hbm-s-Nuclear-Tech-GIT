@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIWasteDrum extends GuiInfoContainer {
 	
@@ -28,9 +29,9 @@ public class GUIWasteDrum extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		String[] text = new String[] { "The drum will cool down hot nuclear",
-				"waste when submerged in water. More",
-				"water speeds up the process." };
+		String[] text = new String[] { I18nUtil.resolveKey("gui.guiwaste_drum.the_drum_will_cool_down_hot_nuclear"),
+				I18nUtil.resolveKey("gui.guiwaste_drum.waste_when_submerged_in_water_more"),
+				I18nUtil.resolveKey("gui.guiwaste_drum.water_speeds_up_the_process") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 	}
 	

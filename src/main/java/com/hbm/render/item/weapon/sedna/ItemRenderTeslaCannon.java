@@ -1,5 +1,7 @@
 package com.hbm.render.item.weapon.sedna;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
@@ -32,7 +34,7 @@ public class ItemRenderTeslaCannon extends ItemRenderWeaponBase {
 				-1.3125F * offset, 0F * offset, -0.5F * offset);
 	}
 	
-	protected static String label = "AUTO";
+	protected static String label = I18nUtil.resolveKey("renderer.weapon.auto");
 	
 	@Override
 	public void renderFirstPerson(ItemStack stack) {

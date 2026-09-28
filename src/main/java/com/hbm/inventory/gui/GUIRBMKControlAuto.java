@@ -75,7 +75,7 @@ public class GUIRBMKControlAuto extends GuiInfoContainer {
 		switch(rod.function) {
 		case LINEAR: func += "Linear"; break;
 		case QUAD_UP: func += "Quadratic"; break;
-		case QUAD_DOWN: func += "Inverse Quadratic"; break;
+		case QUAD_DOWN: func += I18nUtil.resolveKey("gui.rbmk_control.inverse_quadratic"); break;
 		}
 
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 58, guiTop + 26, 28, 19, mouseX, mouseY, new String[]{ func } );

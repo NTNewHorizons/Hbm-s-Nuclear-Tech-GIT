@@ -78,8 +78,8 @@ public class ItemSatellite extends ItemCustomMissilePart implements ISatChip, IG
 			list.add(formatTooltipEntry(I18nUtil.resolveKey("item.sat.desc.phase"), formatPhaseOffset(itemstack) + "°"));
 			list.add(formatTooltipEntry(I18nUtil.resolveKey("item.sat.desc.color"), getHexColor(itemstack)));
 		} else {
-			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + "Hold <" + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + "LSHIFT" + EnumChatFormatting.DARK_GRAY
-					+ "" + EnumChatFormatting.ITALIC + "> to display more info");
+			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_satellite.hold") + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_satellite.lshift") + EnumChatFormatting.DARK_GRAY
+					+ "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_satellite.to_display_more_info"));
 		}
 
 		if(this == ModItems.sat_foeq)

@@ -14,6 +14,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIMachineDiesel extends GuiInfoContainer {
 	
@@ -35,15 +36,15 @@ public class GUIMachineDiesel extends GuiInfoContainer {
 		diesel.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 35, guiTop + 69 - 52, 16, 52);
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 141, guiTop + 69 - 52, 16, 52, diesel.power, diesel.powerCap);
 		
-		String[] text = new String[] { "Fuel consumption rate:",
-				"  1 mB/t",
-				"  20 mB/s",
-				"(Consumption rate is constant)" };
+		String[] text = new String[] { I18nUtil.resolveKey("gui.guimachine_diesel.fuel_consumption_rate"),
+				I18nUtil.resolveKey("gui.guimachine_diesel.1_m_b_t"),
+				I18nUtil.resolveKey("gui.guimachine_diesel.20_m_b_s"),
+				I18nUtil.resolveKey("gui.guimachine_diesel.consumption_rate_is_constant") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 8, guiTop + 36, 16, 16, guiLeft, guiTop + 36 + 16, text);
 		
 		if(!diesel.hasAcceptableFuel()) {
-			String[] text2 = new String[] { "Error: The currently set fuel type",
-					"is not supported by this engine!" };
+			String[] text2 = new String[] { I18nUtil.resolveKey("gui.guimachine_diesel.error_the_currently_set_fuel_type"),
+					I18nUtil.resolveKey("gui.guimachine_diesel.is_not_supported_by_this_engine") };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 8, guiTop + 36 + 32, 16, 16, guiLeft, guiTop + 36 + 16 + 32, text2);
 		}
 	}

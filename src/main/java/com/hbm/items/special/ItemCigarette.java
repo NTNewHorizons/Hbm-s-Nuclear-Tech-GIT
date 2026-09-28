@@ -144,8 +144,8 @@ public class ItemCigarette extends Item {
 					EnumChatFormatting.LIGHT_PURPLE + "",
 			};
 			int len = 2000;
-			list.add("This can't be good for me, but I feel "
-					+ colors[(int) (System.currentTimeMillis() % len * colors.length / len)] + "GREAT");
+			list.add(I18nUtil.resolveKey("gui.item_cigarette.this_can_t_be_good_for_me_but_i_feel")
+					+ colors[(int) (System.currentTimeMillis() % len * colors.length / len)] + I18nUtil.resolveKey("gui.item_cigarette.great"));
 		} else if (this == ModItems.joint) {
 			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_cigarette.5"));
 		}

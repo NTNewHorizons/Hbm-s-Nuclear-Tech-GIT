@@ -70,7 +70,7 @@ public class ItemSettingsTool extends Item {
 		if(stack.stackTagCompound != null) {
 			NBTTagCompound nbt = stack.stackTagCompound;
 			if (nbt.hasKey("tileName")){
-				list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey(nbt.getString("tileName") + ".name"));
+				list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey(nbt.getString(I18nUtil.resolveKey("gui.item_settings_tool.tile_name")) + ".name"));
 			} else {
 				list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_settings_tool.4"));
 			}

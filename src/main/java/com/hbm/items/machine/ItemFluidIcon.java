@@ -115,7 +115,7 @@ public class ItemFluidIcon extends Item {
 			return s;
 		}
 
-		return "Unknown";
+		return I18nUtil.resolveKey("gui.common.unknown");
 	}
 
 	@Override

@@ -18,6 +18,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIReactorResearch extends GuiInfoContainer {
 
@@ -59,16 +60,16 @@ public class GUIReactorResearch extends GuiInfoContainer {
 		super.drawScreen(mouseX, mouseY, f);
 		
 		String[] text = new String[] {
-				"The reactor has to be submerged",
-				"in water on its sides to cool.",
-				"The neutron flux is provided to",
-				"adjacent breeding reactors."
+				I18nUtil.resolveKey("gui.guireactor_research.the_reactor_has_to_be_submerged"),
+				I18nUtil.resolveKey("gui.guireactor_research.in_water_on_its_sides_to_cool"),
+				I18nUtil.resolveKey("gui.guireactor_research.the_neutron_flux_is_provided_to"),
+				I18nUtil.resolveKey("gui.guireactor_research.adjacent_breeding_reactors")
 		};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 14, guiTop + 23, 16, 16, guiLeft - 6, guiTop + 23 + 16, text);
 		
 		String[] text2 = new String[] {
-				"This reactor is fueled with plate fuel.",
-				"The reaction needs a neutron source to start."
+				I18nUtil.resolveKey("gui.guireactor_research.this_reactor_is_fueled_with_plate_fuel"),
+				I18nUtil.resolveKey("gui.guireactor_research.the_reaction_needs_a_neutron_source_to_start")
 		};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 14, guiTop + 61, 16, 16, guiLeft - 6, guiTop + 61 + 16, text2);
 	}

@@ -81,7 +81,7 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT implements I
 	public void provideInfo(UpgradeType type, int level, List<String> info, boolean extendedInfo) {
 		info.add(IUpgradeInfoProvider.getStandardLabel(ModBlocks.turret_maxwell));
 		if(type == UpgradeType.SPEED) {
-			info.add(EnumChatFormatting.GREEN + "Damage +0." + (level * 25) + "/t");
+			info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.tile_entity_turret_maxwell.damage_0") + (level * 25) + "/t");
 		}
 		if(type == UpgradeType.POWER) {
 			info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey(this.KEY_CONSUMPTION, "-" + (level * 3) + "%"));
@@ -90,10 +90,10 @@ public class TileEntityTurretMaxwell extends TileEntityTurretBaseNT implements I
 			info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey(this.KEY_RANGE, "+" + (level * 3) + "m"));
 		}
 		if(type == UpgradeType.AFTERBURN) {
-			info.add(EnumChatFormatting.GREEN + "Afterburn +3s");
+			info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.tile_entity_turret_maxwell.afterburn_3s"));
 		}
 		if(type == UpgradeType.OVERDRIVE) {
-			info.add((BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_GRAY) + "YES");
+			info.add((BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_GRAY) + I18nUtil.resolveKey("gui.tile_entity_turret_maxwell.yes"));
 		}
 	}
 

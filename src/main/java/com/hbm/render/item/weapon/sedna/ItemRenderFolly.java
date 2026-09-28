@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import com.hbm.util.i18n.I18nUtil;
 
 public class ItemRenderFolly extends ItemRenderWeaponBase {
 
@@ -120,7 +121,7 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 			
 			if(System.currentTimeMillis() - timeAiming > 5000 && load[0] == 0) {
 				IMagazine mag = gun.getConfig(stack, 0).getReceivers(stack)[0].getMagazine(stack);
-				String msg = mag.getAmount(stack, player.inventory) > 0 ? "+" : "No ammo";
+				String msg = mag.getAmount(stack, player.inventory) > 0 ? "+" : I18nUtil.resolveKey("renderer.weapon.no_ammo");
 				GL11.glPushMatrix();
 				float crosshairSize = 0.01F;
 				GL11.glTranslatef((font.getStringWidth(msg) / 2) * crosshairSize + 2, 1F + font.FONT_HEIGHT * crosshairSize / 2F, -2.75F);
@@ -237,12 +238,12 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 		long now = System.currentTimeMillis();
 		int time = (int)((now - timeAiming));
 		if(time < 3000) {
-			if(time > 250) tty.add(EnumChatFormatting.GREEN + "POST successful - Code 0");
-			if(time > 500) tty.add(EnumChatFormatting.GREEN + "8,388,608 bytes of RAM installed");
-			if(time > 500) tty.add(EnumChatFormatting.GREEN + "5,187,427 bytes available");
-			if(time > 750) tty.add(EnumChatFormatting.GREEN + "Reticulating splines...");
-			if(time > 1500) tty.add(EnumChatFormatting.GREEN + "No keyboard found!");
-			if(time > 2000) tty.add(EnumChatFormatting.GREEN + "Booting from /dev/sda1...");
+			if(time > 250) tty.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.item_render_folly.post_successful_code_0"));
+			if(time > 500) tty.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.item_render_folly.8_388_608_bytes_of_ram_installed"));
+			if(time > 500) tty.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.item_render_folly.5_187_427_bytes_available"));
+			if(time > 750) tty.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.item_render_folly.reticulating_splines"));
+			if(time > 1500) tty.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.item_render_folly.no_keyboard_found"));
+			if(time > 2000) tty.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.item_render_folly.booting_from_dev_sda1"));
 		}
 		if(time > 5000) {
 			EntityPlayer player = MainRegistry.proxy.me();
@@ -252,7 +253,7 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 			if(mop.typeOfHit == mop.typeOfHit.BLOCK) target += mop.blockX + "/" + mop.blockY + "/" + mop.blockZ;
 			if(mop.typeOfHit == mop.typeOfHit.ENTITY) target += mop.entityHit.getCommandSenderName();
 			tty.add(target);
-			tty.add(EnumChatFormatting.GREEN + "Angle: " + ((int)(-player.rotationPitch * 100) / 100D));
+			tty.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.item_render_folly.angle") + ((int)(-player.rotationPitch * 100) / 100D));
 		}
 		return tty;
 	}

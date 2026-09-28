@@ -32,19 +32,19 @@ public class ItemTrain extends ItemEnumMulti {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		EnumTrainType train = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 
-		if(train.engine != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.1", EnumChatFormatting.RESET, train.engine));
-		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.2", EnumChatFormatting.RESET, train.gauge));
-		if(train.maxSpeed != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.3", EnumChatFormatting.RESET, train.maxSpeed));
+		if(train.engine != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.1", EnumChatFormatting.RESET, I18nUtil.resolveKey(train.engine)));
+		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.2", EnumChatFormatting.RESET, I18nUtil.resolveKey(train.gauge)));
+		if(train.maxSpeed != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.3", EnumChatFormatting.RESET, I18nUtil.resolveKey(train.maxSpeed)));
 		if(train.acceleration != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.4", EnumChatFormatting.RESET, train.acceleration));
 		if(train.brakeThreshold != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.5", EnumChatFormatting.RESET, train.brakeThreshold));
-		if(train.parkingBrake != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.6", EnumChatFormatting.RESET, train.parkingBrake));
+		if(train.parkingBrake != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.6", EnumChatFormatting.RESET, I18nUtil.resolveKey(train.parkingBrake)));
 	}
 
 	public static enum EnumTrainType {
 		
 		//                                              Engine          Gauge               Max Speed   Accel.      Eng. Brake  Parking Brake
-		CARGO_TRAM(TrainCargoTram.class, 				"Electric",		"Standard Gauge",	"10m/s",	"0.2m/s²",	"<1m/s",	"Yes"),
-		CARGO_TRAM_TRAILER(TrainCargoTramTrailer.class,	null,			"Standard Gauge",	"Yes",		null,		null,		"No");
+		CARGO_TRAM(TrainCargoTram.class, 				"item.train.engine.electric",	"item.train.gauge.standard",	"10m/s",	"0.2m/s²",	"<1m/s",	"gui.common.yes"),
+		CARGO_TRAM_TRAILER(TrainCargoTramTrailer.class,	null,			"item.train.gauge.standard",	"gui.common.yes",		null,		null,		"gui.common.no");
 		
 		public Class<? extends EntityRailCarBase> train;
 		public String engine;

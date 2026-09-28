@@ -3,6 +3,7 @@ package com.hbm.items.machine;
 import com.hbm.util.i18n.I18nUtil;
 
 import java.util.List;
+import java.util.Locale;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,28 +22,28 @@ public class ItemCassette extends Item {
 	public enum TrackType {
 		
 		NULL(				" ", 						null,												SoundType.SOUND,	0,			0),
-		HATCH(				"Hatch Siren", 				new ResourceLocation("hbm:alarm.hatch"),			SoundType.LOOP,		3358839,	250),
-		ATUOPILOT(			"Autopilot Disconnected", 	new ResourceLocation("hbm:alarm.autopilot"),		SoundType.LOOP,		11908533,	50),
-		AMS_SIREN(			"AMS Siren", 				new ResourceLocation("hbm:alarm.amsSiren"),			SoundType.LOOP,		15055698,	50),
-		BLAST_DOOR(			"Blast Door Alarm", 		new ResourceLocation("hbm:alarm.blastDoorAlarm"),	SoundType.LOOP,		11665408,	50),
-		APC_LOOP(			"APC Siren", 				new ResourceLocation("hbm:alarm.apcLoop"),			SoundType.LOOP,		3565216,	50),
-		KLAXON(				"Klaxon", 					new ResourceLocation("hbm:alarm.klaxon"),			SoundType.LOOP,		8421504,	50),
-		KLAXON_A(			"Vault Door Alarm",			new ResourceLocation("hbm:alarm.foKlaxonA"),		SoundType.LOOP,		0x8c810b,	50),
-		KLAXON_B(			"Security Alert", 			new ResourceLocation("hbm:alarm.foKlaxonB"),		SoundType.LOOP,		0x76818e,	50),
-		SIREN(				"Standard Siren", 			new ResourceLocation("hbm:alarm.regularSiren"),		SoundType.LOOP,		6684672,	100),
-		CLASSIC(			"Classic Siren", 			new ResourceLocation("hbm:alarm.classic"),			SoundType.LOOP,		0xc0cfe8,	100),
-		BANK_ALARM(			"Bank Alarm", 				new ResourceLocation("hbm:alarm.bankAlarm"),		SoundType.LOOP,		3572962,	100),
-		BEEP_SIREN(			"Beep Siren", 				new ResourceLocation("hbm:alarm.beepSiren"),		SoundType.LOOP,		13882323,	100),
-		CONTAINER_ALARM(	"Container Alarm", 			new ResourceLocation("hbm:alarm.containerAlarm"),	SoundType.LOOP,		14727839,	100),
-		SWEEP_SIREN(		"Sweep Siren", 				new ResourceLocation("hbm:alarm.sweepSiren"),		SoundType.LOOP,		15592026,	500),
-		STRIDER_SIREN(		"Missile Silo Siren", 		new ResourceLocation("hbm:alarm.striderSiren"),		SoundType.LOOP,		11250586,	500),
-		AIR_RAID(			"Air Raid Siren", 			new ResourceLocation("hbm:alarm.airRaid"),			SoundType.LOOP,		0xDF3795,	500),
-		NOSTROMO_SIREN(		"Nostromo Self Destruct",	new ResourceLocation("hbm:alarm.nostromoSiren"),	SoundType.LOOP,		0x5dd800,	100),
-		EAS_ALARM(			"EAS Alarm Screech",		new ResourceLocation("hbm:alarm.easAlarm"),			SoundType.LOOP,		0xb3a8c1,	50),
-		APC_PASS(			"APC Pass", 				new ResourceLocation("hbm:alarm.apcPass"),			SoundType.PASS,		3422163,	50),
-		RAZORTRAIN(			"Razortrain Horn", 			new ResourceLocation("hbm:alarm.razortrainHorn"),	SoundType.SOUND,	7819501,	250),
-		DISEMBODIED(		"Ducc",						new ResourceLocation("hbm:alarm.ducc"),				SoundType.LOOP,		0xb3a8c1,	50),
-		SUICIDE(			"Xbox Live",				new ResourceLocation("hbm:alarm.mama"),				SoundType.LOOP,		0xb3a8c1,	70);
+		HATCH(				"cassette.hatch.title", 				new ResourceLocation("hbm:alarm.hatch"),			SoundType.LOOP,		3358839,	250),
+		ATUOPILOT(			"cassette.atuopilot.title", 	new ResourceLocation("hbm:alarm.autopilot"),		SoundType.LOOP,		11908533,	50),
+		AMS_SIREN(			"cassette.ams_siren.title", 				new ResourceLocation("hbm:alarm.amsSiren"),			SoundType.LOOP,		15055698,	50),
+		BLAST_DOOR(			"cassette.blast_door.title", 		new ResourceLocation("hbm:alarm.blastDoorAlarm"),	SoundType.LOOP,		11665408,	50),
+		APC_LOOP(			"cassette.apc_loop.title", 				new ResourceLocation("hbm:alarm.apcLoop"),			SoundType.LOOP,		3565216,	50),
+		KLAXON(				"cassette.klaxon.title", 					new ResourceLocation("hbm:alarm.klaxon"),			SoundType.LOOP,		8421504,	50),
+		KLAXON_A(			"cassette.klaxon_a.title",			new ResourceLocation("hbm:alarm.foKlaxonA"),		SoundType.LOOP,		0x8c810b,	50),
+		KLAXON_B(			"cassette.klaxon_b.title", 			new ResourceLocation("hbm:alarm.foKlaxonB"),		SoundType.LOOP,		0x76818e,	50),
+		SIREN(				"cassette.siren.title", 			new ResourceLocation("hbm:alarm.regularSiren"),		SoundType.LOOP,		6684672,	100),
+		CLASSIC(			"cassette.classic.title", 			new ResourceLocation("hbm:alarm.classic"),			SoundType.LOOP,		0xc0cfe8,	100),
+		BANK_ALARM(			"cassette.bank_alarm.title", 				new ResourceLocation("hbm:alarm.bankAlarm"),		SoundType.LOOP,		3572962,	100),
+		BEEP_SIREN(			"cassette.beep_siren.title", 				new ResourceLocation("hbm:alarm.beepSiren"),		SoundType.LOOP,		13882323,	100),
+		CONTAINER_ALARM(	"cassette.container_alarm.title", 			new ResourceLocation("hbm:alarm.containerAlarm"),	SoundType.LOOP,		14727839,	100),
+		SWEEP_SIREN(		"cassette.sweep_siren.title", 				new ResourceLocation("hbm:alarm.sweepSiren"),		SoundType.LOOP,		15592026,	500),
+		STRIDER_SIREN(		"cassette.strider_siren.title", 		new ResourceLocation("hbm:alarm.striderSiren"),		SoundType.LOOP,		11250586,	500),
+		AIR_RAID(			"cassette.air_raid.title", 			new ResourceLocation("hbm:alarm.airRaid"),			SoundType.LOOP,		0xDF3795,	500),
+		NOSTROMO_SIREN(		"cassette.nostromo_siren.title",	new ResourceLocation("hbm:alarm.nostromoSiren"),	SoundType.LOOP,		0x5dd800,	100),
+		EAS_ALARM(			"cassette.eas_alarm.title",		new ResourceLocation("hbm:alarm.easAlarm"),			SoundType.LOOP,		0xb3a8c1,	50),
+		APC_PASS(			"cassette.apc_pass.title", 				new ResourceLocation("hbm:alarm.apcPass"),			SoundType.PASS,		3422163,	50),
+		RAZORTRAIN(			"cassette.razortrain.title", 			new ResourceLocation("hbm:alarm.razortrainHorn"),	SoundType.SOUND,	7819501,	250),
+		DISEMBODIED(		"cassette.disembodied.title",						new ResourceLocation("hbm:alarm.ducc"),				SoundType.LOOP,		0xb3a8c1,	50),
+		SUICIDE(			"cassette.suicide.title",				new ResourceLocation("hbm:alarm.mama"),				SoundType.LOOP,		0xb3a8c1,	70);
 		
 		//Name of the track shown in GUI
 		private String title;
@@ -64,7 +65,7 @@ public class ItemCassette extends Item {
 		}
 		
 		public String getTrackTitle() {
-			return title;
+			return I18nUtil.resolveKey(title);
 		}
 		
 		public ResourceLocation getSoundLocation() {
@@ -116,7 +117,7 @@ public class ItemCassette extends Item {
 
 		list.add(I18nUtil.resolveKey("item.tooltip.item_cassette.1"));
 		list.add(I18nUtil.resolveKey("item.tooltip.item_cassette.2", TrackType.getEnum(stack.getItemDamage()).getTrackTitle()));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_cassette.3", TrackType.getEnum(stack.getItemDamage()).getType().name()));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_cassette.3", I18nUtil.resolveKey("item.cassette.sound_type." + TrackType.getEnum(stack.getItemDamage()).getType().name().toLowerCase(Locale.US))));
 		list.add(I18nUtil.resolveKey("item.tooltip.item_cassette.4", TrackType.getEnum(stack.getItemDamage()).getVolume()));
 	}
 	

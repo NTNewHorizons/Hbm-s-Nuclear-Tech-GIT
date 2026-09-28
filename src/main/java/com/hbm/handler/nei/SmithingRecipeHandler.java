@@ -75,7 +75,7 @@ public class SmithingRecipeHandler extends TemplateRecipeHandler implements ICom
 
 	@Override
 	public String getRecipeName() {
-		return "Anvil";
+		return I18nUtil.resolveKey("nei.smithing_recipe_handler.name");
 	}
 
 	@Override

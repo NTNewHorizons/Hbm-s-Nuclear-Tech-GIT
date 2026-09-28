@@ -17,6 +17,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 public class RefineryRecipeHandler extends TemplateRecipeHandler implements ICompatNHNEI {
 
@@ -75,7 +76,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler implements ICom
     
 	@Override
 	public String getRecipeName() {
-		return "Refinery";
+		return I18nUtil.resolveKey("nei.refinery_recipe_handler.name");
 	}
 
 	@Override

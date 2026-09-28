@@ -802,6 +802,13 @@ public class ModEventHandlerClient {
 
 		ItemStack stack = event.itemStack;
 		List<String> list = event.toolTip;
+		if(stack.hasTagCompound() && stack.getTagCompound().hasKey(I18nUtil.ITEM_NAME_KEY) && !list.isEmpty()) {
+			list.set(0, I18nUtil.resolveKey(stack.getTagCompound().getString(I18nUtil.ITEM_NAME_KEY)));
+		}
+		if(stack.hasTagCompound() && stack.getTagCompound().hasKey(I18nUtil.ITEM_LORE_KEY)) {
+			String[] lore = I18nUtil.resolveKeyArray(stack.getTagCompound().getString(I18nUtil.ITEM_LORE_KEY));
+			for(int i = lore.length - 1; i >= 0; i--) list.add(1, EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + lore[i]);
+		}
 
 		/// DAMAGE RESISTANCE ///
 		DamageResistanceHandler.addInfo(stack, list);
@@ -818,9 +825,9 @@ public class ModEventHandlerClient {
 				}
 			} else {
 
-				list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC +"Hold <" +
-						EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + "LSHIFT" +
-						EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + "> to display protection info");
+				list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC +I18nUtil.resolveKey("gui.mod_event_handler_client.hold") +
+						EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.mod_event_handler_client.lshift") +
+						EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.mod_event_handler_client.to_display_protection_info"));
 			}
 		}
 
@@ -834,9 +841,9 @@ public class ModEventHandlerClient {
 
 			if(!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && !(Minecraft.getMinecraft().currentScreen instanceof GUIArmorTable)) {
 
-				list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC +"Hold <" +
-						EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + "LSHIFT" +
-						EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + "> to display installed armor mods");
+				list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC +I18nUtil.resolveKey("gui.mod_event_handler_client.hold") +
+						EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.mod_event_handler_client.lshift") +
+						EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.mod_event_handler_client.to_display_installed_armor_mods"));
 
 			} else {
 
@@ -1069,7 +1076,7 @@ public class ModEventHandlerClient {
 			}
 
 			if(ArmorUtil.isWearingEmptyMask(mc.thePlayer)) {
-				MainRegistry.proxy.displayTooltip(EnumChatFormatting.RED + "Your mask has no filter!", ServerProxy.ID_FILTER);
+				MainRegistry.proxy.displayTooltip(EnumChatFormatting.RED + I18nUtil.resolveKey("gui.mod_event_handler_client.your_mask_has_no_filter"), ServerProxy.ID_FILTER);
 			}
 			
 			//prune other entities' muzzle flashes

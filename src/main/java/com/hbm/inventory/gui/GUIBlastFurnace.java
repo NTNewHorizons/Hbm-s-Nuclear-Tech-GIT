@@ -1,5 +1,7 @@
 package com.hbm.inventory.gui;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -40,7 +42,7 @@ public class GUIBlastFurnace extends GuiInfoContainer {
 			}
 		}
 		
-		String label = "Speed: " + (int) (furnace.speed * 100) + "%";
+		String label = I18nUtil.resolveKey("gui.blast_furnace.speed", (int) (furnace.speed * 100));
 		drawCustomInfoStat(x, y, guiLeft + 79, guiTop + 62, 18, 18, x, y, label);
 
 		furnace.tanks[0].renderTankInfo(this, x, y, guiLeft + 25, guiTop + 71, 18, 18);

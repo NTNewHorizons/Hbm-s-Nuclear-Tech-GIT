@@ -42,7 +42,7 @@ public abstract class CommandReloadConfig extends CommandBase {
 		}
 		
 		if("list".equals(operator)) {
-			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + getTitle()));
+			sender.addChatMessage(new ChatComponentTranslation(getTitle()).setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
 			for(Entry<String, ConfigWrapper> line : getConfigMap().entrySet()) {
 				sender.addChatMessage(new ChatComponentText("  " + EnumChatFormatting.GOLD + line.getKey() + ": " + EnumChatFormatting.YELLOW + line.getValue().value));
 			}

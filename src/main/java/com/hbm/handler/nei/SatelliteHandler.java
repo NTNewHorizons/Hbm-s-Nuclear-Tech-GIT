@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
+import com.hbm.util.i18n.I18nUtil;
 
 public class SatelliteHandler extends TemplateRecipeHandler implements ICompatNHNEI {
 	@Override
@@ -36,7 +37,7 @@ public class SatelliteHandler extends TemplateRecipeHandler implements ICompatNH
 
 	@Override
 	public String getRecipeName() {
-		return "Satellite";
+		return I18nUtil.resolveKey("nei.satellite_handler.name");
 	}
 
 	@Override

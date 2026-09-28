@@ -250,7 +250,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 		}
 
 		public Offer(ItemStack offer, Requirement requirement, int cost, int rating) {
-			this(offer, requirement, cost, rating, "No Ratings", "");
+			this(offer, requirement, cost, rating, I18nUtil.resolveKey("gui.bobmazon.no_ratings"), "");
 		}
 
 		public void drawRequirement(GUIScreenBobmazon gui, int x, int y) {

@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 public class DairyHandler extends NEIUniversalHandler {
 
 	public DairyHandler() {
-		super("Dairy", ModBlocks.machine_milk_reformer, getDairyRecipesForNEI());
+		super("nei.dairy_handler.name", ModBlocks.machine_milk_reformer, getDairyRecipesForNEI());
 	}
 
 	@Override

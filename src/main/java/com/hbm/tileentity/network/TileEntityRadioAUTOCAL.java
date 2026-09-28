@@ -55,8 +55,8 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 				for(int i = 0; i < this.ctx.clockSpeed && emergencyBrake > 0; i++) {
 					emergencyBrake--;
 					
-					if(this.ctx.current == this.script.length) { this.stop("Program has terminated"); break; }
-					if(this.ctx.current < 0 || this.ctx.current >= this.script.length) { this.stop("Program index is out of bounds"); break; }
+					if(this.ctx.current == this.script.length) { this.stop("gui.autocal.error.terminated"); break; }
+					if(this.ctx.current < 0 || this.ctx.current >= this.script.length) { this.stop("gui.autocal.error.index_out_of_bounds"); break; }
 					
 					try {
 						int index = this.ctx.current;
@@ -66,16 +66,16 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 						if(ret != EnumStatementReturn.SKIP) pushMsg(index + ": " + line);
 						this.history[0] = "Buffer: " + ctx.readBuffer();
 						if(ret == EnumStatementReturn.END_TICK) break;
-						if(ret == EnumStatementReturn.SHUTDOWN) this.stop("Program requested shutdown");
+						if(ret == EnumStatementReturn.SHUTDOWN) this.stop("gui.autocal.error.shutdown_requested");
 						if(!this.ignoreError) {
-							if(ret == EnumStatementReturn.UNRECOGNIZED_COMMAND) this.stop("Unrecognized command");
-							if(ret == EnumStatementReturn.PARAMETER_ERROR) this.stop("Parameter error");
-							if(ret == EnumStatementReturn.UNDEFINED) this.stop("Undefined behavior");
-							if(ret == EnumStatementReturn.STACK_EXCEEDED) this.stop("Stack exceeded capacity");
+							if(ret == EnumStatementReturn.UNRECOGNIZED_COMMAND) this.stop("gui.autocal.error.unrecognized_command");
+							if(ret == EnumStatementReturn.PARAMETER_ERROR) this.stop("gui.autocal.error.parameter");
+							if(ret == EnumStatementReturn.UNDEFINED) this.stop("gui.autocal.error.undefined_behavior");
+							if(ret == EnumStatementReturn.STACK_EXCEEDED) this.stop("gui.autocal.error.stack_exceeded");
 						}
 						if(ret == EnumStatementReturn.SKIP) i--;
 					} catch(Exception ex) {
-						this.stop("Evaluation unsuccessful");
+						this.stop("gui.autocal.error.evaluation_unsuccessful");
 					}
 				}
 			}

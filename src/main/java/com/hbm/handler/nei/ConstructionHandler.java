@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 public class ConstructionHandler extends NEIUniversalHandler {
 
 	public ConstructionHandler() {
-		super("Construction", getRecipes(true), getRecipes(false));
+		super("nei.construction_handler.name", getRecipes(true), getRecipes(false));
 	}
 
 	@Override

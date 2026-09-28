@@ -198,7 +198,7 @@ public class ArmorDNT extends ArmorFSBPowered implements IItemRendererProvider {
 
 		list.add(I18nUtil.resolveKey("item.tooltip.armor_f_s_b_powered.1", BobMathUtil.getShortNumber(getCharge(stack)), BobMathUtil.getShortNumber(this.getMaxCharge(stack))));
 
-		list.add(EnumChatFormatting.BLUE + "" + I18nUtil.format("armor.canBreathe"));
+		list.add(EnumChatFormatting.BLUE + "" + I18nUtil.format(I18nUtil.resolveKey("gui.armor_dnt.armor_can_breathe")));
 
 		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("armor.fullSetBonus"));
 

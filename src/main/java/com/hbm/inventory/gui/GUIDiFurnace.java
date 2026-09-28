@@ -1,5 +1,7 @@
 package com.hbm.inventory.gui;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.Arrays;
 
 import org.lwjgl.opengl.GL11;
@@ -40,7 +42,7 @@ public class GUIDiFurnace extends GuiContainer {
 				
 				if(this.isMouseOverSlot(slot, x, y)) {
 					
-					String label = EnumChatFormatting.YELLOW + "Accepts items from: ";
+					String label = EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.furnace.accepts_from");
 					byte dir = i == 0 ? diFurnace.sideUpper : i == 1 ? diFurnace.sideLower : diFurnace.sideFuel;
 					label += ForgeDirection.getOrientation(dir);
 					

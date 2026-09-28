@@ -97,8 +97,8 @@ public class ItemConveyorWand extends Item implements ILookOverlay {
 				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey(super.getUnlocalizedName(stack) + ".vertical.desc"));
 			}
 		} else {
-			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + "Hold <" + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + "LSHIFT" + EnumChatFormatting.DARK_GRAY
-					+ "" + EnumChatFormatting.ITALIC + "> to display more info");
+			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_conveyor_wand.hold") + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_conveyor_wand.lshift") + EnumChatFormatting.DARK_GRAY
+					+ "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_conveyor_wand.to_display_more_info"));
 		}
 	}
 

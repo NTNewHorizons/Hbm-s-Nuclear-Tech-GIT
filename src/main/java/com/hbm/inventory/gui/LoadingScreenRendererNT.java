@@ -1,5 +1,7 @@
 package com.hbm.inventory.gui;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
@@ -26,7 +28,7 @@ public class LoadingScreenRendererNT extends LoadingScreenRenderer {
 	private boolean doesProgress;
 	private ScaledResolution resolution;
 	private Framebuffer frameBuffer;
-	public String tipOfTheDay = "Tip of the day: " + chooseTip();
+	public String tipOfTheDay = I18nUtil.resolveKey("gui.loading.tip", chooseTip());
 
 	public LoadingScreenRendererNT(Minecraft mc) {
 		super(mc);
@@ -37,7 +39,7 @@ public class LoadingScreenRendererNT extends LoadingScreenRenderer {
 	}
 	
 	private String chooseTip() {
-		if(HTTPHandler.tipOfTheDay.isEmpty()) return "Explore! There's tons of free stuff to find.";
+		if(HTTPHandler.tipOfTheDay.isEmpty()) return I18nUtil.resolveKey("gui.loading.fallback_tip");
 		return HTTPHandler.tipOfTheDay.get(new Random().nextInt(HTTPHandler.tipOfTheDay.size()));
 	}
 

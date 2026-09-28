@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import com.hbm.util.i18n.I18nUtil;
 
 public class ItemDroneLinker extends Item {
 	
@@ -79,7 +80,7 @@ public class ItemDroneLinker extends Item {
 				int x = stack.stackTagCompound.getInteger("x");
 				int y = stack.stackTagCompound.getInteger("y");
 				int z = stack.stackTagCompound.getInteger("z");
-				MainRegistry.proxy.displayTooltip("Prev pos: " + x + " / " + y + " / " + z, MainRegistry.proxy.ID_DRONE);
+				MainRegistry.proxy.displayTooltip(I18nUtil.resolveKey("gui.item_drone_linker.prev_pos") + x + " / " + y + " / " + z, MainRegistry.proxy.ID_DRONE);
 			}
 		}
 	}

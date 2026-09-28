@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIMachineTurbofan extends GuiInfoContainer {
 	
@@ -34,8 +35,8 @@ public class GUIMachineTurbofan extends GuiInfoContainer {
 		//diFurnace.tank[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 130, guiTop + 69 - 52, 34, 52);
 		//this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 157 - 9, guiTop + 69 - 52, 16, 52, diFurnace.power, diFurnace.maxPower);
 
-		//String[] text = new String[] { "Acceptable upgrades:",
-				//" -Pink (afterburner)" };
+		//String[] text = new String[] { I18nUtil.resolveKey("gui.guimachine_turbofan.acceptable_upgrades"),
+				//I18nUtil.resolveKey("gui.guimachine_turbofan.pink_afterburner") };
 		//this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 96, guiTop + 21, 8, 8, guiLeft + 96, guiTop + 21 + 16, text);
 		turbofan.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 35, guiTop + 17, 34, 52);
 		if(turbofan.showBlood) turbofan.blood.renderTankInfo(this, mouseX, mouseY, guiLeft + 98, guiTop + 17, 16, 16);

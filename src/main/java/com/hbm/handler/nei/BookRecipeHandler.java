@@ -18,6 +18,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import com.hbm.items.ModItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 public class BookRecipeHandler extends TemplateRecipeHandler implements ICompatNHNEI {
 	@Override
@@ -59,7 +60,7 @@ public class BookRecipeHandler extends TemplateRecipeHandler implements ICompatN
     
 	@Override
 	public String getRecipeName() {
-		return "Black Book";
+		return I18nUtil.resolveKey("nei.book_recipe_handler.name");
 	}
 
 	@Override

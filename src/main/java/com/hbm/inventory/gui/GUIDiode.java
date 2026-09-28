@@ -1,5 +1,9 @@
 package com.hbm.inventory.gui;
 
+import java.util.Locale;
+
+import com.hbm.util.i18n.I18nUtil;
+
 import org.lwjgl.input.Keyboard;
 
 import com.hbm.blocks.network.CableDiode.TileEntityDiode;
@@ -39,7 +43,7 @@ public class GUIDiode extends GuiScreen {
 		textThroughput.setText("" + diode.limit);
 		textThroughput.setMaxStringLength(11);
 
-		buttonPriority = new GuiButton(0, this.width / 2 + 20, 100, 90, 20, diode.priority.name());
+		buttonPriority = new GuiButton(0, this.width / 2 + 20, 100, 90, 20, I18nUtil.resolveKey("gui.connection_priority." + diode.priority.name().toLowerCase(Locale.US)));
 	}
 
 	@Override
@@ -86,7 +90,7 @@ public class GUIDiode extends GuiScreen {
 		if(buttonPriority.mousePressed(mc, mouseX, mouseY)) {
 			this.priority++;
 			if(priority >= ConnectionPriority.values().length) priority = 0;
-			buttonPriority.displayString = EnumUtil.grabEnumSafely(ConnectionPriority.class, priority).name();
+			buttonPriority.displayString = I18nUtil.resolveKey("gui.connection_priority." + EnumUtil.grabEnumSafely(ConnectionPriority.class, priority).name().toLowerCase(Locale.US));
 			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 		}
 	}

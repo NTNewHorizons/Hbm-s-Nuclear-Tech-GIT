@@ -19,6 +19,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIMachineWoodBurner extends GuiInfoContainer {
 	
@@ -56,7 +57,7 @@ public class GUIMachineWoodBurner extends GuiInfoContainer {
 		}
 		
 		if(guiLeft + 53 <= mouseX && guiLeft + 53 + 16 > mouseX && guiTop + 17 < mouseY && guiTop + 17 + 15 >= mouseY) {
-			func_146283_a(Arrays.asList(new String[] { burner.isOn ? EnumChatFormatting.GREEN + "ON" : EnumChatFormatting.RED + "OFF" }), mouseX, mouseY);
+			func_146283_a(Arrays.asList(new String[] { burner.isOn ? EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.guimachine_wood_burner.on") : EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guimachine_wood_burner.off") }), mouseX, mouseY);
 		}
 	}
 

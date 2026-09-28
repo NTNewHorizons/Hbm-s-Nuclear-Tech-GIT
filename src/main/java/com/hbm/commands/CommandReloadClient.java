@@ -49,5 +49,5 @@ public class CommandReloadClient extends CommandReloadConfig {
 	@Override public HashMap<String, ConfigWrapper> getConfigMap() { return ClientConfig.configMap; }
 	@Override public void refresh() { ClientConfig.refresh(); }
 	@Override public void reload() { ClientConfig.reload(); }
-	@Override public String getTitle() { return "CLIENT VARIABLES:"; }
+	@Override public String getTitle() { return "commands.ntmclient.title"; }
 }

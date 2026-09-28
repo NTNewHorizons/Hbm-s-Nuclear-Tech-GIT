@@ -13,6 +13,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIICFPress extends GuiInfoContainer {
 	
@@ -34,8 +35,8 @@ public class GUIICFPress extends GuiInfoContainer {
 		press.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 44, guiTop + 18, 16, 52);
 		press.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 18, 16, 52);
 		
-		if(this.isMouseOverSlot(this.inventorySlots.getSlot(4), mouseX, mouseY) && !this.inventorySlots.getSlot(4).getHasStack()) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.YELLOW + "Item input: Top/Bottom"}), mouseX, mouseY);
-		if(this.isMouseOverSlot(this.inventorySlots.getSlot(5), mouseX, mouseY) && !this.inventorySlots.getSlot(5).getHasStack()) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.YELLOW + "Item input: Sides"}), mouseX, mouseY);
+		if(this.isMouseOverSlot(this.inventorySlots.getSlot(4), mouseX, mouseY) && !this.inventorySlots.getSlot(4).getHasStack()) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guiicfpress.item_input_top_bottom")}), mouseX, mouseY);
+		if(this.isMouseOverSlot(this.inventorySlots.getSlot(5), mouseX, mouseY) && !this.inventorySlots.getSlot(5).getHasStack()) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guiicfpress.item_input_sides")}), mouseX, mouseY);
 	}
 	
 	@Override

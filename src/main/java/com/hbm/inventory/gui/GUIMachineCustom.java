@@ -56,7 +56,7 @@ public class GUIMachineCustom extends GuiInfoContainer {
 				int tileIndex = slot.getSlotIndex();
 
 				if(this.isMouseOverSlot(slot, x, y) && slot instanceof SlotPattern && custom.matcher.modes[tileIndex - 10] != null) {
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", ModulePatternMatcher.getLabel(custom.matcher.modes[tileIndex - 10]) }), x, y - 30);
+					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guimachine_custom.right_click_to_change"), ModulePatternMatcher.getLabel(custom.matcher.modes[tileIndex - 10]) }), x, y - 30);
 				}
 			}
 		}
@@ -74,8 +74,8 @@ public class GUIMachineCustom extends GuiInfoContainer {
 			int matY = guiTop + 18;
 			if(x >= matX && x < matX + 16 && y >= matY && y < matY + 34) {
 				List<String> tip = new ArrayList();
-				tip.add(EnumChatFormatting.GOLD + "Material Pool:");
-				tip.add(EnumChatFormatting.YELLOW + "Total: " + custom.getTotalMaterialAmount() + " / " + custom.config.materialInCap + " quanta");
+				tip.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.guimachine_custom.material_pool"));
+				tip.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guimachine_custom.total") + custom.getTotalMaterialAmount() + " / " + custom.config.materialInCap + I18nUtil.resolveKey("gui.guimachine_custom.quanta"));
 				for(Mats.MaterialStack ms : custom.materials) {
 					if(ms.amount > 0 && ms.material != null) {
 						tip.add("  " + I18nUtil.resolveKey(ms.material.getUnlocalizedName()) + ": " + Mats.formatAmount(ms.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));

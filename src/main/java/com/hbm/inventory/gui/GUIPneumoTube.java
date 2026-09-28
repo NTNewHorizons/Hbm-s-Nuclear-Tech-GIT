@@ -54,7 +54,7 @@ public class GUIPneumoTube extends GuiInfoContainer {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 	
 				if(this.isMouseOverSlot(slot, x, y) && tube.pattern.modes[i] != null) {
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", ModulePatternMatcher.getLabel(tube.pattern.modes[i]) }), x, y - 30);
+					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guipneumo_tube.right_click_to_change"), ModulePatternMatcher.getLabel(tube.pattern.modes[i]) }), x, y - 30);
 				}
 			}
 		}

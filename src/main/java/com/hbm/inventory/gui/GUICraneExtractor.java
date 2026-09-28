@@ -18,6 +18,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUICraneExtractor extends GuiInfoContainer {
 	
@@ -41,13 +42,13 @@ public class GUICraneExtractor extends GuiInfoContainer {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 	
 				if(this.isMouseOverSlot(slot, x, y) && ejector.matcher.modes[i] != null) {
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", ModulePatternMatcher.getLabel(ejector.matcher.modes[i]) }), x, y - 30);
+					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guicrane_extractor.right_click_to_change"), ModulePatternMatcher.getLabel(ejector.matcher.modes[i]) }), x, y - 30);
 				}
 			}
 		}
 		
 		if(guiLeft + 187 <= x && guiLeft + 187 + 18 > x && guiTop + 34 < y && guiTop + 34 + 18 >= y) {
-			this.func_146283_a(Arrays.asList(new String[] { "Only take maximum possible: " + (ejector.maxEject ? EnumChatFormatting.GREEN + "ON" : EnumChatFormatting.RED + "OFF") }), x, y);
+			this.func_146283_a(Arrays.asList(new String[] { I18nUtil.resolveKey("gui.guicrane_extractor.only_take_maximum_possible") + (ejector.maxEject ? EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.guicrane_extractor.on") : EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guicrane_extractor.off")) }), x, y);
 		}
 	}
 

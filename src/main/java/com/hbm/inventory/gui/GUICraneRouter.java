@@ -20,6 +20,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUICraneRouter extends GuiInfoContainer {
 	
@@ -65,10 +66,10 @@ public class GUICraneRouter extends GuiInfoContainer {
 					int index = j * 3 + k;
 					
 					switch(router.modes[index]) {
-					case 0: text = new String[] { "OFF" }; break;
-					case 1: text[0] = "WHITELIST"; text[1] = "Route if filter matches"; break;
-					case 2: text[0] = "BLACKLIST"; text[1] = "Route if filter doesn't match"; break;
-					case 3: text[0] = "WILDCARD"; text[1] = "Route if no other route is valid"; break;
+					case 0: text = new String[] { I18nUtil.resolveKey("gui.guicrane_router.off") }; break;
+					case 1: text[0] = I18nUtil.resolveKey("gui.crane_router.whitelist"); text[1] = I18nUtil.resolveKey("gui.crane_router.whitelist_desc"); break;
+					case 2: text[0] = I18nUtil.resolveKey("gui.crane_router.blacklist"); text[1] = I18nUtil.resolveKey("gui.crane_router.blacklist_desc"); break;
+					case 3: text[0] = I18nUtil.resolveKey("gui.crane_router.wildcard"); text[1] = I18nUtil.resolveKey("gui.crane_router.wildcard_desc"); break;
 					}
 					
 					this.func_146283_a(Arrays.asList(text), x, y);
@@ -83,7 +84,7 @@ public class GUICraneRouter extends GuiInfoContainer {
 				int index = i % 5;
 				
 				if(this.isMouseOverSlot(slot, x, y) && matcher.modes[index] != null) {
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", ModulePatternMatcher.getLabel(matcher.modes[index])}), x, y - 30);
+					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guicrane_router.right_click_to_change"), ModulePatternMatcher.getLabel(matcher.modes[index])}), x, y - 30);
 				}
 			}
 		}

@@ -15,6 +15,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 public class FluidRecipeHandler extends TemplateRecipeHandler implements ICompatNHNEI {
 	@Override
@@ -61,7 +62,7 @@ public class FluidRecipeHandler extends TemplateRecipeHandler implements ICompat
 
 	@Override
 	public String getRecipeName() {
-		return "Fluid Containers";
+		return I18nUtil.resolveKey("nei.fluid_recipe_handler.name");
 	}
 
 	@Override

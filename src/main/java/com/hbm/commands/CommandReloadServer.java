@@ -41,5 +41,5 @@ public class CommandReloadServer extends CommandReloadConfig {
 	@Override public HashMap<String, ConfigWrapper> getConfigMap() { return ServerConfig.configMap; }
 	@Override public void refresh() { ServerConfig.refresh(); }
 	@Override public void reload() { ServerConfig.reload(); }
-	@Override public String getTitle() { return "SERVER VARIABLES:"; }
+	@Override public String getTitle() { return "commands.ntmserver.title"; }
 }

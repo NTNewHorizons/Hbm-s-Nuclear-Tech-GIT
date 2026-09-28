@@ -74,7 +74,7 @@ public class ItemCanteen extends Item {
 			list.add("");
 
 			if(MainRegistry.polaroidID == 11)
-				// list.add("Why sipp when you can succ?");
+				// list.add(I18nUtil.resolveKey("tooltip.item_canteen.why_sipp_when_you_can_succ"));
 				list.add(I18nUtil.resolveKey("item.tooltip.item_canteen.4"));
 			else
 				list.add(I18nUtil.resolveKey("item.tooltip.item_canteen.5"));

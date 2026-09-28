@@ -27,6 +27,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 @NotableComments
 public abstract class NEIGenericRecipeHandler extends TemplateRecipeHandler implements ICompatNHNEI {
@@ -124,7 +125,7 @@ public abstract class NEIGenericRecipeHandler extends TemplateRecipeHandler impl
 		}
 	}
 
-	@Override public String getRecipeName() { return this.displayName; }
+	@Override public String getRecipeName() { return I18nUtil.resolveKey(this.displayName); }
 	@Override public ItemStack[] getMachinesForRecipe() { return machines; }
 	@Override public String getGuiTexture() { return RefStrings.MODID + ":textures/gui/nei/gui_nei.png"; }
 

@@ -62,10 +62,10 @@ public class GUICounterTorch extends GuiInfoContainer {
 		super.drawScreen(x, y, interp);
 
 		if(guiLeft + 193 <= x && guiLeft + 193 + 18 > x && guiTop + 8 < y && guiTop + 8 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { counter.polling ? "Polling" : "State Change" }), x, y);
+			func_146283_a(Arrays.asList(new String[] { counter.polling ? I18nUtil.resolveKey("gui.guicounter_torch.polling") : I18nUtil.resolveKey("gui.guicounter_torch.state_change") }), x, y);
 		}
 		if(guiLeft + 193 <= x && guiLeft + 193 + 18 > x && guiTop + 30 < y && guiTop + 30 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { "Save Settings" }), x, y);
+			func_146283_a(Arrays.asList(new String[] { I18nUtil.resolveKey("gui.guicounter_torch.save_settings") }), x, y);
 		}
 
 		if(this.mc.thePlayer.inventory.getItemStack() == null) {
@@ -73,7 +73,7 @@ public class GUICounterTorch extends GuiInfoContainer {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 	
 				if(this.isMouseOverSlot(slot, x, y) && counter.matcher.modes[i] != null) {
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + "Right click to change", ModulePatternMatcher.getLabel(counter.matcher.modes[i]) }), x, y - 30);
+					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guicounter_torch.right_click_to_change"), ModulePatternMatcher.getLabel(counter.matcher.modes[i]) }), x, y - 30);
 				}
 			}
 		}

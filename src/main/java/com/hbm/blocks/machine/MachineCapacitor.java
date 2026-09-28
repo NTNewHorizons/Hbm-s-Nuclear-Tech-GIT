@@ -112,7 +112,7 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.s_s_s_he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(persistentTag.getLong("maxPower"))));
+		list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.s_s_s_he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(persistentTag.getLong(I18nUtil.resolveKey("gui.machine_capacitor.max_power")))));
 	}
 
 	@Override
@@ -124,9 +124,9 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			for(String s : I18nUtil.resolveKeyArray("tile.capacitor.desc")) list.add(EnumChatFormatting.YELLOW + s);
 		} else {
-			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC +"Hold <" +
-					EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + "LSHIFT" +
-					EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + "> to display more info");
+			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC +I18nUtil.resolveKey("gui.machine_capacitor.hold") +
+					EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.machine_capacitor.lshift") +
+					EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.machine_capacitor.to_display_more_info"));
 		}
 		if(this == ModBlocks.capacitor_complex) {
 			list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.ta_cd_sa236_7_n_boosted_anti_mass_core_surrounded_by"));

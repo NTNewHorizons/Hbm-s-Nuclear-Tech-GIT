@@ -1,5 +1,7 @@
 package com.hbm.render.item.weapon.sedna;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.awt.Color;
 
 import org.lwjgl.opengl.GL11;
@@ -31,7 +33,7 @@ public class ItemRenderMissileLauncher extends ItemRenderWeaponBase {
 				-1F * offset, -1.25F * offset, 0F * offset);
 	}
 	
-	protected static String label = "AUTO";
+	protected static String label = I18nUtil.resolveKey("renderer.weapon.auto");
 	
 	@Override
 	public void renderFirstPerson(ItemStack stack) {

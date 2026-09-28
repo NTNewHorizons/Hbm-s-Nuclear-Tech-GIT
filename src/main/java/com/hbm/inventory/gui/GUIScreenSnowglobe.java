@@ -57,12 +57,12 @@ public class GUIScreenSnowglobe extends GuiScreen {
 		
 		int nextLevel = (int)top + 10;
 
-		String bobbleTitle = "Nuclear Tech Commemorative Snowglobe";
+		String bobbleTitle = I18nUtil.resolveKey("gui.snowglobe.title");
 		this.fontRendererObj.drawStringWithShadow(bobbleTitle, (int)(left + sizeX / 2 - this.fontRendererObj.getStringWidth(bobbleTitle) / 2), nextLevel, 0x00ff00);
 		
 		nextLevel += 10;
 		
-		String bobbleName = this.snowglobe.type.label;
+		String bobbleName = I18nUtil.resolveKey(this.snowglobe.type.label);
 		this.fontRendererObj.drawStringWithShadow(bobbleName, (int)(left + sizeX / 2 - this.fontRendererObj.getStringWidth(bobbleName) / 2), nextLevel, 0x009900);
 		
 		nextLevel += 20;
@@ -86,12 +86,12 @@ public class GUIScreenSnowglobe extends GuiScreen {
 		
 		if(this.snowglobe.type.inscription != null) {
 
-			String title = "On the bottom is the following inscription:";
+			String title = I18nUtil.resolveKey("gui.collectible.inscription");
 			this.fontRendererObj.drawStringWithShadow(title, (int)(left + sizeX / 2 - this.fontRendererObj.getStringWidth(title) / 2), nextLevel, 0x00ff00);
 			
 			nextLevel += 10;
 
-			List<String> list = I18nUtil.autoBreakWithParagraphs(this.fontRendererObj, this.snowglobe.type.inscription, 280);
+			List<String> list = I18nUtil.autoBreakWithParagraphs(this.fontRendererObj, I18nUtil.resolveKey(this.snowglobe.type.inscription), 280);
 			for(String text : list) {
 				this.fontRendererObj.drawStringWithShadow(text, (int)(left + sizeX / 2 - this.fontRendererObj.getStringWidth(text) / 2), nextLevel, 0x009900);
 				nextLevel += 10;

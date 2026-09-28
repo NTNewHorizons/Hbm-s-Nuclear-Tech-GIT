@@ -71,7 +71,7 @@ public class MachineDysonConverterAnatmogenesis extends BlockDummyable implement
 
 		text.add(I18nUtil.resolveKey("overlay.machine_dyson_converter_anatmogenesis.current_rate_satm_per_hour", ((double)converter.gasProduced * 20 * 60 * 60 / AstronomyUtil.MB_PER_ATM)));
 		text.add(I18nUtil.resolveKey("overlay.machine_dyson_converter_anatmogenesis.current_gas_s_s", converter.fluid.getLocalizedName(), pressure));
-		text.add(I18nUtil.resolveKey("overlay.machine_dyson_converter_anatmogenesis.current_mode_s", (converter.isEmitting ? "EMITTING" : "CAPTURING")));
+		text.add(I18nUtil.resolveKey("overlay.machine_dyson_converter_anatmogenesis.current_mode_s", (converter.isEmitting ? I18nUtil.resolveKey("gui.machine_dyson_converter_anatmogenesis.emitting") : I18nUtil.resolveKey("gui.machine_dyson_converter_anatmogenesis.capturing"))));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

@@ -175,7 +175,7 @@ public class BlockWandLogic extends BlockContainer implements ILookOverlay, IToo
 		List<String> text = new ArrayList<>();
 		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.action_s", logic.actionID));
 		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.condition_s", logic.conditionID));
-		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.interaction_s", (logic.interactionID != null ? logic.interactionID : "None")));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.interaction_s", (logic.interactionID != null ? logic.interactionID : I18nUtil.resolveKey("gui.block_wand_logic.none"))));
 
 		String block;
 

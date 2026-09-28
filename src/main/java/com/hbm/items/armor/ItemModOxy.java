@@ -44,7 +44,7 @@ public class ItemModOxy extends ItemArmorMod implements IFillableItem {
 		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("item.tooltip.jetpack_fueled_base.1", fuel.getLocalizedName(), getFuel(itemstack), this.maxFuel));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
-		list.add(EnumChatFormatting.GOLD + I18n.format("armor.mustSeal"));
+		list.add(EnumChatFormatting.GOLD + I18n.format(I18nUtil.resolveKey("gui.item_mod_oxy.armor_must_seal")));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

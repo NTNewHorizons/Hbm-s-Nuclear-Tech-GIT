@@ -220,7 +220,7 @@ public class BlockWandTandem extends BlockContainer implements IBlockSideRotatio
 		text.add(I18nUtil.resolveKey("overlay.block_wand_tandem.s_target_name_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.target));
 		text.add(I18nUtil.resolveKey("overlay.block_wand_tandem.s_turns_into_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, GameRegistry.findUniqueIdentifierFor(jigsaw.replaceBlock).toString()));
 		text.add(I18nUtil.resolveKey("overlay.block_wand_tandem.s_with_meta_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.replaceMeta));
-		text.add(I18nUtil.resolveKey("overlay.block_wand_tandem.s_joint_type_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, (jigsaw.isRollable ? "Rollable" : "Aligned")));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_tandem.s_joint_type_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, (jigsaw.isRollable ? I18nUtil.resolveKey("gui.block_wand_tandem.rollable") : I18nUtil.resolveKey("gui.block_wand_tandem.aligned"))));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

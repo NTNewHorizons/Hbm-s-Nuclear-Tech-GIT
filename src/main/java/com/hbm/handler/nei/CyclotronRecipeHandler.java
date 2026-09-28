@@ -17,6 +17,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 public class CyclotronRecipeHandler extends TemplateRecipeHandler implements ICompatNHNEI {
 	@Override
@@ -61,7 +62,7 @@ public class CyclotronRecipeHandler extends TemplateRecipeHandler implements ICo
     
 	@Override
 	public String getRecipeName() {
-		return "Cyclotron";
+		return I18nUtil.resolveKey("nei.cyclotron_recipe_handler.name");
 	}
 
 	@Override

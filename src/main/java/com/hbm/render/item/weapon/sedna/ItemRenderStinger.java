@@ -1,5 +1,7 @@
 package com.hbm.render.item.weapon.sedna;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
@@ -74,7 +76,7 @@ public class ItemRenderStinger extends ItemRenderWeaponBase {
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 
-		String label = "Not accurate";
+		String label = I18nUtil.resolveKey("renderer.weapon.not_accurate");
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 		float f3 = 0.04F;
 		GL11.glTranslatef(0.025F, -0.5F, (font.getStringWidth(label) / 2) * f3 - 3);

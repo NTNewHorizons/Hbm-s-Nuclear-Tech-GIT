@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL12;
 
 import com.hbm.lib.RefStrings;
 import com.hbm.qmaw.components.*;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
@@ -56,13 +57,13 @@ public class GuiQMAW extends GuiScreen {
 
 		this.title = qmaw.title.get(lang.getCurrentLanguage().getLanguageCode());
 		if(title == null) this.title = qmaw.title.get(EN_US);
-		if(title == null) this.title = "Missing Localization!";
+		if(title == null) this.title = I18nUtil.resolveKey("gui.qmaw.missing_localization");
 
 		this.icon = qmaw.icon;
 
 		String toParse = qmaw.contents.get(lang.getCurrentLanguage().getLanguageCode());
 		if(toParse == null) toParse = qmaw.contents.get(EN_US);
-		if(toParse == null) toParse = "Missing Localization!";
+		if(toParse == null) toParse = I18nUtil.resolveKey("gui.qmaw.missing_localization");
 		toParse = "" + toParse; // strings are reference types, no?
 
 		int maxLineLength = xSize - 29;

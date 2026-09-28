@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class RBMKRodDisassemblyHandler extends NEIUniversalHandler {
 
 	public RBMKRodDisassemblyHandler() {
-		super("RBMK Rod Disassembly", Blocks.crafting_table, getRecipes());
+		super("nei.rbmkrod_disassembly_handler.name", Blocks.crafting_table, getRecipes());
 	}
 
 	@Override

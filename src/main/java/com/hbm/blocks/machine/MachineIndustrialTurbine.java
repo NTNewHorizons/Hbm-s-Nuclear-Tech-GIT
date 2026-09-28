@@ -124,7 +124,7 @@ public class MachineIndustrialTurbine extends BlockDummyable implements ITooltip
 		
 		text.add(I18nUtil.resolveKey("overlay.machine_industrial_turbine.s_s_s_s_sm_b", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, inputType.getLocalizedName(), String.format(Locale.US, "%,d", tankInput.getFill()), String.format(Locale.US, "%,d", tankInput.getMaxFill())));
 		text.add(I18nUtil.resolveKey("overlay.machine_industrial_turbine.s_s_s_s_sm_b_2", EnumChatFormatting.RED, EnumChatFormatting.RESET, outputType.getLocalizedName(), String.format(Locale.US, "%,d", tankOutput.getFill()), String.format(Locale.US, "%,d", tankOutput.getMaxFill())));
-		text.add("&[" + color + "&]" + EnumChatFormatting.RED + "<- " + EnumChatFormatting.WHITE + BobMathUtil.getShortNumber(chungus.powerBuffer) + "HE (" +
+		text.add("&[" + color + "&]" + EnumChatFormatting.RED + "<- " + EnumChatFormatting.WHITE + BobMathUtil.getShortNumber(chungus.powerBuffer) + I18nUtil.resolveKey("gui.machine_industrial_turbine.he") +
 				EnumChatFormatting.RESET + blocks[chungus.powerBuffer <= 0 ? 0 : time] + (int) Math.round(chungus.spin * 100) + "%" + EnumChatFormatting.WHITE + ")");
 		
 		

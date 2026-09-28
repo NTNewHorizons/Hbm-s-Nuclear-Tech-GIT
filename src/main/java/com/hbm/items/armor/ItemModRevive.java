@@ -28,12 +28,12 @@ public class ItemModRevive extends ItemArmorMod {
 			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("item.tooltip.item_mod_revive.3", EnumChatFormatting.RED, EnumChatFormatting.DARK_GRAY, EnumChatFormatting.RED));
 		}
 		
-		/*list.add(EnumChatFormatting.ITALIC + "In the news:");
-		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.BOLD + "Man literally too angry to die.");
+		/*list.add(I18nUtil.resolveKey("tooltip.item_mod_revive.s_in_the_news", EnumChatFormatting.ITALIC));
+		list.add(I18nUtil.resolveKey("tooltip.item_mod_revive.s_s_man_literally_too_angry_to_die", EnumChatFormatting.RED, EnumChatFormatting.BOLD));
 		list.add("");
-		list.add(EnumChatFormatting.ITALIC + "\"I ain't got time to die\" says local");
-		list.add(EnumChatFormatting.ITALIC + "man after ripping the physical manifestation");
-		list.add(EnumChatFormatting.ITALIC + "of disaster itself in half.");*/
+		list.add(I18nUtil.resolveKey("tooltip.item_mod_revive.s_i_ain_t_got_time_to_die_says_local", EnumChatFormatting.ITALIC));
+		list.add(I18nUtil.resolveKey("tooltip.item_mod_revive.sman_after_ripping_the_physical_manifestation", EnumChatFormatting.ITALIC));
+		list.add(I18nUtil.resolveKey("tooltip.item_mod_revive.sof_disaster_itself_in_half", EnumChatFormatting.ITALIC));*/
 		
 		list.add("");
 		list.add(EnumChatFormatting.GOLD + "" + I18nUtil.resolveKey("item.tooltip.item_mod_revive.4", (stack.getMaxDamage() - stack.getItemDamage())));

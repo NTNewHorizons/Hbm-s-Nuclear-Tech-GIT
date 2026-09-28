@@ -34,7 +34,7 @@ public class ItemSchraranium extends ItemCustomLore {
 	public String getItemStackDisplayName(ItemStack stack) {
 
 		if(GeneralConfig.enableLBSM && GeneralConfig.enableLBSMFullSchrab)
-			return "Nikonium Ingot";
+			return I18nUtil.resolveKey("item.schraranium.nikonium");
 		else
 			return super.getItemStackDisplayName(stack);
 	}

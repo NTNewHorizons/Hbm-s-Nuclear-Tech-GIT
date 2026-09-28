@@ -224,7 +224,7 @@ public class ModEventHandler {
 			}
 
 			if(MobConfig.enableDucks && event.player instanceof EntityPlayerMP && !event.player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getBoolean("hasDucked"))
-				PacketDispatcher.wrapper.sendTo(new PlayerInformPacket("Press O to Duck!", ServerProxy.ID_DUCK, 30_000), (EntityPlayerMP) event.player);
+				PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.startTranslation("info.press_o_to_duck").flush(), ServerProxy.ID_DUCK, 30_000), (EntityPlayerMP) event.player);
 
 
 			/*if(GeneralConfig.enableGuideBook) {

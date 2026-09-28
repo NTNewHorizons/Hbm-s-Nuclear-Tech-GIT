@@ -1,5 +1,7 @@
 package com.hbm.inventory.gui;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -57,7 +59,7 @@ public class GUIScreenPreview extends GuiScreen {
 
 		String nameString = Item.itemRegistry.getNameForObject(preview.getItem()) + ", " + preview.getItemDamage();
 		String zoomString = "Zoom: " + zoom;
-		String scaleString = "Windows Scale: " + res.getScaleFactor();
+		String scaleString = I18nUtil.resolveKey("gui.preview.windows_scale", res.getScaleFactor());
 
 		GL11.glPushMatrix();
 		GL11.glScaled(0.5, 0.5, 1);

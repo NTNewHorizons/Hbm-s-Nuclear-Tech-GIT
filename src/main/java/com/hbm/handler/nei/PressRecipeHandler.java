@@ -25,6 +25,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 @Untested
 public class PressRecipeHandler extends TemplateRecipeHandler implements ICompatNHNEI {
@@ -72,7 +73,7 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 
 	@Override
 	public String getRecipeName() {
-		return "Press";
+		return I18nUtil.resolveKey("nei.press_recipe_handler.name");
 	}
 
 	@Override

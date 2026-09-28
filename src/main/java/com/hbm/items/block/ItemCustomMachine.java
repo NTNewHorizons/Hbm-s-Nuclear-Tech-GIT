@@ -1,5 +1,7 @@
 package com.hbm.items.block;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import com.hbm.config.CustomMachineConfigJSON;
@@ -45,6 +47,6 @@ public class ItemCustomMachine extends ItemBlock {
 			}
 		}
 		
-		return "INVALID MACHINE CONTROLLER";
+		return I18nUtil.resolveKey("item.custom_machine.invalid");
 	}
 }

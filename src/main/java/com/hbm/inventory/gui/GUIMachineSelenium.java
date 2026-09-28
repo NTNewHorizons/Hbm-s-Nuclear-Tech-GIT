@@ -54,23 +54,23 @@ public class GUIMachineSelenium extends GuiInfoContainer {
 		
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text.toArray(new String[0]));
 		
-		String[] text1 = new String[] { "Fuel consumption rate:",
-				"  1 mB/t",
-				"  20 mB/s",
-				"(Consumption rate per piston)" };
+		String[] text1 = new String[] { I18nUtil.resolveKey("gui.guimachine_selenium.fuel_consumption_rate"),
+				I18nUtil.resolveKey("gui.guimachine_selenium.1_m_b_t"),
+				I18nUtil.resolveKey("gui.guimachine_selenium.20_m_b_s"),
+				I18nUtil.resolveKey("gui.guimachine_selenium.consumption_rate_per_piston") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
 		
 		if(selenium.pistonCount < 3) {
 			
-			String[] text2 = new String[] { "Error: At least three pistons are",
-					"required to operate this radial engine!" };
+			String[] text2 = new String[] { I18nUtil.resolveKey("gui.guimachine_selenium.error_at_least_three_pistons_are"),
+					I18nUtil.resolveKey("gui.guimachine_selenium.required_to_operate_this_radial_engine") };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
 		}
 		
 		if(!selenium.hasAcceptableFuel()) {
 			
-			String[] text2 = new String[] { "Error: The currently set fuel type",
-					"is not supported by this engine!" };
+			String[] text2 = new String[] { I18nUtil.resolveKey("gui.guimachine_selenium.error_the_currently_set_fuel_type"),
+					I18nUtil.resolveKey("gui.guimachine_selenium.is_not_supported_by_this_engine") };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 48, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
 		}
 	}

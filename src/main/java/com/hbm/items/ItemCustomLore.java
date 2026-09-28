@@ -116,14 +116,20 @@ public class ItemCustomLore extends Item {
 	}
 
 	public static String[] names = new String[] {
-		"THE DEFAULT", "NEXT ONE", "ANOTHER ONE", "NON-STANDARD NAME", "AMBIGUOUS TITLE", "SHORT"
+		"item.undefined.scramble.default", "item.undefined.scramble.next", "item.undefined.scramble.another", "item.undefined.scramble.nonstandard", "item.undefined.scramble.ambiguous", "item.undefined.scramble.short"
 	};
 
 	public static Random rand = new Random();
 	public static int currentIndex = 0;
-	public static ScramblingName name = new ScramblingName(names[0]);
+	public static ScramblingName name = new ScramblingName("");
+	private static boolean localizedNames;
 
 	public static void updateSystem() {
+		if(!localizedNames) {
+			for(int i = 0; i < names.length; i++) names[i] = I18nUtil.resolveKey(names[i]);
+			name = new ScramblingName(names[0]);
+			localizedNames = true;
+		}
 		name.updateTick(names);
 	}
 

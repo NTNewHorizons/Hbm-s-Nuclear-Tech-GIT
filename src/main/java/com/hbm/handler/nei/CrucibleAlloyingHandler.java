@@ -20,6 +20,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 public class CrucibleAlloyingHandler extends TemplateRecipeHandler implements ICompatNHNEI {
 	@Override
@@ -83,7 +84,7 @@ public class CrucibleAlloyingHandler extends TemplateRecipeHandler implements IC
 
 	@Override
 	public String getRecipeName() {
-		return "Crucible Alloying";
+		return I18nUtil.resolveKey("nei.crucible_alloying_handler.name");
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 public abstract class NEIUniversalHandler extends TemplateRecipeHandler implements ICompatNHNEI {
 
@@ -125,7 +126,7 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler implemen
 
 	@Override
 	public String getRecipeName() {
-		return this.display;
+		return I18nUtil.resolveKey(this.display);
 	}
 
 	@Override

@@ -249,7 +249,7 @@ public class ItemCustomMissilePart extends Item {
 		if(this == ModItems.rp_pod_20) return;
 
 		if(title != null)
-			list.add(EnumChatFormatting.DARK_PURPLE + "\"" + title + "\"");
+			list.add(EnumChatFormatting.DARK_PURPLE + "\"" + I18nUtil.resolveKey(title) + "\"");
 
 		try {
 			switch(type) {
@@ -296,7 +296,7 @@ public class ItemCustomMissilePart extends Item {
 		if(author != null)
 			list.add(EnumChatFormatting.WHITE + "   " + I18nUtil.resolveKey("item.missile.part.by") + " " + author);
 		if(witty != null)
-			list.add(EnumChatFormatting.GOLD + "   " + EnumChatFormatting.ITALIC + "\"" + witty + "\"");
+			list.add(EnumChatFormatting.GOLD + "   " + EnumChatFormatting.ITALIC + "\"" + I18nUtil.resolveKey(witty) + "\"");
 	}
 
 	public String getSize(PartSize size) {

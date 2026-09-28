@@ -98,7 +98,7 @@ public class ItemScraps extends ItemAutogen {
 			}
 		}
 		
-		return "Foundry Scraps";
+		return I18nUtil.resolveKey("item.scraps.foundry_scraps");
 	}
 	
 	@Override
