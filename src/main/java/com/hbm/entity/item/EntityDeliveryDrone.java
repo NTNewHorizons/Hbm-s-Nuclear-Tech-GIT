@@ -222,7 +222,6 @@ public class EntityDeliveryDrone extends EntityDroneBase implements IInventory, 
 	@Override
 	public void init(Ticket ticket) {
 		if(this.chunkLoader == null) this.chunkLoader = new EntityChunkLoader(this);
-		this.chunkLoader.init(ticket);
-		this.loadNeighboringChunks();
+		this.chunkLoader.setTicket(ticket);
 	}
 }

@@ -9,7 +9,6 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
-/** Keeps an entity ticket synchronized with the chunks the entity currently needs. */
 public class EntityChunkLoader {
 
 	private final Entity entity;
@@ -20,7 +19,7 @@ public class EntityChunkLoader {
 		this.entity = entity;
 	}
 
-	public void init(Ticket ticket) {
+	public void setTicket(Ticket ticket) {
 		if(entity.worldObj.isRemote || ticket == null) return;
 
 		if(this.ticket != null && this.ticket != ticket) {
@@ -29,11 +28,9 @@ public class EntityChunkLoader {
 
 		this.ticket = ticket;
 		this.ticket.bindEntity(entity);
-		this.ticket.getModData();
 
 		forcedChunks.clear();
 		forcedChunks.addAll(ticket.getChunkList());
-		loadChunk(entity.chunkCoordX, entity.chunkCoordZ);
 	}
 
 	public void loadChunk(int chunkX, int chunkZ) {

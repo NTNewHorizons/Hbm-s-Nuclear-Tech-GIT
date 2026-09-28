@@ -70,7 +70,7 @@ public abstract class EntityPlaneBase extends Entity implements IChunkLoader {
 	@Override
 	public void init(Ticket ticket) {
 		if(this.chunkLoader == null) this.chunkLoader = new EntityChunkLoader(this);
-		this.chunkLoader.init(ticket);
+		this.chunkLoader.setTicket(ticket);
 	}
 	
 	@Override

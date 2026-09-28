@@ -32,7 +32,7 @@ public class EntityBulletBaseMK4CL extends EntityBulletBaseMK4 implements IChunk
 	@Override
 	public void init(Ticket ticket) {
 		if(this.chunkLoader == null) this.chunkLoader = new EntityChunkLoader(this);
-		this.chunkLoader.init(ticket);
+		this.chunkLoader.setTicket(ticket);
 	}
 	
 	@Override

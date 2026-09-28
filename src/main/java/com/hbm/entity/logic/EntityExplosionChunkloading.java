@@ -24,7 +24,7 @@ public abstract class EntityExplosionChunkloading extends Entity implements IChu
 	@Override
 	public void init(Ticket ticket) {
 		if(this.chunkLoader == null) this.chunkLoader = new EntityChunkLoader(this);
-		this.chunkLoader.init(ticket);
+		this.chunkLoader.setTicket(ticket);
 	}
 
 	public void loadChunk(int x, int z) {

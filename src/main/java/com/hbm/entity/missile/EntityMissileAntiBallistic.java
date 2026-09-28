@@ -183,7 +183,7 @@ public class EntityMissileAntiBallistic extends EntityThrowableInterp implements
 	@Override
 	public void init(Ticket ticket) {
 		if(this.chunkLoader == null) this.chunkLoader = new EntityChunkLoader(this);
-		this.chunkLoader.init(ticket);
+		this.chunkLoader.setTicket(ticket);
 	}
 
 	public void loadNeighboringChunks(int newChunkX, int newChunkZ) {
