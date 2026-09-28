@@ -3,6 +3,7 @@ package com.hbm.items.tool;
 import java.util.List;
 
 import com.hbm.items.ModItems;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -15,14 +16,14 @@ public class ItemKeyPin extends Item {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
 		if(getPins(itemstack) != 0)
-			list.add("Pin configuration: " + getPins(itemstack));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_key_pin.1", getPins(itemstack)));
 		else
-			list.add("Pins not set!");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_key_pin.2"));
 		
 		if(this == ModItems.key_fake) {
 
 			list.add("");
-			list.add("Pins can neither be changed, nor copied.");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_key_pin.3"));
 		}
 	}
 

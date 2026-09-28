@@ -58,9 +58,9 @@ public class ItemOreDensityScanner extends Item implements IBauble {
 			boreFluid = ((WorldProviderCelestial) world.provider).getBedrockAcid();
 		}
 		
-		ChatBuilder builder = ChatBuilder.start("Tier " + tier).color(EnumChatFormatting.YELLOW);
+		ChatBuilder builder = ChatBuilder.startTranslation("item.tooltip.item_siege_coin.1", tier).color(EnumChatFormatting.YELLOW);
 		if(boreFluid != null) {
-			builder.next(" - " + boreFluid.fill + "mB ")
+			builder.nextTranslation("item.message.item_ore_density_scanner.1", boreFluid.fill)
 			.nextTranslation(boreFluid.type.getUnlocalizedName());
 		}
 		

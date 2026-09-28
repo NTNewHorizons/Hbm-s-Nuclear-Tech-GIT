@@ -173,9 +173,9 @@ public class BlockWandLogic extends BlockContainer implements ILookOverlay, IToo
 		TileEntityWandLogic logic = (TileEntityWandLogic) te;
 
 		List<String> text = new ArrayList<>();
-		text.add("Action: " + logic.actionID);
-		text.add("Condition: " + logic.conditionID);
-		text.add("Interaction: " + (logic.interactionID != null ? logic.interactionID : "None"));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.action_s", logic.actionID));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.condition_s", logic.conditionID));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.interaction_s", (logic.interactionID != null ? logic.interactionID : "None")));
 
 		String block;
 
@@ -184,17 +184,17 @@ public class BlockWandLogic extends BlockContainer implements ILookOverlay, IToo
 		else
 			block = "None";
 
-		text.add("Disguise Block: " + block);
+		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.disguise_block_s", block));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.GOLD + "Use screwdriver to cycle forwards through the action list, shift click to go back");
-		list.add(EnumChatFormatting.GOLD + "Use defuser to cycle forwards through the condition list, shift click to go back");
-		list.add(EnumChatFormatting.GOLD + "Use hand drill to cycle forwards through the interaction list, shift click to go back");
-		list.add(EnumChatFormatting.YELLOW + "Use a detonator to transform");
+		list.add(I18nUtil.resolveKey("tooltip.block_wand_logic.s_use_screwdriver_to_cycle_forwards_through_the_action_l", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tooltip.block_wand_logic.s_use_defuser_to_cycle_forwards_through_the_condition_li", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tooltip.block_wand_logic.s_use_hand_drill_to_cycle_forwards_through_the_interacti", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tooltip.block_wand_logic.s_use_a_detonator_to_transform", EnumChatFormatting.YELLOW));
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBatteryPack.EnumBatteryPack;
 import com.hbm.items.machine.ItemBreedingRod.BreedingRodType;
 import com.hbm.items.machine.ItemCircuit.EnumCircuitType;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -418,7 +419,7 @@ public class ItemStarterKit extends Item {
 				this == ModItems.solinium_kit ||
 				this == ModItems.missile_kit ||
 				this == ModItems.multi_kit) {
-			list.add("Please empty inventory before opening!");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_starter_kit.1"));
 		}
 		if(this == ModItems.nuke_starter_kit ||
 				this == ModItems.nuke_advanced_kit ||
@@ -432,7 +433,7 @@ public class ItemStarterKit extends Item {
 				this == ModItems.fleija_kit ||
 				this == ModItems.solinium_kit ||
 				this == ModItems.hazmat_kit) {
-			list.add("Armor will be displaced by hazmat suit.");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_starter_kit.2"));
 		}
 	}
 

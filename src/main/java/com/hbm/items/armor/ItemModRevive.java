@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModItems;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,11 +21,11 @@ public class ItemModRevive extends ItemArmorMod {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
 		if(this == ModItems.scrumpy) {
-			list.add(EnumChatFormatting.GOLD + "But how did you survive?");
-			list.add(EnumChatFormatting.RED + "I was drunk.");
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_mod_revive.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_mod_revive.2"));
 		}
 		if(this == ModItems.wild_p) {
-			list.add(EnumChatFormatting.DARK_GRAY + "Explosive " + EnumChatFormatting.RED + "Reactive " + EnumChatFormatting.DARK_GRAY + "Plot " + EnumChatFormatting.RED + "Armor");
+			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("item.tooltip.item_mod_revive.3", EnumChatFormatting.RED, EnumChatFormatting.DARK_GRAY, EnumChatFormatting.RED));
 		}
 		
 		/*list.add(EnumChatFormatting.ITALIC + "In the news:");
@@ -35,7 +36,7 @@ public class ItemModRevive extends ItemArmorMod {
 		list.add(EnumChatFormatting.ITALIC + "of disaster itself in half.");*/
 		
 		list.add("");
-		list.add(EnumChatFormatting.GOLD + "" + (stack.getMaxDamage() - stack.getItemDamage()) + " revives left");
+		list.add(EnumChatFormatting.GOLD + "" + I18nUtil.resolveKey("item.tooltip.item_mod_revive.4", (stack.getMaxDamage() - stack.getItemDamage())));
 		list.add("");
 		super.addInformation(stack, player, list, bool);
 	}
@@ -43,6 +44,6 @@ public class ItemModRevive extends ItemArmorMod {
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 
-		list.add(EnumChatFormatting.GOLD + "  " + stack.getDisplayName() + " (" + (stack.getMaxDamage() - stack.getItemDamage()) + " revives left)");
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_mod_revive.5", stack.getDisplayName(), (stack.getMaxDamage() - stack.getItemDamage())));
 	}
 }

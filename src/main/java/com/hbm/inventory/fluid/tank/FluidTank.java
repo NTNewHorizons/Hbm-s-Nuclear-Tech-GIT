@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import com.hbm.util.i18n.I18nUtil;
 
 public class FluidTank implements Cloneable {
 	
@@ -240,11 +241,11 @@ public class FluidTank implements Cloneable {
 			
 			List<String> list = new ArrayList();
 			list.add(this.type.getLocalizedName());
-			list.add(fluid + "/" + maxFluid + "mB");
+			list.add(I18nUtil.resolveKey("tooltip.fluid_tank.s_sm_b", fluid, maxFluid));
 			
 			if(this.pressure != 0) {
-				list.add(EnumChatFormatting.RED + "Pressure: " + this.pressure + " PU");
-				list.add((BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_RED) + "Pressurized, use compressor!");
+				list.add(I18nUtil.resolveKey("tooltip.fluid_tank.s_pressure_s_pu", EnumChatFormatting.RED, this.pressure));
+				list.add(I18nUtil.resolveKey("tooltip.fluid_tank.s_pressurized_use_compressor", (BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_RED)));
 			}
 			
 			type.addInfo(list);

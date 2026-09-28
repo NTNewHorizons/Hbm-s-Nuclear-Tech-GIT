@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class MachineIGenerator extends BlockDummyable implements ILookOverlay {
 
@@ -94,7 +95,7 @@ public class MachineIGenerator extends BlockDummyable implements ILookOverlay {
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		List<String> text = new ArrayList();
-		text.add("In memory of all that we have lost");
+		text.add(I18nUtil.resolveKey("overlay.machine_igenerator.in_memory_of_all_that_we_have_lost"));
 		ILookOverlay.printGeneric(event, "Industrial Generator Memorial", 0xff8000, 0x804000, text);
 	}
 }

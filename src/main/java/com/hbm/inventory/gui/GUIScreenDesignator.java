@@ -17,6 +17,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIScreenDesignator extends GuiScreen {
 	
@@ -79,7 +80,7 @@ public class GUIScreenDesignator extends GuiScreen {
     	buttons.add(new FolderButton(guiLeft + 106,	guiTop + 62, 8, 1, 0, 50, null));
     	buttons.add(new FolderButton(guiLeft + 133,	guiTop + 62, 9, 1, 0, 100, null));
 
-    	buttons.add(new FolderButton(guiLeft + 133,	guiTop + 44, 10, 2, 0, 0, "Set coord to current X position..."));
+    	buttons.add(new FolderButton(guiLeft + 133,	guiTop + 44, 10, 2, 0, 0, I18nUtil.resolveKey("gui.guiscreen_designator.set_coord_to_current_x_position")));
 
     	buttons.add(new FolderButton(guiLeft + 25,	guiTop + 26 + 72, 0, 0, 1, 1, null));
     	buttons.add(new FolderButton(guiLeft + 52,	guiTop + 26 + 72, 1, 0, 1, 5, null));
@@ -93,7 +94,7 @@ public class GUIScreenDesignator extends GuiScreen {
     	buttons.add(new FolderButton(guiLeft + 106,	guiTop + 62 + 72, 8, 1, 1, 50, null));
     	buttons.add(new FolderButton(guiLeft + 133,	guiTop + 62 + 72, 9, 1, 1, 100, null));
 
-    	buttons.add(new FolderButton(guiLeft + 133,	guiTop + 44 + 72, 10, 2, 1, 0, "Set coord to current Z position..."));
+    	buttons.add(new FolderButton(guiLeft + 133,	guiTop + 44 + 72, 10, 2, 1, 0, I18nUtil.resolveKey("gui.guiscreen_designator.set_coord_to_current_z_position")));
     }
 
     protected void mouseClicked(int i, int j, int k) {

@@ -4,14 +4,15 @@ import java.util.List;
 
 import com.hbm.items.ModItems;
 import com.hbm.items.armor.ArmorFSB;
+import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.energymk2.IBatteryItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class ItemPancake extends ItemFood {
 
@@ -43,17 +44,17 @@ public class ItemPancake extends ItemFood {
     	}
     	
     	if(!world.isRemote)
-    		player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Your teeth are too soft to eat this."));
+    		player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_pancake.1", EnumChatFormatting.YELLOW));
     	
     	return stack;
     }
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add("Can be eaten to recharge lunar cybernetic armor");
-		list.add("Not for people with weak molars");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_pancake.1"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_pancake.2"));
 		list.add("");
-		list.add("Half burnt and smells horrible");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_pancake.3"));
 	}
 
 }

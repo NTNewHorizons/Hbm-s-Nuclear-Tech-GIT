@@ -84,23 +84,23 @@ public class MachinePump extends BlockDummyable implements ITooltipProvider, ILo
 		
 		if(te instanceof TileEntityMachinePumpSteam) {
 			TileEntityMachinePumpSteam pump = (TileEntityMachinePumpSteam) te;
-			text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + pump.steam.getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", pump.steam.getFill()) + " / " + String.format(Locale.US, "%,d", pump.steam.getMaxFill()) + "mB");
-			text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + pump.lps.getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", pump.lps.getFill()) + " / " + String.format(Locale.US, "%,d", pump.lps.getMaxFill()) + "mB");
-			text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + pump.water.getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", pump.water.getFill()) + " / " + String.format(Locale.US, "%,d", pump.water.getMaxFill()) + "mB");
+			text.add(I18nUtil.resolveKey("overlay.machine_pump.s_s_s_s_sm_b", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, pump.steam.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.steam.getFill()), String.format(Locale.US, "%,d", pump.steam.getMaxFill())));
+			text.add(I18nUtil.resolveKey("overlay.machine_pump.s_s_s_s_sm_b_2", EnumChatFormatting.RED, EnumChatFormatting.RESET, pump.lps.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.lps.getFill()), String.format(Locale.US, "%,d", pump.lps.getMaxFill())));
+			text.add(I18nUtil.resolveKey("overlay.machine_pump.s_s_s_s_sm_b_2", EnumChatFormatting.RED, EnumChatFormatting.RESET, pump.water.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.water.getFill()), String.format(Locale.US, "%,d", pump.water.getMaxFill())));
 		}
 		
 		if(te instanceof TileEntityMachinePumpElectric) {
 			TileEntityMachinePumpElectric pump = (TileEntityMachinePumpElectric) te;
-			text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + String.format(Locale.US, "%,d", pump.power) + " / " + String.format(Locale.US, "%,d", pump.maxPower) + "HE");
-			text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + pump.water.getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", pump.water.getFill()) + " / " + String.format(Locale.US, "%,d", pump.water.getMaxFill()) + "mB");
+			text.add(I18nUtil.resolveKey("overlay.machine_pump.s_s_s_s_he", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, String.format(Locale.US, "%,d", pump.power), String.format(Locale.US, "%,d", pump.maxPower)));
+			text.add(I18nUtil.resolveKey("overlay.machine_pump.s_s_s_s_sm_b_2", EnumChatFormatting.RED, EnumChatFormatting.RESET, pump.water.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.water.getFill()), String.format(Locale.US, "%,d", pump.water.getMaxFill())));
 		}
 		
 		if(pos[1] > 70) {
-			text.add("&[" + (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00) + "&]! ! ! ALTITUDE ! ! !");
+			text.add(I18nUtil.resolveKey("overlay.machine_pump.s_altitude", (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00)));
 		}
 		
 		if(!((TileEntityMachinePumpBase) te).onGround) {
-			text.add("&[" + (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00) + "&]! ! ! NO VALID GROUND ! ! !");
+			text.add(I18nUtil.resolveKey("overlay.machine_pump.s_no_valid_ground", (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00)));
 		}
 		
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);

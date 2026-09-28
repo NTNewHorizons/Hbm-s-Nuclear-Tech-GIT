@@ -13,11 +13,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.ChatComponentTranslation;
 
 @Deprecated
 public class BlockGraphiteBreedingFuel extends BlockGraphiteDrilledTE implements IToolable {
@@ -52,9 +52,9 @@ public class BlockGraphiteBreedingFuel extends BlockGraphiteDrilledTE implements
 			
 			if(tool == ToolType.HAND_DRILL) {
 				TileEntityPileBreedingFuel pile = (TileEntityPileBreedingFuel) world.getTileEntity(x, y, z);
-				player.addChatComponentMessage(new ChatComponentText("CP1 FUEL ASSEMBLY " + x + " " + y + " " + z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-				player.addChatComponentMessage(new ChatComponentText("DEPLETION: " + pile.progress + "/" + pile.maxProgress).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-				player.addChatComponentMessage(new ChatComponentText("FLUX: " + pile.lastNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_breeding_fuel.cp1_fuel_assembly_s_s_s", x, y, z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_breeding_fuel.depletion_s_s", pile.progress, pile.maxProgress).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_breeding_fuel.flux_s", pile.lastNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 			}
 		}
 		

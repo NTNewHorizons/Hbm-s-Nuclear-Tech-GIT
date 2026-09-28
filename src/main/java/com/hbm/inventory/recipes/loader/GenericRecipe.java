@@ -163,7 +163,7 @@ public class GenericRecipe {
 	
 	protected void header(List<String> list) {
 		list.add(EnumChatFormatting.YELLOW + this.getLocalizedName());
-		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) list.add(EnumChatFormatting.DARK_GRAY + "Internal: " + this.getInternalName());
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) list.add(I18nUtil.resolveKey("tooltip.generic_recipe.s_internal_s", EnumChatFormatting.DARK_GRAY, this.getInternalName()));
 	}
 	
 	protected void autoSwitch(List<String> list) {
@@ -182,7 +182,7 @@ public class GenericRecipe {
 	
 	protected void power(List<String> list) {
 		if(power > 0) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("gui.recipe.consumption") + ": " + BobMathUtil.getShortNumber(power) + "HE/t");
+			list.add(I18nUtil.resolveKey("tooltip.generic_recipe.s_s_s_he_t", EnumChatFormatting.RED, I18nUtil.resolveKey("gui.recipe.consumption"), BobMathUtil.getShortNumber(power)));
 		}
 	}
 
@@ -192,7 +192,7 @@ public class GenericRecipe {
 			ItemStack display = stack.extractForCyclingDisplay(20);
 			list.add("  " + EnumChatFormatting.GRAY + display.stackSize + "x " + display.getDisplayName());
 		}
-		if (inputFluid != null) for (FluidStack fluid : inputFluid) list.add("  " + EnumChatFormatting.BLUE + fluid.fill + "mB " + fluid.type.getLocalizedName() + (fluid.pressure == 0 ? "" : " " + I18nUtil.resolveKey("gui.recipe.atPressure") + " " + EnumChatFormatting.RED + fluid.pressure + " PU"));
+		if (inputFluid != null) for (FluidStack fluid : inputFluid) list.add(I18nUtil.resolveKey("tooltip.generic_recipe.s_sm_b_s_s", EnumChatFormatting.BLUE, fluid.fill, fluid.type.getLocalizedName(), (fluid.pressure == 0 ? "" : " " + I18nUtil.resolveKey("gui.recipe.atPressure") + " " + EnumChatFormatting.RED + fluid.pressure + " PU")));
 	}
 
 	protected void output(List<String> list) {
@@ -202,7 +202,7 @@ public class GenericRecipe {
 		if(outputFluid != null) for(FluidStack fluid : outputFluid) {
 			String pressurePart = fluid.pressure == 0 ? "" :
 				" " + I18nUtil.resolveKey("gui.recipe.atPressure") + " " + EnumChatFormatting.RED + fluid.pressure + " PU";
-			list.add("  " + EnumChatFormatting.BLUE + fluid.fill + "mB " + fluid.type.getLocalizedName() + pressurePart);
+			list.add(I18nUtil.resolveKey("tooltip.generic_recipe.s_sm_b_s_s", EnumChatFormatting.BLUE, fluid.fill, fluid.type.getLocalizedName(), pressurePart));
 		}
 	}
 

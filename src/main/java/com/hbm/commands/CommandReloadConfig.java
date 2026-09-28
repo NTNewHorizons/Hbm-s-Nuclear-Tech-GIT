@@ -14,6 +14,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ChatComponentTranslation;
 
 public abstract class CommandReloadConfig extends CommandBase {
 
@@ -50,7 +51,7 @@ public abstract class CommandReloadConfig extends CommandBase {
 		
 		if("reload".equals(operator)) {
 			reload();
-			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Variables loaded from config file."));
+			sender.addChatMessage(new ChatComponentTranslation("chat.command_reload_config.s_variables_loaded_from_config_file", EnumChatFormatting.YELLOW));
 			return;
 		}
 
@@ -60,7 +61,7 @@ public abstract class CommandReloadConfig extends CommandBase {
 		
 		if("get".equals(operator)) {
 			ConfigWrapper wrapper = getConfigMap().get(key);
-			if(wrapper == null) throw new CommandException("Key does not exist.");
+			if(wrapper == null) throw new CommandException("commands.command_reload_config.key_does_not_exist");
 			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + key + ": " + EnumChatFormatting.YELLOW + wrapper.value));
 			return;
 		}
@@ -71,14 +72,14 @@ public abstract class CommandReloadConfig extends CommandBase {
 		
 		if("set".equals(operator)) {
 			ConfigWrapper wrapper = getConfigMap().get(key);
-			if(wrapper == null) throw new CommandException("Key does not exist.");
+			if(wrapper == null) throw new CommandException("commands.command_reload_config.key_does_not_exist");
 			
 			try {
 				wrapper.update(value);
 				refresh();
-				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW + "Value updated."));
+				sender.addChatMessage(new ChatComponentTranslation("chat.command_reload_config.s_value_updated", EnumChatFormatting.YELLOW));
 			} catch(Exception ex) {
-				throw new CommandException("Error parsing type for " + wrapper.value.getClass().getSimpleName() + ": " + ex.getLocalizedMessage());
+				throw new CommandException("commands.command_reload_config.error_parsing_type_for_s_s", wrapper.value.getClass().getSimpleName(), ex.getLocalizedMessage());
 			}
 			
 			return;

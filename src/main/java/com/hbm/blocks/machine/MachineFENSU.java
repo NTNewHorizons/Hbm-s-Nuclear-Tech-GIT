@@ -61,7 +61,7 @@ public class MachineFENSU extends BlockDummyable implements ILookOverlay, IPersi
 		TileEntityMachineBattery battery = (TileEntityMachineBattery) te;
 		
 		List<String> text = new ArrayList();
-		text.add(BobMathUtil.getShortNumber(battery.getPower()) + " / " + BobMathUtil.getShortNumber(battery.getMaxPower()) + "HE");
+		text.add(I18nUtil.resolveKey("overlay.machine_fensu.s_s_he", BobMathUtil.getShortNumber(battery.getPower()), BobMathUtil.getShortNumber(battery.getMaxPower())));
 		
 		double percent = (double) battery.getPower() / (double) battery.getMaxPower();
 		int charge = (int) Math.floor(percent * 10_000D);
@@ -74,6 +74,6 @@ public class MachineFENSU extends BlockDummyable implements ILookOverlay, IPersi
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.YELLOW + "" + BobMathUtil.getShortNumber(persistentTag.getLong("power")) + "/" + BobMathUtil.getShortNumber(Long.MAX_VALUE) + "HE");
+		list.add(I18nUtil.resolveKey("tooltip.machine_fensu.s_s_s_he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(Long.MAX_VALUE)));
 	}
 }

@@ -42,8 +42,8 @@ public class MachineIntake extends BlockDummyable implements ILookOverlay {
 		TileEntityMachineIntake intake = (TileEntityMachineIntake) te;
 
 		List<String> text = new ArrayList();
-		text.add((intake.power < intake.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN) + "Power: " + BobMathUtil.getShortNumber(intake.power) + "HE");
-		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + intake.compair.getTankType().getLocalizedName() + ": " + intake.compair.getFill() + "/" + intake.compair.getMaxFill() + "mB");
+		text.add(I18nUtil.resolveKey("overlay.machine_intake.s_power_s_he", (intake.power < intake.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(intake.power)));
+		text.add(I18nUtil.resolveKey("overlay.machine_intake.s_s_s_s_sm_b", EnumChatFormatting.RED, EnumChatFormatting.RESET, intake.compair.getTankType().getLocalizedName(), intake.compair.getFill(), intake.compair.getMaxFill()));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

@@ -3,6 +3,7 @@ package com.hbm.items.tool;
 import java.util.List;
 
 import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +16,8 @@ public class ItemStructureSolid extends ItemStructureTool {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
-		list.add(EnumChatFormatting.YELLOW + "Click to print a <fillWithMetadataBlocks> or <fillWithBlocks>");
-		list.add(EnumChatFormatting.YELLOW + "line with wildcard block and metadata.");
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_structure_solid.1"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_structure_solid.2"));
 	}
 
 	@Override

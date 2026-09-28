@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import com.hbm.util.i18n.I18nUtil;
 
 public class BlockChargeSemtex extends BlockChargeBase {
 
@@ -45,10 +46,10 @@ public class BlockChargeSemtex extends BlockChargeBase {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
-		list.add(EnumChatFormatting.BLUE + "Will drop all blocks.");
-		list.add(EnumChatFormatting.BLUE + "Does not do damage.");
+		list.add(I18nUtil.resolveKey("tooltip.block_charge_semtex.s_will_drop_all_blocks", EnumChatFormatting.BLUE));
+		list.add(I18nUtil.resolveKey("tooltip.block_charge_semtex.s_does_not_do_damage", EnumChatFormatting.BLUE));
 		list.add(EnumChatFormatting.BLUE + "");
-		list.add(EnumChatFormatting.LIGHT_PURPLE + "Fortune III");
+		list.add(I18nUtil.resolveKey("tooltip.block_charge_semtex.s_fortune_iii", EnumChatFormatting.LIGHT_PURPLE));
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.hbm.items.armor;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import net.minecraft.entity.item.EntityItem;
@@ -23,7 +25,7 @@ public class ArmorHat extends ArmorModel implements IAttackHandler, IDamageHandl
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.BLUE + "+2 DT");
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.armor_hat.1"));
 	}
 
 	@Override

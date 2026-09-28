@@ -7,6 +7,7 @@ import baubles.api.IBauble;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.ArmorModHandler;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -25,15 +26,15 @@ public class ItemModSensor extends ItemArmorMod implements IBauble {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.YELLOW + "Beeps near hazardous gasses");
-		list.add(EnumChatFormatting.YELLOW + "Works in the inventory or when applied to armor");
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_mod_sensor.1"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_mod_sensor.2"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.YELLOW + "  " + stack.getDisplayName() + " (Detects gasses)");
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_mod_sensor.3", stack.getDisplayName()));
 	}
 
 	@Override

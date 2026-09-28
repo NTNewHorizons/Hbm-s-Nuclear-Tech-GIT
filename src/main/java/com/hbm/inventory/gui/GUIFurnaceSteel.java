@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIFurnaceSteel extends GuiInfoContainer {
 	
@@ -32,7 +33,7 @@ public class GUIFurnaceSteel extends GuiInfoContainer {
 		
 		for(int i = 0; i < 3; i++) {
 			this.drawCustomInfoStat(x, y, guiLeft + 53, guiTop + 17 + 18 * i, 70, 7, x, y, new String[] { String.format(Locale.US, "%,d", furnace.progress[i]) + " / " + String.format(Locale.US, "%,d", furnace.processTime) + "TU" });
-			this.drawCustomInfoStat(x, y, guiLeft + 53, guiTop + 26 + 18 * i, 70, 7, x, y, new String[] { "Bonus: " + furnace.bonus[i] + "%" });
+			this.drawCustomInfoStat(x, y, guiLeft + 53, guiTop + 26 + 18 * i, 70, 7, x, y, new String[] { I18nUtil.resolveKey("gui.guifurnace_steel.bonus") + furnace.bonus[i] + "%" });
 		}
 		
 		this.drawCustomInfoStat(x, y, guiLeft + 151, guiTop + 18, 9, 50, x, y, new String[] { String.format(Locale.US, "%,d", furnace.heat) + " / " + String.format(Locale.US, "%,d", furnace.maxHeat) + "TU" });

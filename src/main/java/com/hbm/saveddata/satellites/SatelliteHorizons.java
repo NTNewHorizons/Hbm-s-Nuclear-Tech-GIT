@@ -10,10 +10,10 @@ import com.hbm.saveddata.SatelliteSavedData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class SatelliteHorizons extends SatelliteBase {
 	
@@ -91,7 +91,7 @@ public class SatelliteHorizons extends SatelliteBase {
 		//not necessary but JUST to make sure
 		if(!world.isRemote) {
 
-			MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(EnumChatFormatting.RED + "Horizons has been activated."));
+			MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation("chat.satellite_horizons.s_horizons_has_been_activated", EnumChatFormatting.RED));
 		}
 	}
 

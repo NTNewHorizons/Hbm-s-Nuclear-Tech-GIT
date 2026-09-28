@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.inventory.fluid.FluidType;
+import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.fluidmk2.IFillableItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +25,7 @@ public abstract class JetpackFueledBase extends JetpackBase implements IFillable
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.LIGHT_PURPLE + fuel.getLocalizedName() + ": " + this.getFuel(itemstack) + "mB / " + this.maxFuel + "mB");
+		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("item.tooltip.jetpack_fueled_base.1", fuel.getLocalizedName(), this.getFuel(itemstack), this.maxFuel));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
@@ -37,7 +38,7 @@ public abstract class JetpackFueledBase extends JetpackBase implements IFillable
 		if(jetpack == null)
 			return;
 		
-		list.add(EnumChatFormatting.RED + "  " + stack.getDisplayName() + " (" + fuel.getLocalizedName() + ": " + this.getFuel(jetpack) + "mB / " + this.maxFuel + "mB)");
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.jetpack_fueled_base.2", stack.getDisplayName(), fuel.getLocalizedName(), this.getFuel(jetpack), this.maxFuel));
 	}
 	
 	protected void useUpFuel(EntityPlayer player, ItemStack stack, int rate) {

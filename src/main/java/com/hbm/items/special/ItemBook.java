@@ -6,6 +6,7 @@ import com.hbm.inventory.container.ContainerBook;
 import com.hbm.inventory.gui.GUIBook;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.IGUIProvider;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,7 +21,7 @@ public class ItemBook extends Item implements IGUIProvider {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		
-		list.add("Edition 4, gold lined pages");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_book.1"));
 	}
 
 	@Override

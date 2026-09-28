@@ -6,6 +6,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.items.machine.ItemBattery;
 import com.hbm.main.NTMSounds;
 import com.hbm.util.BobMathUtil;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,8 +23,8 @@ public class ItemAnchorRemote extends ItemBattery {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		long charge = maxCharge;
 		if(stack.hasTagCompound()) charge = getCharge(stack);
-		list.add("Energy stored: " + BobMathUtil.getShortNumber(charge) + "/" + BobMathUtil.getShortNumber(maxCharge) + "HE");
-		list.add("Charge rate: " + BobMathUtil.getShortNumber(chargeRate) + "HE/t");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_battery.1", BobMathUtil.getShortNumber(charge), BobMathUtil.getShortNumber(maxCharge)));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_battery.2", BobMathUtil.getShortNumber(chargeRate)));
 	}
 
 	@Override

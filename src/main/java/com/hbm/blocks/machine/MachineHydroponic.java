@@ -133,10 +133,10 @@ public class MachineHydroponic extends BlockDummyable implements ILookOverlay, I
 
 		List<String> text = new ArrayList<String>();
 
-		text.add((hydro.getPower() <= 200 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN) + "Power: " + BobMathUtil.getShortNumber(hydro.getPower()) + "HE");
+		text.add(I18nUtil.resolveKey("overlay.machine_hydroponic.s_power_s_he", (hydro.getPower() <= 200 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(hydro.getPower())));
 
-		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + hydro.tanks[0].getTankType().getLocalizedName() + ": " + hydro.tanks[0].getFill() + "/" + hydro.tanks[0].getMaxFill() + "mB");
-		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + hydro.tanks[1].getTankType().getLocalizedName() + ": " + hydro.tanks[1].getFill() + "/" + hydro.tanks[1].getMaxFill() + "mB");
+		text.add(I18nUtil.resolveKey("overlay.machine_hydroponic.s_s_s_s_sm_b", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, hydro.tanks[0].getTankType().getLocalizedName(), hydro.tanks[0].getFill(), hydro.tanks[0].getMaxFill()));
+		text.add(I18nUtil.resolveKey("overlay.machine_hydroponic.s_s_s_s_sm_b_2", EnumChatFormatting.RED, EnumChatFormatting.RESET, hydro.tanks[1].getTankType().getLocalizedName(), hydro.tanks[1].getFill(), hydro.tanks[1].getMaxFill()));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

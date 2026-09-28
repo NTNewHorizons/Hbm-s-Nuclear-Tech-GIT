@@ -31,6 +31,7 @@ import com.hbm.util.Tuple.Triplet;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 /**
  * Magic!
@@ -145,7 +146,7 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 
 		for(Triplet<Object, Object, ItemStack> recipe : blastFurnaceRecipes) {
 			if(!hiddenRecipes.contains(new ComparableStack(recipe.getZ()))) {
-				ItemStack nothing = new ItemStack(ModItems.nothing).setStackDisplayName("If you're reading this, an error has occured! Check the console.");
+				ItemStack nothing = new ItemStack(ModItems.nothing).setStackDisplayName(I18nUtil.resolveKey("item.name.blast_furnace_recipes.if_you_re_reading_this_an_error_has_occured_check_the_co"));
 				List<ItemStack> in1 = new ArrayList();
 				List<ItemStack> in2 = new ArrayList();
 				in1.add(nothing);

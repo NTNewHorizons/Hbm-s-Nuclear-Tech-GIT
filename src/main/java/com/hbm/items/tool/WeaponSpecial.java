@@ -14,6 +14,7 @@ import com.hbm.main.NTMSounds;
 import com.hbm.particle.helper.ExplosionCreator;
 import com.hbm.potion.HbmPotion;
 import com.hbm.util.ArmorUtil;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -243,55 +244,55 @@ public class WeaponSpecial extends ItemSword {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(this == ModItems.schrabidium_hammer) {
-			list.add("Even though it says \"+1000000000");
-			list.add("damage\", it's actually \"onehit anything\"");
+			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.1"));
+			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.2"));
 		}
 		if(this == ModItems.ullapool_caber) {
-			list.add("High-yield Scottish face removal.");
-			list.add("A sober person would throw it...");
+			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.3"));
+			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.4"));
 		}
 		if(this == ModItems.bottle_opener) {
-			list.add("My very own bottle opener.");
-			list.add("Use with caution!");
+			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.5"));
+			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.6"));
 		}
 		if(this == ModItems.shimmer_sledge) {
 			if(MainRegistry.polaroidID == 11) {
-				list.add("shimmer no");
-				list.add("drop that hammer");
-				list.add("you're going to hurt somebody");
-				list.add("shimmer no");
-				list.add("shimmer pls");
+				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.7"));
+				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.8"));
+				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.9"));
+				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.7"));
+				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.10"));
 			} else {
-				list.add("Breaks everything, even portals.");
+				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.11"));
 			}
 		}
 		if(this == ModItems.shimmer_axe) {
 			if(MainRegistry.polaroidID == 11) {
-				list.add("shim's toolbox does an e-x-p-a-n-d");
+				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.12"));
 			} else {
-				list.add("Timber!");
+				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.13"));
 			}
 		}
 		if(this == ModItems.wrench_flipped) {
-			list.add("Wrench 2: The Wrenchening");
+			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.14"));
 		}
 		if(this == ModItems.memespoon) {
-			list.add(EnumChatFormatting.DARK_GRAY + "Level 10 Shovel");
-			list.add(EnumChatFormatting.AQUA + "Deals crits while the wielder is rocket jumping");
-			list.add(EnumChatFormatting.RED + "20% slower firing speed");
-			list.add(EnumChatFormatting.RED + "No random critical hits");
+			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("item.tooltip.weapon_special.15"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.tooltip.weapon_special.16"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.weapon_special.17"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.weapon_special.18"));
 		}
 
 		if(this == ModItems.wood_gavel) {
-			list.add("Thunk!");
+			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.19"));
 		}
 		if(this == ModItems.lead_gavel) {
-			list.add("You are hereby sentenced to lead poisoning.");
+			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.20"));
 		}
 		if(this == ModItems.diamond_gavel) {
-			list.add("The joke! It makes sense now!!");
+			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.21"));
 			list.add("");
-			list.add(EnumChatFormatting.BLUE + "Deals as much damage as it needs to.");
+			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.weapon_special.22"));
 		}
 	}
 

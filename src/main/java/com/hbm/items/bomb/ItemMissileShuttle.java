@@ -1,5 +1,7 @@
 package com.hbm.items.bomb;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,12 +12,12 @@ public class ItemMissileShuttle extends Item {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add("Tonite, on bo''om gear:");
-		list.add("James huffs leaded gasoline and");
-		list.add("goes insane, Richard spends the");
-		list.add("entire budget on a broken .PNG,");
-		list.add("And I forget to set the infinite");
-		list.add("Water tanks on our RBMK to flow");
-		list.add("out, blowing up our entire base");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_missile_shuttle.1"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_missile_shuttle.2"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_missile_shuttle.3"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_missile_shuttle.4"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_missile_shuttle.5"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_missile_shuttle.6"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_missile_shuttle.7"));
 	}
 }

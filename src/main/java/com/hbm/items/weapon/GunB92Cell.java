@@ -3,6 +3,7 @@ package com.hbm.items.weapon;
 import java.util.List;
 
 import com.hbm.items.ModItems;
+import com.hbm.util.i18n.I18nUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -36,13 +37,13 @@ public class GunB92Cell extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add("Draws energy from the B92, allowing you to");
-		list.add("reload it an additional 25 times.");
-		list.add("The cell will permanently hold its charge,");
-		list.add("it is not meant to be used as a battery enhancement");
-		list.add("for the B92, but rather as a bomb.");
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.1"));
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.2"));
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.3"));
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.4"));
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.5"));
 		list.add("");
-		list.add("Charges: " + getPower(itemstack) + " / 25");
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.6", getPower(itemstack)));
 	}
 
 	private static int getPower(ItemStack stack) {

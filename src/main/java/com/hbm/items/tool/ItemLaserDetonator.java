@@ -15,6 +15,7 @@ import com.hbm.main.NTMSounds;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toclient.PlayerInformPacket;
 import com.hbm.util.ChatBuilder;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -29,7 +30,7 @@ public class ItemLaserDetonator extends Item implements IHoldableWeapon {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add("Aim & click to detonate!");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_laser_detonator.1"));
 	}
 
 	@Override

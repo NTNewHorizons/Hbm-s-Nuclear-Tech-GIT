@@ -45,7 +45,7 @@ public class ItemPollutionDetector extends Item implements IBauble {
 		PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start(I18nUtil.resolveKey("pollution.soot") + ": " + soot).color(EnumChatFormatting.YELLOW).flush(), 100, 4000), (EntityPlayerMP) entity);
 		PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start(I18nUtil.resolveKey("pollution.poison") + ": " + poison).color(EnumChatFormatting.YELLOW).flush(), 101, 4000), (EntityPlayerMP) entity);
 		PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start(I18nUtil.resolveKey("pollution.heavymetal") + ": " + heavymetal).color(EnumChatFormatting.YELLOW).flush(), 102, 4000), (EntityPlayerMP) entity);
-		//PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("Fallout: " + fallout).color(EnumChatFormatting.YELLOW).flush(), 103, 4000), (EntityPlayerMP) entity);
+		//PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.startTranslation("item.message.item_pollution_detector.1", fallout).color(EnumChatFormatting.YELLOW).flush(), 103, 4000), (EntityPlayerMP) entity);
 	}
 
 	@Override

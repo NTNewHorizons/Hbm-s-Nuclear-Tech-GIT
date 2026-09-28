@@ -3,6 +3,7 @@ package com.hbm.items.armor;
 import java.util.List;
 
 import com.hbm.handler.ArmorModHandler;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,14 +22,14 @@ public class ItemModMorningGlory extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.LIGHT_PURPLE + "5% chance to apply resistance when hit, wither immunity");
+		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_morning_glory.1"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.LIGHT_PURPLE + "  " + stack.getDisplayName() + " (5% for resistance, wither immunity)");
+		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_morning_glory.2", stack.getDisplayName()));
 	}
 	
 	@Override

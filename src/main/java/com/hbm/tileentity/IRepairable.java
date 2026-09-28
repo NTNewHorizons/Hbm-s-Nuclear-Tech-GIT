@@ -67,11 +67,11 @@ public interface IRepairable {
 		if(materials == null) return;
 
 		List<String> text = new ArrayList<>();
-		text.add(EnumChatFormatting.GOLD + "Repair with:");
+		text.add(I18nUtil.resolveKey("overlay.irepairable.s_repair_with", EnumChatFormatting.GOLD));
 
 		ItemStack held = Minecraft.getMinecraft().thePlayer.getHeldItem();
 		if(held == null || !(held.getItem() instanceof ItemBlowtorch)) {
-			text.add("Tool: Blowtorch");
+			text.add(I18nUtil.resolveKey("overlay.irepairable.tool_blowtorch"));
 		}
 
 		for(AStack stack : materials) {
@@ -79,7 +79,7 @@ public interface IRepairable {
 				ItemStack display = stack.extractForCyclingDisplay(20);
 				text.add("- " + display.getDisplayName() + " x" + display.stackSize);
 			} catch(Exception ex) {
-				text.add(EnumChatFormatting.RED + "- ERROR");
+				text.add(I18nUtil.resolveKey("overlay.irepairable.s_error", EnumChatFormatting.RED));
 			}
 		}
 

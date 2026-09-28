@@ -160,8 +160,8 @@ public class MachineConveyorPress extends BlockDummyable implements IConveyorBel
 		TileEntityConveyorPress press = (TileEntityConveyorPress) te;
 		List<String> text = new ArrayList();
 
-		text.add(BobMathUtil.getShortNumber(press.power) + "HE / " + BobMathUtil.getShortNumber(press.maxPower) + "HE");
-		text.add("Installed stamp: " + ((press.syncStack == null || press.syncStack.getItem() == null) ? (EnumChatFormatting.RED + "NONE") : press.syncStack.getDisplayName()));
+		text.add(I18nUtil.resolveKey("overlay.machine_conveyor_press.s_he_s_he", BobMathUtil.getShortNumber(press.power), BobMathUtil.getShortNumber(press.maxPower)));
+		text.add(I18nUtil.resolveKey("overlay.machine_conveyor_press.installed_stamp_s", ((press.syncStack == null || press.syncStack.getItem() == null) ? (EnumChatFormatting.RED + "NONE") : press.syncStack.getDisplayName())));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

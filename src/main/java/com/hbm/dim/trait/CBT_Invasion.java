@@ -34,6 +34,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData {
 
@@ -101,7 +102,7 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 			if(!isInvading && !warningPlayed) {
 				warningPlayed = true;
 				MainRegistry.proxy.me().playSound("hbm:alarm.ping", 10F, 1F);
-				MainRegistry.proxy.me().addChatComponentMessage(new ChatComponentText("Incoming Invasion!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				MainRegistry.proxy.me().addChatComponentMessage(new ChatComponentTranslation("chat.cbt_invasion.incoming_invasion").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			}
 				
 			if(rand.nextInt(Math.max(1, 5 - wave)) == 0 && isInvading) {
@@ -317,7 +318,7 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 			for(Object obj : entity.worldObj.playerEntities) {
 				if(obj instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) obj;
-					player.addChatComponentMessage(new ChatComponentText("The Invasion Is Over!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.cbt_invasion.the_invasion_is_over").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 				}
 			}
 
@@ -410,6 +411,6 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 
 	@Override
 	public IChatComponent func_145748_c_() {
-		return new ChatComponentText("Wave " + wave);
+		return new ChatComponentTranslation("chat.cbt_invasion.wave_s", wave);
 	}
 }

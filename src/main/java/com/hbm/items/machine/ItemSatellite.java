@@ -23,11 +23,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.DimensionManager;
 import org.lwjgl.input.Keyboard;
 
@@ -148,7 +148,7 @@ public class ItemSatellite extends ItemCustomMissilePart implements ISatChip, IG
 
 			XSatelliteRegistry.orbit(targetWorld, stack, getFreq(stack), player.posX, player.posY, player.posZ);
 
-			player.addChatMessage(new ChatComponentText("Satellite launched successfully!"));
+			player.addChatMessage(new ChatComponentTranslation("item.message.item_satellite.1"));
 		}
 
 		stack.stackSize--;

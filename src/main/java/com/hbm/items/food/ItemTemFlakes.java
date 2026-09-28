@@ -1,5 +1,7 @@
 package com.hbm.items.food;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -39,15 +41,15 @@ public class ItemTemFlakes extends ItemFood {
 	{
 		if(itemstack.getItemDamage() == 0)
 		{
-			list.add("Heals 2HP DISCOUNT FOOD OF TEM!!!");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tem_flakes.1"));
 		}
 		if(itemstack.getItemDamage() == 1)
 		{
-			list.add("Heals 2HP food of tem");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tem_flakes.2"));
 		}
 		if(itemstack.getItemDamage() == 2)
 		{
-			list.add("Heals food of tem (expensiv)");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tem_flakes.3"));
 		}
 	}
 

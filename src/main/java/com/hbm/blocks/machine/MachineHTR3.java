@@ -129,11 +129,11 @@ public class MachineHTR3 extends BlockDummyable implements ILookOverlay, IToolti
 		} else {
 			for(int i = 0; i < thruster.tanks.length; i++) {
 				FluidTank tank = thruster.tanks[i];
-				text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + tank.getTankType().getLocalizedName() + ": " + tank.getFill() + "/" + tank.getMaxFill() + "mB");
+				text.add(I18nUtil.resolveKey("overlay.machine_htr3.s_s_s_s_sm_b", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, tank.getTankType().getLocalizedName(), tank.getFill(), tank.getMaxFill()));
 			}
 
 			if(world.getTileEntity(x, y, z) instanceof TileEntityProxyCombo) {
-				text.add("Connect to PWR from here");
+				text.add(I18nUtil.resolveKey("overlay.machine_htr3.connect_to_pwr_from_here"));
 			}
 		}
 

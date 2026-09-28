@@ -11,6 +11,7 @@ import com.hbm.render.icon.TextureAtlasSpriteMutatable;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.function.Function;
 import com.hbm.util.function.Function.*;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -138,22 +139,22 @@ public class ItemWatzPellet extends ItemEnumMulti {
 		
 		EnumWatzType num = EnumUtil.grabEnumSafely(EnumWatzType.class, stack.getItemDamage());
 		
-		list.add(EnumChatFormatting.GREEN + "Depletion: " + String.format(Locale.US, "%.1f", getDurabilityForDisplay(stack) * 100D) + "%");
+		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_pile_rod_m_k2.2", String.format(Locale.US, "%.1f", getDurabilityForDisplay(stack) * 100D)));
 		
 		String color = EnumChatFormatting.GOLD + "";
 		String reset = EnumChatFormatting.RESET + "";
 
 		if(num.passive > 0){
-			list.add(color + "Base fission rate: " + reset + num.passive);
-			list.add(EnumChatFormatting.RED + "Self-igniting!");
+			list.add(color + I18nUtil.resolveKey("item.tooltip.item_watz_pellet.1", reset, num.passive));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_watz_pellet.2"));
 		}
-		if(num.heatEmission > 0) list.add(color + "Heat per flux: " + reset + num.heatEmission + " TU");
+		if(num.heatEmission > 0) list.add(color + I18nUtil.resolveKey("item.tooltip.item_p_w_r_fuel.1", reset, num.heatEmission));
 		if(num.burnFunc != null) {
-			list.add(color + "Reaction function: " + reset + num.burnFunc.getLabelForFuel());
-			list.add(color + "Fuel type: " + reset + num.burnFunc.getDangerFromFuel());
+			list.add(color + I18nUtil.resolveKey("item.tooltip.item_p_w_r_fuel.2", reset, num.burnFunc.getLabelForFuel()));
+			list.add(color + I18nUtil.resolveKey("item.tooltip.item_p_w_r_fuel.3", reset, num.burnFunc.getDangerFromFuel()));
 		}
-		if(num.heatDiv != null) list.add(color + "Thermal multiplier: " + reset + num.heatDiv.getLabelForFuel() + " TU⁻¹");
-		if(num.absorbFunc != null) list.add(color + "Flux capture: " + reset + num.absorbFunc.getLabelForFuel());
+		if(num.heatDiv != null) list.add(color + I18nUtil.resolveKey("item.tooltip.item_watz_pellet.3", reset, num.heatDiv.getLabelForFuel()));
+		if(num.absorbFunc != null) list.add(color + I18nUtil.resolveKey("item.tooltip.item_watz_pellet.4", reset, num.absorbFunc.getLabelForFuel()));
 	}
 
 	@Override

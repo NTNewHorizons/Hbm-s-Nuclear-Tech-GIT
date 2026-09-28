@@ -16,6 +16,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 @SideOnly(Side.CLIENT)
 public class GUIPump extends GuiScreen {
@@ -42,7 +43,7 @@ public class GUIPump extends GuiScreen {
 		textPlacementPriority.setText("" + pump.bufferSize);
 		textPlacementPriority.setMaxStringLength(5);
 
-		buttonPressure = new GuiButton(0, this.width / 2 - 50, 100, 90, 20, pressure + " PU");
+		buttonPressure = new GuiButton(0, this.width / 2 - 50, 100, 90, 20, pressure + I18nUtil.resolveKey("gui.guipump.pu"));
 
 		buttonPriority = new GuiButton(1, this.width / 2 + 50, 100, 90, 20, pump.priority.name());
 	}

@@ -14,6 +14,7 @@ import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
 import com.hbm.potion.HbmPotion;
+import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.fluidmk2.IFillableItem;
 import net.minecraft.entity.EntityLivingBase;
@@ -376,63 +377,63 @@ public class ItemSyringe extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(this == ModItems.syringe_antidote) {
-			list.add("Removes all potion effects");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.1"));
 		}
 		if(this == ModItems.syringe_awesome) {
-			list.add("Every good effect for 50 seconds");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.2"));
 		}
 		if(this == ModItems.syringe_metal_medx) {
-			list.add("Resistance III for 4 minutes");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.3"));
 		}
 		if(this == ModItems.syringe_metal_psycho) {
-			list.add("Resistance I for 2 minutes");
-			list.add("Strength I for 2 minutes");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.4"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.5"));
 		}
 		if(this == ModItems.syringe_metal_stimpak) {
-			list.add("Heals 2.5 hearts");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.6"));
 		}
 		if(this == ModItems.syringe_metal_super) {
-			list.add("Heals 25 hearts");
-			list.add("Slowness I for 10 seconds");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.7"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.8"));
 		}
 		if(this == ModItems.syringe_poison) {
-			list.add("Deadly");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.9"));
 		}
 		if(this == ModItems.med_bag) {
-			list.add("Full heal, regardless of max health");
-			list.add("Removes negative effects");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.10"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.11"));
 		}
 		if(this == ModItems.radaway) {
-			list.add("Removes 140 RAD");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.12"));
 		}
 		if(this == ModItems.radaway_strong) {
-			list.add("Removes 350 RAD");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.13"));
 		}
 		if(this == ModItems.radaway_flush) {
-			list.add("Removes 1000 RAD");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.14"));
 		}
 		if(this == ModItems.syringe_taint) {
-			list.add("Tainted I for 60 seconds");
-			list.add("Nausea I for 5 seconds");
-			list.add("Cloud damage + taint = tainted heart effect");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.15"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.16"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.17"));
 		}
 		if(this == ModItems.gas_mask_filter) {
-			list.add("Repairs worn gas mask");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.18"));
 		}
 		if(this == ModItems.gas_mask_filter_mono) {
-			list.add("Repairs worn monoxide mask");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.19"));
 		}
 		if(this == ModItems.jetpack_tank) {
-			list.add("Fills worn jetpack with up to 1000mB of kerosene");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.20"));
 		}
 		if(this == ModItems.lox_tank) {
-			list.add("Fills a worn PLSS with 1000mB of oxygen");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.21"));
 		}
 		if(this == ModItems.gun_kit_1) {
-			list.add("Repairs all weapons in hotbar by 10%");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.22"));
 		}
 		if(this == ModItems.gun_kit_2) {
-			list.add("Repairs all weapons in hotbar by 50%");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_syringe.23"));
 		}
 
 		if(this == ModItems.syringe_mkunicorn) {

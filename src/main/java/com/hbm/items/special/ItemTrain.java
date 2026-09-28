@@ -11,6 +11,7 @@ import com.hbm.entity.train.TrainCargoTramTrailer;
 import com.hbm.items.ItemEnumMulti;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,12 +32,12 @@ public class ItemTrain extends ItemEnumMulti {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		EnumTrainType train = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 
-		if(train.engine != null) list.add(EnumChatFormatting.GREEN + "Engine: " + EnumChatFormatting.RESET + train.engine);
-		list.add(EnumChatFormatting.GREEN + "Gauge: " + EnumChatFormatting.RESET + train.gauge);
-		if(train.maxSpeed != null) list.add(EnumChatFormatting.GREEN + "Max Speed: " + EnumChatFormatting.RESET + train.maxSpeed);
-		if(train.acceleration != null) list.add(EnumChatFormatting.GREEN + "Acceleration: " + EnumChatFormatting.RESET + train.acceleration);
-		if(train.brakeThreshold != null) list.add(EnumChatFormatting.GREEN + "Engine Brake Threshold: " + EnumChatFormatting.RESET + train.brakeThreshold);
-		if(train.parkingBrake != null) list.add(EnumChatFormatting.GREEN + "Parking Brake: " + EnumChatFormatting.RESET + train.parkingBrake);
+		if(train.engine != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.1", EnumChatFormatting.RESET, train.engine));
+		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.2", EnumChatFormatting.RESET, train.gauge));
+		if(train.maxSpeed != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.3", EnumChatFormatting.RESET, train.maxSpeed));
+		if(train.acceleration != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.4", EnumChatFormatting.RESET, train.acceleration));
+		if(train.brakeThreshold != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.5", EnumChatFormatting.RESET, train.brakeThreshold));
+		if(train.parkingBrake != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_train.6", EnumChatFormatting.RESET, train.parkingBrake));
 	}
 
 	public static enum EnumTrainType {

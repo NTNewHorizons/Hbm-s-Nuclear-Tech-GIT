@@ -1,5 +1,7 @@
 package com.hbm.items.machine;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +34,7 @@ public class ItemLens extends Item {
 		long damage = getLensDamage(stack);
 		int percent = (int) ((maxDamage - damage) * 100 / maxDamage);
 		
-		list.add("Durability: " + (maxDamage - damage) + "/" + maxDamage + " (" + percent + "%)");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_lens.1", (maxDamage - damage), maxDamage, percent));
 	}
 	
 	public static void setLensDamage(ItemStack stack, long damage) {

@@ -31,13 +31,13 @@ public class ItemModHeavyBoots extends ItemArmorMod {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.BLUE + "Increases fall speed in low gravity");
-		list.add(EnumChatFormatting.BLUE + "Activated by crouching");
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.1"));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.2"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
-		list.add(EnumChatFormatting.GOLD + "Can be worn on its own!");
-		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + "We take no responsibility for any deaths that may");
-		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + "occur while using these boots without a space suit.");
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.3"));
+		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.4"));
+		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.5"));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

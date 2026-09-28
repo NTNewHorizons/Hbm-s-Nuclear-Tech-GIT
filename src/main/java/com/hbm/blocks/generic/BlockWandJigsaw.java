@@ -173,13 +173,13 @@ public class BlockWandJigsaw extends BlockContainer implements IBlockSideRotatio
 
 		List<String> text = new ArrayList<String>();
 
-		text.add(EnumChatFormatting.GRAY + "Target pool: " + EnumChatFormatting.RESET + jigsaw.pool);
-		text.add(EnumChatFormatting.GRAY + "Name: " + EnumChatFormatting.RESET + jigsaw.name);
-		text.add(EnumChatFormatting.GRAY + "Target name: " + EnumChatFormatting.RESET + jigsaw.target);
-		text.add(EnumChatFormatting.GRAY + "Turns into: " + EnumChatFormatting.RESET + GameRegistry.findUniqueIdentifierFor(jigsaw.replaceBlock).toString());
-		text.add(EnumChatFormatting.GRAY + "   with meta: " + EnumChatFormatting.RESET + jigsaw.replaceMeta);
-		text.add(EnumChatFormatting.GRAY + "Selection/Placement priority: " + EnumChatFormatting.RESET + jigsaw.selectionPriority + "/" + jigsaw.placementPriority);
-		text.add(EnumChatFormatting.GRAY + "Joint type: " + EnumChatFormatting.RESET + (jigsaw.isRollable ? "Rollable" : "Aligned"));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_target_pool_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.pool));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_name_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.name));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_target_name_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.target));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_turns_into_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, GameRegistry.findUniqueIdentifierFor(jigsaw.replaceBlock).toString()));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_with_meta_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.replaceMeta));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_selection_placement_priority_s_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.selectionPriority, jigsaw.placementPriority));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_joint_type_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, (jigsaw.isRollable ? "Rollable" : "Aligned")));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
@@ -305,7 +305,7 @@ public class BlockWandJigsaw extends BlockContainer implements IBlockSideRotatio
 			textPlacementPriority = new GuiTextField(fontRendererObj, this.width / 2 - 40, 150, 90, 20);
 			textPlacementPriority.setText("" + jigsaw.placementPriority);
 
-			jointToggle = new GuiButton(0, this.width / 2 + 60, 150, 90, 20, jigsaw.isRollable ? "Rollable" : "Aligned");
+			jointToggle = new GuiButton(0, this.width / 2 + 60, 150, 90, 20, jigsaw.isRollable ? I18nUtil.resolveKey("gui.block_wand_jigsaw.rollable") : I18nUtil.resolveKey("gui.block_wand_jigsaw.aligned"));
 		}
 
 		@Override

@@ -27,6 +27,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class MachineBigAssTank extends BlockDummyable implements IPersistentInfoProvider {
 
@@ -106,7 +107,7 @@ public class MachineBigAssTank extends BlockDummyable implements IPersistentInfo
 
 					trialEntity.tank.setTankType(type);
 					trialEntity.markDirty();
-					player.addChatComponentMessage(new ChatComponentText("Changed type to ").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_big_ass_tank.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 				}
 			}
 			return true;
@@ -148,6 +149,6 @@ public class MachineBigAssTank extends BlockDummyable implements IPersistentInfo
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		FluidTank tank = new FluidTank(Fluids.NONE, 0);
 		tank.readFromNBT(persistentTag, "tank");
-		list.add(EnumChatFormatting.YELLOW + "" + tank.getFill() + "/" + tank.getMaxFill() + "mB " + tank.getTankType().getLocalizedName());
+		list.add(I18nUtil.resolveKey("tooltip.machine_big_ass_tank.s_s_sm_b_s", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
 	}
 }

@@ -220,7 +220,7 @@ public class MachineICFController extends BlockContainer implements ILookOverlay
 		if(!(te instanceof TileEntityICFController)) return;
 		TileEntityICFController icf = (TileEntityICFController) te;
 		List<String> text = new ArrayList();
-		text.add(BobMathUtil.getShortNumber(icf.getPower()) + "/" + BobMathUtil.getShortNumber(icf.getMaxPower()) + "HE");
+		text.add(I18nUtil.resolveKey("overlay.machine_icfcontroller.s_s_he", BobMathUtil.getShortNumber(icf.getPower()), BobMathUtil.getShortNumber(icf.getMaxPower())));
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 }

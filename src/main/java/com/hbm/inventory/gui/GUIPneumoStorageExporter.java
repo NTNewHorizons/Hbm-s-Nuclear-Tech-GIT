@@ -11,6 +11,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIPneumoStorageExporter extends GuiInfoContainer {
 	
@@ -29,11 +30,11 @@ public class GUIPneumoStorageExporter extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
 		
-		this.drawCustomInfoStat(x, y, guiLeft + 142, guiTop + 16, 18, 18, x, y, "Request mode: " + EnumChatFormatting.YELLOW + (this.importer.continuousRequest ? "Continuous" : "By request"));
+		this.drawCustomInfoStat(x, y, guiLeft + 142, guiTop + 16, 18, 18, x, y, I18nUtil.resolveKey("gui.guipneumo_storage_exporter.request_mode") + EnumChatFormatting.YELLOW + (this.importer.continuousRequest ? I18nUtil.resolveKey("gui.guipneumo_storage_exporter.continuous") : I18nUtil.resolveKey("gui.guipneumo_storage_exporter.by_request")));
 		
-		this.drawCustomInfoStat(x, y, guiLeft + 142, guiTop + 34, 18, 18, x, y, "Request type: " + EnumChatFormatting.YELLOW + (
-				this.importer.requestMode == this.importer.MODE_AS_MUCH_AS_POSSIBLE ? "As much as possible" : 
-				this.importer.requestMode == this.importer.MODE_FULL_STACK ? "Only full stacks" : "Only full requests"
+		this.drawCustomInfoStat(x, y, guiLeft + 142, guiTop + 34, 18, 18, x, y, I18nUtil.resolveKey("gui.guipneumo_storage_exporter.request_type") + EnumChatFormatting.YELLOW + (
+				this.importer.requestMode == this.importer.MODE_AS_MUCH_AS_POSSIBLE ? I18nUtil.resolveKey("gui.guipneumo_storage_exporter.as_much_as_possible") : 
+				this.importer.requestMode == this.importer.MODE_FULL_STACK ? I18nUtil.resolveKey("gui.guipneumo_storage_exporter.only_full_stacks") : I18nUtil.resolveKey("gui.guipneumo_storage_exporter.only_full_requests")
 		));
 		
 		if(this.importer.rorConfiguredMode) {
@@ -45,7 +46,7 @@ public class GUIPneumoStorageExporter extends GuiInfoContainer {
 			}
 			this.drawCustomInfoStat(x, y, guiLeft + 142, guiTop + 52, 18, 18, x, y, label);
 		} else {
-			this.drawCustomInfoStat(x, y, guiLeft + 142, guiTop + 52, 18, 18, x, y, "Filter type: " + EnumChatFormatting.YELLOW + "Manually configured");
+			this.drawCustomInfoStat(x, y, guiLeft + 142, guiTop + 52, 18, 18, x, y, I18nUtil.resolveKey("gui.guipneumo_storage_exporter.filter_type") + EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guipneumo_storage_exporter.manually_configured"));
 		}
 	}
 

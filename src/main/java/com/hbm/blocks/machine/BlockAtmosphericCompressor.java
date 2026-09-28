@@ -82,8 +82,8 @@ public class BlockAtmosphericCompressor extends BlockDummyable implements ILookO
 		if(!CelestialBody.hasTrait(world, CBT_Atmosphere.class)) {
 			text.add(((EnumChatFormatting.RED + "ERROR: ")) + EnumChatFormatting.RESET + I18nUtil.resolveKey("CANNOT COLLECT IN VACUUM"));
 		} else {
-			text.add((tower.power < tower.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN) + "Power: " + BobMathUtil.getShortNumber(tower.power) + "HE");
-			text.add(((EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET + I18nUtil.resolveKey("hbmfluid." + tower.tank.getTankType().getName().toLowerCase()) + ": " + tower.tank.getFill() + "/" + tower.tank.getMaxFill() + "mB");
+			text.add(I18nUtil.resolveKey("overlay.block_atmospheric_compressor.s_power_s_he", (tower.power < tower.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(tower.power)));
+			text.add(I18nUtil.resolveKey("overlay.block_atmospheric_compressor.s_s_s_s_sm_b", ((EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, I18nUtil.resolveKey("hbmfluid." + tower.tank.getTankType().getName().toLowerCase()), tower.tank.getFill(), tower.tank.getMaxFill()));
 		}
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
@@ -131,7 +131,7 @@ public class BlockAtmosphericCompressor extends BlockDummyable implements ILookO
 			FluidType type = ((IItemFluidIdentifier) player.getHeldItem().getItem()).getType(world, x, y, z, player.getHeldItem());
 			if(compressor.switchGas(type)) {
 				compressor.markDirty();
-				player.addChatComponentMessage(new ChatComponentText("Changed type to ").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_atmospheric_compressor.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 			}
 			
 			return true;

@@ -14,6 +14,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import com.hbm.util.i18n.I18nUtil;
 
 public abstract class EntityRailCarRidable extends EntityRailCarCargo {
 	
@@ -286,10 +287,10 @@ public abstract class EntityRailCarRidable extends EntityRailCarCargo {
 	@SideOnly(Side.CLIENT)
 	public void printHook(RenderGameOverlayEvent.Pre event, World world, int x, int y, int z) {
 		List<String> text = new ArrayList();
-		/*text.add("LTU: " + this.ltu);
-		text.add("Front: " + this.coupledFront);
-		text.add("Back: " + this.coupledBack);*/
-		text.add("Nearest seat: " + this.getNearestSeat(MainRegistry.proxy.me()));
+		/*text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.ltu_s", this.ltu));
+		text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.front_s", this.coupledFront));
+		text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.back_s", this.coupledBack));*/
+		text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.nearest_seat_s", this.getNearestSeat(MainRegistry.proxy.me())));
 		//ILookOverlay.printGeneric(event, this.getClass().getSimpleName() + " " + this.hashCode(), 0xffff00, 0x404000, text);
 	}
 }

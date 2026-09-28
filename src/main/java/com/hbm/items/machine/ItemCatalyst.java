@@ -1,5 +1,7 @@
 package com.hbm.items.machine;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,8 +39,8 @@ public class ItemCatalyst extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
-		list.add("Adds spice to the core.");
-		list.add("Look at all those colors!");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_catalyst.1"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_catalyst.2"));
 	}
 	
 	public static long getPowerAbs(ItemStack stack) {

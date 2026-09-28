@@ -9,6 +9,7 @@ import com.hbm.entity.logic.EntityNukeExplosionMK3;
 import com.hbm.entity.projectile.EntityB92Beam;
 import com.hbm.interfaces.Spaghetti;
 import com.hbm.main.MainRegistry;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -183,25 +184,25 @@ public class GunB92 extends Item {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
 		if(MainRegistry.polaroidID == 11) {
-			list.add("A weapon that came from the stars.");
-			list.add("It screams for murder.");
+			list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.1"));
+			list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.2"));
 		} else if(MainRegistry.polaroidID == 18) {
-			list.add("One could turn the gun into a bomb");
-			list.add("by overloading the capacitors...");
+			list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.3"));
+			list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.4"));
 		} else {
-			list.add("Stay away from me compootur!");
+			list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.5"));
 		}
 		list.add("");
-		list.add("Projectiles explode on impact.");
-		list.add("Sneak while holding the right mouse button");
-		list.add("to charge additional energy.");
-		list.add("The more energy is stored, the less accurate");
-		list.add("the beams become.");
-		list.add("Only up to ten charges may be stored.");
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.6"));
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.7"));
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.8"));
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.9"));
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.10"));
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.11"));
 		list.add("");
-		list.add("\"It's nerf or nothing!\"");
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.12"));
 		list.add("");
-		list.add("[LEGENDARY WEAPON]");
+		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.13"));
 	}
 
 	@Override

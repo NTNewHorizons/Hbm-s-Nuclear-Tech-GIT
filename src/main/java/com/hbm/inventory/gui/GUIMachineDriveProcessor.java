@@ -13,6 +13,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIMachineDriveProcessor extends GuiInfoContainer {
 
@@ -34,8 +35,8 @@ public class GUIMachineDriveProcessor extends GuiInfoContainer {
 		
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 18, 16, 52, machine.power, machine.maxPower);
         
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 49, guiTop + 17, 18, 18, mouseX, mouseY, new String[] {"Clone drive"} );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 38, guiTop + 61, 18, 18, mouseX, mouseY, new String[] {"Start drive processing"} );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 49, guiTop + 17, 18, 18, mouseX, mouseY, new String[] {I18nUtil.resolveKey("gui.guimachine_drive_processor.clone_drive")} );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 38, guiTop + 61, 18, 18, mouseX, mouseY, new String[] {I18nUtil.resolveKey("gui.guimachine_drive_processor.start_drive_processing")} );
 	}
 
 	@Override

@@ -26,6 +26,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class BlockTaint extends Block implements ITooltipProvider {
 
@@ -114,6 +115,6 @@ public class BlockTaint extends Block implements ITooltipProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add("DO NOT TOUCH, BREATHE OR STARE AT.");
+		list.add(I18nUtil.resolveKey("tooltip.block_taint.do_not_touch_breathe_or_stare_at"));
 	}
 }

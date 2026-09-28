@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModItems;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,10 +26,10 @@ public class ItemModPads extends ItemArmorMod {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
 		if(damageMod != 1F)
-			list.add(EnumChatFormatting.RED + "-" + Math.round((1F - damageMod) * 100) + "% fall damage");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_mod_pads.1", Math.round((1F - damageMod) * 100)));
 		
 		if(this == ModItems.pads_static)
-			list.add(EnumChatFormatting.DARK_PURPLE + "Passively charges electric armor when walking");
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_pads.2"));
 		
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
@@ -38,9 +39,9 @@ public class ItemModPads extends ItemArmorMod {
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 		
 		if(this == ModItems.pads_static)
-			list.add(EnumChatFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (-" + Math.round((1F - damageMod) * 100) + "% fall dmg / passive charge)");
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_pads.3", stack.getDisplayName(), Math.round((1F - damageMod) * 100)));
 		else
-			list.add(EnumChatFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (-" + Math.round((1F - damageMod) * 100) + "% fall dmg)");
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_pads.4", stack.getDisplayName(), Math.round((1F - damageMod) * 100)));
 	}
 
 	@Override

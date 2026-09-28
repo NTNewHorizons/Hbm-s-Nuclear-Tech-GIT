@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class MachineBatterySocket extends BlockDummyable implements ITooltipProvider, ILookOverlay {
 
@@ -82,7 +83,7 @@ public class MachineBatterySocket extends BlockDummyable implements ITooltipProv
 		if(socket.syncStack == null) return;
 		
 		List<String> text = new ArrayList();
-		text.add(BobMathUtil.getShortNumber(socket.syncPower) + " / " + BobMathUtil.getShortNumber(socket.syncMaxPower) + "HE");
+		text.add(I18nUtil.resolveKey("overlay.machine_battery_socket.s_s_he", BobMathUtil.getShortNumber(socket.syncPower), BobMathUtil.getShortNumber(socket.syncMaxPower)));
 		
 		double percent = (double) socket.syncPower / socket.syncMaxPower;
 		int charge = (int) Math.floor(percent * 10_000D);

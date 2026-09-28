@@ -44,8 +44,8 @@ public class BlockAirScrubber extends BlockDummyable implements ILookOverlay, IT
 
 		List<String> text = new ArrayList<>();
 
-		text.add((scrubber.getPower() <= 200 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN) + "Power: " + BobMathUtil.getShortNumber(scrubber.getPower()) + "HE");
-		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + scrubber.tank.getTankType().getLocalizedName() + ": " + scrubber.tank.getFill() + "/" + scrubber.tank.getMaxFill() + "mB");
+		text.add(I18nUtil.resolveKey("overlay.block_air_scrubber.s_power_s_he", (scrubber.getPower() <= 200 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(scrubber.getPower())));
+		text.add(I18nUtil.resolveKey("overlay.block_air_scrubber.s_s_s_s_sm_b", EnumChatFormatting.RED, EnumChatFormatting.RESET, scrubber.tank.getTankType().getLocalizedName(), scrubber.tank.getFill(), scrubber.tank.getMaxFill()));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

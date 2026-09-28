@@ -59,7 +59,7 @@ public class MachineDrain extends BlockDummyable implements ILookOverlay {
 				FluidType type = ((IItemFluidIdentifier) player.getHeldItem().getItem()).getType(world, pos[0], pos[1], pos[2], player.getHeldItem());
 				drain.tank.setTankType(type);
 				drain.markDirty();
-				player.addChatComponentMessage(new ChatComponentText("Changed type to ").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_drain.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 				
 				return true;
 			}
@@ -80,7 +80,7 @@ public class MachineDrain extends BlockDummyable implements ILookOverlay {
 		
 		TileEntityMachineDrain drain = (TileEntityMachineDrain) te;
 		List<String> text = new ArrayList();
-		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + drain.tank.getTankType().getLocalizedName() + ": " + drain.tank.getFill() + "/" + drain.tank.getMaxFill() + "mB");
+		text.add(I18nUtil.resolveKey("overlay.machine_drain.s_s_s_s_sm_b", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, drain.tank.getTankType().getLocalizedName(), drain.tank.getFill(), drain.tank.getMaxFill()));
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 }

@@ -69,8 +69,8 @@ public class RadioTorchCounter extends RadioTorchBase {
 
 			for(int i = 0; i < 3; i++) {
 				if(!radio.channel[i].isEmpty()) {
-					text.add(EnumChatFormatting.AQUA + "Freq " + (i + 1) + ": " + radio.channel[i]);
-					text.add(EnumChatFormatting.RED + "Signal " + (i + 1) + ": " + radio.lastCount[i]);
+					text.add(I18nUtil.resolveKey("overlay.radio_torch_counter.s_freq_s_s", EnumChatFormatting.AQUA, (i + 1), radio.channel[i]));
+					text.add(I18nUtil.resolveKey("overlay.radio_torch_counter.s_signal_s_s", EnumChatFormatting.RED, (i + 1), radio.lastCount[i]));
 				}
 			}
 

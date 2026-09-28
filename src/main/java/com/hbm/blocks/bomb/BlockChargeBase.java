@@ -34,6 +34,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public abstract class BlockChargeBase extends BlockContainerBase implements IBomb, IToolable, ITooltipProvider, IFuckingExplode {
 	
@@ -156,9 +157,9 @@ public abstract class BlockChargeBase extends BlockContainerBase implements IBom
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.YELLOW + "Right-click to change timer.");
-		list.add(EnumChatFormatting.YELLOW + "Sneak-click to arm.");
-		list.add(EnumChatFormatting.RED + "Can only be disarmed and removed with defuser.");
+		list.add(I18nUtil.resolveKey("tooltip.block_charge_base.s_right_click_to_change_timer", EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("tooltip.block_charge_base.s_sneak_click_to_arm", EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("tooltip.block_charge_base.s_can_only_be_disarmed_and_removed_with_defuser", EnumChatFormatting.RED));
 	}
 	
 	@Override

@@ -12,6 +12,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIMachineSiren extends GuiContainer {
 	
@@ -36,8 +37,8 @@ public class GUIMachineSiren extends GuiContainer {
 		if(!siren.getCurrentType().name().equals(TrackType.NULL.name())) {
 			int color = siren.getCurrentType().getColor();
 			this.fontRendererObj.drawString(siren.getCurrentType().getTrackTitle(), 46, 28, color);
-			this.fontRendererObj.drawString("Type: " + siren.getCurrentType().getType().name(), 46, 40, color);
-			this.fontRendererObj.drawString("Volume: " + siren.getCurrentType().getVolume(), 46, 52, color);
+			this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guimachine_siren.type_s", siren.getCurrentType().getType().name()), 46, 40, color);
+			this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guimachine_siren.volume_s", siren.getCurrentType().getVolume()), 46, 52, color);
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.entity.logic.EntityNukeExplosionMK5;
 import com.hbm.lib.ModDamageSource;
+import com.hbm.util.i18n.I18nUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -37,7 +38,7 @@ public class ItemUnstable extends Item {
     	if(stack.getItemDamage() != 0)
     		return;
 		
-		list.add("Decay: " + (getTimer(stack) * 100 / timer) + "%");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_unstable.1", (getTimer(stack) * 100 / timer)));
 	}
 	
     public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {

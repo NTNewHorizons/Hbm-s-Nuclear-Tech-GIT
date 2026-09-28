@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIMachinePress extends GuiInfoContainer {
 
@@ -30,7 +31,7 @@ public class GUIMachinePress extends GuiInfoContainer {
 		super.drawScreen(mouseX, mouseY, f);
 
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 25, guiTop + 16, 18, 18, mouseX, mouseY, (press.speed * 100 / press.maxSpeed) + "%");
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 25, guiTop + 34, 18, 18, mouseX, mouseY, (press.burnTime / 200) + " operations left");
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 25, guiTop + 34, 18, 18, mouseX, mouseY, (press.burnTime / 200) + I18nUtil.resolveKey("gui.guimachine_press.operations_left"));
 	}
 
 	@Override

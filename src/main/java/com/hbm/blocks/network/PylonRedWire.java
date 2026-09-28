@@ -13,6 +13,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import java.util.List;
+import com.hbm.util.i18n.I18nUtil;
 
 public class PylonRedWire extends BlockDummyable implements ITooltipProvider {
 
@@ -28,8 +29,8 @@ public class PylonRedWire extends BlockDummyable implements ITooltipProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Single");
-		list.add(EnumChatFormatting.GOLD + "Connection Range: " + EnumChatFormatting.YELLOW + "25m");
+		list.add(I18nUtil.resolveKey("tooltip.pylon_red_wire.s_connection_type_s_single", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("tooltip.pylon_red_wire.s_connection_range_s25m", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
 	}
 	
 	@Override

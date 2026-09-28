@@ -31,6 +31,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class MachineRefinery extends BlockDummyable implements IPersistentInfoProvider, IToolable, ILookOverlay {
 
@@ -98,7 +99,7 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 		for(int i = 0; i < 5; i++) {
 			FluidTank tank = new FluidTank(Fluids.NONE, 0);
 			tank.readFromNBT(persistentTag, "" + i);
-			list.add(EnumChatFormatting.YELLOW + "" + tank.getFill() + "/" + tank.getMaxFill() + "mB " + tank.getTankType().getLocalizedName());
+			list.add(I18nUtil.resolveKey("tooltip.machine_refinery.s_s_sm_b_s", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
 		}
 	}
 

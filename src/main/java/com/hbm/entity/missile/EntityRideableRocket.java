@@ -977,35 +977,35 @@ public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOv
 
 		// Check if the stage can make the journey
 		if(state == RocketState.NEEDSFUEL) {
-			text.add(EnumChatFormatting.RED + "Rocket has no fuel!");
+			text.add(I18nUtil.resolveKey("overlay.entity_rideable_rocket.s_rocket_has_no_fuel", EnumChatFormatting.RED));
 		} else if(canLaunch && !rocket.hasSufficientFuel(from.body, to.body, from.inOrbit, to.inOrbit)) {
-			text.add(EnumChatFormatting.RED + "Rocket can't reach destination!");
+			text.add(I18nUtil.resolveKey("overlay.entity_rideable_rocket.s_rocket_can_t_reach_destination", EnumChatFormatting.RED));
 			canLaunch = false;
 		}
 
 		if(riddenByEntity == null) {
-			text.add("Interact to enter");
+			text.add(I18nUtil.resolveKey("overlay.entity_rideable_rocket.interact_to_enter"));
 		} else if(riddenByEntity != player) {
-			text.add("OCCUPIED");
+			text.add(I18nUtil.resolveKey("overlay.entity_rideable_rocket.occupied"));
 		} else {
 			if(to.inOrbit) {
-				text.add("Destination: ORBITAL STATION");
+				text.add(I18nUtil.resolveKey("overlay.entity_rideable_rocket.destination_orbital_station"));
 			} else if(to.body != null) {
-				text.add("Destination: " + I18nUtil.resolveKey("body." + to.body.name));
+				text.add(I18nUtil.resolveKey("overlay.entity_rideable_rocket.destination_s", I18nUtil.resolveKey("body." + to.body.name)));
 			} else {
-				text.add("Destination: NO DRIVE INSTALLED");
+				text.add(I18nUtil.resolveKey("overlay.entity_rideable_rocket.destination_no_drive_installed"));
 			}
 
 			if(canLaunch) {
-				text.add("JUMP TO LAUNCH");
+				text.add(I18nUtil.resolveKey("overlay.entity_rideable_rocket.jump_to_launch"));
 			} else if(state == RocketState.LANDED) {
-				text.add("Insert next drive to continue");
+				text.add(I18nUtil.resolveKey("overlay.entity_rideable_rocket.insert_next_drive_to_continue"));
 			}
 
 			ItemStack stack = player.getHeldItem();
 			if((state == RocketState.LANDED || state == RocketState.AWAITING) && stack != null && stack.getItem() instanceof ItemVOTVdrive) {
 				if(ItemVOTVdrive.getProcessed(stack)) {
-					text.add("Interact to swap drive");
+					text.add(I18nUtil.resolveKey("overlay.entity_rideable_rocket.interact_to_swap_drive"));
 				}
 			}
 		}

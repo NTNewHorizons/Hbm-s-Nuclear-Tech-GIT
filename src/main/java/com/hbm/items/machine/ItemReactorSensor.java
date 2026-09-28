@@ -7,6 +7,7 @@ import com.hbm.blocks.machine.MachineDishControl;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.TileEntityDishControl;
 import com.hbm.util.ChatBuilder;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.common.Mod;
 import net.minecraft.block.Block;
@@ -84,11 +85,11 @@ public class ItemReactorSensor extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if (itemstack.stackTagCompound != null) {
-			list.add("x: " + itemstack.stackTagCompound.getInteger("x"));
-			list.add("y: " + itemstack.stackTagCompound.getInteger("y"));
-			list.add("z: " + itemstack.stackTagCompound.getInteger("z"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_reactor_sensor.1", itemstack.stackTagCompound.getInteger("x")));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_reactor_sensor.2", itemstack.stackTagCompound.getInteger("y")));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_reactor_sensor.3", itemstack.stackTagCompound.getInteger("z")));
 		} else {
-			list.add("No reactor selected!");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_reactor_sensor.4"));
 		}
 	}
 }

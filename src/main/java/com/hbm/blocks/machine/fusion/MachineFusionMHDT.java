@@ -109,16 +109,16 @@ public class MachineFusionMHDT extends BlockDummyable implements ILookOverlay, I
 		if(!hasPlasma) power /= 2;
 		
 		List<String> text = new ArrayList();
-		text.add(EnumChatFormatting.GREEN + "-> " + (hasPlasma ? EnumChatFormatting.RESET : EnumChatFormatting.GOLD) + BobMathUtil.getShortNumber(turbine.plasmaEnergy) + "TU/t / " + BobMathUtil.getShortNumber(turbine.MINIMUM_PLASMA) + "TU/t");
-		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + BobMathUtil.getShortNumber(!isCool ? 0 : power) + "HE/t");
+		text.add(I18nUtil.resolveKey("overlay.machine_fusion_mhdt.s_s_s_tu_t_s_tu_t", EnumChatFormatting.GREEN, (hasPlasma ? EnumChatFormatting.RESET : EnumChatFormatting.GOLD), BobMathUtil.getShortNumber(turbine.plasmaEnergy), BobMathUtil.getShortNumber(turbine.MINIMUM_PLASMA)));
+		text.add(I18nUtil.resolveKey("overlay.machine_fusion_mhdt.s_s_s_he_t", EnumChatFormatting.RED, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(!isCool ? 0 : power)));
 
 		for(int i = 0; i < turbine.getAllTanks().length; i++) {
 			FluidTank tank = turbine.getAllTanks()[i];
-			text.add((i == 0 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET + tank.getTankType().getLocalizedName() + ": " + tank.getFill() + "/" + tank.getMaxFill() + "mB");
+			text.add(I18nUtil.resolveKey("overlay.machine_fusion_mhdt.s_s_s_s_sm_b", (i == 0 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, tank.getTankType().getLocalizedName(), tank.getFill(), tank.getMaxFill()));
 		}
 
-		if(turbine.plasmaEnergy > 0 && !hasPlasma) text.add("&[" + (BobMathUtil.getBlink() ? 0xff8000 : 0xffff00) + "&]! LOW POWER !");
-		if(!isCool) text.add("&[" + (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00) + "&]! ! ! INSUFFICIENT COOLING ! ! !");
+		if(turbine.plasmaEnergy > 0 && !hasPlasma) text.add(I18nUtil.resolveKey("overlay.machine_fusion_mhdt.s_low_power", (BobMathUtil.getBlink() ? 0xff8000 : 0xffff00)));
+		if(!isCool) text.add(I18nUtil.resolveKey("overlay.machine_fusion_mhdt.s_insufficient_cooling", (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00)));
 		
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

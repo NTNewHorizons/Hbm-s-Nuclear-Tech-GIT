@@ -15,6 +15,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class MachineGasFlare extends BlockDummyable implements ITooltipProvider {
 
@@ -63,12 +64,12 @@ public class MachineGasFlare extends BlockDummyable implements ITooltipProvider 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
-		list.add(EnumChatFormatting.GOLD + "Can burn fluids and vent gasses");
-		list.add(EnumChatFormatting.GOLD + "Burns up to " + EnumChatFormatting.RED + "10mB/t");
-		list.add(EnumChatFormatting.GOLD + "Vents up to " + EnumChatFormatting.RED + "50mB/t");
+		list.add(I18nUtil.resolveKey("tooltip.machine_gas_flare.s_can_burn_fluids_and_vent_gasses", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tooltip.machine_gas_flare.s_burns_up_to_s10m_b_t", EnumChatFormatting.GOLD, EnumChatFormatting.RED));
+		list.add(I18nUtil.resolveKey("tooltip.machine_gas_flare.s_vents_up_to_s50m_b_t", EnumChatFormatting.GOLD, EnumChatFormatting.RED));
 		list.add("");
-		list.add(EnumChatFormatting.YELLOW + "Fuel efficiency:");
-		list.add(EnumChatFormatting.YELLOW + "-Flammable Gasses: " + EnumChatFormatting.RED + "20%");
-		list.add(EnumChatFormatting.YELLOW + "-Flammable Liquids: " + EnumChatFormatting.RED + "10%");
+		list.add(I18nUtil.resolveKey("tooltip.machine_gas_flare.s_fuel_efficiency", EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("tooltip.machine_gas_flare.s_flammable_gasses_s20", EnumChatFormatting.YELLOW, EnumChatFormatting.RED));
+		list.add(I18nUtil.resolveKey("tooltip.machine_gas_flare.s_flammable_liquids_s10", EnumChatFormatting.YELLOW, EnumChatFormatting.RED));
 	}
 }

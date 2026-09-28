@@ -8,6 +8,7 @@ import com.hbm.entity.mob.EntityHunterChopper;
 import com.hbm.entity.mob.EntityUFO;
 import com.hbm.entity.mob.botprime.EntityBOTPrimeHead;
 import com.hbm.items.ModItems;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -141,11 +142,11 @@ public class ItemChopper extends Item {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
 		if(this == ModItems.spawn_worm) {
-			list.add("Without a player in survival mode");
-			list.add("to target, he struggles around a lot.");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_chopper.1"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_chopper.2"));
 			list.add("");
-			list.add("He's doing his best so please show him");
-			list.add("some consideration.");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_chopper.3"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_chopper.4"));
 		}
 	}
 

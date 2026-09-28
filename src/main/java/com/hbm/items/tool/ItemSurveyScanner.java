@@ -15,11 +15,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class ItemSurveyScanner extends Item {
 
@@ -73,16 +73,16 @@ public class ItemSurveyScanner extends Item {
 				}
 			}
 
-			if(hasOil) player.addChatComponentMessage(new ChatComponentText("Found OIL!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLACK)));
-			if(hasGas) player.addChatComponentMessage(new ChatComponentText("Found NATURAL GAS!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE)));
-			if(hasBrine) player.addChatComponentMessage(new ChatComponentText("Found BRINE!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE)));
-			if(hasBedrockOil) player.addChatComponentMessage(new ChatComponentText("Found BEDROCK OIL!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLACK)));
-			if(hasColtan) player.addChatComponentMessage(new ChatComponentText("Found COLTAN!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-			if(hasDepth) player.addChatComponentMessage(new ChatComponentText("Found DEPTH ROCK!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
-			if(hasSchist) player.addChatComponentMessage(new ChatComponentText("Found SCHIST!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
-			if(hasAussie) player.addChatComponentMessage(new ChatComponentText("Found AUSTRALIUM!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-			for(String rich : richOres) player.addChatComponentMessage(new ChatComponentText("Found RICH " + rich.toUpperCase(Locale.US) + "!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
-			if(tile != null && tile.resource != null) player.addChatComponentMessage(new ChatComponentText("Found BEDROCK ORE for " + tile.resource.getDisplayName() + "!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+			if(hasOil) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.1").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLACK)));
+			if(hasGas) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.2").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE)));
+			if(hasBrine) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.3").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE)));
+			if(hasBedrockOil) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.4").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLACK)));
+			if(hasColtan) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.5").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
+			if(hasDepth) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.6").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
+			if(hasSchist) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.7").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+			if(hasAussie) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.8").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			for(String rich : richOres) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.9", rich.toUpperCase(Locale.US)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+			if(tile != null && tile.resource != null) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.10", tile.resource.getDisplayName()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 		}
 
 		player.swingItem();

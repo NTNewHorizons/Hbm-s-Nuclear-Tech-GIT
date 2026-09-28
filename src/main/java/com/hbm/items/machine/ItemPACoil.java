@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import com.hbm.items.ItemEnumMulti;
 import com.hbm.util.EnumUtil;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -41,11 +42,11 @@ public class ItemPACoil extends ItemEnumMulti {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		EnumCoilType type = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
-		list.add(EnumChatFormatting.BLUE + "Quadrupole operational range: " + EnumChatFormatting.RESET + String.format(Locale.US, "%,d", type.quadMin) + " - " + String.format(Locale.US, "%,d", type.quadMax));
-		list.add(EnumChatFormatting.BLUE + "Dipole operational range: " + EnumChatFormatting.RESET + String.format(Locale.US, "%,d", type.diMin) + " - " + String.format(Locale.US, "%,d", type.diMax));
-		list.add(EnumChatFormatting.BLUE + "Dipole minimum side length: " + EnumChatFormatting.RESET + type.diDistMin);
-		list.add(EnumChatFormatting.RED + "Minimums not met result in a power draw penalty!");
-		list.add(EnumChatFormatting.RED + "Maximums exceeded result in the particle crashing!");
-		list.add(EnumChatFormatting.RED + "Particles will crash in dipoles if both penalties take effect!");
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_p_a_coil.1", EnumChatFormatting.RESET, String.format(Locale.US, "%,d", type.quadMin), String.format(Locale.US, "%,d", type.quadMax)));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_p_a_coil.2", EnumChatFormatting.RESET, String.format(Locale.US, "%,d", type.diMin), String.format(Locale.US, "%,d", type.diMax)));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_p_a_coil.3", EnumChatFormatting.RESET, type.diDistMin));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_p_a_coil.4"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_p_a_coil.5"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_p_a_coil.6"));
 	}
 }

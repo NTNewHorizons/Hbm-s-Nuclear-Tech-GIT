@@ -291,7 +291,7 @@ public class ModEventHandlerClient {
 					}
 
 					/*List<String> text = new ArrayList();
-					text.add("Meta: " + world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
+					text.add(I18nUtil.resolveKey("overlay.mod_event_handler_client.meta_s", world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ)));
 					ILookOverlay.printGeneric(event, "DEBUG", 0xffff00, 0x4040000, text);*/
 					
 					if(ClientConfig.SHOW_BLOCK_META_OVERLAY.get()) {
@@ -299,7 +299,7 @@ public class ModEventHandlerClient {
 						int i = world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ);
 						List<String> text = new ArrayList();
 						text.add(b.getUnlocalizedName());
-						text.add("Meta: " + i);
+						text.add(I18nUtil.resolveKey("overlay.mod_event_handler_client.meta_s", i));
 						ILookOverlay.printGeneric(event, "DEBUG", 0xffff00, 0x4040000, text);
 					}
 
@@ -315,9 +315,9 @@ public class ModEventHandlerClient {
 			}
 
 			/*List<String> text = new ArrayList();
-			text.add("IMPACT: " + ImpactWorldHandler.getImpactForClient(world));
-			text.add("DUST: " + ImpactWorldHandler.getDustForClient(world));
-			text.add("FIRE: " + ImpactWorldHandler.getFireForClient(world));
+			text.add(I18nUtil.resolveKey("overlay.mod_event_handler_client.impact_s", ImpactWorldHandler.getImpactForClient(world)));
+			text.add(I18nUtil.resolveKey("overlay.mod_event_handler_client.dust_s", ImpactWorldHandler.getDustForClient(world)));
+			text.add(I18nUtil.resolveKey("overlay.mod_event_handler_client.fire_s", ImpactWorldHandler.getFireForClient(world)));
 			ILookOverlay.printGeneric(event, "DEBUG", 0xffff00, 0x4040000, text);*/
 
 			/*if(mop != null && mop.typeOfHit == mop.typeOfHit.BLOCK) {
@@ -325,7 +325,7 @@ public class ModEventHandlerClient {
 				GL11.glPushMatrix();
 				int pX = resolution.getScaledWidth() / 2 + 8;
 				int pZ = resolution.getScaledHeight() / 2;
-				mc.fontRenderer.drawString("META: " + world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ), pX, pZ - 3, 0xffff00);
+				mc.fontRenderer.drawString(I18nUtil.resolveKey("gui.mod_event_handler_client.meta_s", world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ)), pX, pZ - 3, 0xffff00);
 				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glColor3f(1F, 1F, 1F);
 				GL11.glPopMatrix();
@@ -840,7 +840,7 @@ public class ModEventHandlerClient {
 
 			} else {
 
-				list.add(EnumChatFormatting.YELLOW + "Mods:");
+				list.add(I18nUtil.resolveKey("tooltip.mod_event_handler_client.s_mods", EnumChatFormatting.YELLOW));
 
 				ItemStack[] mods = ArmorModHandler.pryMods(stack);
 
@@ -861,7 +861,7 @@ public class ModEventHandlerClient {
 			List<String> names = ItemStackUtil.getOreDictNames(stack);
 
 			if(names.size() > 0) {
-				list.add(EnumChatFormatting.BLUE + "Ore Dict:");
+				list.add(I18nUtil.resolveKey("tooltip.mod_event_handler_client.s_ore_dict", EnumChatFormatting.BLUE));
 				for(String s : names) {
 					list.add(EnumChatFormatting.AQUA + " -" + s);
 				}
@@ -882,7 +882,7 @@ public class ModEventHandlerClient {
 				list.add(EnumChatFormatting.YELLOW + (rads2 + "RAD/s"));
 
 				if(stack.stackSize > 1) {
-					list.add(EnumChatFormatting.YELLOW + "Stack: " + ((Math.floor(level * 1000 * stack.stackSize) / 1000) + "RAD/s"));
+					list.add(I18nUtil.resolveKey("tooltip.mod_event_handler_client.s_stack_s", EnumChatFormatting.YELLOW, ((Math.floor(level * 1000 * stack.stackSize) / 1000) + "RAD/s")));
 				}
 			}
 		}
@@ -899,10 +899,10 @@ public class ModEventHandlerClient {
 					list.add("");
 
 				if(entry.entry == EnumEntryType.ADD)
-					list.add(EnumChatFormatting.GOLD + "Adds " + entry.value + " to the custom nuke stage " + entry.type);
+					list.add(I18nUtil.resolveKey("tooltip.mod_event_handler_client.s_adds_s_to_the_custom_nuke_stage_s", EnumChatFormatting.GOLD, entry.value, entry.type));
 
 				if(entry.entry == EnumEntryType.MULT)
-					list.add(EnumChatFormatting.GOLD + "Adds multiplier " + entry.value + " to the custom nuke stage " + entry.type);
+					list.add(I18nUtil.resolveKey("tooltip.mod_event_handler_client.s_adds_multiplier_s_to_the_custom_nuke_stage_s", EnumChatFormatting.GOLD, entry.value, entry.type));
 			}
 		}
 
@@ -917,7 +917,7 @@ public class ModEventHandlerClient {
 				qmawTimestamp = Clock.get_ms();
 			}
 		} catch(Exception ex) {
-			list.add(EnumChatFormatting.RED + "Error loading cannery: " + ex.getLocalizedMessage());
+			list.add(I18nUtil.resolveKey("tooltip.mod_event_handler_client.s_error_loading_cannery_s", EnumChatFormatting.RED, ex.getLocalizedMessage()));
 		}
 
 		try {
@@ -928,7 +928,7 @@ public class ModEventHandlerClient {
 				canneryTimestamp = Clock.get_ms();
 			}
 		} catch(Exception ex) {
-			list.add(EnumChatFormatting.RED + "Error loading cannery: " + ex.getLocalizedMessage());
+			list.add(I18nUtil.resolveKey("tooltip.mod_event_handler_client.s_error_loading_cannery_s", EnumChatFormatting.RED, ex.getLocalizedMessage()));
 		}
 
 		/*ItemStack copy = stack.copy();
@@ -949,7 +949,7 @@ public class ModEventHandlerClient {
 					ore.addInformation(stack, event.entityPlayer, list, event.showAdvancedItemTooltips);
 				} else if(block == Blocks.coal_ore) {
 					// we don't have any celestial coal, special case
-					list.add(EnumChatFormatting.GOLD + "Can be found on:");
+					list.add(I18nUtil.resolveKey("tooltip.mod_event_handler_client.s_can_be_found_on", EnumChatFormatting.GOLD));
 					list.add(EnumChatFormatting.AQUA + " - " + I18nUtil.resolveKey("body.kerbin"));
 				}
 			}

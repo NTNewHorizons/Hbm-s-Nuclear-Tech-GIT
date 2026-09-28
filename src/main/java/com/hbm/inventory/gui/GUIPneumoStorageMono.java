@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIPneumoStorageMono extends GuiInfoContainer {
 
@@ -32,7 +33,7 @@ public class GUIPneumoStorageMono extends GuiInfoContainer {
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
 		
-		this.drawCustomInfoStat(x, y, guiLeft + 174, guiTop + 36, 20, 8, x, y, "Compressor: " + storage.compair.getPressure() + " PU", "Max range: " + TileEntityPneumoTube.getRangeFromPressure(storage.compair.getPressure()) + "m");
+		this.drawCustomInfoStat(x, y, guiLeft + 174, guiTop + 36, 20, 8, x, y, I18nUtil.resolveKey("gui.guipneumo_storage_mono.compressor") + storage.compair.getPressure() + I18nUtil.resolveKey("gui.guipneumo_storage_mono.pu"), I18nUtil.resolveKey("gui.guipneumo_storage_mono.max_range") + TileEntityPneumoTube.getRangeFromPressure(storage.compair.getPressure()) + "m");
 	}
 
 	@Override

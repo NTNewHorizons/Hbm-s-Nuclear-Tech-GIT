@@ -16,6 +16,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIMachineSelenium extends GuiInfoContainer {
 	
@@ -38,18 +39,18 @@ public class GUIMachineSelenium extends GuiInfoContainer {
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 108, 160, 16, selenium.power, selenium.powerCap);
 
 		List<String> text = new ArrayList();
-		text.add(EnumChatFormatting.YELLOW + "Accepted Fuels:");
+		text.add(I18nUtil.resolveKey("overlay.guimachine_selenium.s_accepted_fuels", EnumChatFormatting.YELLOW));
 		
 		for(FluidType type : Fluids.getInNiceOrder()) {
 			long energy = selenium.getHEFromFuel(type);
 			
 			if(energy > 0)
-				text.add("  " + type.getLocalizedName() + " (" + BobMathUtil.getShortNumber(energy) + "HE/t)");
+				text.add(I18nUtil.resolveKey("overlay.guimachine_selenium.s_s_he_t", type.getLocalizedName(), BobMathUtil.getShortNumber(energy)));
 		}
 
-		text.add(EnumChatFormatting.ITALIC + "(These numbers are base values,");
-		text.add(EnumChatFormatting.ITALIC + "actual output is based");
-		text.add(EnumChatFormatting.ITALIC + "on piston count)");
+		text.add(I18nUtil.resolveKey("overlay.guimachine_selenium.s_these_numbers_are_base_values", EnumChatFormatting.ITALIC));
+		text.add(I18nUtil.resolveKey("overlay.guimachine_selenium.sactual_output_is_based", EnumChatFormatting.ITALIC));
+		text.add(I18nUtil.resolveKey("overlay.guimachine_selenium.son_piston_count", EnumChatFormatting.ITALIC));
 		
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text.toArray(new String[0]));
 		

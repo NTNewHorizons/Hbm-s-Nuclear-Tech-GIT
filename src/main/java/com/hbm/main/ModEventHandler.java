@@ -192,6 +192,7 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraft.util.ChatComponentTranslation;
 
 @Spaghetti("fuck")
 public class ModEventHandler {
@@ -204,20 +205,20 @@ public class ModEventHandler {
 		if(!event.player.worldObj.isRemote) {
 
 			if(GeneralConfig.enableMOTD) {
-				event.player.addChatMessage(new ChatComponentText("Loaded world with JamesH2 & Mellow's NTM: Space " + RefStrings.VERSION + " for Minecraft 1.7.10!"));
+				event.player.addChatMessage(new ChatComponentTranslation("chat.mod_event_handler.loaded_world_with_james_h2_mellow_s_ntm_space_s_for_mine", RefStrings.VERSION));
 
 				if(HTTPHandler.newVersion) {
 					event.player.addChatMessage(
-							new ChatComponentText("New version " + HTTPHandler.versionNumber + " is available! Click ")
+							new ChatComponentTranslation("chat.mod_event_handler.new_version_s_is_available_click", HTTPHandler.versionNumber)
 							.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW))
-							.appendSibling(new ChatComponentText("[here]")
+							.appendSibling(new ChatComponentTranslation("chat.mod_event_handler.here")
 									.setChatStyle(new ChatStyle()
 										.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/JameH2/Hbm-s-Nuclear-Tech-GIT/releases"))
 										.setUnderlined(true)
 										.setColor(EnumChatFormatting.RED)
 									)
 								)
-							.appendSibling(new ChatComponentText(" to download!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)))
+							.appendSibling(new ChatComponentTranslation("chat.mod_event_handler.to_download").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)))
 							);
 				}
 			}
@@ -1435,7 +1436,7 @@ public class ModEventHandler {
 			/// GHOST FIX START ///
 
 			if(!Float.isFinite(player.getHealth()) || !Float.isFinite(player.getAbsorptionAmount())) {
-				player.addChatComponentMessage(new ChatComponentText("Your health has been restored!"));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.mod_event_handler.your_health_has_been_restored"));
 				player.worldObj.playSoundAtEntity(player, "hbm:item.syringe", 1.0F, 1.0F);
 				player.setHealth(player.getMaxHealth());
 				player.setAbsorptionAmount(0);
@@ -1633,7 +1634,7 @@ public class ModEventHandler {
 		CelestialBody body = CelestialBody.getTarget(world, pos.posX, pos.posZ).body;
 		CBT_Weather weather = CBT_Weather.ensureTrait(body);
 		if(weather == null || !CBT_Weather.supportsWeather(body)) {
-			throw new CommandException("This celestial body has no weather cycle.");
+			throw new CommandException("commands.mod_event_handler.this_celestial_body_has_no_weather_cycle");
 		}
 
 		if("clear".equalsIgnoreCase(parameters[0])) {

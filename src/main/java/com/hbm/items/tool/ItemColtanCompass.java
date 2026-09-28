@@ -7,6 +7,7 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 
 import com.hbm.main.MainRegistry;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,9 +34,9 @@ public class ItemColtanCompass extends Item implements IBauble {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add("Points towards the coltan deposit.");
-		list.add("The deposit is a large area where coltan ore spawns like standard ore,");
-		list.add("it's not one large blob of ore on that exact location.");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_coltan_compass.1"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_coltan_compass.2"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_coltan_compass.3"));
 	}
 
 	@Override

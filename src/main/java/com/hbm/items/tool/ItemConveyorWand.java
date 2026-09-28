@@ -28,13 +28,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S23PacketBlockChange;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -208,11 +208,11 @@ public class ItemConveyorWand extends Item implements ILookOverlay {
 						player.inventoryContainer.detectAndSendChanges();
 					}
 
-					player.addChatMessage(new ChatComponentText("Conveyor built!"));
+					player.addChatMessage(new ChatComponentTranslation("item.message.item_conveyor_wand.1"));
 				} else if(constructCount == 0) {
-					player.addChatMessage(new ChatComponentText("Not enough conveyors, build cancelled"));
+					player.addChatMessage(new ChatComponentTranslation("item.message.item_conveyor_wand.2"));
 				} else {
-					player.addChatMessage(new ChatComponentText("Conveyor obstructed, build cancelled"));
+					player.addChatMessage(new ChatComponentTranslation("item.message.item_conveyor_wand.3"));
 				}
 			} else {
 				RenderOverhead.clearActionPreview();
@@ -511,7 +511,7 @@ public class ItemConveyorWand extends Item implements ILookOverlay {
 		Block block = world.getBlock(x, y, z);
 		if(block instanceof BlockConveyorBase) {
 			List<String> text = new ArrayList<>();
-			text.add("Break whole conveyor line");
+			text.add(I18nUtil.resolveKey("item.tooltip.item_conveyor_wand.1"));
 			ILookOverlay.printGeneric(event, I18nUtil.resolveKey(block.getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 		}
 	}

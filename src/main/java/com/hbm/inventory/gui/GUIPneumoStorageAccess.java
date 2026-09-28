@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIPneumoStorageAccess extends GuiInfoContainer {
 
@@ -95,13 +96,13 @@ public class GUIPneumoStorageAccess extends GuiInfoContainer {
 		super.drawScreen(x, y, interp);
 
 		//TODO localization
-		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 7, 18, 18, x, y, "Sorting: " + EnumChatFormatting.YELLOW + "Amount");
-		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 25, 18, 18, x, y, "Sorting: " + EnumChatFormatting.YELLOW + "Item ID");
-		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 43, 18, 18, x, y, "Sorting: " + EnumChatFormatting.YELLOW + "Name");
-		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 61, 18, 18, x, y, "Sorting: " + EnumChatFormatting.YELLOW + "Internal Name");
+		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 7, 18, 18, x, y, I18nUtil.resolveKey("gui.guipneumo_storage_access.sorting") + EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guipneumo_storage_access.amount"));
+		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 25, 18, 18, x, y, I18nUtil.resolveKey("gui.guipneumo_storage_access.sorting") + EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guipneumo_storage_access.item_id"));
+		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 43, 18, 18, x, y, I18nUtil.resolveKey("gui.guipneumo_storage_access.sorting") + EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guipneumo_storage_access.name"));
+		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 61, 18, 18, x, y, I18nUtil.resolveKey("gui.guipneumo_storage_access.sorting") + EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guipneumo_storage_access.internal_name"));
 		
-		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 79, 18, 18, x, y, "Focus search by default: " + (this.startFocussed ? EnumChatFormatting.GREEN + "ON" : EnumChatFormatting.RED + "OFF"));
-		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 97, 18, 18, x, y, "Inlude tooltips in search: " + (this.container.detailedSearch ? EnumChatFormatting.GREEN + "ON" : EnumChatFormatting.RED + "OFF"));
+		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 79, 18, 18, x, y, I18nUtil.resolveKey("gui.guipneumo_storage_access.focus_search_by_default") + (this.startFocussed ? EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.guipneumo_storage_access.on") : EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guipneumo_storage_access.off")));
+		this.drawCustomInfoStat(x, y, guiLeft + 7, guiTop + 97, 18, 18, x, y, I18nUtil.resolveKey("gui.guipneumo_storage_access.inlude_tooltips_in_search") + (this.container.detailedSearch ? EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.guipneumo_storage_access.on") : EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guipneumo_storage_access.off")));
 	}
 
 	@Override

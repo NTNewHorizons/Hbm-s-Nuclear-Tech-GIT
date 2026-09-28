@@ -69,7 +69,7 @@ public class HazardTypeRadiation extends HazardTypeBase {
 		list.add(EnumChatFormatting.YELLOW + (rad + "RAD/s"));
 		
 		if(stack.stackSize > 1) {
-			list.add(EnumChatFormatting.YELLOW + "Stack: " + ((Math.floor(level * 1000 * stack.stackSize) / 1000) + "RAD/s"));
+			list.add(I18nUtil.resolveKey("tooltip.hazard_type_radiation.s_stack_s", EnumChatFormatting.YELLOW, ((Math.floor(level * 1000 * stack.stackSize) / 1000) + "RAD/s")));
 		}
 	}
 

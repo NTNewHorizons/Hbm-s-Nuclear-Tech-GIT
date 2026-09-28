@@ -1,5 +1,7 @@
 package com.hbm.items.special;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,9 +37,9 @@ public class ItemFusionShield extends Item {
 		long damage = getShieldDamage(stack);
 		int percent = (int) ((maxDamage - damage) * 100 / maxDamage);
 
-		list.add("Durability: " + (maxDamage - damage) + "/" + maxDamage + " (" + percent + "%)");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_lens.1", (maxDamage - damage), maxDamage, percent));
 		
-		list.add("Melting point: " + EnumChatFormatting.RED + "" + maxTemp + "°C");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_fusion_shield.1", EnumChatFormatting.RED, maxTemp));
 	}
 	
 	public static void setShieldDamage(ItemStack stack, long damage) {

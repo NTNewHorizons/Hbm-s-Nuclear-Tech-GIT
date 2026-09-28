@@ -32,6 +32,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import com.hbm.util.i18n.I18nUtil;
 
 public class BlockVolcano extends BlockContainer implements ITooltipProvider, IBlockMulti {
 
@@ -63,7 +64,7 @@ public class BlockVolcano extends BlockContainer implements ITooltipProvider, IB
 		int meta = stack.getItemDamage();
 
 		if(meta == META_SMOLDERING) {
-			list.add(EnumChatFormatting.GOLD + "SHIELD VOLCANO");
+			list.add(I18nUtil.resolveKey("tooltip.block_volcano.s_shield_volcano", EnumChatFormatting.GOLD));
 			return;
 		}
 

@@ -156,7 +156,7 @@ public class ItemRTGPellet extends Item {
 			list.add(I18nUtil.resolveKey("desc.item.rtgDecay", I18nUtil.resolveKey(instance.getDecayItem().getUnlocalizedName() + ".name"), instance.getDecayItem().stackSize));
 			list.add(BobMathUtil.toPercentage(instance.getLifespan(stack), instance.getMaxLifespan()));
 			if (bool) {
-				list.add("EXTENDED INFO:");
+				list.add(I18nUtil.resolveKey("item.tooltip.item_r_t_g_pellet.1"));
 				list.add(String.format(Locale.US, "%s / %s ticks", instance.getLifespan(stack), instance.getMaxLifespan()));
 				final String[] timeLeft = BobMathUtil.ticksToDate(instance.getLifespan(stack));
 				final String[] maxLife = BobMathUtil.ticksToDate(instance.getMaxLifespan());

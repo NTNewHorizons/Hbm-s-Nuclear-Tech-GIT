@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.render.model.ModelJetPack;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,7 +31,7 @@ public abstract class JetpackBase extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		super.addInformation(itemstack, player, list, bool);
-		list.add(EnumChatFormatting.GOLD + "Can be worn on its own!");
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.3"));
 	}
 	
 	@Override

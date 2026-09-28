@@ -5,9 +5,9 @@ import com.hbm.items.ICustomizable;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class CommandCustomize extends CommandBase {
 
@@ -18,7 +18,7 @@ public class CommandCustomize extends CommandBase {
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/ntmcustomize";
+		return "commands.customize.ntmcustomize";
 	}
 
 	@Override
@@ -34,14 +34,14 @@ public class CommandCustomize extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
 		if(!(sender instanceof EntityPlayer)) {
-			sender.addChatMessage(new ChatComponentText("Customization is only available to players!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+			sender.addChatMessage(new ChatComponentTranslation("chat.command_customize.customization_is_only_available_to_players").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			return;
 		}
 		
 		EntityPlayer player = (EntityPlayer) sender;
 		
 		if(player.getHeldItem() == null || !(player.getHeldItem().getItem() instanceof ICustomizable)) {
-			sender.addChatMessage(new ChatComponentText("You have to hold a customizable item to use this command!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+			sender.addChatMessage(new ChatComponentTranslation("chat.command_customize.you_have_to_hold_a_customizable_item_to_use_this_command").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			return;
 		}
 		

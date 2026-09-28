@@ -97,7 +97,7 @@ public class GUIScreenRadioTorchReader extends GuiScreen {
 				IRORValueProvider prov = (IRORValueProvider) tile;
 				String[] info = prov.getFunctionInfo();
 				List<String> lines = new ArrayList();
-				lines.add("Readable values:");
+				lines.add(I18nUtil.resolveKey("gui.guiscreen_radio_torch_reader.readable_values"));
 				for(String s : info) {
 					if(s.startsWith(IRORValueProvider.PREFIX_VALUE))
 					lines.add(EnumChatFormatting.LIGHT_PURPLE + s.substring(4));

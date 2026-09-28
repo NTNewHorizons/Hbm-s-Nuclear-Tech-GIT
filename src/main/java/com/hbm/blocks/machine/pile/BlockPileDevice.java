@@ -164,18 +164,18 @@ public class BlockPileDevice extends BlockContainer implements IBlockMulti, ILoo
 		
 		if(tile instanceof TileEntityPileLoader) {
 			TileEntityPileLoader device = (TileEntityPileLoader) tile;
-			text.add("Temp: " + (int) Math.round(device.channelTemp) + " / " + TileEntityPileCore.MAX_HEAT + "°C");
-			if(device.syncStack != null) text.add("Loading: " + device.syncStack.getDisplayName());
+			text.add(I18nUtil.resolveKey("overlay.block_pile_device.temp_s_s_c", (int) Math.round(device.channelTemp), TileEntityPileCore.MAX_HEAT));
+			if(device.syncStack != null) text.add(I18nUtil.resolveKey("overlay.block_pile_device.loading_s", device.syncStack.getDisplayName()));
 			
 			if(device.channelStack != null) {
-				text.add("Last rod: " + device.channelStack.getDisplayName());
-				if(device.channelDepletion > 0) text.add("Depletion: " + (int) Math.round(device.channelDepletion) + "%");
+				text.add(I18nUtil.resolveKey("overlay.block_pile_device.last_rod_s", device.channelStack.getDisplayName()));
+				if(device.channelDepletion > 0) text.add(I18nUtil.resolveKey("overlay.block_pile_device.depletion_s", (int) Math.round(device.channelDepletion)));
 			}
 		}
 		
 		if(tile instanceof TileEntityPileControl) {
 			TileEntityPileControl device = (TileEntityPileControl) tile;
-			text.add("Extraction level: " + (int) + (device.level * 100) + "%");
+			text.add(I18nUtil.resolveKey("overlay.block_pile_device.extraction_level_s_s", (int) + (device.level * 100)));
 		}
 		
 		if(!text.isEmpty())

@@ -113,7 +113,7 @@ public class ItemRebarPlacer extends Item implements IGUIProvider {
 			player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 					.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 					.next("] ").color(EnumChatFormatting.DARK_AQUA)
-					.next("No valid concrete type set!").color(EnumChatFormatting.RED).flush());
+					.nextTranslation("item.message.item_rebar_placer.1").color(EnumChatFormatting.RED).flush());
 			return true;
 		}
 		
@@ -127,7 +127,7 @@ public class ItemRebarPlacer extends Item implements IGUIProvider {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 						.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 						.next("] ").color(EnumChatFormatting.DARK_AQUA)
-						.next("Out of rebar!").color(EnumChatFormatting.RED).flush());
+						.nextTranslation("item.message.item_rebar_placer.2").color(EnumChatFormatting.RED).flush());
 				stack.stackTagCompound.removeTag("pos");
 				return true;
 			}
@@ -169,7 +169,7 @@ public class ItemRebarPlacer extends Item implements IGUIProvider {
 			player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 					.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 					.next("] ").color(EnumChatFormatting.DARK_AQUA)
-					.next("Placed " + rebarUsed + " rebar!").color(EnumChatFormatting.GREEN).flush());
+					.nextTranslation("item.message.item_rebar_placer.3", rebarUsed).color(EnumChatFormatting.GREEN).flush());
 			
 			stack.stackTagCompound.removeTag("pos");
 			player.inventoryContainer.detectAndSendChanges();

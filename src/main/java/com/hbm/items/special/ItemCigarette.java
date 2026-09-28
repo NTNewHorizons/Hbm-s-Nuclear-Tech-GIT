@@ -8,6 +8,7 @@ import com.hbm.items.ModItems;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
 import com.hbm.potion.HbmPotion;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
@@ -127,10 +128,10 @@ public class ItemCigarette extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
 		if (this == ModItems.cigarette) {
-			list.add(EnumChatFormatting.RED + "✓ Asbestos filter");
-			list.add(EnumChatFormatting.RED + "✓ High in tar");
-			list.add(EnumChatFormatting.RED + "✓ Tobacco contains 100% Polonium-210");
-			list.add(EnumChatFormatting.RED + "✓ Yum");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_cigarette.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_cigarette.2"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_cigarette.3"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_cigarette.4"));
 		} else if (this == ModItems.crackpipe) {
 			String[] colors = new String[] {
 					EnumChatFormatting.RED + "",
@@ -146,7 +147,7 @@ public class ItemCigarette extends Item {
 			list.add("This can't be good for me, but I feel "
 					+ colors[(int) (System.currentTimeMillis() % len * colors.length / len)] + "GREAT");
 		} else if (this == ModItems.joint) {
-			list.add(EnumChatFormatting.GREEN + "Botany's favorite");
+			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_cigarette.5"));
 		}
 	}
 }

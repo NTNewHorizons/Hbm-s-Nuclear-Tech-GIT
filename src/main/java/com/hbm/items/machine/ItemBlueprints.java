@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ModItems;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -115,9 +116,9 @@ public class ItemBlueprints extends Item {
 			return;
 		}
 		if(poolName.startsWith(GenericRecipes.POOL_PREFIX_SECRET)) {
-			list.add(EnumChatFormatting.RED + "Cannot be copied!");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_blueprints.1"));
 		} else {
-			list.add(EnumChatFormatting.YELLOW + "Right-click to copy (requires paper)");
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_blueprints.2"));
 		}
 		
 		for(String name : pool) {

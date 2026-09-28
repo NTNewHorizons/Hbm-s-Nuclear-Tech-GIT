@@ -38,9 +38,9 @@ public class FusionRecipe extends GenericRecipe {
 
 		duration(list);
 		power(list);
-		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("gui.recipe.fusionIn") + ": " + BobMathUtil.getShortNumber(ignitionTemp) + "KyU/t");
-		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("gui.recipe.fusionOut") + ": " + BobMathUtil.getShortNumber(outputTemp) + "TU/t");
-		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("gui.recipe.fusionFlux") + ": " + ((int)(neutronFlux * 10)) / 10D + " flux/t");
+		list.add(I18nUtil.resolveKey("tooltip.fusion_recipe.s_s_s_ky_u_t", EnumChatFormatting.LIGHT_PURPLE, I18nUtil.resolveKey("gui.recipe.fusionIn"), BobMathUtil.getShortNumber(ignitionTemp)));
+		list.add(I18nUtil.resolveKey("tooltip.fusion_recipe.s_s_s_tu_t", EnumChatFormatting.LIGHT_PURPLE, I18nUtil.resolveKey("gui.recipe.fusionOut"), BobMathUtil.getShortNumber(outputTemp)));
+		list.add(I18nUtil.resolveKey("tooltip.fusion_recipe.s_s_s_flux_t", EnumChatFormatting.LIGHT_PURPLE, I18nUtil.resolveKey("gui.recipe.fusionFlux"), ((int)(neutronFlux * 10)) / 10D));
 		input(list);
 		output(list);
 

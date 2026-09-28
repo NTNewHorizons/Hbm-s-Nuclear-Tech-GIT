@@ -14,12 +14,12 @@ import com.hbm.util.i18n.I18nUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 
@@ -64,7 +64,7 @@ public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 				TileEntityMachineSatLink link = (TileEntityMachineSatLink) te;
 				
 				link.freq = ISatChip.getFreqS(player.getHeldItem());
-				player.addChatComponentMessage(new ChatComponentText("Set frequency to " + link.freq).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_sat_link.set_frequency_to_s", link.freq).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 				world.playSoundAtEntity(player, NTMSounds.TECH_BLEEP, 1F, 1F);
 
 				return true;
@@ -88,8 +88,8 @@ public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 		TileEntityMachineSatLink link = (TileEntityMachineSatLink) te;
 		
 		List<String> text = new ArrayList();
-		text.add("Freq: " + link.freq);
-		text.add("Connected: " + (link.connected ? (EnumChatFormatting.GREEN + "Yes") : (EnumChatFormatting.RED + "No")));
+		text.add(I18nUtil.resolveKey("overlay.machine_sat_link.freq_s", link.freq));
+		text.add(I18nUtil.resolveKey("overlay.machine_sat_link.connected_s", (link.connected ? (EnumChatFormatting.GREEN + "Yes") : (EnumChatFormatting.RED + "No"))));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

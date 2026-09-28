@@ -3,6 +3,7 @@ package com.hbm.items.tool;
 import java.util.List;
 
 import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -65,11 +66,11 @@ public abstract class ItemCoordinateBase extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
 		if(stack.hasTagCompound()) {
-			list.add("X: " + stack.stackTagCompound.getInteger("posX"));
-			if(includeY()) list.add("Y: " + stack.stackTagCompound.getInteger("posY"));
-			list.add("Z: " + stack.stackTagCompound.getInteger("posZ"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.1", stack.stackTagCompound.getInteger("posX")));
+			if(includeY()) list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.2", stack.stackTagCompound.getInteger("posY")));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.3", stack.stackTagCompound.getInteger("posZ")));
 		} else {
-			list.add(EnumChatFormatting.RED + "No position set!");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_drop.28"));
 		}
 	}
 }

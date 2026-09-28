@@ -11,6 +11,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class CommandDebugChunkLoad extends CommandBase {
 
@@ -21,7 +22,7 @@ public class CommandDebugChunkLoad extends CommandBase {
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/ntmloadchunk <x> <z>";
+		return "commands.debug_chunk_load.ntmloadchunk_x_z";
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class CommandDebugChunkLoad extends CommandBase {
 					if(prov.chunkExists(cX, cZ)) {
 						Chunk chunk = sender.getEntityWorld().getChunkFromChunkCoords(cX, cZ);
 						if(chunk.isChunkLoaded) {
-							sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Chunk currently loaded."));
+							sender.addChatMessage(new ChatComponentTranslation("chat.command_debug_chunk_load.s_chunk_currently_loaded", EnumChatFormatting.RED));
 							return;
 						}
 					}
@@ -63,7 +64,7 @@ public class CommandDebugChunkLoad extends CommandBase {
 					if(tagList != null) {
 						
 						if(tagList.tagCount() <= 0) {
-							sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Tag list empty"));
+							sender.addChatMessage(new ChatComponentTranslation("chat.command_debug_chunk_load.s_tag_list_empty", EnumChatFormatting.RED));
 						}
 						
 						for(int i1 = 0; i1 < tagList.tagCount(); ++i1) {
@@ -96,17 +97,17 @@ public class CommandDebugChunkLoad extends CommandBase {
 							}
 						}
 					} else {
-						sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Tag list null"));
+						sender.addChatMessage(new ChatComponentTranslation("chat.command_debug_chunk_load.s_tag_list_null", EnumChatFormatting.RED));
 					}
 					
 				} catch(Exception e) {
 					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "" + e.getLocalizedMessage()));
 				}
 			} else {
-				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Not AnvilChunkLoader"));
+				sender.addChatMessage(new ChatComponentTranslation("chat.command_debug_chunk_load.s_not_anvil_chunk_loader", EnumChatFormatting.RED));
 			}
 		} else {
-			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Not ChunkProviderServer"));
+			sender.addChatMessage(new ChatComponentTranslation("chat.command_debug_chunk_load.s_not_chunk_provider_server", EnumChatFormatting.RED));
 		}
 	}
 }

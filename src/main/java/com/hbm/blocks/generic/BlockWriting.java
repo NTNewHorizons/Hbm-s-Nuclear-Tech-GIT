@@ -4,10 +4,10 @@ import com.hbm.blocks.machine.BlockPillar;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class BlockWriting extends BlockPillar {
 
@@ -23,16 +23,16 @@ public class BlockWriting extends BlockPillar {
 		} else if(!player.isSneaking()) {
 			
 			ChatStyle red = new ChatStyle().setColor(EnumChatFormatting.RED);
-			player.addChatMessage(new ChatComponentText("You should not have come here.").setChatStyle(red));
-			player.addChatMessage(new ChatComponentText("This is not a place of honor. No great deed is commemorated here.").setChatStyle(red));
-			player.addChatMessage(new ChatComponentText("Nothing of value is here.").setChatStyle(red));
-			player.addChatMessage(new ChatComponentText("What is here is dangerous and repulsive.").setChatStyle(red));
-			player.addChatMessage(new ChatComponentText("We considered ourselves a powerful culture. We harnessed the hidden fire, and used it for our own purposes.").setChatStyle(red));
-			player.addChatMessage(new ChatComponentText("Then we saw the fire could burn within living things, unnoticed until it destroyed them.").setChatStyle(red));
-			player.addChatMessage(new ChatComponentText("And we were afraid.").setChatStyle(red));
-			player.addChatMessage(new ChatComponentText("We built great tombs to hold the fire for one hundred thousand years, after which it would no longer kill.").setChatStyle(red));
-			player.addChatMessage(new ChatComponentText("If this place is opened, the fire will not be isolated from the world, and we will have failed to protect you.").setChatStyle(red));
-			player.addChatMessage(new ChatComponentText("Leave this place and never come back.").setChatStyle(red));
+			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.you_should_not_have_come_here").setChatStyle(red));
+			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.this_is_not_a_place_of_honor_no_great_deed_is_commemorat").setChatStyle(red));
+			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.nothing_of_value_is_here").setChatStyle(red));
+			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.what_is_here_is_dangerous_and_repulsive").setChatStyle(red));
+			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.we_considered_ourselves_a_powerful_culture_we_harnessed").setChatStyle(red));
+			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.then_we_saw_the_fire_could_burn_within_living_things_unn").setChatStyle(red));
+			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.and_we_were_afraid").setChatStyle(red));
+			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.we_built_great_tombs_to_hold_the_fire_for_one_hundred_th").setChatStyle(red));
+			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.if_this_place_is_opened_the_fire_will_not_be_isolated_fr").setChatStyle(red));
+			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.leave_this_place_and_never_come_back").setChatStyle(red));
 			return true;
 			
 		} else {

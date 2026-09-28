@@ -88,7 +88,7 @@ public class GUIScreenRadioTorchController extends GuiScreen {
 				IRORInfo prov = (IRORInfo) tile;
 				String[] info = prov.getFunctionInfo();
 				List<String> lines = new ArrayList();
-				lines.add("Usable functions:");
+				lines.add(I18nUtil.resolveKey("gui.guiscreen_radio_torch_controller.usable_functions"));
 				for(String s : info) {
 					if(s.startsWith(IRORValueProvider.PREFIX_FUNCTION))
 					lines.add(EnumChatFormatting.AQUA + s.substring(4));

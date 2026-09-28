@@ -107,17 +107,17 @@ public class BlockWandLoot extends BlockContainer implements ILookOverlay, ITool
 		TileEntityWandLoot loot = (TileEntityWandLoot) te;
 
 		List<String> text = new ArrayList<String>();
-		text.add("Will replace with: " + loot.replaceBlock.getUnlocalizedName());
-		text.add("   meta: " + loot.replaceMeta);
-		text.add("Loot pool: " + loot.poolName);
+		text.add(I18nUtil.resolveKey("overlay.block_wand_loot.will_replace_with_s", loot.replaceBlock.getUnlocalizedName()));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_loot.meta_s", loot.replaceMeta));
+		text.add(I18nUtil.resolveKey("overlay.block_wand_loot.loot_pool_s", loot.poolName));
 		if(loot.replaceBlock != ModBlocks.deco_loot) {
-			text.add("Minimum items: " + loot.minItems);
-			text.add("Maximum items: " + loot.maxItems);
+			text.add(I18nUtil.resolveKey("overlay.block_wand_loot.minimum_items_s", loot.minItems));
+			text.add(I18nUtil.resolveKey("overlay.block_wand_loot.maximum_items_s", loot.maxItems));
 		}
 
 		if(loot.lockCode != 0){
-			text.add("Container will be locked");
-			text.add("Lockpicking chance:" + loot.lockMod);
+			text.add(I18nUtil.resolveKey("overlay.block_wand_loot.container_will_be_locked"));
+			text.add(I18nUtil.resolveKey("overlay.block_wand_loot.lockpicking_chance_s", loot.lockMod));
 		}
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
@@ -126,11 +126,11 @@ public class BlockWandLoot extends BlockContainer implements ILookOverlay, ITool
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add("Define loot crates/piles in .nbt structures");
-		list.add(EnumChatFormatting.GOLD + "Use screwdriver to increase/decrease minimum loot");
-		list.add(EnumChatFormatting.GOLD + "Use hand drill to increase/decrease maximum loot");
-		list.add(EnumChatFormatting.GOLD + "Use defuser to cycle loot types");
-		list.add(EnumChatFormatting.GOLD + "Use container block to set the block that spawns with loot inside");
+		list.add(I18nUtil.resolveKey("tooltip.block_wand_loot.define_loot_crates_piles_in_nbt_structures"));
+		list.add(I18nUtil.resolveKey("tooltip.block_wand_loot.s_use_screwdriver_to_increase_decrease_minimum_loot", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tooltip.block_wand_loot.s_use_hand_drill_to_increase_decrease_maximum_loot", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tooltip.block_wand_loot.s_use_defuser_to_cycle_loot_types", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tooltip.block_wand_loot.s_use_container_block_to_set_the_block_that_spawns_with", EnumChatFormatting.GOLD));
 	}
 
 	@Override

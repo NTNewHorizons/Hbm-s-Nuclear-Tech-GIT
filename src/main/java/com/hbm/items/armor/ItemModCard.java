@@ -5,6 +5,7 @@ import java.util.List;
 import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModItems;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,12 +22,12 @@ public class ItemModCard extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(this == ModItems.card_aos) {
-			list.add(EnumChatFormatting.RED + "Top of the line!");
-			list.add(EnumChatFormatting.RED + "Guns now have a 33% chance to not consume ammo.");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_mod_card.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_mod_card.2"));
 		}
 		if(this == ModItems.card_qos) {
-			list.add(EnumChatFormatting.RED + "Power!");
-			list.add(EnumChatFormatting.RED + "Adds a 33% chance to tank damage with no cap.");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_mod_card.3"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_mod_card.4"));
 		}
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);

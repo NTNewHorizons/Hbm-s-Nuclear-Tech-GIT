@@ -33,7 +33,7 @@ public class ItemDroneLinker extends Item {
 					player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 							.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 							.next("] ").color(EnumChatFormatting.DARK_AQUA)
-							.next("Set initial position!").color(EnumChatFormatting.AQUA).flush());
+							.nextTranslation("item.message.item_drone_linker.1").color(EnumChatFormatting.AQUA).flush());
 					
 				} else {
 	
@@ -51,12 +51,12 @@ public class ItemDroneLinker extends Item {
 						player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 								.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 								.next("] ").color(EnumChatFormatting.DARK_AQUA)
-								.next("Link set!").color(EnumChatFormatting.AQUA).flush());
+								.nextTranslation("item.message.item_drone_linker.2").color(EnumChatFormatting.AQUA).flush());
 					} else {
 						player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 								.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 								.next("] ").color(EnumChatFormatting.DARK_AQUA)
-								.next("Previous link lost!").color(EnumChatFormatting.RED).flush());
+								.nextTranslation("item.message.item_drone_linker.3").color(EnumChatFormatting.RED).flush());
 					}
 					
 					stack.stackTagCompound.setInteger("x", x);
@@ -93,7 +93,7 @@ public class ItemDroneLinker extends Item {
 			player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 					.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 					.next("] ").color(EnumChatFormatting.DARK_AQUA)
-					.next("Position cleared!").color(EnumChatFormatting.GREEN).flush());
+					.nextTranslation("item.message.item_drone_linker.4").color(EnumChatFormatting.GREEN).flush());
 		}
 		
 		return stack;

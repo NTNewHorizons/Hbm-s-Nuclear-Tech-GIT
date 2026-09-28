@@ -36,6 +36,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import com.hbm.util.i18n.I18nUtil;
 
 public class NTMAnvil extends BlockFallingNT implements ITooltipProvider, IGUIProvider {
 
@@ -181,7 +182,7 @@ public class NTMAnvil extends BlockFallingNT implements ITooltipProvider, IGUIPr
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.GOLD + "Tier " + tier + " Anvil");
+		list.add(I18nUtil.resolveKey("tooltip.ntmanvil.s_tier_s_anvil", EnumChatFormatting.GOLD, tier));
 	}
 
 	@Override

@@ -73,7 +73,7 @@ public class MachineAtmosphericEmitter extends BlockDummyable implements ILookOv
 				if(type.hasTrait(FT_Gaseous.class) || type.hasTrait(FT_Gaseous_ART.class)) {
 					drain.tank.setTankType(type);
 					drain.markDirty();
-					player.addChatComponentMessage(new ChatComponentText("Changed type to ").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_atmospheric_emitter.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 				}
 				
 				return true;
@@ -96,8 +96,8 @@ public class MachineAtmosphericEmitter extends BlockDummyable implements ILookOv
 		TileEntityAtmosphericEmitter drain = (TileEntityAtmosphericEmitter) te;
 		List<String> text = new ArrayList<>();
 		
-		text.add((drain.power < Math.max(drain.tank.getFill() / 2, 1) * 10 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN) + "Power: " + BobMathUtil.getShortNumber(drain.power) + "HE");
-		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + drain.tank.getTankType().getLocalizedName() + ": " + drain.tank.getFill() + "/" + drain.tank.getMaxFill() + "mB");
+		text.add(I18nUtil.resolveKey("overlay.machine_atmospheric_emitter.s_power_s_he", (drain.power < Math.max(drain.tank.getFill() / 2, 1) * 10 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(drain.power)));
+		text.add(I18nUtil.resolveKey("overlay.machine_atmospheric_emitter.s_s_s_s_sm_b", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, drain.tank.getTankType().getLocalizedName(), drain.tank.getFill(), drain.tank.getMaxFill()));
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 	

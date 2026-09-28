@@ -19,6 +19,7 @@ import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.network.RTTYSystem;
 import com.hbm.tileentity.network.RTTYSystem.RTTYChannel;
 import com.hbm.util.BaublesCompat;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -95,9 +96,9 @@ public class ItemRTTYPager extends Item implements IItemControlReceiver, IGUIPro
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(!stack.hasTagCompound() || !stack.stackTagCompound.hasKey(KEY_CHANNEL) || stack.stackTagCompound.getString(KEY_CHANNEL).isEmpty()) {
-			list.add(EnumChatFormatting.RED + "No channel set!");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_r_t_t_y_pager.1"));
 		} else {
-			list.add(EnumChatFormatting.YELLOW + "Channel: " + stack.stackTagCompound.getString(KEY_CHANNEL));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_r_t_t_y_pager.2", stack.stackTagCompound.getString(KEY_CHANNEL)));
 		}
 	}
 

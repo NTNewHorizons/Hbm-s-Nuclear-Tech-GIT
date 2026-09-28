@@ -8,6 +8,7 @@ import com.hbm.dim.trait.CBT_Water;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.ModItems;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,17 +73,17 @@ public class ItemInfiniteFluid extends Item implements net.minecraftforge.fluids
 		FluidType currentFluid = Fluids.fromID(stack.stackTagCompound.getInteger("fluid"));
 
 		if(currentFluid == Fluids.NONE) {
-			list.add("Current environment has insufficient vapor pressure");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_infinite_fluid.1"));
 		} else {
-			list.add("Current environment has an incompatible fluid table");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_infinite_fluid.2"));
 		}
 
-		list.add("Requires: " + type.getLocalizedName() + " table");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_infinite_fluid.3", type.getLocalizedName()));
 
 		if(currentFluid == Fluids.NONE) {
-			list.add("Releasing 0.2atm of vapor into the atmosphere will add a table on dry celestial bodies");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_infinite_fluid.4"));
 		} else {
-			list.add("Current environment: " + currentFluid.getLocalizedName() + " table");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_infinite_fluid.5", currentFluid.getLocalizedName()));
 		}
 	}
 

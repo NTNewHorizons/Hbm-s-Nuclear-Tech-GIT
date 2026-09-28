@@ -30,7 +30,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Vec3;
@@ -38,6 +37,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class BossSpawnHandler {
 
@@ -72,7 +72,7 @@ public class BossSpawnHandler {
 					data.maskManTimer++;
 					
 					if(data.maskManTimer == MobConfig.maskmanDelay - 60) {
-						player.addChatComponentMessage(new ChatComponentText("The mask man draws near.").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+						player.addChatComponentMessage(new ChatComponentTranslation("chat.boss_spawn_handler.the_mask_man_draws_near").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 					}
 					
 					if(data.maskManTimer >= MobConfig.maskmanDelay) {
@@ -82,9 +82,9 @@ public class BossSpawnHandler {
 						double spawnZ = player.posZ + world.rand.nextGaussian() * 20;
 						double spawnY = world.getHeightValue((int) Math.floor(spawnX), (int) Math.floor(spawnZ));
 						if(trySpawn(world, (float) spawnX, (float) spawnY, (float) spawnZ, new EntityMaskMan(world))) {
-							player.addChatComponentMessage(new ChatComponentText("The mask man is about to claim another victim.").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+							player.addChatComponentMessage(new ChatComponentTranslation("chat.boss_spawn_handler.the_mask_man_is_about_to_claim_another_victim").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 						} else {
-							player.addChatComponentMessage(new ChatComponentText("Seems like mask man couldn't come today.").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE)));
+							player.addChatComponentMessage(new ChatComponentTranslation("chat.boss_spawn_handler.seems_like_mask_man_couldn_t_come_today").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE)));
 						}
 					}
 					
@@ -103,7 +103,7 @@ public class BossSpawnHandler {
 					EntityPlayer player = (EntityPlayer) world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));
 
 					if(player.getEntityData().getCompoundTag(player.PERSISTED_NBT_TAG).getLong("fbiMark") < world.getTotalWorldTime()) {
-						player.addChatComponentMessage(new ChatComponentText("FBI, OPEN UP!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+						player.addChatComponentMessage(new ChatComponentTranslation("chat.boss_spawn_handler.fbi_open_up").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 
 						Vec3 vec = Vec3.createVectorHelper(MobConfig.raidAttackDistance, 0, 0);
 						vec.rotateAroundY((float)(Math.PI * 2) * world.rand.nextFloat());
@@ -140,7 +140,7 @@ public class BossSpawnHandler {
 
 					if(player.getEntityData().getCompoundTag(player.PERSISTED_NBT_TAG).getBoolean("radMark")) {
 
-						player.addChatComponentMessage(new ChatComponentText("You hear a faint clicking...").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+						player.addChatComponentMessage(new ChatComponentTranslation("chat.boss_spawn_handler.you_hear_a_faint_clicking").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 						player.getEntityData().getCompoundTag(player.PERSISTED_NBT_TAG).setBoolean("radMark", false);
 
 						Vec3 vec = Vec3.createVectorHelper(MobConfig.raidAttackDistance, 0, 0);

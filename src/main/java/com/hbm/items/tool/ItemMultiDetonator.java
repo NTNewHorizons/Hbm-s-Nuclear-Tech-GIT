@@ -11,6 +11,7 @@ import com.hbm.interfaces.IBomb.BombReturnCode;
 import com.hbm.main.MainRegistry;
 import com.hbm.main.NTMSounds;
 import com.hbm.util.ChatBuilder;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -23,12 +24,12 @@ public class ItemMultiDetonator extends Item {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add("Shift right-click block to add position,");
-		list.add("right-click to detonate!");
-		list.add("Shift right-click in the air to clear positions.");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_multi_detonator.1"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_detonator.1"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_multi_detonator.2"));
 
 		if(itemstack.getTagCompound() == null || getLocations(itemstack) == null) {
-			list.add(EnumChatFormatting.RED + "No position set!");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_drop.28"));
 		} else {
 
 			int[][] locs = getLocations(itemstack);
@@ -53,7 +54,7 @@ public class ItemMultiDetonator extends Item {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 						.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 						.next("] ").color(EnumChatFormatting.DARK_AQUA)
-						.next("Position added!").color(EnumChatFormatting.GREEN).flush());
+						.nextTranslation("item.message.item_multi_detonator.1").color(EnumChatFormatting.GREEN).flush());
 			}
 
 			world.playSoundAtEntity(player, NTMSounds.TECH_BOOP, 2.0F, 1.0F);
@@ -73,7 +74,7 @@ public class ItemMultiDetonator extends Item {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 						.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 						.next("] ").color(EnumChatFormatting.DARK_AQUA)
-						.next("No position set!").color(EnumChatFormatting.RED).flush());
+						.nextTranslation("item.tooltip.item_drop.28").color(EnumChatFormatting.RED).flush());
 			}
 			
 		} else {
@@ -109,7 +110,7 @@ public class ItemMultiDetonator extends Item {
 					player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 							.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 							.next("] ").color(EnumChatFormatting.DARK_AQUA)
-							.next("Triggered " + succ + "/" + locs[0].length + "!").color(EnumChatFormatting.YELLOW).flush());
+							.nextTranslation("item.message.item_multi_detonator.2", succ, locs[0].length).color(EnumChatFormatting.YELLOW).flush());
 				}
 				
 			} else {
@@ -124,7 +125,7 @@ public class ItemMultiDetonator extends Item {
 					player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 							.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 							.next("] ").color(EnumChatFormatting.DARK_AQUA)
-							.next("Locations cleared!").color(EnumChatFormatting.RED).flush());
+							.nextTranslation("item.message.item_multi_detonator.3").color(EnumChatFormatting.RED).flush());
 				}
 			}
 		}

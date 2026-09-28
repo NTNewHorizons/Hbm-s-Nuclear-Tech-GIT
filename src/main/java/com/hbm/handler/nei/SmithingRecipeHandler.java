@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 public class SmithingRecipeHandler extends TemplateRecipeHandler implements ICompatNHNEI {
 
@@ -158,7 +159,7 @@ public class SmithingRecipeHandler extends TemplateRecipeHandler implements ICom
 		RecipeSet rec = (RecipeSet) this.arecipes.get(recipe);
 
 		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-		fontRenderer.drawString("Tier " + rec.tier, 52, 43, 0x404040);
+		fontRenderer.drawString(I18nUtil.resolveKey("gui.smithing_recipe_handler.tier_s", rec.tier), 52, 43, 0x404040);
 	}
 
 	@Override

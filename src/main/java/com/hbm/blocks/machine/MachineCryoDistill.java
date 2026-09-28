@@ -107,7 +107,7 @@ public class MachineCryoDistill extends BlockDummyable implements ILookOverlay {
 			text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + I18nUtil.resolveKey("hbmfluid." + distill.tanks[0].getTankType().getName().toLowerCase()));
 		}
 		if(hitCheck(dir, cx, cy, cz, -2, -2, -2, x, y, z)) {
-			text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + "Power");
+			text.add(I18nUtil.resolveKey("overlay.machine_cryo_distill.s_s_power", EnumChatFormatting.GREEN, EnumChatFormatting.RESET));
 		}
 
 		if(hitCheck(dir, cx, cy, cz, 3, -2, -2, x, y, z)

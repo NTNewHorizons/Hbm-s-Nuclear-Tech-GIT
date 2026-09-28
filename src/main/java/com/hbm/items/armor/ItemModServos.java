@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.Multimap;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModItems;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -26,12 +27,12 @@ public class ItemModServos extends ItemArmorMod {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		
 		if(this == ModItems.servo_set) {
-			list.add(EnumChatFormatting.DARK_PURPLE + "Chestplate: Haste I / Damage +50%");
-			list.add(EnumChatFormatting.DARK_PURPLE + "Leggings: Speed +25% / Jump II");
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.1"));
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.2"));
 		}
 		if(this == ModItems.servo_set_desh) {
-			list.add(EnumChatFormatting.DARK_PURPLE + "Chestplate: Haste III / Damage +150%");
-			list.add(EnumChatFormatting.DARK_PURPLE + "Leggings: Speed +50% / Jump III");
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.3"));
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.4"));
 		}
 		
 		list.add("");
@@ -46,20 +47,20 @@ public class ItemModServos extends ItemArmorMod {
 		if(item.armorType == 1) {
 
 			if(this == ModItems.servo_set) {
-				list.add(EnumChatFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (Haste I / Damage +50%)");
+				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.5", stack.getDisplayName()));
 			}
 			if(this == ModItems.servo_set_desh) {
-				list.add(EnumChatFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (Haste III / Damage +150%)");
+				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.6", stack.getDisplayName()));
 			}
 		}
 		
 		if(item.armorType == 2) {
 
 			if(this == ModItems.servo_set) {
-				list.add(EnumChatFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (Speed +25% / Jump II)");
+				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.7", stack.getDisplayName()));
 			}
 			if(this == ModItems.servo_set_desh) {
-				list.add(EnumChatFormatting.DARK_PURPLE + "  " + stack.getDisplayName() + " (Speed +50% / Jump III)");
+				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.8", stack.getDisplayName()));
 			}
 		}
 	}

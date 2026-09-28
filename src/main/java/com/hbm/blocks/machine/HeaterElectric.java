@@ -76,9 +76,9 @@ public class HeaterElectric extends BlockDummyable implements ILookOverlay, IToo
 		TileEntityHeaterElectric heater = (TileEntityHeaterElectric) te;
 
 		List<String> text = new ArrayList();
-		text.add(String.format(Locale.US, "%,d", heater.heatEnergy) + " TU");
-		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + heater.getConsumption() + " HE/t");
-		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + heater.getHeatGen() + " TU/t");
+		text.add(I18nUtil.resolveKey("overlay.heater_electric.s_tu", String.format(Locale.US, "%,d", heater.heatEnergy)));
+		text.add(I18nUtil.resolveKey("overlay.heater_electric.s_s_s_he_t", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, heater.getConsumption()));
+		text.add(I18nUtil.resolveKey("overlay.heater_electric.s_s_s_tu_t", EnumChatFormatting.RED, EnumChatFormatting.RESET, heater.getHeatGen()));
 		
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

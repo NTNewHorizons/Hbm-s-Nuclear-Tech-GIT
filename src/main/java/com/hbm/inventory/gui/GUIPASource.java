@@ -47,7 +47,7 @@ public class GUIPASource extends GuiInfoContainer {
 		String[] message = I18nUtil.resolveKeyArray("pa." + this.source.state.name().toLowerCase(Locale.US) + ".desc");
 		for(String s : message) info.add(EnumChatFormatting.YELLOW + s);
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 105, guiTop + 16, 10, 10, mouseX, mouseY, info);
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 105, guiTop + 28, 10, 10, mouseX, mouseY, EnumChatFormatting.RED + "Cancel operation");
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 105, guiTop + 28, 10, 10, mouseX, mouseY, EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guipasource.cancel_operation"));
 	}
 
 	@Override

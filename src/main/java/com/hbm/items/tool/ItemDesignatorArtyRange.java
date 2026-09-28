@@ -6,6 +6,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.lib.Library;
 import com.hbm.main.NTMSounds;
 import com.hbm.tileentity.turret.TileEntityTurretBaseArtillery;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,9 +28,9 @@ public class ItemDesignatorArtyRange extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.getTagCompound() == null) {
-			list.add(EnumChatFormatting.RED + "No turret linked!");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_designator_arty_range.1"));
 		} else {
-			list.add(EnumChatFormatting.YELLOW + "Linked to " + itemstack.stackTagCompound.getInteger("x") + ", " + itemstack.stackTagCompound.getInteger("y") + ", " + itemstack.stackTagCompound.getInteger("z"));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_designator_arty_range.2", itemstack.stackTagCompound.getInteger("x"), itemstack.stackTagCompound.getInteger("y"), itemstack.stackTagCompound.getInteger("z")));
 		}
 	}
 

@@ -14,12 +14,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.ChatComponentTranslation;
 
 @Deprecated
 public class BlockGraphiteFuel extends BlockGraphiteDrilledTE implements IToolable, IBlowable {
@@ -70,12 +70,12 @@ public class BlockGraphiteFuel extends BlockGraphiteDrilledTE implements IToolab
 			
 			if(tool == ToolType.HAND_DRILL) {
 				TileEntityPileFuel pile = (TileEntityPileFuel) world.getTileEntity(x, y, z);
-				player.addChatComponentMessage(new ChatComponentText("CP1 FUEL ASSEMBLY " + x + " " + y + " " + z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-				player.addChatComponentMessage(new ChatComponentText("HEAT: " + pile.heat + "/" + pile.maxHeat).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-				player.addChatComponentMessage(new ChatComponentText("DEPLETION: " + pile.progress + "/" + pile.maxProgress).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-				player.addChatComponentMessage(new ChatComponentText("FLUX: " + pile.lastNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_fuel.cp1_fuel_assembly_s_s_s", x, y, z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_fuel.heat_s_s", pile.heat, pile.maxHeat).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_fuel.depletion_s_s", pile.progress, pile.maxProgress).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_fuel.flux_s", pile.lastNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 				if((meta & 8) == 8)
-					player.addChatComponentMessage(new ChatComponentText("PU-239 RICH").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_GREEN)));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_fuel.pu_239_rich").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_GREEN)));
 			}
 		}
 		

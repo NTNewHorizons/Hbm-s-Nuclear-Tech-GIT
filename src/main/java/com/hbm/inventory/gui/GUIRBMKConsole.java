@@ -92,8 +92,8 @@ public class GUIRBMKConsole extends GuiScreen {
 			}
 		}
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 61, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Select all control rods" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 72, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ "Deselect all" } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 61, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkconsole.select_all_control_rods") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 72, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkconsole.deselect_all") } );
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 2; j++) {
@@ -103,12 +103,12 @@ public class GUIRBMKConsole extends GuiScreen {
 			}
 		}
 		
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 6, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ EnumChatFormatting.RED + "Left click: Select red group", EnumChatFormatting.RED + "Right click: Assign red group" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 17, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ EnumChatFormatting.YELLOW + "Left click: Select yellow group", EnumChatFormatting.YELLOW + "Right click: Assign yellow group" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ EnumChatFormatting.GREEN + "Left click: Select green group", EnumChatFormatting.GREEN + "Right click: Assign green group" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 39, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ EnumChatFormatting.BLUE + "Left click: Select blue group", EnumChatFormatting.BLUE + "Right click: Assign blue group" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 50, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ EnumChatFormatting.LIGHT_PURPLE + "Left click: Select purple group", EnumChatFormatting.LIGHT_PURPLE + "Right click: Assign purple group" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 70, guiTop + 82, 12, 12, mouseX, mouseY, new String[]{ "Cycle steam channel compressor setting" } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 6, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guirbmkconsole.left_click_select_red_group"), EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guirbmkconsole.right_click_assign_red_group") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 17, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guirbmkconsole.left_click_select_yellow_group"), EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guirbmkconsole.right_click_assign_yellow_group") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.guirbmkconsole.left_click_select_green_group"), EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.guirbmkconsole.right_click_assign_green_group") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 39, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.guirbmkconsole.left_click_select_blue_group"), EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.guirbmkconsole.right_click_assign_blue_group") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 50, guiTop + 70, 10, 10, mouseX, mouseY, new String[]{ EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("gui.guirbmkconsole.left_click_select_purple_group"), EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("gui.guirbmkconsole.right_click_assign_purple_group") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 70, guiTop + 82, 12, 12, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkconsole.cycle_steam_channel_compressor_setting") } );
 	}
 	
 	public void drawCustomInfoStat(int mouseX, int mouseY, int x, int y, int width, int height, int tPosX, int tPosY, String[] text) {

@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import com.hbm.items.ItemEnumMulti;
 import com.hbm.util.EnumUtil;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -42,11 +43,11 @@ public class ItemDrillbit extends ItemEnumMulti {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		EnumDrillType type = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
 
-		list.add(EnumChatFormatting.YELLOW + "Speed: " + ((int) (type.speed * 100)) + "%");
-		list.add(EnumChatFormatting.YELLOW + "Tier: " + type.tier);
-		if(type.fortune > 0) list.add(EnumChatFormatting.LIGHT_PURPLE + "Fortune " + type.fortune);
-		if(type.vein) list.add(EnumChatFormatting.GREEN + "Vein miner");
-		if(type.silk) list.add(EnumChatFormatting.GREEN + "Silk touch");
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_drillbit.1", ((int) (type.speed * 100))));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_drillbit.2", type.tier));
+		if(type.fortune > 0) list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("item.tooltip.item_drillbit.3", type.fortune));
+		if(type.vein) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_drillbit.4"));
+		if(type.silk) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_drillbit.5"));
 	}
 	
 	public static enum EnumDrillType {

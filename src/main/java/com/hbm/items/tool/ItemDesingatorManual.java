@@ -5,6 +5,7 @@ import java.util.List;
 import com.hbm.inventory.gui.GUIScreenDesignator;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.IGUIProvider;
+import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.item.IDesignatorItem;
 import cpw.mods.fml.relauncher.Side;
@@ -30,11 +31,11 @@ public class ItemDesingatorManual extends Item implements IDesignatorItem, IGUIP
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(stack.stackTagCompound != null) {
-			list.add("Target Coordinates:");
-			list.add("X: " + stack.stackTagCompound.getInteger("xCoord"));
-			list.add("Z: " + stack.stackTagCompound.getInteger("zCoord"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_desingator.1"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.1", stack.stackTagCompound.getInteger("xCoord")));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.3", stack.stackTagCompound.getInteger("zCoord")));
 		} else {
-			list.add("Please select a target.");
+			list.add(I18nUtil.resolveKey("item.tooltip.item_desingator.2"));
 		}
 	}
 

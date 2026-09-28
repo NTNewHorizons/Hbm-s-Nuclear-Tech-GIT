@@ -181,10 +181,10 @@ public class ContaminationUtil {
 		//localization and server-side restrictions have turned this into a painful mess
 		//a *functioning* painful mess, nonetheless
 		player.addChatMessage(new ChatComponentText("===== ☢ ").appendSibling(new ChatComponentTranslation("geiger.title")).appendSibling(new ChatComponentText(" ☢ =====")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-		player.addChatMessage(new ChatComponentTranslation("geiger.chunkRad").appendSibling(new ChatComponentText(" " + chunkPrefix + rads + " RAD/s")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-		player.addChatMessage(new ChatComponentTranslation("geiger.envRad").appendSibling(new ChatComponentText(" " + envPrefix + env + " RAD/s")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-		player.addChatMessage(new ChatComponentTranslation("geiger.playerRad").appendSibling(new ChatComponentText(" " + radPrefix + eRad + " RAD")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-		player.addChatMessage(new ChatComponentTranslation("geiger.playerAct").appendSibling(new ChatComponentText(" " + envPrefix + neut + " RAD/s")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+		player.addChatMessage(new ChatComponentTranslation("geiger.chunkRad").appendSibling(new ChatComponentTranslation("chat.contamination_util.s_s_rad_s", chunkPrefix, rads)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+		player.addChatMessage(new ChatComponentTranslation("geiger.envRad").appendSibling(new ChatComponentTranslation("chat.contamination_util.s_s_rad_s", envPrefix, env)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+		player.addChatMessage(new ChatComponentTranslation("geiger.playerRad").appendSibling(new ChatComponentTranslation("chat.contamination_util.s_s_rad", radPrefix, eRad)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+		player.addChatMessage(new ChatComponentTranslation("geiger.playerAct").appendSibling(new ChatComponentTranslation("chat.contamination_util.s_s_rad_s", envPrefix, neut)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 		player.addChatMessage(new ChatComponentTranslation("geiger.playerRes").appendSibling(new ChatComponentText(" " + resPrefix + res + "% (" + resKoeff + ")")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 	}
 
@@ -201,7 +201,7 @@ public class ContaminationUtil {
 		String envPrefix = getPreffixFromRad(env);
 
 		player.addChatMessage(new ChatComponentText("===== ☢ ").appendSibling(new ChatComponentTranslation("geiger.title.dosimeter")).appendSibling(new ChatComponentText(" ☢ =====")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-		player.addChatMessage(new ChatComponentTranslation("geiger.envRad").appendSibling(new ChatComponentText(" " + envPrefix + (limit ? ">" : "") + env + " RAD/s")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+		player.addChatMessage(new ChatComponentTranslation("geiger.envRad").appendSibling(new ChatComponentTranslation("chat.contamination_util.s_s_s_rad_s", envPrefix, (limit ? ">" : ""), env)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 	}
 
 	public static String getPreffixFromRad(double rads) {
@@ -230,7 +230,7 @@ public class ContaminationUtil {
 		double halflife = ((int)((1D - Math.pow(0.5, digamma)) * 10000)) / 100D;
 
 		player.addChatMessage(new ChatComponentText("===== Ϝ ").appendSibling(new ChatComponentTranslation("digamma.title")).appendSibling(new ChatComponentText(" Ϝ =====")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_PURPLE)));
-		player.addChatMessage(new ChatComponentTranslation("digamma.playerDigamma").appendSibling(new ChatComponentText(EnumChatFormatting.RED + " " + digamma + " DRX")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE)));
+		player.addChatMessage(new ChatComponentTranslation("digamma.playerDigamma").appendSibling(new ChatComponentTranslation("chat.contamination_util.s_s_drx", EnumChatFormatting.RED, digamma)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE)));
 		player.addChatMessage(new ChatComponentTranslation("digamma.playerHealth").appendSibling(new ChatComponentText(EnumChatFormatting.RED + " " + halflife + "%")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE)));
 		player.addChatMessage(new ChatComponentTranslation("digamma.playerRes").appendSibling(new ChatComponentText(EnumChatFormatting.BLUE + " " + "N/A")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE)));
 	}

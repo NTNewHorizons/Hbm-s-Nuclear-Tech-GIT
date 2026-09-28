@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.nbt.NBTTagCompound;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIScreenRBMKTerminal extends GuiScreen {
 	
@@ -42,12 +43,12 @@ public class GUIScreenRBMKTerminal extends GuiScreen {
 		}
 		
 		GL11.glScaled(0.5, 0.5, 1);
-		this.fontRendererObj.drawString("[Esc] - Quit", 2, 2, 0xffffff);
-		this.fontRendererObj.drawString("chan <channel> - Set selected channel", 2, 12, 0xffffff);
-		this.fontRendererObj.drawString("send <cmd> - Send single signal over selected channel", 2, 22, 0xffffff);
-		this.fontRendererObj.drawString("start <cmd> - Continuously send signal over selected channel", 2, 32, 0xffffff);
-		this.fontRendererObj.drawString("stop - Stop continuous sending", 2, 42, 0xffffff);
-		this.fontRendererObj.drawString("clear - Delete command history", 2, 52, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.esc_quit"), 2, 2, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.chan_channel_set_selected_channel"), 2, 12, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.send_cmd_send_single_signal_over_selected_channel"), 2, 22, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.start_cmd_continuously_send_signal_over_selected_channel"), 2, 32, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.stop_stop_continuous_sending"), 2, 42, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.clear_delete_command_history"), 2, 52, 0xffffff);
 	}
 	
 	protected void keyTyped(char c, int b) {

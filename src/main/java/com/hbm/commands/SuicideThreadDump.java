@@ -31,7 +31,7 @@ public class SuicideThreadDump extends CommandBase {
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/dumpthreadsandcrashgame [dump/crash]";
+		return "commands.suicide_thread_dump.dumpthreadsandcrashgame_dump_crash";
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class SuicideThreadDump extends CommandBase {
 	public void processCommand(ICommandSender sender, String[] args) {
 		
 		if(args.length != 1 || !(args[0].equals("dump") || args[0].equals("crash"))) {
-			throw new CommandException("Requires argument \"dump\" or \"crash\"!");
+			throw new CommandException("commands.suicide_thread_dump.requires_argument_dump_or_crash");
 		}
 		
 		ThreadInfo[] threads = ManagementFactory.getThreadMXBean().dumpAllThreads(true, true);

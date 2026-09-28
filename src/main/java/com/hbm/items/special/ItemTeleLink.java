@@ -3,15 +3,16 @@ package com.hbm.items.special;
 import java.util.List;
 
 import com.hbm.tileentity.machine.TileEntityMachineTeleporter;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class ItemTeleLink extends Item {
 
@@ -33,7 +34,7 @@ public class ItemTeleLink extends Item {
 				stack.stackTagCompound.setInteger("z", z);
 				stack.stackTagCompound.setInteger("dim", player.dimension);
 				world.playSoundAtEntity(player, "hbm:item.techBleep", 1.0F, 1.0F);
-				player.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + "[TeleLink] Set teleporter exit to " + x + ", " + y + ", " + z + "."));
+				player.addChatMessage(new ChatComponentTranslation("item.message.item_tele_link.1", EnumChatFormatting.AQUA, x, y, z));
 				player.swingItem();
 				
 				return true;
@@ -42,7 +43,7 @@ public class ItemTeleLink extends Item {
 				
 				if(!stack.hasTagCompound()) {
 					world.playSoundAtEntity(player, "hbm:item.techBoop", 1.0F, 1.0F);
-					player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "[TeleLink] No destination set!"));
+					player.addChatMessage(new ChatComponentTranslation("item.message.item_tele_link.2", EnumChatFormatting.RED));
 					return false;
 				}
 				
@@ -60,7 +61,7 @@ public class ItemTeleLink extends Item {
 				
 				tele.markDirty();
 				world.playSoundAtEntity(player, "hbm:item.techBleep", 1.0F, 1.0F);
-				player.addChatMessage(new ChatComponentText(EnumChatFormatting.AQUA + "[TeleLink] Teleporters destination has been set!"));
+				player.addChatMessage(new ChatComponentTranslation("item.message.item_tele_link.3", EnumChatFormatting.AQUA));
 				player.swingItem();
 				return true;
 			}
@@ -72,12 +73,12 @@ public class ItemTeleLink extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if (itemstack.stackTagCompound != null) {
-			list.add("X: " + itemstack.stackTagCompound.getInteger("x"));
-			list.add("Y: " + itemstack.stackTagCompound.getInteger("y"));
-			list.add("Z: " + itemstack.stackTagCompound.getInteger("z"));
-			list.add("D: " + itemstack.stackTagCompound.getInteger("dim"));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.1", itemstack.stackTagCompound.getInteger("x")));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.2", itemstack.stackTagCompound.getInteger("y")));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.3", itemstack.stackTagCompound.getInteger("z")));
+			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.4", itemstack.stackTagCompound.getInteger("dim")));
 		} else {
-			list.add(EnumChatFormatting.RED + "Select exit location first!");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_tele_link.5"));
 		}
 	}
 

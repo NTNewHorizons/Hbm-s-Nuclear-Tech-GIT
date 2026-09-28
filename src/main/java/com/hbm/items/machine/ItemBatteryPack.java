@@ -9,6 +9,7 @@ import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.EnumUtil;
+import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.energymk2.IBatteryItem;
 import cpw.mods.fml.relauncher.Side;
@@ -142,11 +143,11 @@ public class ItemBatteryPack extends ItemEnumMulti implements IBatteryItem {
 		
 		if(itemstack.hasTagCompound()) charge = getCharge(itemstack);
 
-		list.add(EnumChatFormatting.GREEN + "Energy stored: " + BobMathUtil.getShortNumber(charge) + "/" + BobMathUtil.getShortNumber(maxCharge) + "HE (" + (charge * 1000 / maxCharge / 10D) + "%)");
-		list.add(EnumChatFormatting.YELLOW + "Charge rate: " + BobMathUtil.getShortNumber(chargeRate) + "HE/t");
-		list.add(EnumChatFormatting.YELLOW + "Discharge rate: " + BobMathUtil.getShortNumber(dischargeRate) + "HE/t");
-		list.add(EnumChatFormatting.GOLD + "Time for full charge: " + (maxCharge / chargeRate / 20 / 60D) + "min");
-		list.add(EnumChatFormatting.GOLD + "Charge lasts for: " + (maxCharge / dischargeRate / 20 / 60D) + "min");
+		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_battery_pack.1", BobMathUtil.getShortNumber(charge), BobMathUtil.getShortNumber(maxCharge), (charge * 1000 / maxCharge / 10D)));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_battery.2", BobMathUtil.getShortNumber(chargeRate)));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_battery.3", BobMathUtil.getShortNumber(dischargeRate)));
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_battery_pack.2", (maxCharge / chargeRate / 20 / 60D)));
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_battery_pack.3", (maxCharge / dischargeRate / 20 / 60D)));
 	}
 
 	public static ItemStack makeEmptyBattery(ItemStack stack) {

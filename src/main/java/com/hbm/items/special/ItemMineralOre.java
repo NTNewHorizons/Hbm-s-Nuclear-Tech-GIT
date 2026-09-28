@@ -15,6 +15,7 @@ import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.particle.SpentCasing;
 import com.hbm.util.EnumUtil;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -62,22 +63,22 @@ public class ItemMineralOre extends Item {
 		
 		switch(stack.getItemDamage()) {
 		case CLUMP_PEROXIDE:
-			list.add(y + "[Peroxide]");
+			list.add(y + I18nUtil.resolveKey("item.tooltip.item_mineral_ore.1"));
 			break;
 		case CLUMP_NITRIC:
-			list.add(o + "[Nitric]");
+			list.add(o + I18nUtil.resolveKey("item.tooltip.item_mineral_ore.2"));
 			break;
 		case CLUMP_SULFURIC:
-			list.add(y + "[Sulfuric]");
+			list.add(y + I18nUtil.resolveKey("item.tooltip.item_mineral_ore.3"));
 			break;
 		case CLUMP_SOLVENT:
-			list.add(r + "[Solvent]");
+			list.add(r + I18nUtil.resolveKey("item.tooltip.item_mineral_ore.4"));
 			break;
 		case CLUMP_HYDROCHLORIC:
-			list.add(g + "[Chloric]");
+			list.add(g + I18nUtil.resolveKey("item.tooltip.item_mineral_ore.5"));
 			break;
 		case CLUMP_SCHRABIDIC:
-			list.add(b + "[Schrabidic]");
+			list.add(b + I18nUtil.resolveKey("item.tooltip.item_mineral_ore.6"));
 			break;
 		}
 	}

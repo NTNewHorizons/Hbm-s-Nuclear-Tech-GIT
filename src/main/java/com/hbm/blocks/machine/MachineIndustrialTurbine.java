@@ -21,11 +21,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class MachineIndustrialTurbine extends BlockDummyable implements ITooltipProvider, ILookOverlay {
 
@@ -59,7 +59,7 @@ public class MachineIndustrialTurbine extends BlockDummyable implements ITooltip
 							world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "hbm:block.chungusLever", 1.5F, 1.0F);
 							entity.onLeverPull();
 						} else {
-							player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + "Cannot change compressor setting while operational!"));
+							player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_industrial_turbine.s_cannot_change_compressor_setting_while_operational", EnumChatFormatting.RED));
 						}
 					}
 					return true;
@@ -122,8 +122,8 @@ public class MachineIndustrialTurbine extends BlockDummyable implements ITooltip
 		int color = ((int) (0xFF - 0xFF * chungus.spin)) << 16 | ((int)(0xFF * chungus.spin) << 8);
 		int time = (int) ((world.getTotalWorldTime() / 4) % 4);
 		
-		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + inputType.getLocalizedName() + ": " + String.format(Locale.US, "%,d", tankInput.getFill()) + "/" + String.format(Locale.US, "%,d", tankInput.getMaxFill()) + "mB");
-		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + outputType.getLocalizedName() + ": " + String.format(Locale.US, "%,d", tankOutput.getFill()) + "/" + String.format(Locale.US, "%,d", tankOutput.getMaxFill()) + "mB");
+		text.add(I18nUtil.resolveKey("overlay.machine_industrial_turbine.s_s_s_s_sm_b", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, inputType.getLocalizedName(), String.format(Locale.US, "%,d", tankInput.getFill()), String.format(Locale.US, "%,d", tankInput.getMaxFill())));
+		text.add(I18nUtil.resolveKey("overlay.machine_industrial_turbine.s_s_s_s_sm_b_2", EnumChatFormatting.RED, EnumChatFormatting.RESET, outputType.getLocalizedName(), String.format(Locale.US, "%,d", tankOutput.getFill()), String.format(Locale.US, "%,d", tankOutput.getMaxFill())));
 		text.add("&[" + color + "&]" + EnumChatFormatting.RED + "<- " + EnumChatFormatting.WHITE + BobMathUtil.getShortNumber(chungus.powerBuffer) + "HE (" +
 				EnumChatFormatting.RESET + blocks[chungus.powerBuffer <= 0 ? 0 : time] + (int) Math.round(chungus.spin * 100) + "%" + EnumChatFormatting.WHITE + ")");
 		

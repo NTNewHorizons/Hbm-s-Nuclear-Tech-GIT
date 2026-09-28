@@ -159,8 +159,8 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 		TileEntityStirling stirling = (TileEntityStirling) te;
 
 		List<String> text = new ArrayList();
-		text.add(stirling.heat + "TU/t");
-		text.add((stirling.hasCog ? stirling.powerBuffer : 0) + "HE/t");
+		text.add(I18nUtil.resolveKey("overlay.machine_stirling.s_tu_t", stirling.heat));
+		text.add(I18nUtil.resolveKey("overlay.machine_stirling.s_he_t", (stirling.hasCog ? stirling.powerBuffer : 0)));
 
 		if(this != ModBlocks.machine_stirling_creative) {
 			int maxHeat = stirling.maxHeat();
@@ -173,11 +173,11 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 			text.add("&[" + color + "&]" + ((stirling.heat * 1000 / maxHeat) / 10D) + "%");
 			
 			if(stirling.heat > maxHeat) {
-				text.add("&[" + (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00) + "&]! ! ! OVERSPEED ! ! !");
+				text.add(I18nUtil.resolveKey("overlay.machine_stirling.s_overspeed", (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00)));
 			}
 			
 			if(!stirling.hasCog) {
-				text.add("&[" + 0xff0000 + "&]Gear missing!");
+				text.add(I18nUtil.resolveKey("overlay.machine_stirling.s_gear_missing", 0xff0000));
 			}
 		}
 		

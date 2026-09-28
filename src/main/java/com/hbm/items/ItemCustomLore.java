@@ -55,7 +55,7 @@ public class ItemCustomLore extends Item {
 
 			try {
 				if(player.worldObj.rand.nextInt(10) == 0) {
-					list.add(EnumChatFormatting.DARK_RED + "UNDEFINED");
+					list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("item.tooltip.item_custom_lore.1"));
 				} else {
 					Random rand = new Random(System.currentTimeMillis() / 500);
 
@@ -69,11 +69,11 @@ public class ItemCustomLore extends Item {
 					if(item != null) {
 						list.add(new ItemStack(item).getDisplayName());
 					} else {
-						list.add(EnumChatFormatting.RED + "ERROR #" + r);
+						list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_custom_lore.2", r));
 					}
 				}
 			} catch(Exception ex) {
-				list.add(EnumChatFormatting.DARK_RED + "UNDEFINED");
+				list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("item.tooltip.item_custom_lore.1"));
 			}
 		}
 	}

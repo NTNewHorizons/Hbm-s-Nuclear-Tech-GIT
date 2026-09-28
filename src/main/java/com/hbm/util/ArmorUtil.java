@@ -38,6 +38,7 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.ForgeEventFactory;
+import com.hbm.util.i18n.I18nUtil;
 
 public class ArmorUtil {
 	
@@ -535,11 +536,11 @@ public class ArmorUtil {
 		ItemStack filter = ((IGasMask)mask.getItem()).getFilter(mask, player);
 
 		if(filter == null) {
-			list.add(EnumChatFormatting.RED + "No filter installed!");
+			list.add(I18nUtil.resolveKey("tooltip.armor_util.s_no_filter_installed", EnumChatFormatting.RED));
 			return;
 		}
 
-		list.add(EnumChatFormatting.GOLD + "Installed filter:");
+		list.add(I18nUtil.resolveKey("tooltip.armor_util.s_installed_filter", EnumChatFormatting.GOLD));
 
 		int meta = filter.getItemDamage();
 		int max = filter.getMaxDamage();

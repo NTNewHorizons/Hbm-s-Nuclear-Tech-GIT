@@ -3,6 +3,7 @@ package com.hbm.items.tool;
 import java.util.List;
 
 import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +16,8 @@ public class ItemStructureSingle extends ItemStructureTool {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
-		list.add(EnumChatFormatting.YELLOW + "Click to print exactly one <placeBlockAtCurrentPosition>");
-		list.add(EnumChatFormatting.YELLOW + "line with the targted block and metadata");
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_structure_single.1"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_structure_single.2"));
 	}
 
 	@Override

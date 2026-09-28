@@ -12,12 +12,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.ChatComponentTranslation;
 
 @Deprecated
 public class BlockGraphiteNeutronDetector extends BlockGraphiteDrilledTE {
@@ -105,8 +105,8 @@ public class BlockGraphiteNeutronDetector extends BlockGraphiteDrilledTE {
 				} else {
 					TileEntityPileNeutronDetector pile = (TileEntityPileNeutronDetector) world.getTileEntity(x, y, z);
 					
-					player.addChatComponentMessage(new ChatComponentText("CP1 FUEL ASSEMBLY " + x + " " + y + " " + z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-					player.addChatComponentMessage(new ChatComponentText("FLUX: " + pile.lastNeutrons + "/" + pile.maxNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_neutron_detector.cp1_fuel_assembly_s_s_s", x, y, z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_neutron_detector.flux_s_s", pile.lastNeutrons, pile.maxNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 				}
 			}
 			

@@ -19,6 +19,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIRBMKControlAuto extends GuiInfoContainer {
 	
@@ -78,15 +79,15 @@ public class GUIRBMKControlAuto extends GuiInfoContainer {
 		}
 
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 58, guiTop + 26, 28, 19, mouseX, mouseY, new String[]{ func } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 61, guiTop + 48, 22, 10, mouseX, mouseY, new String[]{ "Select linear interpolation" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 61, guiTop + 59, 22, 10, mouseX, mouseY, new String[]{ "Select quadratic interpolation" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 61, guiTop + 70, 22, 10, mouseX, mouseY, new String[]{ "Select inverse quadratic interpolation" } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 61, guiTop + 48, 22, 10, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkcontrol_auto.select_linear_interpolation") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 61, guiTop + 59, 22, 10, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkcontrol_auto.select_quadratic_interpolation") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 61, guiTop + 70, 22, 10, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkcontrol_auto.select_inverse_quadratic_interpolation") } );
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 26, 30, 10, mouseX, mouseY, new String[]{ "Level at max heat", "Should be smaller than level at min heat" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 37, 30, 10, mouseX, mouseY, new String[]{ "Level at min heat", "Should be larger than level at max heat" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 48, 30, 10, mouseX, mouseY, new String[]{ "Max heat", "Must be larger than min heat" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 59, 30, 10, mouseX, mouseY, new String[]{ "Min heat", "Must be smaller than max heat" } );
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 70, 30, 10, mouseX, mouseY, new String[]{ "Save parameters" } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 26, 30, 10, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkcontrol_auto.level_at_max_heat"), I18nUtil.resolveKey("gui.guirbmkcontrol_auto.should_be_smaller_than_level_at_min_heat") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 37, 30, 10, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkcontrol_auto.level_at_min_heat"), I18nUtil.resolveKey("gui.guirbmkcontrol_auto.should_be_larger_than_level_at_max_heat") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 48, 30, 10, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkcontrol_auto.max_heat"), I18nUtil.resolveKey("gui.guirbmkcontrol_auto.must_be_larger_than_min_heat") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 59, 30, 10, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkcontrol_auto.min_heat"), I18nUtil.resolveKey("gui.guirbmkcontrol_auto.must_be_smaller_than_max_heat") } );
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 28, guiTop + 70, 30, 10, mouseX, mouseY, new String[]{ I18nUtil.resolveKey("gui.guirbmkcontrol_auto.save_parameters") } );
 	}
 
 	@Override

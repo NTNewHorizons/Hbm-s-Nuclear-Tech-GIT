@@ -64,7 +64,7 @@ public class BlockRefueler extends BlockContainer implements ILookOverlay {
 				FluidType type = ((IItemFluidIdentifier) player.getHeldItem().getItem()).getType(world, x, y, z, player.getHeldItem());
 				refueler.tank.setTankType(type);
 				refueler.markDirty();
-				player.addChatComponentMessage(new ChatComponentText("Changed type to ").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_refueler.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 				
 				return true;
 			}

@@ -6,6 +6,7 @@ import java.util.Locale;
 import com.hbm.inventory.fluid.trait.FT_Combustible.FuelGrade;
 import com.hbm.items.ItemEnumMulti;
 import com.hbm.util.EnumUtil;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -44,7 +45,7 @@ public class ItemPistons extends ItemEnumMulti {
 		EnumPistonType type = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
 		
 
-		list.add(EnumChatFormatting.YELLOW + "Fuel efficiency:");
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_pistons.1"));
 		for(int i = 0; i < type.eff.length; i++) {
 			list.add(EnumChatFormatting.YELLOW + "-" + FuelGrade.values()[i].getLocalizedName() + ": " + EnumChatFormatting.RED + "" + (int)(type.eff[i] * 100) + "%");
 		}

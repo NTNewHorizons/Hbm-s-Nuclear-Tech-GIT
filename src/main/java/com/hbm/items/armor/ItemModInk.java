@@ -3,6 +3,7 @@ package com.hbm.items.armor;
 import java.util.List;
 
 import com.hbm.handler.ArmorModHandler;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -19,15 +20,15 @@ public class ItemModInk extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.LIGHT_PURPLE + "10% chance to nullify damage");
-		list.add(EnumChatFormatting.LIGHT_PURPLE + "Flowers!");
+		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_ink.1"));
+		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_ink.2"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.LIGHT_PURPLE + "  " + stack.getDisplayName() + " (10% chance to nullify damage)");
+		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_ink.3", stack.getDisplayName()));
 	}
 	
 	@Override

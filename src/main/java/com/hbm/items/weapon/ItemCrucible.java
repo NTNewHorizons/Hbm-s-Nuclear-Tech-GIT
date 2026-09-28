@@ -29,11 +29,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class ItemCrucible extends ItemSwordAbility implements IEquipReceiver, IAnimatedItem<ToolAnimation> {
 
@@ -102,7 +102,7 @@ public class ItemCrucible extends ItemSwordAbility implements IEquipReceiver, IA
 		} else {
 
 			if(!attacker.worldObj.isRemote && attacker instanceof EntityPlayer)
-				((EntityPlayer)attacker).addChatComponentMessage(new ChatComponentText("Not enough energy.").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				((EntityPlayer)attacker).addChatComponentMessage(new ChatComponentTranslation("item.message.item_crucible.1").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			return false;
 		}
 	}

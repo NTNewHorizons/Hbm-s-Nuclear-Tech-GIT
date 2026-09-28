@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.entity.mob.siege.SiegeTier;
 import com.hbm.lib.RefStrings;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -64,6 +65,6 @@ public class ItemSiegeCoin extends Item {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		super.addInformation(stack, player, list, bool);
-		list.add(EnumChatFormatting.YELLOW + "Tier " + (stack.getItemDamage() + 1));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_siege_coin.1", (stack.getItemDamage() + 1)));
 	}
 }

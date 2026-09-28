@@ -27,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIScreenBobmazon extends GuiScreen {
 
@@ -96,9 +97,9 @@ public class GUIScreenBobmazon extends GuiScreen {
 		}
 
 		if(currentPage != 0)
-			buttons.add(new FolderButton(guiLeft + 25 - 18, guiTop + 26 + (27 * 3), 1, "Previous"));
+			buttons.add(new FolderButton(guiLeft + 25 - 18, guiTop + 26 + (27 * 3), 1, I18nUtil.resolveKey("gui.guiscreen_bobmazon.previous")));
 		if(currentPage != getPageCount())
-			buttons.add(new FolderButton(guiLeft + 25 + (27 * 4) + 18 + 41, guiTop + 26 + (27 * 3), 2, "Next"));
+			buttons.add(new FolderButton(guiLeft + 25 + (27 * 4) + 18 + 41, guiTop + 26 + (27 * 3), 2, I18nUtil.resolveKey("gui.guiscreen_bobmazon.next")));
 	}
 
 	protected void mouseClicked(int i, int j, int k) {

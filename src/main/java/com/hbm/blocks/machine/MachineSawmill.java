@@ -192,7 +192,7 @@ public class MachineSawmill extends BlockDummyable implements ILookOverlay, IToo
 		TileEntitySawmill stirling = (TileEntitySawmill) te;
 
 		List<String> text = new ArrayList();
-		text.add(stirling.heat + "TU/t");
+		text.add(I18nUtil.resolveKey("overlay.machine_sawmill.s_tu_t", stirling.heat));
 
 		double percent = (double) stirling.heat / (double) 300;
 		int color = ((int) (0xFF - 0xFF * percent)) << 16 | ((int)(0xFF * percent) << 8);
@@ -223,11 +223,11 @@ public class MachineSawmill extends BlockDummyable implements ILookOverlay, IToo
 		}
 		
 		if(stirling.heat > 300) {
-			text.add("&[" + (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00) + "&]! ! ! OVERSPEED ! ! !");
+			text.add(I18nUtil.resolveKey("overlay.machine_sawmill.s_overspeed", (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00)));
 		}
 		
 		if(!stirling.hasBlade) {
-			text.add("&[" + 0xff0000 + "&]Blade missing!");
+			text.add(I18nUtil.resolveKey("overlay.machine_sawmill.s_blade_missing", 0xff0000));
 		}
 		
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);

@@ -11,6 +11,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIFusionBreeder extends GuiInfoContainer {
 
@@ -29,8 +30,8 @@ public class GUIFusionBreeder extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float interp) {
 		super.drawScreen(mouseX, mouseY, interp);
 		
-		drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 23, 18, 18, mouseX, mouseY, EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + (int) Math.ceil(breeder.neutronEnergy) + " flux/t");
-		drawCustomInfoStat(mouseX, mouseY, guiLeft + 67, guiTop + 46, 42, 14, mouseX, mouseY, BobMathUtil.format((int) Math.ceil(breeder.progress)) + " / " + BobMathUtil.format((int) Math.ceil(breeder.capacity)) + " flux");
+		drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 23, 18, 18, mouseX, mouseY, EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + (int) Math.ceil(breeder.neutronEnergy) + I18nUtil.resolveKey("gui.guifusion_breeder.flux_t"));
+		drawCustomInfoStat(mouseX, mouseY, guiLeft + 67, guiTop + 46, 42, 14, mouseX, mouseY, BobMathUtil.format((int) Math.ceil(breeder.progress)) + " / " + BobMathUtil.format((int) Math.ceil(breeder.capacity)) + I18nUtil.resolveKey("gui.guifusion_breeder.flux"));
 
 		breeder.tanks[0].renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 18, 16, 52);
 		breeder.tanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 134, guiTop + 18, 16, 52);

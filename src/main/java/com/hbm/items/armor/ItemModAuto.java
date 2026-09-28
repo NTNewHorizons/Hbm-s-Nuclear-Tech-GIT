@@ -5,6 +5,7 @@ import java.util.List;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.potion.HbmPotion;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +22,7 @@ public class ItemModAuto extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
-		list.add(EnumChatFormatting.BLUE + "Imported from Japsterdam.");
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_mod_auto.1"));
 		
 		list.add("");
 		super.addInformation(stack, player, list, bool);

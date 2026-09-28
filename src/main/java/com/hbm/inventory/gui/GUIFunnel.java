@@ -14,6 +14,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIFunnel extends GuiInfoContainer {
 	
@@ -32,7 +33,7 @@ public class GUIFunnel extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 159, guiTop + 73, 10, 10, mouseX, mouseY, "Mode: " + (funnel.mode == funnel.MODE_3x3 ? "3x3 only" : funnel.mode == funnel.MODE_2x2 ? "2x2 only" : "3x3 then 2x2"));
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 159, guiTop + 73, 10, 10, mouseX, mouseY, I18nUtil.resolveKey("gui.guifunnel.mode") + (funnel.mode == funnel.MODE_3x3 ? I18nUtil.resolveKey("gui.guifunnel.3x3_only") : funnel.mode == funnel.MODE_2x2 ? I18nUtil.resolveKey("gui.guifunnel.2x2_only") : I18nUtil.resolveKey("gui.guifunnel.3x3_then_2x2")));
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.hbm.items.machine;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -112,10 +114,10 @@ public class ItemCassette extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(!(stack.getItem() instanceof ItemCassette)) return;
 
-		list.add("Siren sound cassette:");
-		list.add("   Name: " + TrackType.getEnum(stack.getItemDamage()).getTrackTitle());
-		list.add("   Type: " + TrackType.getEnum(stack.getItemDamage()).getType().name());
-		list.add("   Volume: " + TrackType.getEnum(stack.getItemDamage()).getVolume());
+		list.add(I18nUtil.resolveKey("item.tooltip.item_cassette.1"));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_cassette.2", TrackType.getEnum(stack.getItemDamage()).getTrackTitle()));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_cassette.3", TrackType.getEnum(stack.getItemDamage()).getType().name()));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_cassette.4", TrackType.getEnum(stack.getItemDamage()).getVolume()));
 	}
 	
 	public static TrackType getType(ItemStack stack) {

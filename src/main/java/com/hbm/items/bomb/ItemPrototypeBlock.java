@@ -1,5 +1,7 @@
 package com.hbm.items.bomb;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -16,9 +18,9 @@ public class ItemPrototypeBlock extends ItemBlock {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
-		list.add("It didn't have to be like this.");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_prototype_block.1"));
 		list.add("");
-		list.add("You monster.");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_prototype_block.2"));
 		
 		/*list.add("In memory of Euphemia.");
 		list.add("");

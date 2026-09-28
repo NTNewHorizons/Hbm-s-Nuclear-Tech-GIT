@@ -21,6 +21,7 @@ import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import com.hbm.util.i18n.I18nUtil;
 
 public class BobmazonOfferFactory {
 
@@ -152,11 +153,11 @@ public class BobmazonOfferFactory {
 				), Requirement.HIDDEN, 64));
 
 		special.add(new Offer(ItemKitNBT.create(
-				new ItemStack(ModItems.rod_of_discord).setStackDisplayName("Cock Joke"),
-				ModItems.canned_conserve.stackFromEnum(64, EnumFoodType.SLIME).setStackDisplayName("Class A Horse Semen"),
-				new ItemStack(ModItems.pipe_lead).setStackDisplayName("Get Nutted, Dumbass"),
+				new ItemStack(ModItems.rod_of_discord).setStackDisplayName(I18nUtil.resolveKey("item.name.bobmazon_offer_factory.cock_joke")),
+				ModItems.canned_conserve.stackFromEnum(64, EnumFoodType.SLIME).setStackDisplayName(I18nUtil.resolveKey("item.name.bobmazon_offer_factory.class_a_horse_semen")),
+				new ItemStack(ModItems.pipe_lead).setStackDisplayName(I18nUtil.resolveKey("item.name.bobmazon_offer_factory.get_nutted_dumbass")),
 				new ItemStack(ModItems.gem_alexandrite)
-				).setStackDisplayName("The Nut Bucket"), Requirement.HIDDEN, 64));
+				).setStackDisplayName(I18nUtil.resolveKey("item.name.bobmazon_offer_factory.the_nut_bucket")), Requirement.HIDDEN, 64));
 
 		special.add(new Offer(ItemKitNBT.create(
 				new ItemStack(ModItems.rpa_helmet),
@@ -167,7 +168,7 @@ public class BobmazonOfferFactory {
 				new ItemStack(ModItems.ammo_standard, 64, EnumAmmo.CAPACITOR_OVERCHARGE.ordinal()),
 				new ItemStack(ModItems.ammo_standard, 64, EnumAmmo.CAPACITOR_OVERCHARGE.ordinal()),
 				new ItemStack(ModItems.ammo_standard, 64, EnumAmmo.CAPACITOR_OVERCHARGE.ordinal())
-				).setStackDisplayName("Frenchie's Reward"), Requirement.HIDDEN, 32));
+				).setStackDisplayName(I18nUtil.resolveKey("item.name.bobmazon_offer_factory.frenchie_s_reward")), Requirement.HIDDEN, 32));
 	}
 
 	public static List<Offer> getOffers(ItemStack stack) {

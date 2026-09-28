@@ -24,6 +24,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUILaunchPadRusted extends GuiInfoContainer {
 	
@@ -41,7 +42,7 @@ public class GUILaunchPadRusted extends GuiInfoContainer {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
-		drawCustomInfoStat(mouseX, mouseY, guiLeft + 26, guiTop + 36, 16, 16, mouseX, mouseY, EnumChatFormatting.YELLOW + "Release Missile", "Missile is locked in lauch position,", "releasing may cause damage to the missile.", "Damaged missile can not be put back", "into launching position.");
+		drawCustomInfoStat(mouseX, mouseY, guiLeft + 26, guiTop + 36, 16, 16, mouseX, mouseY, EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guilaunch_pad_rusted.release_missile"), I18nUtil.resolveKey("gui.guilaunch_pad_rusted.missile_is_locked_in_lauch_position"), I18nUtil.resolveKey("gui.guilaunch_pad_rusted.releasing_may_cause_damage_to_the_missile"), I18nUtil.resolveKey("gui.guilaunch_pad_rusted.damaged_missile_can_not_be_put_back"), I18nUtil.resolveKey("gui.guilaunch_pad_rusted.into_launching_position"));
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.GuiIngameForge;
+import com.hbm.util.i18n.I18nUtil;
 
 public class RenderScreenOverlay {
 
@@ -74,9 +75,9 @@ public class RenderScreenOverlay {
 		else if(radiation >= 10) gui.drawTexturedModalRect(posX + length + 2, posY - 18, 18, 36, 18, 18);
 		else if(radiation >= 2.5) gui.drawTexturedModalRect(posX + length + 2, posY - 18, 0, 36, 18, 18);
 
-		if(radiation > 1000) Minecraft.getMinecraft().fontRenderer.drawString(">1000 RAD/s", posX, posY - 8, 0xFF0000);
-		else if(radiation >= 1) Minecraft.getMinecraft().fontRenderer.drawString(((int) Math.round(radiation)) + " RAD/s", posX, posY - 8, 0xFF0000);
-		else if(radiation > 0) Minecraft.getMinecraft().fontRenderer.drawString("<1 RAD/s", posX, posY - 8, 0xFF0000);
+		if(radiation > 1000) Minecraft.getMinecraft().fontRenderer.drawString(I18nUtil.resolveKey("gui.render_screen_overlay.1000_rad_s"), posX, posY - 8, 0xFF0000);
+		else if(radiation >= 1) Minecraft.getMinecraft().fontRenderer.drawString(I18nUtil.resolveKey("gui.render_screen_overlay.s_rad_s", ((int) Math.round(radiation))), posX, posY - 8, 0xFF0000);
+		else if(radiation > 0) Minecraft.getMinecraft().fontRenderer.drawString(I18nUtil.resolveKey("gui.render_screen_overlay.1_rad_s"), posX, posY - 8, 0xFF0000);
 
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthMask(true);
@@ -390,15 +391,15 @@ public class RenderScreenOverlay {
 		
 		if(minutes < 10) {
 			if(seconds < 10) {
-				Minecraft.getMinecraft().fontRenderer.drawString("Remaining time to impact: " + hours + ":0" + minutes + ":0" + seconds, left, top, color);	
+				Minecraft.getMinecraft().fontRenderer.drawString(I18nUtil.resolveKey("gui.render_screen_overlay.remaining_time_to_impact_s_0_s_0_s", hours, minutes, seconds), left, top, color);	
 			} else {
-				Minecraft.getMinecraft().fontRenderer.drawString("Remaining time to impact: " + hours + ":0" + minutes + ":" + seconds, left, top, color);
+				Minecraft.getMinecraft().fontRenderer.drawString(I18nUtil.resolveKey("gui.render_screen_overlay.remaining_time_to_impact_s_0_s_s", hours, minutes, seconds), left, top, color);
 			}
 		} else {
 			if(seconds < 10) {
-				Minecraft.getMinecraft().fontRenderer.drawString("Remaining time to impact: " + hours + ":" + minutes + ":0" + seconds, left, top, color);	
+				Minecraft.getMinecraft().fontRenderer.drawString(I18nUtil.resolveKey("gui.render_screen_overlay.remaining_time_to_impact_s_s_0_s", hours, minutes, seconds), left, top, color);	
 			} else {
-				Minecraft.getMinecraft().fontRenderer.drawString("Remaining time to impact: " + hours + ":" + minutes + ":" + seconds, left, top, color);
+				Minecraft.getMinecraft().fontRenderer.drawString(I18nUtil.resolveKey("gui.render_screen_overlay.remaining_time_to_impact_s_s_s", hours, minutes, seconds), left, top, color);
 			}
 		}
 

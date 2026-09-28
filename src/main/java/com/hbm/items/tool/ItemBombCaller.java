@@ -9,13 +9,14 @@ import com.hbm.main.NTMSounds;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import com.hbm.world.WorldUtil;
+import com.hbm.util.i18n.I18nUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class ItemBombCaller extends Item {
 
@@ -26,19 +27,19 @@ public class ItemBombCaller extends Item {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add("Aim & click to call an airstrike!");
+		list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.1"));
 
 		switch (stack.getItemDamage()) {
-			case 0: list.add("Type: Carpet bombing"); break;
-			case 1: list.add("Type: Napalm"); break;
-			case 2: list.add("Type: Poison gas"); break;
-			case 3: list.add("Type: Agent orange"); break;
-			case 4: list.add("Type: Atomic bomb"); break;
-			case 5: list.add("Type: VT stinger rockets"); break;
-			case 6: list.add("Type: PIP OH GOD"); break;
-			case 7: list.add("Type: Cloud the cloud oh god the cloud"); break;
-			case 8: list.add("Civilian Airliner."); break;
-			default: list.add("Type: INVALID, Report it to mod creator");
+			case 0: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.2")); break;
+			case 1: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.3")); break;
+			case 2: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.4")); break;
+			case 3: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.5")); break;
+			case 4: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.6")); break;
+			case 5: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.7")); break;
+			case 6: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.8")); break;
+			case 7: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.9")); break;
+			case 8: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.10")); break;
+			default: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.11"));
 
 		}
 	}
@@ -73,9 +74,9 @@ public class ItemBombCaller extends Item {
 			world.playSoundAtEntity(player, NTMSounds.TECH_BLEEP, 1.0F, 1.0F);
 
 			if(b2) {
-				player.addChatMessage(new ChatComponentText("Rerouted Civilian Traffic!"));
+				player.addChatMessage(new ChatComponentTranslation("item.message.item_bomb_caller.1"));
 			} else {
-				player.addChatMessage(new ChatComponentText("Called in airstrike!"));
+				player.addChatMessage(new ChatComponentTranslation("item.message.item_bomb_caller.2"));
 			}
 
 		}

@@ -14,6 +14,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
+import com.hbm.util.i18n.I18nUtil;
 
 public class GUIFirebox extends GuiInfoContainer {
 	
@@ -50,7 +51,7 @@ public class GUIFirebox extends GuiInfoContainer {
 		}
 
 		this.drawCustomInfoStat(x, y, guiLeft + 80, guiTop + 27, 71, 7, x, y, new String[] { String.format(Locale.US, "%,d", firebox.heatEnergy) + " / " + String.format(Locale.US, "%,d", firebox.getMaxHeat()) + "TU" });
-		this.drawCustomInfoStat(x, y, guiLeft + 80, guiTop + 36, 71, 7, x, y, new String[] { firebox.burnHeat + "TU/t", (firebox.burnTime / 20) + "s" });
+		this.drawCustomInfoStat(x, y, guiLeft + 80, guiTop + 36, 71, 7, x, y, new String[] { firebox.burnHeat + I18nUtil.resolveKey("gui.guifirebox.tu_t"), (firebox.burnTime / 20) + "s" });
 	}
 	
 	@Override

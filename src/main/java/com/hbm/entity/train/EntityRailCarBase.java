@@ -20,13 +20,13 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
+import net.minecraft.util.ChatComponentTranslation;
 
 public abstract class EntityRailCarBase extends Entity implements ILookOverlay {
 
@@ -109,7 +109,7 @@ public abstract class EntityRailCarBase extends Entity implements ILookOverlay {
 					if(neighbor.ltu != null) neighbor.ltu.dissolveTrain();
 					player.swingItem();
 					
-					player.addChatComponentMessage(new ChatComponentText("Coupled " + this.hashCode() + " (" + closestOwnCoupling.name() + ") to " + neighbor.hashCode() + " (" + closestNeighborCoupling.name() + ")"));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.entity_rail_car_base.coupled_s_s_to_s_s", this.hashCode(), closestOwnCoupling.name(), neighbor.hashCode(), closestNeighborCoupling.name()));
 					
 					return true;
 				}

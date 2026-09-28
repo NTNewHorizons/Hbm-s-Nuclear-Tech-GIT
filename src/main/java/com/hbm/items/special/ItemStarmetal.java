@@ -3,6 +3,7 @@ package com.hbm.items.special;
 import java.util.List;
 
 import com.hbm.lib.RefStrings;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -53,9 +54,9 @@ public class ItemStarmetal extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
 		switch(stack.getItemDamage()) {
-		case 1: list.add(EnumChatFormatting.ITALIC + "Astra"); break;
-		case 2: list.add(EnumChatFormatting.ITALIC + "Ursa"); break;
-		case 3: list.add(EnumChatFormatting.ITALIC + "Orion"); break;
+		case 1: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_starmetal.1")); break;
+		case 2: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_starmetal.2")); break;
+		case 3: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_starmetal.3")); break;
 		}
 	}
 }

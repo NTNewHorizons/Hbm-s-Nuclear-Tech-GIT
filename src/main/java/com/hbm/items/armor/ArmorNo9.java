@@ -13,6 +13,7 @@ import com.hbm.lib.Library;
 import com.hbm.render.model.ModelNo9;
 import com.hbm.util.Tuple.Pair;
 import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -41,8 +42,8 @@ public class ArmorNo9 extends ArmorModel implements IAttackHandler, IDamageHandl
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.BLUE + "+0.5 DT");
-		list.add(EnumChatFormatting.YELLOW + "Lets you breathe coal, neat!");
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.armor_no9.1"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.armor_no9.2"));
 	}
 
 	@Override

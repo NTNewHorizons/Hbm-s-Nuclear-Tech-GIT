@@ -6,6 +6,7 @@ import com.hbm.inventory.gui.GUIScreenHolotape;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.util.EnumUtil;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,8 +32,8 @@ public class ItemHolotapeImage extends ItemHoloTape implements IGUIProvider {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		
 		EnumHoloImage holo = EnumUtil.grabEnumSafely(EnumHoloImage.class, stack.getItemDamage());
-		list.add("Band Color: " + holo.colorCode + holo.colorName);
-		list.add("Label: " + holo.name);
+		list.add(I18nUtil.resolveKey("item.tooltip.item_holotape_image.1", holo.colorCode, holo.colorName));
+		list.add(I18nUtil.resolveKey("item.tooltip.item_holotape_image.2", holo.name));
 	}
 	
 	public static enum EnumHoloImage {

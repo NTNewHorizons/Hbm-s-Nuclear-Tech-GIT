@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.items.ItemEnumMulti;
 import com.hbm.items.ItemEnums.EnumExpensiveType;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,6 @@ public class ItemExpensive extends ItemEnumMulti {
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.RED + "Expensive mode item");
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_expensive.1"));
 	}
 }

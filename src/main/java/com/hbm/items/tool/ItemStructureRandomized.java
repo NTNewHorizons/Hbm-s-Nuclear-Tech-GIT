@@ -3,6 +3,7 @@ package com.hbm.items.tool;
 import java.util.List;
 
 import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,8 +15,8 @@ public class ItemStructureRandomized extends ItemStructureTool {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
-		list.add(EnumChatFormatting.YELLOW + "Click to print a <fillWithRandomizedBlocks>");
-		list.add(EnumChatFormatting.YELLOW + "line with block selector.");
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_structure_randomized.1"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_structure_randomized.2"));
 	}
 
 	@Override

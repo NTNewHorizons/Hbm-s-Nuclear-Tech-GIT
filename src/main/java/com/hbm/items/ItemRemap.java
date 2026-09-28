@@ -1,5 +1,7 @@
 package com.hbm.items;
 
+import com.hbm.util.i18n.I18nUtil;
+
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -44,6 +46,6 @@ public class ItemRemap extends Item {
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.RED + "Compatibility item, hold in inventory to convert!");
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_remap.1"));
 	}
 }

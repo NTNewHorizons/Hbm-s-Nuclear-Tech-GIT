@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.config.GeneralConfig;
 import com.hbm.items.ItemCustomLore;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,6 +41,6 @@ public class ItemSchraranium extends ItemCustomLore {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		if(GeneralConfig.enableLBSM && GeneralConfig.enableLBSMFullSchrab) list.add("pankæk");
+		if(GeneralConfig.enableLBSM && GeneralConfig.enableLBSMFullSchrab) list.add(I18nUtil.resolveKey("item.tooltip.item_schraranium.1"));
 	}
 }

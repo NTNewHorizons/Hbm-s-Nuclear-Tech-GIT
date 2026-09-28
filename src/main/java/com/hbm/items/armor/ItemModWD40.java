@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.Multimap;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.main.MainRegistry;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -27,7 +28,7 @@ public class ItemModWD40 extends ItemArmorMod {
 		
 		String color = "" + (System.currentTimeMillis() % 1000 < 500 ? EnumChatFormatting.BLUE : EnumChatFormatting.YELLOW);
 
-		list.add(color + "Highly reduces damage taken by armor, +2 HP");
+		list.add(color + I18nUtil.resolveKey("item.tooltip.item_mod_w_d40.1"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
@@ -37,7 +38,7 @@ public class ItemModWD40 extends ItemArmorMod {
 		
 		String color = "" + (System.currentTimeMillis() % 1000 < 500 ? EnumChatFormatting.BLUE : EnumChatFormatting.YELLOW);
 		
-		list.add(color + "  " + stack.getDisplayName() + " (-80% armor wear / +2 HP)");
+		list.add(color + I18nUtil.resolveKey("item.tooltip.item_mod_w_d40.2", stack.getDisplayName()));
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.ModItems;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,7 +30,7 @@ public class ItemModBathwater extends ItemArmorMod {
 		if(this == ModItems.bathwater_mk2)
 			color = "" + (System.currentTimeMillis() % 1000 < 500 ? EnumChatFormatting.GREEN : EnumChatFormatting.YELLOW);
 
-		list.add(color + "Inflicts poison on the attacker");
+		list.add(color + I18nUtil.resolveKey("item.tooltip.item_mod_bathwater.1"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
@@ -42,7 +43,7 @@ public class ItemModBathwater extends ItemArmorMod {
 		if(this == ModItems.bathwater_mk2)
 			color = "" + (System.currentTimeMillis() % 1000 < 500 ? EnumChatFormatting.GREEN : EnumChatFormatting.YELLOW);
 		
-		list.add(color + "  " + stack.getDisplayName() + " (Poisons attackers)");
+		list.add(color + I18nUtil.resolveKey("item.tooltip.item_mod_bathwater.2", stack.getDisplayName()));
 	}
 	
 	@Override

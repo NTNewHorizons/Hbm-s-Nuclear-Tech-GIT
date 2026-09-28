@@ -29,6 +29,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class MachineOilWell extends BlockDummyable implements IPersistentInfoProvider {
 
@@ -98,11 +99,11 @@ public class MachineOilWell extends BlockDummyable implements IPersistentInfoPro
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.GREEN + BobMathUtil.getShortNumber(persistentTag.getLong("power")) + "HE");
+		list.add(I18nUtil.resolveKey("tooltip.machine_oil_well.s_s_he", EnumChatFormatting.GREEN, BobMathUtil.getShortNumber(persistentTag.getLong("power"))));
 		for(int i = 0; i < 2; i++) {
 			FluidTank tank = new FluidTank(Fluids.NONE, 0);
 			tank.readFromNBT(persistentTag, "t" + i);
-			list.add(EnumChatFormatting.YELLOW + "" + tank.getFill() + "/" + tank.getMaxFill() + "mB " + tank.getTankType().getLocalizedName());
+			list.add(I18nUtil.resolveKey("tooltip.machine_oil_well.s_s_sm_b_s", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
 		}
 	}
 

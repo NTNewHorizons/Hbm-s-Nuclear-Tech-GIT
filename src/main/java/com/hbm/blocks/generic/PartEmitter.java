@@ -20,6 +20,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import com.hbm.util.i18n.I18nUtil;
 
 public class PartEmitter extends BlockContainer implements IToolable, ITooltipProvider {
 
@@ -119,6 +120,6 @@ public class PartEmitter extends BlockContainer implements IToolable, ITooltipPr
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.GOLD + "Use hand drill to cycle special effects");
+		list.add(I18nUtil.resolveKey("tooltip.part_emitter.s_use_hand_drill_to_cycle_special_effects", EnumChatFormatting.GOLD));
 	}
 }
