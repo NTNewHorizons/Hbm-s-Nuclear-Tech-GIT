@@ -45,9 +45,8 @@ public class EntityFalloutRain extends EntityExplosionChunkloading {
 
 	@Override
 	public void onUpdate() {
-		if(!worldObj.isRemote) loadChunk((int) Math.floor(posX / 16D), (int) Math.floor(posZ / 16D));
-
 		if(!worldObj.isRemote) {
+			loadChunk((int) Math.floor(posX / 16D), (int) Math.floor(posZ / 16D));
 
 			long start = System.currentTimeMillis();
 
