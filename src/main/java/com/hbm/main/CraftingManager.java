@@ -318,6 +318,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.machine_furnace_brick_off), new Object[] { "III", "I I", "BBB", 'I', Items.brick, 'B', KEY_STONE });
 		addRecipeAuto(new ItemStack(ModBlocks.furnace_iron), new Object[] { "III", "IFI", "BBB", 'I', IRON.ingot(), 'F', Blocks.furnace, 'B', Blocks.stonebrick });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_mixer), new Object[] { "PIP", "GCG", "PMP", 'P', STEEL.plate(), 'I', DURA.ingot(), 'G', KEY_ANYPANE, 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.VACUUM_TUBE), 'M', ModItems.motor });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_chem_dispenser), new Object[] { "PGP", "PCP", "PRP", 'P', STEEL.plate(), 'G', KEY_ANYPANE, 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.VACUUM_TUBE), 'R', ModBlocks.red_cable });
 		addRecipeAuto(new ItemStack(ModBlocks.fan), new Object[] { "BPB", "PRP", "BPB", 'B', STEEL.bolt(), 'P', IRON.plate(), 'R', REDSTONE.dust() });
 		addRecipeAuto(new ItemStack(ModBlocks.piston_inserter), new Object[] { "ITI", "TPT", "ITI", 'P', DictFrame.fromOne(ModItems.part_generic, EnumPartType.PISTON_PNEUMATIC), 'I', IRON.plate(), 'T', STEEL.bolt() });
 
