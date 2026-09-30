@@ -15,6 +15,7 @@ import com.hbm.inventory.gui.element.GUIElements;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.IItemFluidIdentifier;
 import com.hbm.util.BobMathUtil;
+import com.hbm.util.FluidDebug;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -56,20 +57,31 @@ public class FluidTank implements Cloneable {
 		return this;
 	}
 	
-	public void setFill(int i) { fluid = i; }
+	public void setFill(int i) {
+		FluidType oldType = this.type;
+		int oldFill = this.fluid;
+		fluid = i;
+		FluidDebug.checkTank(this, "setFill", oldType, oldFill);
+	}
 	
 	public void setTankType(FluidType type) {
 		if(type == null) type = Fluids.NONE;
 		if(this.type == type) return;
 		
+		FluidType oldType = this.type;
+		int oldFill = this.fluid;
 		this.type = type;
 		this.setFill(0);
+		FluidDebug.logTypeChange(this, "setTankType", oldType, oldFill);
 	}
 	
 	public void resetTank() {
+		FluidType oldType = this.type;
+		int oldFill = this.fluid;
 		this.type = Fluids.NONE;
 		this.fluid = 0;
 		this.pressure = 0;
+		FluidDebug.logTypeChange(this, "resetTank", oldType, oldFill);
 	}
 	
 	/** Changes type and pressure based on a fluid stack, useful for changing tank types based on recipes */
@@ -143,6 +155,8 @@ public class FluidTank implements Cloneable {
 		
 		if(slots[in] != null && slots[in].getItem() instanceof IItemFluidIdentifier) {
 			IItemFluidIdentifier id = (IItemFluidIdentifier) slots[in].getItem();
+			FluidType oldType = this.type;
+			int oldFill = this.fluid;
 			
 			if(in == out) {
 				FluidType newType = id.getType(null, 0, 0, 0, slots[in]);
@@ -150,6 +164,7 @@ public class FluidTank implements Cloneable {
 				if(type != newType) {
 					type = newType;
 					fluid = 0;
+					FluidDebug.logTypeChange(this, "setType", oldType, oldFill);
 					return true;
 				}
 				
@@ -160,6 +175,7 @@ public class FluidTank implements Cloneable {
 					slots[out] = slots[in].copy();
 					slots[in] = null;
 					fluid = 0;
+					FluidDebug.logTypeChange(this, "setType", oldType, oldFill);
 					return true;
 				}
 			}
@@ -274,6 +290,7 @@ public class FluidTank implements Cloneable {
 			type = Fluids.fromID(nbt.getInteger(s + "_type"));
 		
 		this.pressure = nbt.getShort(s + "_p");
+		FluidDebug.checkTank(this, "readFromNBT", null, -1);
 	}
 	
 	public void serialize(ByteBuf buf) {
@@ -288,5 +305,6 @@ public class FluidTank implements Cloneable {
 		maxFluid = buf.readInt();
 		type = Fluids.fromID(buf.readInt());
 		pressure = buf.readShort();
+		FluidDebug.checkTank(this, "deserialize", null, -1);
 	}
 }

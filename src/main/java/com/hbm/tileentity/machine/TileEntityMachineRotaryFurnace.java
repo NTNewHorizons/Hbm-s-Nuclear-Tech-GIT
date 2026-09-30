@@ -10,6 +10,7 @@ import com.hbm.handler.pollution.PollutionHandler.PollutionType;
 import com.hbm.handler.threading.PacketThreading;
 import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.container.ContainerMachineRotaryFurnace;
+import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.gui.GUIMachineRotaryFurnace;
@@ -19,12 +20,14 @@ import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.inventory.recipes.RotaryFurnaceRecipes;
 import com.hbm.inventory.recipes.RotaryFurnaceRecipes.RotaryFurnaceRecipe;
+import com.hbm.items.machine.IItemFluidIdentifier;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
 import com.hbm.module.ModuleBurnTime;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
 import com.hbm.tileentity.*;
 import com.hbm.util.CrucibleUtil;
+import com.hbm.util.FluidDebug;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
@@ -93,7 +96,36 @@ public class TileEntityMachineRotaryFurnace extends TileEntityMachinePolluting i
 
 		if(!worldObj.isRemote) {
 
+			FluidDebug.checkRotaryTanks(this, tanks);
+
+			// Fixed tanks: re-assert every tick (cf. TileEntitySteamEngine). No-op when correct;
+			// self-heals saves corrupted into NONE-ghosts by external handlers.
+			tanks[1].setTankType(Fluids.STEAM);
+			tanks[2].setTankType(Fluids.SPENTSTEAM);
+
 			tanks[0].setType(3, slots);
+
+			// Self-heal: pre-guard adapters could retask the empty recipe tank to STEAM.
+			// Only an EMPTY tank whose type duplicates the fixed steam tank is repaired, and only
+			// when this machine's own configuration does not actually ask for STEAM.
+			if(tanks[0].getFill() == 0 && tanks[0].getTankType() == tanks[1].getTankType()) {
+				FluidType wanted;
+				if(slots[3] != null && slots[3].getItem() instanceof IItemFluidIdentifier) {
+					wanted = ((IItemFluidIdentifier) slots[3].getItem()).getType(worldObj, xCoord, yCoord, zCoord, slots[3]);
+				} else {
+					// No explicit identifier: the recipe tank is unconfigured, so a stale STEAM type
+					// is a ghost. Do NOT infer a recipe fluid here, which would auto-configure the
+					// tank and change gameplay; just restore it to NONE.
+					wanted = Fluids.NONE;
+				}
+				if(wanted != tanks[1].getTankType()) {
+					tanks[0].setTankType(wanted);
+					FluidDebug.event("rotary.heal|" + FluidDebug.tileKey(this),
+						() -> "ROTARY SELF-HEAL " + FluidDebug.describeTile(this)
+							+ " tanks[0] " + FluidDebug.describe(tanks[1].getTankType())
+							+ " -> " + FluidDebug.describe(wanted));
+				}
+			}
 
 			for(DirPos pos : getSteamPos()) {
 				this.trySubscribe(tanks[1].getTankType(), worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
@@ -254,6 +286,7 @@ public class TileEntityMachineRotaryFurnace extends TileEntityMachinePolluting i
 		} else {
 			this.output = null;
 		}
+		FluidDebug.logRotaryLoad(this, tanks, "deserialize");
 	}
 
 	@Override
@@ -270,6 +303,7 @@ public class TileEntityMachineRotaryFurnace extends TileEntityMachinePolluting i
 			NTMMaterial mat = Mats.matById.get(nbt.getInteger("outType"));
 			this.output = new MaterialStack(mat, nbt.getInteger("outAmount"));
 		}
+		FluidDebug.logRotaryLoad(this, tanks, "readFromNBT");
 	}
 
 	@Override
