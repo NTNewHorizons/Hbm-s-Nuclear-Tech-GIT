@@ -31,7 +31,7 @@ public class ArmorFSBPowered extends ArmorFSB implements IBatteryItem {
 
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("item.tooltip.armor_f_s_b_powered.1", BobMathUtil.getShortNumber(getCharge(stack)), BobMathUtil.getShortNumber(getMaxCharge(stack))));
+		list.add(I18nUtil.resolveKey("desc.item.charge", BobMathUtil.getShortNumber(getCharge(stack)), BobMathUtil.getShortNumber(getMaxCharge(stack))));
 		super.addInformation(stack, player, list, ext);
 	}
 

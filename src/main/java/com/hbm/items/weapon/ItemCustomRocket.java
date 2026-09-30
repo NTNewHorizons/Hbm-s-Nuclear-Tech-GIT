@@ -62,15 +62,15 @@ public class ItemCustomRocket extends Item implements ISatChip {
 
 		if(rocket == null) return;
 
-		list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("item.tooltip.item_custom_rocket.4", EnumChatFormatting.GRAY, I18nUtil.resolveKey(rocket.capsule.part.getUnlocalizedName() + ".name")));
-		list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("item.tooltip.item_custom_rocket.1", EnumChatFormatting.GRAY, rocket.stages.size()));
+		list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("desc.item.custom_rocket.4", EnumChatFormatting.GRAY, I18nUtil.resolveKey(rocket.capsule.part.getUnlocalizedName() + ".name")));
+		list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("desc.item.custom_rocket.1", EnumChatFormatting.GRAY, rocket.stages.size()));
 
 		if(hasFuel(stack)) {
-			list.add(EnumChatFormatting.GRAY + I18nUtil.resolveKey("item.tooltip.item_custom_rocket.2"));
+			list.add(EnumChatFormatting.GRAY + I18nUtil.resolveKey("desc.item.custom_rocket.2"));
 		}
 
 		if(getFreq(stack) != 0) {
-			list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("item.tooltip.item_custom_rocket.3", EnumChatFormatting.GRAY, getFreq(stack)));
+			list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("desc.item.custom_rocket.3", EnumChatFormatting.GRAY, getFreq(stack)));
 		}
 	}
 

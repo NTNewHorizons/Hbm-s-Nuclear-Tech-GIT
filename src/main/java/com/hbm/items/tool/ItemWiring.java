@@ -49,7 +49,7 @@ public class ItemWiring extends Item {
 					stack.stackTagCompound.setInteger("z", z);
 
 					if(!world.isRemote) {
-						player.addChatMessage(new ChatComponentTranslation("item.message.item_wiring.1"));
+						player.addChatMessage(new ChatComponentTranslation("chat.wiring.1"));
 					}
 				} else if(!world.isRemote) {
 
@@ -66,16 +66,16 @@ public class ItemWiring extends Item {
 							case 0:
 								first.addConnection(x, y, z);
 								second.addConnection(x1, y1, z1);
-								player.addChatMessage(new ChatComponentTranslation("item.message.item_wiring.2"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.2"));
 								break;
 							case 1:
-								player.addChatMessage(new ChatComponentTranslation("item.message.item_wiring.3"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.3"));
 								break;
 							case 2:
-								player.addChatMessage(new ChatComponentTranslation("item.message.item_wiring.4"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.4"));
 								break;
 							case 3:
-								player.addChatMessage(new ChatComponentTranslation("item.message.item_wiring.5"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.5"));
 								break;
 						}
 						
@@ -84,7 +84,7 @@ public class ItemWiring extends Item {
 					} else {
 
 						if(!world.isRemote) {
-							player.addChatMessage(new ChatComponentTranslation("item.message.item_wiring.6"));
+							player.addChatMessage(new ChatComponentTranslation("chat.wiring.6"));
 						}
 						stack.stackTagCompound = null;
 					}
@@ -101,11 +101,11 @@ public class ItemWiring extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.stackTagCompound != null) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wiring.1", itemstack.stackTagCompound.getInteger("x")));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wiring.2", itemstack.stackTagCompound.getInteger("y")));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wiring.3", itemstack.stackTagCompound.getInteger("z")));
+			list.add(I18nUtil.resolveKey("desc.item.wiring.1", itemstack.stackTagCompound.getInteger("x")));
+			list.add(I18nUtil.resolveKey("desc.item.wiring.2", itemstack.stackTagCompound.getInteger("y")));
+			list.add(I18nUtil.resolveKey("desc.item.wiring.3", itemstack.stackTagCompound.getInteger("z")));
 		} else {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wiring.4"));
+			list.add(I18nUtil.resolveKey("desc.item.wiring.4"));
 		}
 	}
 

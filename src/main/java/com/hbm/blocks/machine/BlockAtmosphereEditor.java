@@ -48,10 +48,10 @@ public class BlockAtmosphereEditor extends BlockContainer implements IToolable, 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.block_atmosphere_editor.s_use_screwdriver_to_turn_on_and_off", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tooltip.block_atmosphere_editor.s_use_hand_drill_to_increase_decrease_throughput", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tooltip.block_atmosphere_editor.s_use_defuser_to_switch_emission_capture_mode", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tooltip.block_atmosphere_editor.s_use_fluid_identifier_to_change_fluid", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.line.04", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.line.03", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.line.01", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.line.02", EnumChatFormatting.GOLD));
 	}
 
 	@Override
@@ -72,10 +72,10 @@ public class BlockAtmosphereEditor extends BlockContainer implements IToolable, 
 
 		List<String> text = new ArrayList<String>();
 
-		text.add(I18nUtil.resolveKey("overlay.block_atmosphere_editor.state_s", (editor.isOn ? I18nUtil.resolveKey("gui.block_atmosphere_editor.running") : I18nUtil.resolveKey("gui.block_atmosphere_editor.off"))));
-		text.add(I18nUtil.resolveKey("overlay.block_atmosphere_editor.current_gas_s_s", editor.fluid.getLocalizedName(), pressure));
-		text.add(I18nUtil.resolveKey("overlay.block_atmosphere_editor.current_mode_s", (editor.isEmitting ? I18nUtil.resolveKey("gui.block_atmosphere_editor.emitting") : I18nUtil.resolveKey("gui.block_atmosphere_editor.capturing"))));
-		text.add(I18nUtil.resolveKey("overlay.block_atmosphere_editor.current_throughput_s", Math.pow(10, editor.throughputFactor) / AstronomyUtil.MB_PER_ATM));
+		text.add(I18nUtil.resolveKey("overlay.atmosphere_editor.state", (editor.isOn ? I18nUtil.resolveKey("gui.atmosphere_editor.running") : I18nUtil.resolveKey("gui.common.off"))));
+		text.add(I18nUtil.resolveKey("overlay.atmosphere_editor.current_gas", editor.fluid.getLocalizedName(), pressure));
+		text.add(I18nUtil.resolveKey("overlay.atmosphere_editor.current_mode", (editor.isEmitting ? I18nUtil.resolveKey("gui.atmosphere_editor.emitting") : I18nUtil.resolveKey("gui.atmosphere_editor.capturing"))));
+		text.add(I18nUtil.resolveKey("overlay.atmosphere_editor.current_throughput", Math.pow(10, editor.throughputFactor) / AstronomyUtil.MB_PER_ATM));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
@@ -124,7 +124,7 @@ public class BlockAtmosphereEditor extends BlockContainer implements IToolable, 
 			FluidType type = ((IItemFluidIdentifier) player.getHeldItem().getItem()).getType(world, x, y, z, player.getHeldItem());
 			editor.fluid = type;
 			editor.markDirty();
-			player.addChatComponentMessage(new ChatComponentTranslation("chat.block_atmosphere_editor.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+			player.addChatComponentMessage(new ChatComponentTranslation("chat.common.changed_type").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 
 			return true;
 		}

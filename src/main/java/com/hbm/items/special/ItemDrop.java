@@ -178,57 +178,57 @@ public class ItemDrop extends Item {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
 		if (this == ModItems.cell_antimatter) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.1"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.2"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.1"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.2"));
 		}
 		if (this == ModItems.pellet_antimatter) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.3"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.4"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.3"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.4"));
 		}
 		if (this == ModItems.cell_anti_schrabidium) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.1"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.5"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.1"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.5"));
 		}
 		if (this == ModItems.singularity) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.6"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.7"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.8"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.9"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.10"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.6"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.7"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.8"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.9"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.10"));
 		}
 		if (this == ModItems.singularity_counter_resonant) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.11"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.12"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.13"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.14"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.15"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.16"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.11"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.12"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.13"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.14"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.15"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.16"));
 		}
 		if (this == ModItems.singularity_super_heated) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.17"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.18"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.19"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.20"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.17"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.18"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.19"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.20"));
 		}
 		if (this == ModItems.black_hole) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.21"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.22"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.23"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.24"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.25"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.21"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.22"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.23"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.24"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.25"));
 		}
 		if (this == ModItems.detonator_deadman) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.26"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.27"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.26"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.27"));
 			if(itemstack.getTagCompound() == null)
 			{
-				list.add(I18nUtil.resolveKey("item.tooltip.item_drop.28"));
+				list.add(I18nUtil.resolveKey("desc.misc.noPos"));
 			} else {
-				list.add(I18nUtil.resolveKey("item.tooltip.item_drop.29", itemstack.stackTagCompound.getInteger("x"), itemstack.stackTagCompound.getInteger("y"), itemstack.stackTagCompound.getInteger("z")));
+				list.add(I18nUtil.resolveKey("desc.item.drop.29", itemstack.stackTagCompound.getInteger("x"), itemstack.stackTagCompound.getInteger("y"), itemstack.stackTagCompound.getInteger("z")));
 			}
 		}
 		if (this == ModItems.detonator_de) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_drop.30"));
+			list.add(I18nUtil.resolveKey("desc.item.drop.30"));
 		}
 		
 		list.add(EnumChatFormatting.RED + "[" + I18nUtil.resolveKey("trait.drop") + "]");
@@ -254,7 +254,7 @@ public class ItemDrop extends Item {
 			
 			if(world.isRemote)
 			{
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_drop.1"));
+				player.addChatMessage(new ChatComponentTranslation("desc.misc.posSet"));
 			}
 			
 	        world.playSoundAtEntity(player, "hbm:item.techBoop", 2.0F, 1.0F);

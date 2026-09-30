@@ -93,7 +93,7 @@ public class MachineRotaryFurnace extends BlockDummyable  implements ILookOverla
 		}
 
 		if(hitCheck(dir, pos[0], pos[1], pos[2], 1, 1, 0, x, y, z)) {
-			text.add(I18nUtil.resolveKey("overlay.machine_rotary_furnace.s_s_fuel", EnumChatFormatting.YELLOW, EnumChatFormatting.RESET));
+			text.add(I18nUtil.resolveKey("overlay.rotary_furnace.fuel", EnumChatFormatting.YELLOW, EnumChatFormatting.RESET));
 		}
 
 

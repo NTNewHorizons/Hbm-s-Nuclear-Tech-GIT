@@ -48,7 +48,7 @@ public class MachineCondenser extends BlockContainer implements ILookOverlay {
 		}
 
 		for(int i = 0; i < condenser.tanks.length; i++)
-			text.add(I18nUtil.resolveKey("overlay.machine_condenser.s_s_s_s_sm_b", (i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, condenser.tanks[i].getTankType().getLocalizedName(), condenser.tanks[i].getFill(), condenser.tanks[i].getMaxFill()));
+			text.add(I18nUtil.resolveKey("overlay.common.tank", (i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, condenser.tanks[i].getTankType().getLocalizedName(), condenser.tanks[i].getFill(), condenser.tanks[i].getMaxFill()));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

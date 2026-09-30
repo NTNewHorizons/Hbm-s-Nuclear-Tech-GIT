@@ -48,7 +48,7 @@ public class GUIMachineRotaryFurnace extends GuiInfoContainer {
 		}
 		
 		if(furnace.output == null) {
-			this.drawCustomInfoStat(x, y, guiLeft + 98, guiTop + 18, 16, 52, x, y, EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guimachine_rotary_furnace.empty"));
+			this.drawCustomInfoStat(x, y, guiLeft + 98, guiTop + 18, 16, 52, x, y, EnumChatFormatting.RED + I18nUtil.resolveKey("gui.rotary_furnace.empty"));
 		} else {
 			this.drawCustomInfoStat(x, y, guiLeft + 98, guiTop + 18, 16, 52, x, y,EnumChatFormatting.YELLOW +
 					I18nUtil.resolveKey(furnace.output.material.getUnlocalizedName()) + ": " + Mats.formatAmount(furnace.output.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));

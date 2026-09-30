@@ -50,11 +50,11 @@ public class GUIDiode extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		drawDefaultBackground();
 
-		drawString(fontRendererObj, "Throughput:", this.width / 2 - 150, 80, 0xA0A0A0);
-		drawString(fontRendererObj, "(max. 10,000,000,000 HE)", this.width / 2 - 150, 90, 0xA0A0A0);
+		drawString(fontRendererObj, I18nUtil.resolveKey("gui.diode.throughput"), this.width / 2 - 150, 80, 0xA0A0A0);
+		drawString(fontRendererObj, I18nUtil.resolveKey("gui.diode.max_10_000_000_000_he"), this.width / 2 - 150, 90, 0xA0A0A0);
 		textThroughput.drawTextBox();
 
-		drawString(fontRendererObj, "Priority:", this.width / 2 + 20, 80, 0xA0A0A0);
+		drawString(fontRendererObj, I18nUtil.resolveKey("gui.diode.priority"), this.width / 2 + 20, 80, 0xA0A0A0);
 		buttonPriority.drawButton(mc, mouseX, mouseY);
 
 		super.drawScreen(mouseX, mouseY, partialTicks);

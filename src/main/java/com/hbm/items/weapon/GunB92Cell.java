@@ -37,13 +37,13 @@ public class GunB92Cell extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.2"));
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.3"));
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.4"));
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.5"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.1"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.2"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.3"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.4"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.5"));
 		list.add("");
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92_cell.6", getPower(itemstack)));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.6", getPower(itemstack)));
 	}
 
 	private static int getPower(ItemStack stack) {

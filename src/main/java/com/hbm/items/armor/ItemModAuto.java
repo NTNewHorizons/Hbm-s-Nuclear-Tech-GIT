@@ -22,7 +22,7 @@ public class ItemModAuto extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_mod_auto.1"));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.mod_auto.1"));
 		
 		list.add("");
 		super.addInformation(stack, player, list, bool);

@@ -39,7 +39,7 @@ public class GUIDroneRequester extends GuiInfoContainer {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 	
 				if(this.isMouseOverSlot(slot, x, y) && diFurnace.matcher.modes[i] != null) {
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guidrone_requester.right_click_to_change"), ModulePatternMatcher.getLabel(diFurnace.matcher.modes[i]) }), x, y - 30);
+					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + I18nUtil.resolveKey("gui.common.change"), ModulePatternMatcher.getLabel(diFurnace.matcher.modes[i]) }), x, y - 30);
 				}
 			}
 		}

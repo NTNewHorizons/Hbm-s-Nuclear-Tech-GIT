@@ -39,8 +39,8 @@ public abstract class RadioTorchRWBase extends RadioTorchBase {
 		if(te instanceof TileEntityRadioTorchBase) {
 			TileEntityRadioTorchBase radio = (TileEntityRadioTorchBase) te;
 			List<String> text = new ArrayList();
-			if(radio.channel != null && !radio.channel.isEmpty()) text.add(I18nUtil.resolveKey("overlay.radio_torch_rwbase.s_freq_s", EnumChatFormatting.AQUA, radio.channel));
-			text.add(I18nUtil.resolveKey("overlay.radio_torch_rwbase.s_signal_s", EnumChatFormatting.RED, radio.lastState));
+			if(radio.channel != null && !radio.channel.isEmpty()) text.add(I18nUtil.resolveKey("overlay.radio_torch_rwbase.freq", EnumChatFormatting.AQUA, radio.channel));
+			text.add(I18nUtil.resolveKey("overlay.radio_torch_rwbase.signal", EnumChatFormatting.RED, radio.lastState));
 			ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 		}
 	}

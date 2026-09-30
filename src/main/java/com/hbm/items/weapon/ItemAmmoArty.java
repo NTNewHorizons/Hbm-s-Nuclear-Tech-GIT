@@ -101,41 +101,41 @@ public class ItemAmmoArty extends Item {
 
 		switch(stack.getItemDamage()) {
 		case NORMAL:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.1"));
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.2"));
-			list.add(b + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.3"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.1"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.2"));
+			list.add(b + I18nUtil.resolveKey("desc.item.ammo_arty.3"));
 			break;
 		case CLASSIC:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.4"));
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.5"));
-			list.add(b + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.3"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.4"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.5"));
+			list.add(b + I18nUtil.resolveKey("desc.item.ammo_arty.3"));
 			break;
 		case EXPLOSIVE:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.4"));
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.2"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.6"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.4"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.2"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		case PHOSPHORUS:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.1"));
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.2"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.7"));
-			list.add(b + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.3"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.1"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.2"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.7"));
+			list.add(b + I18nUtil.resolveKey("desc.item.ammo_arty.3"));
 			break;
 		case PHOSPHORUS_MULTI:
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.8"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.8"));
 			break;
 		case MINI_NUKE:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.9"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.10"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.6"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.9"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.10"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		case MINI_NUKE_MULTI:
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.11"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.11"));
 			break;
 		case NUKE:
 			list.add(r + "☠");
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.12"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.13"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.12"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.13"));
 			break;
 		case CARGO:
 
@@ -143,7 +143,7 @@ public class ItemAmmoArty extends Item {
 				ItemStack cargo = ItemStack.loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("cargo"));
 				list.add(y + cargo.getDisplayName());
 			} else {
-				list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.14"));
+				list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.14"));
 			}
 			break;
 		}

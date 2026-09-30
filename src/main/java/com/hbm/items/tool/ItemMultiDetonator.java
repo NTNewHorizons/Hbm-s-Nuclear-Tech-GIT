@@ -24,12 +24,12 @@ public class ItemMultiDetonator extends Item {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_multi_detonator.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_detonator.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_multi_detonator.2"));
+		list.add(I18nUtil.resolveKey("desc.item.multi_detonator.1"));
+		list.add(I18nUtil.resolveKey("desc.item.detonator.1"));
+		list.add(I18nUtil.resolveKey("desc.item.multi_detonator.2"));
 
 		if(itemstack.getTagCompound() == null || getLocations(itemstack) == null) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_drop.28"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.misc.noPos"));
 		} else {
 
 			int[][] locs = getLocations(itemstack);
@@ -54,7 +54,7 @@ public class ItemMultiDetonator extends Item {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 						.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 						.next("] ").color(EnumChatFormatting.DARK_AQUA)
-						.nextTranslation("item.message.item_multi_detonator.1").color(EnumChatFormatting.GREEN).flush());
+						.nextTranslation("chat.multi_detonator.1").color(EnumChatFormatting.GREEN).flush());
 			}
 
 			world.playSoundAtEntity(player, NTMSounds.TECH_BOOP, 2.0F, 1.0F);
@@ -74,7 +74,7 @@ public class ItemMultiDetonator extends Item {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 						.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 						.next("] ").color(EnumChatFormatting.DARK_AQUA)
-						.nextTranslation("item.tooltip.item_drop.28").color(EnumChatFormatting.RED).flush());
+						.nextTranslation("desc.misc.noPos").color(EnumChatFormatting.RED).flush());
 			}
 			
 		} else {
@@ -110,7 +110,7 @@ public class ItemMultiDetonator extends Item {
 					player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 							.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 							.next("] ").color(EnumChatFormatting.DARK_AQUA)
-							.nextTranslation("item.message.item_multi_detonator.2", succ, locs[0].length).color(EnumChatFormatting.YELLOW).flush());
+							.nextTranslation("chat.multi_detonator.2", succ, locs[0].length).color(EnumChatFormatting.YELLOW).flush());
 				}
 				
 			} else {
@@ -125,7 +125,7 @@ public class ItemMultiDetonator extends Item {
 					player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 							.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 							.next("] ").color(EnumChatFormatting.DARK_AQUA)
-							.nextTranslation("item.message.item_multi_detonator.3").color(EnumChatFormatting.RED).flush());
+							.nextTranslation("chat.multi_detonator.3").color(EnumChatFormatting.RED).flush());
 				}
 			}
 		}

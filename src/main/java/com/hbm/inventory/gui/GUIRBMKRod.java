@@ -31,9 +31,9 @@ public class GUIRBMKRod extends GuiInfoContainer {
 		super.drawScreen(mouseX, mouseY, f);
 
 		if(!rod.coldEnoughForAutoloader())
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 20, 16, 16, guiLeft - 8, guiTop + 20 + 16, I18nUtil.resolveKey("gui.guirbmkrod.fuel_skin_temperature_has_exceeded_1_000_c"), I18nUtil.resolveKey("gui.guirbmkrod.autoloaders_can_no_longer_cycle_fuel"));
+			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 20, 16, 16, guiLeft - 8, guiTop + 20 + 16, I18nUtil.resolveKey("gui.rbmk_rod.fuel_skin_temperature_exceeded_1"), I18nUtil.resolveKey("gui.rbmk_rod.autoloaders_no_longer_cycle_fuel"));
 		if(!rod.coldEnoughForManual())
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, I18nUtil.resolveKey("gui.guirbmkrod.fuel_skin_temperature_has_exceeded_200_c"), I18nUtil.resolveKey("gui.guirbmkrod.fuel_can_no_longer_be_removed_by_hand"));
+			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, I18nUtil.resolveKey("gui.rbmk_rod.fuel_skin_temperature_exceeded_2"), I18nUtil.resolveKey("gui.rbmk_rod.fuel_no_longer_removed_hand"));
 	}
 	
 	@Override

@@ -105,8 +105,8 @@ public class BlockGraphiteNeutronDetector extends BlockGraphiteDrilledTE {
 				} else {
 					TileEntityPileNeutronDetector pile = (TileEntityPileNeutronDetector) world.getTileEntity(x, y, z);
 					
-					player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_neutron_detector.cp1_fuel_assembly_s_s_s", x, y, z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-					player.addChatComponentMessage(new ChatComponentTranslation("chat.block_graphite_neutron_detector.flux_s_s", pile.lastNeutrons, pile.maxNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.graphite_neutron_detector.cp1_fuel_assembly", x, y, z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.graphite_neutron_detector.flux", pile.lastNeutrons, pile.maxNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 				}
 			}
 			

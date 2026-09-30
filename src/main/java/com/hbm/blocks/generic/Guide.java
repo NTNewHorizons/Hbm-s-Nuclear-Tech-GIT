@@ -139,7 +139,7 @@ public class Guide extends Block implements ILookOverlay {
 		int pX = resolution.getScaledWidth() / 2 + 8;
 		int pZ = resolution.getScaledHeight() / 2;
 
-		String title = I18nUtil.resolveKey("gui.guide.open_wiki");
+		String title = I18nUtil.resolveKey("gui.de.open_wiki");
 		mc.fontRenderer.drawString(title, pX + 1, pZ - 19, 0x006000);
 		mc.fontRenderer.drawString(title, pX, pZ - 20, 0x00FF00);
 	}

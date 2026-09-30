@@ -40,8 +40,8 @@ public class GUIMassStorage extends GuiInfoContainer {
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 96, guiTop + 16, 18, 90, mouseX, mouseY, new String[]
 				{ String.format(Locale.US, "%,d", storage.getStockpile()) + " / " + String.format(Locale.US, "%,d", storage.getCapacity()), percent });
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 62, guiTop + 72, 14, 14, mouseX, mouseY, new String[] { I18nUtil.resolveKey("gui.guimass_storage.click_provide_one"), I18nUtil.resolveKey("gui.guimass_storage.shift_click_provide_stack") });
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 80, guiTop + 72, 14, 14, mouseX, mouseY, new String[] { I18nUtil.resolveKey("gui.guimass_storage.toggle_output") });
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 62, guiTop + 72, 14, 14, mouseX, mouseY, new String[] { I18nUtil.resolveKey("gui.mass_storage.click_provide_one"), I18nUtil.resolveKey("gui.mass_storage.shift_click_provide_stack") });
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 80, guiTop + 72, 14, 14, mouseX, mouseY, new String[] { I18nUtil.resolveKey("gui.mass_storage.toggle_output") });
 	}
 
 	@Override

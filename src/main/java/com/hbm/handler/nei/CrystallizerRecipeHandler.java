@@ -16,7 +16,7 @@ import net.minecraft.client.gui.FontRenderer;
 public class CrystallizerRecipeHandler extends NEIUniversalHandler {
 
 	public CrystallizerRecipeHandler() {
-		super("nei.crystallizer_recipe_handler.name", ModBlocks.machine_crystallizer, CrystallizerRecipes.getRecipes());
+		super("nei.crystallizer.name", ModBlocks.machine_crystallizer, CrystallizerRecipes.getRecipes());
 	}
 
 	@Override

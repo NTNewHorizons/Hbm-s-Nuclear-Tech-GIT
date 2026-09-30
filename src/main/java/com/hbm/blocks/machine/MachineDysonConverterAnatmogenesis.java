@@ -69,9 +69,9 @@ public class MachineDysonConverterAnatmogenesis extends BlockDummyable implement
 
 		List<String> text = new ArrayList<String>();
 
-		text.add(I18nUtil.resolveKey("overlay.machine_dyson_converter_anatmogenesis.current_rate_satm_per_hour", ((double)converter.gasProduced * 20 * 60 * 60 / AstronomyUtil.MB_PER_ATM)));
-		text.add(I18nUtil.resolveKey("overlay.machine_dyson_converter_anatmogenesis.current_gas_s_s", converter.fluid.getLocalizedName(), pressure));
-		text.add(I18nUtil.resolveKey("overlay.machine_dyson_converter_anatmogenesis.current_mode_s", (converter.isEmitting ? I18nUtil.resolveKey("gui.machine_dyson_converter_anatmogenesis.emitting") : I18nUtil.resolveKey("gui.machine_dyson_converter_anatmogenesis.capturing"))));
+		text.add(I18nUtil.resolveKey("overlay.dyson_converter.line.01", ((double)converter.gasProduced * 20 * 60 * 60 / AstronomyUtil.MB_PER_ATM)));
+		text.add(I18nUtil.resolveKey("overlay.dyson_converter.current_gas", converter.fluid.getLocalizedName(), pressure));
+		text.add(I18nUtil.resolveKey("overlay.dyson_converter.current_mode", (converter.isEmitting ? I18nUtil.resolveKey("gui.dyson_converter.emitting") : I18nUtil.resolveKey("gui.dyson_converter.capturing"))));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
@@ -117,7 +117,7 @@ public class MachineDysonConverterAnatmogenesis extends BlockDummyable implement
 			if(type.hasTrait(FT_Gaseous.class) || type.hasTrait(FT_Gaseous_ART.class)) {
 				converter.fluid = type;
 				converter.markDirty();
-				player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_dyson_converter_anatmogenesis.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.common.changed_type").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 			}
 
 			return true;

@@ -83,7 +83,7 @@ public class ItemToolAbilityPower extends ItemToolAbility implements IBatteryIte
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
-		list.add(I18nUtil.resolveKey("item.tooltip.armor_f_s_b_powered.1", BobMathUtil.getShortNumber(getCharge(stack)), BobMathUtil.getShortNumber(maxPower)));
+		list.add(I18nUtil.resolveKey("desc.item.charge", BobMathUtil.getShortNumber(getCharge(stack)), BobMathUtil.getShortNumber(maxPower)));
 		super.addInformation(stack, player, list, ext);
 	}
 

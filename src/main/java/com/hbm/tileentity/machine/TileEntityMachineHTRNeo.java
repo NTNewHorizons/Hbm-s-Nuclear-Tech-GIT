@@ -25,6 +25,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPropulsion, IFusionPowerReceiver, IBlockSealable {
 
@@ -239,15 +240,15 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 	@Override
 	public void addErrors(List<String> errors) {
 		if(plasmaEnergySync < fuelCost) {
-			errors.add(EnumChatFormatting.RED + "Insufficient plasma energy: needs " + BobMathUtil.getShortNumber(fuelCost) + " TU");
+			errors.add(I18nUtil.resolveKey("overlay.htrneo.line.01", EnumChatFormatting.RED, BobMathUtil.getShortNumber(fuelCost)));
 		}
 
 		if(power < maxPower) {
-			errors.add(EnumChatFormatting.RED + "Insufficient power");
+			errors.add(I18nUtil.resolveKey("overlay.htrneo.insufficient_power", EnumChatFormatting.RED));
 		}
 
 		if(!isCool()) {
-			errors.add(EnumChatFormatting.RED + "Coolant loop not operational!");
+			errors.add(I18nUtil.resolveKey("overlay.htrneo.coolant_loop_not_operational", EnumChatFormatting.RED));
 		}
 	}
 

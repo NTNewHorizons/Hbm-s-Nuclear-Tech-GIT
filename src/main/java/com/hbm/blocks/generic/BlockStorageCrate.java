@@ -176,7 +176,7 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IL
 					byte[] abyte = CompressedStreamTools.compress(drop.stackTagCompound);
 
 					if(abyte.length > 6000) {
-						player.addChatComponentMessage(new ChatComponentTranslation("chat.block_storage_crate.s_warning_container_nbt_exceeds_6k_b_contents_will_be_ej", EnumChatFormatting.RED));
+						player.addChatComponentMessage(new ChatComponentTranslation("chat.storage_crate.line.01", EnumChatFormatting.RED));
 						world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(this)));
 						return world.setBlockToAir(x, y, z);
 					}
@@ -328,23 +328,23 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IL
 
 			if(stack.stackTagCompound.getBoolean("spiders")) {
 				if(stack.stackTagCompound.hasKey("lock")) {
-					list.add(I18nUtil.resolveKey("tooltip.block_storage_crate.s_this_container_is_locked", EnumChatFormatting.RED));
+					list.add(I18nUtil.resolveKey("desc.block.container_locked", EnumChatFormatting.RED));
 				}
-				list.add(I18nUtil.resolveKey("tooltip.block_storage_crate.s_s_skittering_emanates_from_within", EnumChatFormatting.GRAY, EnumChatFormatting.ITALIC)); // lamo
+				list.add(I18nUtil.resolveKey("desc.block.skittering_emanates_within", EnumChatFormatting.GRAY, EnumChatFormatting.ITALIC)); // lamo
 				return;
 			}
 
 			if(stack.stackTagCompound.hasKey("lock")) {
-				list.add(I18nUtil.resolveKey("tooltip.block_storage_crate.s_this_container_is_locked", EnumChatFormatting.RED)); // Sorry people who want to see what's in it while it's locked...
+				list.add(I18nUtil.resolveKey("desc.block.container_locked", EnumChatFormatting.RED)); // Sorry people who want to see what's in it while it's locked...
 
 				for(int i = 0; i < 104; i++) {
 					ItemStack content = ItemStack.loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("slot" + i));
 					if(content != null) {
-						list.add(I18nUtil.resolveKey("tooltip.block_storage_crate.s_it_feels_heavy", EnumChatFormatting.YELLOW));
+						list.add(I18nUtil.resolveKey("desc.block.storage_crate.it_feels_heavy", EnumChatFormatting.YELLOW));
 						return;
 					}
 				}
-				list.add(I18nUtil.resolveKey("tooltip.block_storage_crate.s_it_feels_empty", EnumChatFormatting.YELLOW));
+				list.add(I18nUtil.resolveKey("desc.block.storage_crate.it_feels_empty", EnumChatFormatting.YELLOW));
 				return;
 			}
 
@@ -364,12 +364,12 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IL
 			}
 
 			if(!contents.isEmpty()) {
-				list.add(I18nUtil.resolveKey("tooltip.block_storage_crate.s_contains", EnumChatFormatting.AQUA));
+				list.add(I18nUtil.resolveKey("desc.block.storage_crate.contains", EnumChatFormatting.AQUA));
 				list.addAll(contents);
 				amount -= contents.size();
 
 				if(amount > 0) {
-					list.add(I18nUtil.resolveKey("tooltip.block_storage_crate.s_and_s_more", EnumChatFormatting.AQUA, amount));
+					list.add(I18nUtil.resolveKey("desc.block.storage_crate.and_more", EnumChatFormatting.AQUA, amount));
 				}
 			}
 		}

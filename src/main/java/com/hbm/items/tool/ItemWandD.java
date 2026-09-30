@@ -45,12 +45,12 @@ public class ItemWandD extends Item {
 
 				if(targetId == 0) {
 					CelestialTeleporter.teleport(player, SpaceConfig.orbitDimension, player.posX, 128, player.posZ, false);
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.1"));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.1"));
 				} else {
 					SolarSystem.Body target = SolarSystem.Body.values()[targetId];
 
 					CelestialTeleporter.teleport(player, target.getBody().dimensionId, player.posX, 300, player.posZ, true);
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.2", target.getBody().getUnlocalizedName()));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.2", target.getBody().getUnlocalizedName()));
 				}
 
 			} else {
@@ -66,10 +66,10 @@ public class ItemWandD extends Item {
 				stack.stackTagCompound.setInteger("dim", targetId);
 
 				if(targetId == 0) {
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.3"));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.3"));
 				} else {
 					SolarSystem.Body target = SolarSystem.Body.values()[targetId];
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.4", target.getBody().getUnlocalizedName()));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.4", target.getBody().getUnlocalizedName()));
 				}
 			}
 		} else if(!(world.provider instanceof WorldProviderOrbit)) {
@@ -81,14 +81,14 @@ public class ItemWandD extends Item {
 				if(atmosphere != null) {
 					for(FluidEntry entry : atmosphere.fluids) {
 						// if(entry.pressure > 0.001) {
-							player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.5", entry.fluid.getUnlocalizedName(), entry.pressure));
+							player.addChatMessage(new ChatComponentTranslation("chat.wand_d.5", entry.fluid.getUnlocalizedName(), entry.pressure));
 							isVacuum = false;
 						// }
 					}
 				}
 
 				if(isVacuum)
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.6"));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.6"));
 			} else {
 				CelestialBody star = CelestialBody.getStar(world);
 
@@ -102,16 +102,16 @@ public class ItemWandD extends Item {
 
 					// GOD
 					// DAMN
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.7", EnumChatFormatting.RED));
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.8", EnumChatFormatting.RED));
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.9", EnumChatFormatting.RED));
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.10", EnumChatFormatting.RED, EnumChatFormatting.OBFUSCATED));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.7", EnumChatFormatting.RED));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.8", EnumChatFormatting.RED));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.9", EnumChatFormatting.RED));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.10", EnumChatFormatting.RED, EnumChatFormatting.OBFUSCATED));
 				} else {
 
 					star.clearTraits();
 					CelestialBody.clearTraits(world);
 
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_d.11"));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.11"));
 				}
 			}
 		} else {
@@ -124,15 +124,15 @@ public class ItemWandD extends Item {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_wand_d.1"));
+		list.add(I18nUtil.resolveKey("desc.item.wand_d.1"));
 
 		if(stack.stackTagCompound != null) {
 			int targetId = stack.stackTagCompound.getInteger("dim");
 			if(targetId == 0) {
-				list.add(I18nUtil.resolveKey("item.tooltip.item_wand_d.2"));
+				list.add(I18nUtil.resolveKey("desc.item.wand_d.2"));
 			} else {
 				SolarSystem.Body target = SolarSystem.Body.values()[targetId];
-				list.add(I18nUtil.resolveKey("item.tooltip.item_wand_d.3", target.getBody().getUnlocalizedName()));
+				list.add(I18nUtil.resolveKey("desc.item.wand_d.3", target.getBody().getUnlocalizedName()));
 			}
 		}
 	}

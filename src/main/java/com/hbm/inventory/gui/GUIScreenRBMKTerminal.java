@@ -43,12 +43,12 @@ public class GUIScreenRBMKTerminal extends GuiScreen {
 		}
 		
 		GL11.glScaled(0.5, 0.5, 1);
-		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.esc_quit"), 2, 2, 0xffffff);
-		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.chan_channel_set_selected_channel"), 2, 12, 0xffffff);
-		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.send_cmd_send_single_signal_over_selected_channel"), 2, 22, 0xffffff);
-		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.start_cmd_continuously_send_signal_over_selected_channel"), 2, 32, 0xffffff);
-		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.stop_stop_continuous_sending"), 2, 42, 0xffffff);
-		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.guiscreen_rbmkterminal.clear_delete_command_history"), 2, 52, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.rbmk_terminal.esc_quit"), 2, 2, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.rbmk_terminal.chan_set"), 2, 12, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.rbmk_terminal.text.01"), 2, 22, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.rbmk_terminal.text.02"), 2, 32, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.rbmk_terminal.stop_stop_continuous_sending"), 2, 42, 0xffffff);
+		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.rbmk_terminal.clear_delete_command_history"), 2, 52, 0xffffff);
 	}
 	
 	protected void keyTyped(char c, int b) {

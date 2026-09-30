@@ -13,7 +13,7 @@ public class ToolingHandler extends NEIUniversalHandler {
 				new ItemStack(ModItems.acetylene_torch)};
 	}
 	public ToolingHandler() {
-		super("nei.tooling_handler.name", BlockToolConversion.getRecipes(true), BlockToolConversion.getRecipes(false));
+		super("nei.tooling.name", BlockToolConversion.getRecipes(true), BlockToolConversion.getRecipes(false));
 	}
 
 	@Override

@@ -35,11 +35,11 @@ public class CommandReapNetworks extends CommandBase {
 			UniNodespace.activeNodeNets.clear();
 			UniNodespace.worlds.clear();
 
-			sender.addChatMessage(new ChatComponentTranslation("chat.command_reap_networks.s_nodespace_cleared", EnumChatFormatting.YELLOW));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reap_networks.nodespace_cleared", EnumChatFormatting.YELLOW));
 			
 		} catch(Exception ex) {
 			sender.addChatMessage(ChatBuilder.start("----------------------------------").color(EnumChatFormatting.GRAY).flush());
-			sender.addChatMessage(ChatBuilder.startTranslation("chat.command_reap_networks.an_error_has_occoured_during_network_reap_consult_the_lo").color(EnumChatFormatting.RED).flush());
+			sender.addChatMessage(ChatBuilder.startTranslation("commands.reap_networks.text.01").color(EnumChatFormatting.RED).flush());
 			sender.addChatMessage(ChatBuilder.start(ex.getLocalizedMessage()).color(EnumChatFormatting.RED).flush());
 			sender.addChatMessage(ChatBuilder.start(ex.getStackTrace()[0].toString()).color(EnumChatFormatting.RED).flush());
 			sender.addChatMessage(ChatBuilder.start("----------------------------------").color(EnumChatFormatting.GRAY).flush());

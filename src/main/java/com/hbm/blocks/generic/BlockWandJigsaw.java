@@ -173,13 +173,13 @@ public class BlockWandJigsaw extends BlockContainer implements IBlockSideRotatio
 
 		List<String> text = new ArrayList<String>();
 
-		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_target_pool_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.pool));
-		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_name_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.name));
-		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_target_name_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.target));
-		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_turns_into_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, GameRegistry.findUniqueIdentifierFor(jigsaw.replaceBlock).toString()));
-		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_with_meta_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.replaceMeta));
-		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_selection_placement_priority_s_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.selectionPriority, jigsaw.placementPriority));
-		text.add(I18nUtil.resolveKey("overlay.block_wand_jigsaw.s_joint_type_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, (jigsaw.isRollable ? I18nUtil.resolveKey("gui.block_wand_jigsaw.rollable") : I18nUtil.resolveKey("gui.block_wand_jigsaw.aligned"))));
+		text.add(I18nUtil.resolveKey("overlay.wand_jigsaw.target_pool", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.pool));
+		text.add(I18nUtil.resolveKey("overlay.wand_jigsaw.name", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.name));
+		text.add(I18nUtil.resolveKey("overlay.wand_jigsaw.target_name", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.target));
+		text.add(I18nUtil.resolveKey("overlay.wand_jigsaw.turns_into", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, GameRegistry.findUniqueIdentifierFor(jigsaw.replaceBlock).toString()));
+		text.add(I18nUtil.resolveKey("overlay.wand_jigsaw.with_meta", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.replaceMeta));
+		text.add(I18nUtil.resolveKey("overlay.wand_jigsaw.selection_placement_priority", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.selectionPriority, jigsaw.placementPriority));
+		text.add(I18nUtil.resolveKey("overlay.wand_jigsaw.joint_type", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, (jigsaw.isRollable ? I18nUtil.resolveKey("gui.wand_jigsaw.rollable") : I18nUtil.resolveKey("gui.wand_jigsaw.aligned"))));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
@@ -305,29 +305,29 @@ public class BlockWandJigsaw extends BlockContainer implements IBlockSideRotatio
 			textPlacementPriority = new GuiTextField(fontRendererObj, this.width / 2 - 40, 150, 90, 20);
 			textPlacementPriority.setText("" + jigsaw.placementPriority);
 
-			jointToggle = new GuiButton(0, this.width / 2 + 60, 150, 90, 20, jigsaw.isRollable ? I18nUtil.resolveKey("gui.block_wand_jigsaw.rollable") : I18nUtil.resolveKey("gui.block_wand_jigsaw.aligned"));
+			jointToggle = new GuiButton(0, this.width / 2 + 60, 150, 90, 20, jigsaw.isRollable ? I18nUtil.resolveKey("gui.wand_jigsaw.rollable") : I18nUtil.resolveKey("gui.wand_jigsaw.aligned"));
 		}
 
 		@Override
 		public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 			drawDefaultBackground();
 
-			drawString(fontRendererObj, "Target pool:", this.width / 2 - 150, 37, 0xA0A0A0);
+			drawString(fontRendererObj, I18nUtil.resolveKey("gui.wand_jigsaw.target_pool"), this.width / 2 - 150, 37, 0xA0A0A0);
 			textPool.drawTextBox();
 
-			drawString(fontRendererObj, "Name:", this.width / 2 - 150, 87, 0xA0A0A0);
+			drawString(fontRendererObj, I18nUtil.resolveKey("gui.wand_jigsaw.name"), this.width / 2 - 150, 87, 0xA0A0A0);
 			textName.drawTextBox();
 
-			drawString(fontRendererObj, "Target name:", this.width / 2 + 10, 87, 0xA0A0A0);
+			drawString(fontRendererObj, I18nUtil.resolveKey("gui.wand_jigsaw.target_name"), this.width / 2 + 10, 87, 0xA0A0A0);
 			textTarget.drawTextBox();
 
-			drawString(fontRendererObj, "Selection priority:", this.width / 2 - 150, 137, 0xA0A0A0);
+			drawString(fontRendererObj, I18nUtil.resolveKey("gui.wand_jigsaw.selection_priority"), this.width / 2 - 150, 137, 0xA0A0A0);
 			textSelectionPriority.drawTextBox();
 
-			drawString(fontRendererObj, "Placement priority:", this.width / 2 - 40, 137, 0xA0A0A0);
+			drawString(fontRendererObj, I18nUtil.resolveKey("gui.wand_jigsaw.placement_priority"), this.width / 2 - 40, 137, 0xA0A0A0);
 			textPlacementPriority.drawTextBox();
 
-			drawString(fontRendererObj, "Joint type:", this.width / 2 + 60, 137, 0xA0A0A0);
+			drawString(fontRendererObj, I18nUtil.resolveKey("gui.wand_jigsaw.joint_type"), this.width / 2 + 60, 137, 0xA0A0A0);
 			jointToggle.drawButton(mc, mouseX, mouseY);
 
 			super.drawScreen(mouseX, mouseY, partialTicks);

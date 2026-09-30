@@ -50,7 +50,7 @@ public class CommandDebugChunkLoad extends CommandBase {
 					if(prov.chunkExists(cX, cZ)) {
 						Chunk chunk = sender.getEntityWorld().getChunkFromChunkCoords(cX, cZ);
 						if(chunk.isChunkLoaded) {
-							sender.addChatMessage(new ChatComponentTranslation("chat.command_debug_chunk_load.s_chunk_currently_loaded", EnumChatFormatting.RED));
+							sender.addChatMessage(new ChatComponentTranslation("commands.debug_chunk_load.chunk_currently_loaded", EnumChatFormatting.RED));
 							return;
 						}
 					}
@@ -64,7 +64,7 @@ public class CommandDebugChunkLoad extends CommandBase {
 					if(tagList != null) {
 						
 						if(tagList.tagCount() <= 0) {
-							sender.addChatMessage(new ChatComponentTranslation("chat.command_debug_chunk_load.s_tag_list_empty", EnumChatFormatting.RED));
+							sender.addChatMessage(new ChatComponentTranslation("commands.debug_chunk_load.tag_list_empty", EnumChatFormatting.RED));
 						}
 						
 						for(int i1 = 0; i1 < tagList.tagCount(); ++i1) {
@@ -97,17 +97,17 @@ public class CommandDebugChunkLoad extends CommandBase {
 							}
 						}
 					} else {
-						sender.addChatMessage(new ChatComponentTranslation("chat.command_debug_chunk_load.s_tag_list_null", EnumChatFormatting.RED));
+						sender.addChatMessage(new ChatComponentTranslation("commands.debug_chunk_load.tag_list_null", EnumChatFormatting.RED));
 					}
 					
 				} catch(Exception e) {
 					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "" + e.getLocalizedMessage()));
 				}
 			} else {
-				sender.addChatMessage(new ChatComponentTranslation("chat.command_debug_chunk_load.s_not_anvil_chunk_loader", EnumChatFormatting.RED));
+				sender.addChatMessage(new ChatComponentTranslation("commands.debug_chunk_load.not_anvil_chunk_loader", EnumChatFormatting.RED));
 			}
 		} else {
-			sender.addChatMessage(new ChatComponentTranslation("chat.command_debug_chunk_load.s_not_chunk_provider_server", EnumChatFormatting.RED));
+			sender.addChatMessage(new ChatComponentTranslation("commands.debug_chunk_load.not_chunk_provider_server", EnumChatFormatting.RED));
 		}
 	}
 }

@@ -97,8 +97,8 @@ public class ItemConveyorWand extends Item implements ILookOverlay {
 				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey(super.getUnlocalizedName(stack) + ".vertical.desc"));
 			}
 		} else {
-			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_conveyor_wand.hold") + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_conveyor_wand.lshift") + EnumChatFormatting.DARK_GRAY
-					+ "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_conveyor_wand.to_display_more_info"));
+			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.misc.hold_prefix") + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.misc.lshift_key") + EnumChatFormatting.DARK_GRAY
+					+ "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.misc.more_info_suffix"));
 		}
 	}
 
@@ -208,11 +208,11 @@ public class ItemConveyorWand extends Item implements ILookOverlay {
 						player.inventoryContainer.detectAndSendChanges();
 					}
 
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_conveyor_wand.1"));
+					player.addChatMessage(new ChatComponentTranslation("chat.conveyor_wand.1"));
 				} else if(constructCount == 0) {
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_conveyor_wand.2"));
+					player.addChatMessage(new ChatComponentTranslation("chat.conveyor_wand.2"));
 				} else {
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_conveyor_wand.3"));
+					player.addChatMessage(new ChatComponentTranslation("chat.conveyor_wand.3"));
 				}
 			} else {
 				RenderOverhead.clearActionPreview();
@@ -511,7 +511,7 @@ public class ItemConveyorWand extends Item implements ILookOverlay {
 		Block block = world.getBlock(x, y, z);
 		if(block instanceof BlockConveyorBase) {
 			List<String> text = new ArrayList<>();
-			text.add(I18nUtil.resolveKey("item.tooltip.item_conveyor_wand.1"));
+			text.add(I18nUtil.resolveKey("desc.item.conveyor_wand.1"));
 			ILookOverlay.printGeneric(event, I18nUtil.resolveKey(block.getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 		}
 	}

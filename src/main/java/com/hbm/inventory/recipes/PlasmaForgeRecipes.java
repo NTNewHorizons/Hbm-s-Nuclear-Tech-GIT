@@ -45,7 +45,7 @@ public class PlasmaForgeRecipes extends GenericRecipes<PlasmaForgeRecipe> {
 	@Override
 	public void registerDefaults() {
 		
-		String autoPlate = "autoswitch.weldPlates";
+		String autoPlate = "..autoswitch.weldPlates";
 		
 		// Plates
 		this.register((PlasmaForgeRecipe) new PlasmaForgeRecipe("plsm.plateeuphemium").setInputEnergy(1_000_000).setup(600, 10_000_000).outputItems(new ItemStack(ModItems.plate_euphemium, 4))

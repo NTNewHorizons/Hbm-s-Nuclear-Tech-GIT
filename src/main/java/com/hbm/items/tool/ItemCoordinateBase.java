@@ -66,11 +66,11 @@ public abstract class ItemCoordinateBase extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
 		if(stack.hasTagCompound()) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.1", stack.stackTagCompound.getInteger(I18nUtil.resolveKey("gui.item_coordinate_base.pos_x"))));
-			if(includeY()) list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.2", stack.stackTagCompound.getInteger(I18nUtil.resolveKey("gui.item_coordinate_base.pos_y"))));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.3", stack.stackTagCompound.getInteger(I18nUtil.resolveKey("gui.item_coordinate_base.pos_z"))));
+			list.add(I18nUtil.resolveKey("desc.item.tele_link.1", stack.stackTagCompound.getInteger("posX")));
+			if(includeY()) list.add(I18nUtil.resolveKey("desc.item.tele_link.2", stack.stackTagCompound.getInteger("posY")));
+			list.add(I18nUtil.resolveKey("desc.item.tele_link.3", stack.stackTagCompound.getInteger("posZ")));
 		} else {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_drop.28"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.misc.noPos"));
 		}
 	}
 }

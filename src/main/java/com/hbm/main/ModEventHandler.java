@@ -205,26 +205,26 @@ public class ModEventHandler {
 		if(!event.player.worldObj.isRemote) {
 
 			if(GeneralConfig.enableMOTD) {
-				event.player.addChatMessage(new ChatComponentTranslation("chat.mod_event_handler.loaded_world_with_james_h2_mellow_s_ntm_space_s_for_mine", RefStrings.VERSION));
+				event.player.addChatMessage(new ChatComponentTranslation("chat.mod_event.line.01", RefStrings.VERSION));
 
 				if(HTTPHandler.newVersion) {
 					event.player.addChatMessage(
-							new ChatComponentTranslation("chat.mod_event_handler.new_version_s_is_available_click", HTTPHandler.versionNumber)
+							new ChatComponentTranslation("chat.mod_event.new_version_is_available_click", HTTPHandler.versionNumber)
 							.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW))
-							.appendSibling(new ChatComponentTranslation("chat.mod_event_handler.here")
+							.appendSibling(new ChatComponentTranslation("chat.mod_event.here")
 									.setChatStyle(new ChatStyle()
 										.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/JameH2/Hbm-s-Nuclear-Tech-GIT/releases"))
 										.setUnderlined(true)
 										.setColor(EnumChatFormatting.RED)
 									)
 								)
-							.appendSibling(new ChatComponentTranslation("chat.mod_event_handler.to_download").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)))
+							.appendSibling(new ChatComponentTranslation("chat.mod_event.to_download").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)))
 							);
 				}
 			}
 
 			if(MobConfig.enableDucks && event.player instanceof EntityPlayerMP && !event.player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).getBoolean("hasDucked"))
-				PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.startTranslation("info.press_o_to_duck").flush(), ServerProxy.ID_DUCK, 30_000), (EntityPlayerMP) event.player);
+				PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.startTranslation("info.common.press_o_to_duck").flush(), ServerProxy.ID_DUCK, 30_000), (EntityPlayerMP) event.player);
 
 
 			/*if(GeneralConfig.enableGuideBook) {
@@ -1436,7 +1436,7 @@ public class ModEventHandler {
 			/// GHOST FIX START ///
 
 			if(!Float.isFinite(player.getHealth()) || !Float.isFinite(player.getAbsorptionAmount())) {
-				player.addChatComponentMessage(new ChatComponentTranslation("chat.mod_event_handler.your_health_has_been_restored"));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.mod_event.your_health_has_been_restored"));
 				player.worldObj.playSoundAtEntity(player, "hbm:item.syringe", 1.0F, 1.0F);
 				player.setHealth(player.getMaxHealth());
 				player.setAbsorptionAmount(0);
@@ -1621,7 +1621,8 @@ public class ModEventHandler {
 		}
 
 		if(parameters.length < 1 || parameters.length > 2) {
-			throw new WrongUsageException("commands.weather.usage", new Object[0]);
+			sender.addChatMessage(new ChatComponentTranslation("commands.weather.usage"));
+			return;
 		}
 
 		int duration = (300 + new Random().nextInt(600)) * 20;
@@ -1634,7 +1635,8 @@ public class ModEventHandler {
 		CelestialBody body = CelestialBody.getTarget(world, pos.posX, pos.posZ).body;
 		CBT_Weather weather = CBT_Weather.ensureTrait(body);
 		if(weather == null || !CBT_Weather.supportsWeather(body)) {
-			throw new CommandException("commands.mod_event_handler.this_celestial_body_has_no_weather_cycle");
+			sender.addChatMessage(new ChatComponentTranslation("commands.mod_event.text.01"));
+			return;
 		}
 
 		if("clear".equalsIgnoreCase(parameters[0])) {
@@ -1647,7 +1649,8 @@ public class ModEventHandler {
 			weather.forceThunder(duration);
 			CommandBase.func_152373_a(sender, command, "commands.weather.thunder", new Object[0]);
 		} else {
-			throw new WrongUsageException("commands.weather.usage", new Object[0]);
+			sender.addChatMessage(new ChatComponentTranslation("commands.weather.usage"));
+			return;
 		}
 
 		SolarSystemWorldSavedData.get(world).markDirty();

@@ -37,7 +37,7 @@ public class SatelliteHandler extends TemplateRecipeHandler implements ICompatNH
 
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.satellite_handler.name");
+		return I18nUtil.resolveKey("nei.satellite.name");
 	}
 
 	@Override

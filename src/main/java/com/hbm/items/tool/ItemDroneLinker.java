@@ -34,7 +34,7 @@ public class ItemDroneLinker extends Item {
 					player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 							.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 							.next("] ").color(EnumChatFormatting.DARK_AQUA)
-							.nextTranslation("item.message.item_drone_linker.1").color(EnumChatFormatting.AQUA).flush());
+							.nextTranslation("chat.drone_linker.1").color(EnumChatFormatting.AQUA).flush());
 					
 				} else {
 	
@@ -52,12 +52,12 @@ public class ItemDroneLinker extends Item {
 						player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 								.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 								.next("] ").color(EnumChatFormatting.DARK_AQUA)
-								.nextTranslation("item.message.item_drone_linker.2").color(EnumChatFormatting.AQUA).flush());
+								.nextTranslation("chat.drone_linker.2").color(EnumChatFormatting.AQUA).flush());
 					} else {
 						player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 								.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 								.next("] ").color(EnumChatFormatting.DARK_AQUA)
-								.nextTranslation("item.message.item_drone_linker.3").color(EnumChatFormatting.RED).flush());
+								.nextTranslation("chat.drone_linker.3").color(EnumChatFormatting.RED).flush());
 					}
 					
 					stack.stackTagCompound.setInteger("x", x);
@@ -80,7 +80,7 @@ public class ItemDroneLinker extends Item {
 				int x = stack.stackTagCompound.getInteger("x");
 				int y = stack.stackTagCompound.getInteger("y");
 				int z = stack.stackTagCompound.getInteger("z");
-				MainRegistry.proxy.displayTooltip(I18nUtil.resolveKey("gui.item_drone_linker.prev_pos") + x + " / " + y + " / " + z, MainRegistry.proxy.ID_DRONE);
+				MainRegistry.proxy.displayTooltip(I18nUtil.resolveKey("gui.drone_linker.prev_pos") + x + " / " + y + " / " + z, MainRegistry.proxy.ID_DRONE);
 			}
 		}
 	}
@@ -94,7 +94,7 @@ public class ItemDroneLinker extends Item {
 			player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 					.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 					.next("] ").color(EnumChatFormatting.DARK_AQUA)
-					.nextTranslation("item.message.item_drone_linker.4").color(EnumChatFormatting.GREEN).flush());
+					.nextTranslation("chat.drone_linker.4").color(EnumChatFormatting.GREEN).flush());
 		}
 		
 		return stack;

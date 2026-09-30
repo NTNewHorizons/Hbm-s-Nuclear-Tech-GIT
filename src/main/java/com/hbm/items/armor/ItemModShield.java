@@ -21,7 +21,7 @@ public class ItemModShield extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		String color = "" + (System.currentTimeMillis() % 1000 < 500 ? EnumChatFormatting.YELLOW : EnumChatFormatting.GOLD);
-		list.add(color + I18nUtil.resolveKey("item.tooltip.item_mod_shield.1", (Math.round(shield * 10) * 0.1)));
+		list.add(color + I18nUtil.resolveKey("desc.item.mod_shield.1", (Math.round(shield * 10) * 0.1)));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
@@ -29,6 +29,6 @@ public class ItemModShield extends ItemArmorMod {
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 		String color = "" + (System.currentTimeMillis() % 1000 < 500 ? EnumChatFormatting.YELLOW : EnumChatFormatting.GOLD);
-		list.add(color + I18nUtil.resolveKey("item.tooltip.item_mod_health.3", stack.getDisplayName(), (Math.round(shield * 10) * 0.1)));
+		list.add(color + I18nUtil.resolveKey("desc.item.mod_health.3", stack.getDisplayName(), (Math.round(shield * 10) * 0.1)));
 	}
 }

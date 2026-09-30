@@ -34,7 +34,7 @@ public class ItemTeleLink extends Item {
 				stack.stackTagCompound.setInteger("z", z);
 				stack.stackTagCompound.setInteger("dim", player.dimension);
 				world.playSoundAtEntity(player, "hbm:item.techBleep", 1.0F, 1.0F);
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_tele_link.1", EnumChatFormatting.AQUA, x, y, z));
+				player.addChatMessage(new ChatComponentTranslation("chat.tele_link.1", EnumChatFormatting.AQUA, x, y, z));
 				player.swingItem();
 				
 				return true;
@@ -43,7 +43,7 @@ public class ItemTeleLink extends Item {
 				
 				if(!stack.hasTagCompound()) {
 					world.playSoundAtEntity(player, "hbm:item.techBoop", 1.0F, 1.0F);
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_tele_link.2", EnumChatFormatting.RED));
+					player.addChatMessage(new ChatComponentTranslation("chat.tele_link.2", EnumChatFormatting.RED));
 					return false;
 				}
 				
@@ -61,7 +61,7 @@ public class ItemTeleLink extends Item {
 				
 				tele.markDirty();
 				world.playSoundAtEntity(player, "hbm:item.techBleep", 1.0F, 1.0F);
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_tele_link.3", EnumChatFormatting.AQUA));
+				player.addChatMessage(new ChatComponentTranslation("chat.tele_link.3", EnumChatFormatting.AQUA));
 				player.swingItem();
 				return true;
 			}
@@ -73,12 +73,12 @@ public class ItemTeleLink extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if (itemstack.stackTagCompound != null) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.1", itemstack.stackTagCompound.getInteger("x")));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.2", itemstack.stackTagCompound.getInteger("y")));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.3", itemstack.stackTagCompound.getInteger("z")));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.4", itemstack.stackTagCompound.getInteger("dim")));
+			list.add(I18nUtil.resolveKey("desc.item.tele_link.1", itemstack.stackTagCompound.getInteger("x")));
+			list.add(I18nUtil.resolveKey("desc.item.tele_link.2", itemstack.stackTagCompound.getInteger("y")));
+			list.add(I18nUtil.resolveKey("desc.item.tele_link.3", itemstack.stackTagCompound.getInteger("z")));
+			list.add(I18nUtil.resolveKey("desc.item.tele_link.4", itemstack.stackTagCompound.getInteger("dim")));
 		} else {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_tele_link.5"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.tele_link.5"));
 		}
 	}
 

@@ -16,6 +16,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class SuicideThreadDump extends CommandBase {
 
@@ -31,7 +32,7 @@ public class SuicideThreadDump extends CommandBase {
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "commands.suicide_thread_dump.dumpthreadsandcrashgame_dump_crash";
+		return "commands.suicide_thread_dump.usage";
 	}
 
 	@Override
@@ -43,7 +44,8 @@ public class SuicideThreadDump extends CommandBase {
 	public void processCommand(ICommandSender sender, String[] args) {
 		
 		if(args.length != 1 || !(args[0].equals("dump") || args[0].equals("crash"))) {
-			throw new CommandException("commands.suicide_thread_dump.requires_argument_dump_or_crash");
+			sender.addChatMessage(new ChatComponentTranslation("commands.suicide_thread_dump.requires_argument_dump_or_crash"));
+			return;
 		}
 		
 		ThreadInfo[] threads = ManagementFactory.getThreadMXBean().dumpAllThreads(true, true);

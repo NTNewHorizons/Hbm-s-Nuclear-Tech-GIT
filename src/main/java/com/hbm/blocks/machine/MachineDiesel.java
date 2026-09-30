@@ -55,7 +55,7 @@ public class MachineDiesel extends BlockMachineBase implements ITooltipProvider,
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		
-		list.add(I18nUtil.resolveKey("tooltip.machine_diesel.s_fuel_efficiency", EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.block.diesel.fuel_efficiency", EnumChatFormatting.YELLOW));
 		for(FuelGrade grade : FuelGrade.values()) {
 			Double efficiency = TileEntityMachineDiesel.fuelEfficiency.get(grade);
 			

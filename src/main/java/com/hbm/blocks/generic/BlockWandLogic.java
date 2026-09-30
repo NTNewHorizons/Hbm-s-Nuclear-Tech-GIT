@@ -173,9 +173,9 @@ public class BlockWandLogic extends BlockContainer implements ILookOverlay, IToo
 		TileEntityWandLogic logic = (TileEntityWandLogic) te;
 
 		List<String> text = new ArrayList<>();
-		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.action_s", logic.actionID));
-		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.condition_s", logic.conditionID));
-		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.interaction_s", (logic.interactionID != null ? logic.interactionID : I18nUtil.resolveKey("gui.block_wand_logic.none"))));
+		text.add(I18nUtil.resolveKey("overlay.wand_logic.action", logic.actionID));
+		text.add(I18nUtil.resolveKey("overlay.wand_logic.condition", logic.conditionID));
+		text.add(I18nUtil.resolveKey("overlay.wand_logic.interaction", (logic.interactionID != null ? logic.interactionID : I18nUtil.resolveKey("gui.wand_logic.none"))));
 
 		String block;
 
@@ -184,17 +184,17 @@ public class BlockWandLogic extends BlockContainer implements ILookOverlay, IToo
 		else
 			block = "None";
 
-		text.add(I18nUtil.resolveKey("overlay.block_wand_logic.disguise_block_s", block));
+		text.add(I18nUtil.resolveKey("overlay.wand_logic.disguise_block", block));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.block_wand_logic.s_use_screwdriver_to_cycle_forwards_through_the_action_l", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tooltip.block_wand_logic.s_use_defuser_to_cycle_forwards_through_the_condition_li", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tooltip.block_wand_logic.s_use_hand_drill_to_cycle_forwards_through_the_interacti", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tooltip.block_wand_logic.s_use_a_detonator_to_transform", EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.block.wand_logic.line.03", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.wand_logic.line.01", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.wand_logic.line.02", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.detonator_transform", EnumChatFormatting.YELLOW));
 	}
 
 	@Override

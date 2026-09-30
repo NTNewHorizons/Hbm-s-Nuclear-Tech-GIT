@@ -33,14 +33,14 @@ public class ItemModMilk extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.WHITE + I18nUtil.resolveKey("item.tooltip.item_mod_milk.1"));
+		list.add(EnumChatFormatting.WHITE + I18nUtil.resolveKey("desc.item.mod_milk.1"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.WHITE + I18nUtil.resolveKey("item.tooltip.item_mod_milk.2", stack.getDisplayName()));
+		list.add(EnumChatFormatting.WHITE + I18nUtil.resolveKey("desc.item.mod_milk.2", stack.getDisplayName()));
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class ItemModMilk extends ItemArmorMod {
 
 			player.addPotionEffect(new PotionEffect(Potion.confusion.id, 7 * 20, 0));
 			player.addChatMessage(
-					new ChatComponentTranslation("item.message.item_mod_milk.1", EnumChatFormatting.GRAY, EnumChatFormatting.ITALIC));
+					new ChatComponentTranslation("chat.mod_milk.1", EnumChatFormatting.GRAY, EnumChatFormatting.ITALIC));
 
 			NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setString("type", "vomit");

@@ -19,14 +19,14 @@ public class ItemModPolish extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_mod_polish.1"));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.mod_polish.1"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_mod_polish.2", stack.getDisplayName()));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.mod_polish.2", stack.getDisplayName()));
 	}
 	
 	@Override

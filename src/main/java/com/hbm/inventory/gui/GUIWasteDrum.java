@@ -29,9 +29,9 @@ public class GUIWasteDrum extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 		
-		String[] text = new String[] { I18nUtil.resolveKey("gui.guiwaste_drum.the_drum_will_cool_down_hot_nuclear"),
-				I18nUtil.resolveKey("gui.guiwaste_drum.waste_when_submerged_in_water_more"),
-				I18nUtil.resolveKey("gui.guiwaste_drum.water_speeds_up_the_process") };
+		String[] text = new String[] { I18nUtil.resolveKey("gui.waste_drum.drum_cool_down_hot_nuclear"),
+				I18nUtil.resolveKey("gui.waste_drum.waste_when_submerged_water"),
+				I18nUtil.resolveKey("gui.waste_drum.water_speeds_up_the_process") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 	}
 	

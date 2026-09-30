@@ -92,13 +92,13 @@ public class GUIScreenRadioTorch extends GuiScreen {
 		this.fontRendererObj.drawString(name, this.guiLeft + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, this.guiTop + 6, 4210752);
 
 		if(guiLeft + 137 <= x && guiLeft + 137 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { radio.customMap ? I18nUtil.resolveKey("gui.guiscreen_radio_torch.custom_mapping") : I18nUtil.resolveKey("gui.guiscreen_radio_torch.redstone_passthrough") }), x, y);
+			func_146283_a(Arrays.asList(new String[] { radio.customMap ? I18nUtil.resolveKey("gui.radio_torch.custom_mapping") : I18nUtil.resolveKey("gui.radio_torch.redstone_passthrough") }), x, y);
 		}
 		if(guiLeft + 173 <= x && guiLeft + 173 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { radio.polling ? I18nUtil.resolveKey("gui.guiscreen_radio_torch.polling") : I18nUtil.resolveKey("gui.guiscreen_radio_torch.state_change") }), x, y);
+			func_146283_a(Arrays.asList(new String[] { radio.polling ? I18nUtil.resolveKey("gui.common.polling") : I18nUtil.resolveKey("gui.common.state_change") }), x, y);
 		}
 		if(guiLeft + 209 <= x && guiLeft + 209 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { I18nUtil.resolveKey("gui.guiscreen_radio_torch.save_settings") }), x, y);
+			func_146283_a(Arrays.asList(new String[] { I18nUtil.resolveKey("gui.common.save") }), x, y);
 		}
 	}
 

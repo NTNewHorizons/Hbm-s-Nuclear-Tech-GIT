@@ -68,7 +68,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		boolean no528 = !GeneralConfig.enable528;
 
 		// plates and ingots
-		String autoPlate = "autoswitch.plates";
+		String autoPlate = "..autoswitch.plates";
 		this.register(new GenericRecipe("ass.plateiron").setup(60, 100).outputItems(new ItemStack(ModItems.plate_iron, 1)).inputItems(new OreDictStack(IRON.ingot())).setPools(GenericRecipes.POOL_PREFIX_ALT + "plates").setGroup(autoPlate, this));
 		this.register(new GenericRecipe("ass.plategold").setup(60, 100).outputItems(new ItemStack(ModItems.plate_gold, 1)).inputItems(new OreDictStack(GOLD.ingot())).setPools(GenericRecipes.POOL_PREFIX_ALT + "plates").setGroup(autoPlate, this));
 		this.register(new GenericRecipe("ass.platetitanium").setup(60, 100).outputItems(new ItemStack(ModItems.plate_titanium, 1)).inputItems(new OreDictStack(TI.ingot())).setPools(GenericRecipes.POOL_PREFIX_ALT + "plates").setGroup(autoPlate, this));
@@ -193,7 +193,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new OreDictStack(STEEL.shell(), 4), new OreDictStack(PB.plateCast(), 4), new ComparableStack(ModItems.rod_quad_empty, 10), new OreDictStack(KEY_BROWN, 3)));
 
 		// pile rods
-		String autoPileRod = "autoswitch.pilerod";
+		String autoPileRod = "..autoswitch.pilerod";
 		this.register(new GenericRecipe("ass.pilepabe").setup(40, 200).outputItems(new ItemStack(ModItems.pile_rod, 1, EnumPileRod.RA226BE.ordinal()))
 				.inputItems(new ComparableStack(ModItems.billet_ra226be, 3)).setGroup(autoPileRod, INSTANCE));
 		this.register(new GenericRecipe("ass.pilepobe").setup(40, 200).outputItems(new ItemStack(ModItems.pile_rod, 1, EnumPileRod.PO210BE.ordinal()))
@@ -204,7 +204,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new OreDictStack(U.billet(), 3)).setGroup(autoPileRod, INSTANCE));
 		
 		// powders
-		String autoCyclotron = "autoswitch.cyclotron";
+		String autoCyclotron = "..autoswitch.cyclotron";
 		this.register(new GenericRecipe("ass.partlith").setup(40, 100).outputItems(new ItemStack(ModItems.part_lithium, 8))
 				.inputItems(new OreDictStack(LI.dust(), 1)).setGroup(autoCyclotron, INSTANCE));
 		this.register(new GenericRecipe("ass.partberyl").setup(40, 100).outputItems(new ItemStack(ModItems.part_beryllium, 8))
@@ -1858,7 +1858,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 			));
 
 		// T-51 Power Armor
-		String t51armor = "autoswitch.t51powerarmor";
+		String t51armor = "..autoswitch.t51powerarmor";
 
 		this.register(new GenericRecipe("zockernext.t51.helmet").setup(200, 100)
 			.outputItems(new ItemStack(ModItems.t51_helmet, 1))
@@ -1913,7 +1913,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		);
 
 		// RPA ARMOR
-		String rpapowerArmor = "autoswitch.rpapowerarmor";
+		String rpapowerArmor = "..autoswitch.rpapowerarmor";
 
 		this.register(new GenericRecipe("zockernext.rpa.helmet").setup(200, 100)
 			.outputItems(new ItemStack(ModItems.rpa_helmet, 1))
@@ -1978,7 +1978,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		// Steel Ranger Armor
 
 		// RPA ARMOR
-		String steelranger = "autoswitch.steelrangerarmor";
+		String steelranger = "..autoswitch.steelrangerarmor";
 
 		this.register(new GenericRecipe("zockernext.ranger.helmet").setup(200, 100)
 			.outputItems(new ItemStack(ModItems.ajr_helmet, 1))

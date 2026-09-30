@@ -54,9 +54,9 @@ public class ItemStarmetal extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		
 		switch(stack.getItemDamage()) {
-		case 1: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_starmetal.1")); break;
-		case 2: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_starmetal.2")); break;
-		case 3: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_starmetal.3")); break;
+		case 1: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.starmetal.1")); break;
+		case 2: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.starmetal.2")); break;
+		case 3: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.starmetal.3")); break;
 		}
 	}
 }

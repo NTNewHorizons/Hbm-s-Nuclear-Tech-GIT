@@ -24,10 +24,10 @@ public class ItemWandS extends Item {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_wand.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_wand_s.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_wand_s.2"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_wand_s.3"));
+		list.add(I18nUtil.resolveKey("desc.item.wand.1"));
+		list.add(I18nUtil.resolveKey("desc.item.wand_s.1"));
+		list.add(I18nUtil.resolveKey("desc.item.wand_s.2"));
+		list.add(I18nUtil.resolveKey("desc.item.wand_s.3"));
 
 		if(stack.stackTagCompound != null) {
 			int px = stack.stackTagCompound.getInteger("x");
@@ -35,15 +35,15 @@ public class ItemWandS extends Item {
 			int pz = stack.stackTagCompound.getInteger("z");
 
 			if(px != 0 || py != 0 || pz != 0) {
-				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.tooltip.item_wand_s.4", px, py, pz));
+				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.wand_s.4", px, py, pz));
 			} else {
-				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.tooltip.item_wand_s.5"));
+				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.wand_s.5"));
 			}
 
 			Set<Pair<Block, Integer>> blocks = getBlocks(stack);
 
 			if(blocks.size() > 0) {
-				list.add(I18nUtil.resolveKey("item.tooltip.item_wand_s.6"));
+				list.add(I18nUtil.resolveKey("desc.item.wand_s.6"));
 				for(Pair<Block, Integer> block : blocks) {
 					list.add(EnumChatFormatting.RED + "- " + block.key.getUnlocalizedName());
 				}
@@ -64,10 +64,10 @@ public class ItemWandS extends Item {
 
 			if(blocks.contains(target)) {
 				blocks.remove(target);
-				if(world.isRemote) player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_s.1", target.key.getUnlocalizedName()));
+				if(world.isRemote) player.addChatMessage(new ChatComponentTranslation("chat.wand_s.1", target.key.getUnlocalizedName()));
 			} else {
 				blocks.add(target);
-				if(world.isRemote) player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_s.2", target.key.getUnlocalizedName()));
+				if(world.isRemote) player.addChatMessage(new ChatComponentTranslation("chat.wand_s.2", target.key.getUnlocalizedName()));
 			}
 
 			setBlocks(stack, blocks);
@@ -80,7 +80,7 @@ public class ItemWandS extends Item {
 			if(px == 0 && py == 0 && pz == 0) {
 				setPosition(stack, x, y, z);
 
-				if(world.isRemote) player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_s.3"));
+				if(world.isRemote) player.addChatMessage(new ChatComponentTranslation("chat.wand_s.3"));
 			} else {
 				setPosition(stack, 0, 0, 0);
 
@@ -105,12 +105,12 @@ public class ItemWandS extends Item {
 					structure.blacklist = getBlocks(stack);
 				} else {
 					if (world.isRemote)
-						player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_s.4"));
+						player.addChatMessage(new ChatComponentTranslation("chat.wand_s.4"));
 					return true;
 				}
 
 				if (world.isRemote)
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_s.5", minX, minY, minZ));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_s.5", minX, minY, minZ));
 			}
 		}
 
@@ -160,7 +160,7 @@ public class ItemWandS extends Item {
 			stack.stackTagCompound.setIntArray("metas", new int[0]);
 
 			if(world.isRemote) {
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_wand_s.6"));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_s.6"));
 			}
 		}
 

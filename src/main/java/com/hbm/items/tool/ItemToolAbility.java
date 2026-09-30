@@ -286,7 +286,7 @@ public class ItemToolAbility extends ItemTool implements IDepthRockTool, IGUIPro
 
 		if(this.rockBreaker) {
 			list.add("");
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_tool_ability.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.tool_ability.1"));
 		}
 	}
 

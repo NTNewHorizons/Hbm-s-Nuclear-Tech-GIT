@@ -42,8 +42,8 @@ public class ArmorNo9 extends ArmorModel implements IAttackHandler, IDamageHandl
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.armor_no9.1"));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.armor_no9.2"));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.armor_no9.1"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.armor_no9.2"));
 	}
 
 	@Override

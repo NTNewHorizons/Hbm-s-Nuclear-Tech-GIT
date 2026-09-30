@@ -45,20 +45,20 @@ public class ItemModInsert extends ItemArmorMod {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
 		if(corrosionProtection)
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_mod_insert.1"));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.mod_insert.1"));
 		if(damageMod != 1F)
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_mod_insert.2", (damageMod < 1 ? "-" : "+"), Math.abs(Math.round((1F - damageMod) * 100))));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.mod_insert.2", (damageMod < 1 ? "-" : "+"), Math.abs(Math.round((1F - damageMod) * 100))));
 		if(projectileMod != 1F)
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_mod_insert.3", Math.round((1F - projectileMod) * 100)));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_insert.3", Math.round((1F - projectileMod) * 100)));
 		if(explosionMod != 1F)
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_mod_insert.4", Math.round((1F - explosionMod) * 100)));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_insert.4", Math.round((1F - explosionMod) * 100)));
 		if(speed != 1F)
-			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_mod_insert.5", Math.round((1F - speed) * 100)));
+			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.mod_insert.5", Math.round((1F - speed) * 100)));
 		
 		if(this == ModItems.insert_polonium)
-			list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("item.tooltip.item_mod_insert.6"));
+			list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("desc.item.mod_insert.6"));
 		
-		list.add(I18nUtil.resolveKey("item.tooltip.item_mod_insert.7", (stack.getMaxDamage() - stack.getItemDamage()), stack.getMaxDamage()));
+		list.add(I18nUtil.resolveKey("desc.item.mod_insert.7", (stack.getMaxDamage() - stack.getItemDamage()), stack.getMaxDamage()));
 		
 		list.add("");
 		super.addInformation(stack, player, list, bool);
@@ -70,20 +70,20 @@ public class ItemModInsert extends ItemArmorMod {
 		List<String> desc = new ArrayList();
 
 		if(damageMod != 1F)
-			desc.add(I18nUtil.resolveKey("item.tooltip.item_mod_insert.8", (damageMod < 1 ? "-" : "+"), Math.abs(Math.round((1F - damageMod) * 100))));
+			desc.add(I18nUtil.resolveKey("desc.item.mod_insert.8", (damageMod < 1 ? "-" : "+"), Math.abs(Math.round((1F - damageMod) * 100))));
 		if(projectileMod != 1F)
-			desc.add(I18nUtil.resolveKey("item.tooltip.item_mod_insert.9", Math.round((1F - projectileMod) * 100)));
+			desc.add(I18nUtil.resolveKey("desc.item.mod_insert.9", Math.round((1F - projectileMod) * 100)));
 		if(explosionMod != 1F)
-			desc.add(I18nUtil.resolveKey("item.tooltip.item_mod_insert.10", Math.round((1F - explosionMod) * 100)));
+			desc.add(I18nUtil.resolveKey("desc.item.mod_insert.10", Math.round((1F - explosionMod) * 100)));
 		if(explosionMod != 1F)
-			desc.add(I18nUtil.resolveKey("item.tooltip.item_mod_insert.5", Math.round((1F - speed) * 100)));
+			desc.add(I18nUtil.resolveKey("desc.item.mod_insert.5", Math.round((1F - speed) * 100)));
 
 		if(this == ModItems.insert_polonium)
-			desc.add(I18nUtil.resolveKey("item.tooltip.item_mod_insert.6"));
+			desc.add(I18nUtil.resolveKey("desc.item.mod_insert.6"));
 		
 		String join = String.join(" / ", desc);
 		
-		list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_insert.11", stack.getDisplayName(), join, (stack.getMaxDamage() - stack.getItemDamage())));
+		list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_insert.11", stack.getDisplayName(), join, (stack.getMaxDamage() - stack.getItemDamage())));
 	}
 
 	@Override

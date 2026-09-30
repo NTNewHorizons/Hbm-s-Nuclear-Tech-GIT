@@ -76,7 +76,7 @@ public class CrucibleCastingHandler extends TemplateRecipeHandler implements ICo
 
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.crucible_casting_handler.name");
+		return I18nUtil.resolveKey("nei.crucible_casting.name");
 	}
 
 	@Override

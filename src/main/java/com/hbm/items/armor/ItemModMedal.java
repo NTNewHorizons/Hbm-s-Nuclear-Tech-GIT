@@ -19,13 +19,13 @@ public class ItemModMedal extends ItemArmorMod {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_mod_medal.1"));
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.mod_medal.1"));
 		super.addInformation(stack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_mod_medal.2", stack.getDisplayName()));
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.mod_medal.2", stack.getDisplayName()));
 	}
 	
 	@Override

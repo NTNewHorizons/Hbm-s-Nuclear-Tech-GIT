@@ -54,7 +54,7 @@ public class MachineThresher extends BlockContainer implements ILookOverlay, ITo
 				if(TileEntityMachineAutosaw.acceptedFuels.contains(type)) {
 					saw.tank.setTankType(type);
 					saw.markDirty();
-					player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_thresher.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.common.changed_type").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 					return true;
 				}
 			}
@@ -99,7 +99,7 @@ public class MachineThresher extends BlockContainer implements ILookOverlay, ITo
 		TileEntityMachineThresher saw = (TileEntityMachineThresher) te;
 		
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.machine_thresher.s_s_sm_b", saw.tank.getTankType().getLocalizedName(), saw.tank.getFill(), saw.tank.getMaxFill()));
+		text.add(I18nUtil.resolveKey("overlay.thresher.mb", saw.tank.getTankType().getLocalizedName(), saw.tank.getFill(), saw.tank.getMaxFill()));
 
 		if(saw.isSuspended) {
 			text.add(EnumChatFormatting.RED + "! " + I18nUtil.resolveKey(getUnlocalizedName() + ".suspended") + " !");

@@ -28,11 +28,11 @@ public class ItemModHealth extends ItemArmorMod {
 		
 		String color = "" + (System.currentTimeMillis() % 1000 < 500 ? EnumChatFormatting.RED : EnumChatFormatting.LIGHT_PURPLE);
 
-		list.add(color + I18nUtil.resolveKey("item.tooltip.item_mod_health.1", (Math.round(health * 10) * 0.1)));
+		list.add(color + I18nUtil.resolveKey("desc.item.mod_health.1", (Math.round(health * 10) * 0.1)));
 		list.add("");
 		
 		if(this == ModItems.black_diamond) {
-			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("item.tooltip.item_mod_health.2"));
+			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.mod_health.2"));
 			list.add("");
 		}
 		
@@ -44,7 +44,7 @@ public class ItemModHealth extends ItemArmorMod {
 		
 		String color = "" + (System.currentTimeMillis() % 1000 < 500 ? EnumChatFormatting.RED : EnumChatFormatting.LIGHT_PURPLE);
 		
-		list.add(color + I18nUtil.resolveKey("item.tooltip.item_mod_health.3", stack.getDisplayName(), (Math.round(health * 10) * 0.1)));
+		list.add(color + I18nUtil.resolveKey("desc.item.mod_health.3", stack.getDisplayName(), (Math.round(health * 10) * 0.1)));
 	}
 	
 	@Override

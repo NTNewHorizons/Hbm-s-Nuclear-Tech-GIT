@@ -57,9 +57,9 @@ public class GUIFEL extends GuiInfoContainer {
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 98, 4210752);
 		
 		if(fel.missingValidSilex && fel.isOn) {
-			this.fontRendererObj.drawString(I18n.format(I18nUtil.resolveKey("gui.guifel.err")), 55 + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 9, 0xFF0000);
+			this.fontRendererObj.drawString(I18n.format(I18nUtil.resolveKey("gui.fel.err")), 55 + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 9, 0xFF0000);
 		} else if(fel.isOn) {
-			this.fontRendererObj.drawString(I18n.format(I18nUtil.resolveKey("gui.guifel.live")), 54 + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 9, 0x00FF00);
+			this.fontRendererObj.drawString(I18n.format(I18nUtil.resolveKey("gui.fel.live")), 54 + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 9, 0x00FF00);
 		}
 		
 	}

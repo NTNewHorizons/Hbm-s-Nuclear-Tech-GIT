@@ -83,11 +83,11 @@ public class MachineAlkylation extends BlockDummyable implements ILookOverlay {
 
 		List<String> text = new ArrayList<>();
 
-		text.add(I18nUtil.resolveKey("overlay.machine_alkylation.s_power_s_he", (alkylation.power < alkylation.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(alkylation.power)));
+		text.add(I18nUtil.resolveKey("overlay.common.power", (alkylation.power < alkylation.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(alkylation.power)));
 
 		for(int i = 0; i < alkylation.tanks.length; i++) {
 			if(alkylation.tanks[i].getTankType() == Fluids.NONE) continue;
-			text.add(I18nUtil.resolveKey("overlay.machine_alkylation.s_s_s_s_sm_b", (i < 2 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, alkylation.tanks[i].getTankType().getLocalizedName(), alkylation.tanks[i].getFill(), alkylation.tanks[i].getMaxFill()));
+			text.add(I18nUtil.resolveKey("overlay.common.tank", (i < 2 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, alkylation.tanks[i].getTankType().getLocalizedName(), alkylation.tanks[i].getFill(), alkylation.tanks[i].getMaxFill()));
 		}
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
@@ -113,7 +113,7 @@ public class MachineAlkylation extends BlockDummyable implements ILookOverlay {
 				FluidType type = ((IItemFluidIdentifier) player.getHeldItem().getItem()).getType(world, pos[0], pos[1], pos[2], player.getHeldItem());
 				alkylation.tanks[0].setTankType(type);
 				alkylation.markDirty();
-				player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_alkylation.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.common.changed_type").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 
 				return true;
 			}

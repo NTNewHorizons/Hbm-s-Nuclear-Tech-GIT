@@ -376,11 +376,11 @@ public abstract class EntityMissileBaseNT extends EntityThrowableInterp implemen
 			case TIER2: return "radar.target.tier2";
 			case TIER3: return "radar.target.tier3";
 			case TIER4: return "radar.target.tier4";
-			default: return "radar.target.unknown";
+			default: return "gui.stardar.body.unknown";
 			}
 		}
 		
-		return "radar.target.unknown";
+		return "gui.stardar.body.unknown";
 	}
 	
 	@Override

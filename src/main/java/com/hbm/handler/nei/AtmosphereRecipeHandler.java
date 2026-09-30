@@ -6,7 +6,7 @@ import com.hbm.inventory.recipes.AtmosphereRecipes;
 public class AtmosphereRecipeHandler extends NEIUniversalHandler {
 
 	public AtmosphereRecipeHandler() {
-		super("nei.atmosphere_recipe_handler.name", ModBlocks.machine_atmo_emitter, AtmosphereRecipes.getRecipes());
+		super("nei.atmosphere.name", ModBlocks.machine_atmo_emitter, AtmosphereRecipes.getRecipes());
 	}
 
 	@Override

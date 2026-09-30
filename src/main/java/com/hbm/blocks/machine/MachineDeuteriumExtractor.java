@@ -63,10 +63,10 @@ public class MachineDeuteriumExtractor extends BlockContainer implements ILookOv
 		TileEntityDeuteriumExtractor extractor = (TileEntityDeuteriumExtractor) te;
 
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.machine_deuterium_extractor.s_power_s_he", (extractor.power < extractor.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(extractor.power)));
+		text.add(I18nUtil.resolveKey("overlay.common.power", (extractor.power < extractor.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(extractor.power)));
 
 		for(int i = 0; i < extractor.tanks.length; i++)
-			text.add(I18nUtil.resolveKey("overlay.machine_deuterium_extractor.s_s_s_s_sm_b", (i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, extractor.tanks[i].getTankType().getLocalizedName(), extractor.tanks[i].getFill(), extractor.tanks[i].getMaxFill()));
+			text.add(I18nUtil.resolveKey("overlay.common.tank", (i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, extractor.tanks[i].getTankType().getLocalizedName(), extractor.tanks[i].getFill(), extractor.tanks[i].getMaxFill()));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

@@ -23,12 +23,12 @@ public class ItemDetonator extends Item {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_drop.26"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_detonator.1"));
+		list.add(I18nUtil.resolveKey("desc.item.drop.26"));
+		list.add(I18nUtil.resolveKey("desc.item.detonator.1"));
 		if(itemstack.getTagCompound() == null) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_drop.28"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.misc.noPos"));
 		} else {
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_designator_arty_range.2", itemstack.stackTagCompound.getInteger("x"), itemstack.stackTagCompound.getInteger("y"), itemstack.stackTagCompound.getInteger("z")));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.designator_arty_range.2", itemstack.stackTagCompound.getInteger("x"), itemstack.stackTagCompound.getInteger("y"), itemstack.stackTagCompound.getInteger("z")));
 		}
 	}
 
@@ -47,7 +47,7 @@ public class ItemDetonator extends Item {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 						.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 						.next("] ").color(EnumChatFormatting.DARK_AQUA)
-						.nextTranslation("item.message.item_drop.1").color(EnumChatFormatting.GREEN).flush());
+						.nextTranslation("desc.misc.posSet").color(EnumChatFormatting.GREEN).flush());
 			}
 
 			world.playSoundAtEntity(player, NTMSounds.TECH_BOOP, 2.0F, 1.0F);
@@ -66,7 +66,7 @@ public class ItemDetonator extends Item {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 						.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 						.next("] ").color(EnumChatFormatting.DARK_AQUA)
-						.nextTranslation("item.tooltip.item_drop.28").color(EnumChatFormatting.RED).flush());
+						.nextTranslation("desc.misc.noPos").color(EnumChatFormatting.RED).flush());
 			}
 		} else {
 			int x = stack.stackTagCompound.getInteger("x");

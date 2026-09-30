@@ -26,14 +26,14 @@ public class ItemModDefuser extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_mod_defuser.1"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_defuser.1"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_mod_defuser.2", stack.getDisplayName()));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_defuser.2", stack.getDisplayName()));
 	}
 
 	@Override

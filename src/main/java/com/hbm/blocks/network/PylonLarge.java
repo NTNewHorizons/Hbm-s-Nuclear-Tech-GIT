@@ -33,9 +33,9 @@ public class PylonLarge extends BlockDummyable implements ITooltipProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.pylon_large.s_connection_type_s_quadruple", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
-		list.add(I18nUtil.resolveKey("tooltip.pylon_large.s_connection_range_s100m", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
-		list.add(I18nUtil.resolveKey("tooltip.pylon_large.s_this_pylon_requires_a_substation", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.connection_type_quadruple", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.block.connection_range_100m.2", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.block.pylon_requires_substation", EnumChatFormatting.GOLD));
 	}
 
 	@Override

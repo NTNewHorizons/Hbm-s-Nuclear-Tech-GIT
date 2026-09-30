@@ -194,7 +194,7 @@ public class ArmorFSB extends ItemArmor implements IArmorDisableModel {
 		List toAdd = new ArrayList();
 
 		if(canSeal) {
-			list.add(EnumChatFormatting.BLUE + "" + I18nUtil.format(I18nUtil.resolveKey("gui.armor_fsb.armor_can_seal")));
+			list.add(EnumChatFormatting.BLUE + "" + I18nUtil.format("armor.canSeal"));
 		}
 
 		if(!effects.isEmpty()) {

@@ -36,8 +36,8 @@ public class BlockConverterRfHe extends BlockContainer implements ILookOverlay {
 		TileEntityConverterRfHe converter = (TileEntityConverterRfHe) tile;
 		List<String> text = new ArrayList<>();
 
-		text.add(I18nUtil.resolveKey("overlay.block_converter_rf_he.s_s_s_rf", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(converter.getEnergyStored(ForgeDirection.UNKNOWN))));
-		text.add(I18nUtil.resolveKey("overlay.block_converter_rf_he.s_s_s_he", EnumChatFormatting.RED, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(converter.getPower())));
+		text.add(I18nUtil.resolveKey("overlay.converter_rf_he.rf", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(converter.getEnergyStored(ForgeDirection.UNKNOWN))));
+		text.add(I18nUtil.resolveKey("overlay.converter_rf_he.he", EnumChatFormatting.RED, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(converter.getPower())));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

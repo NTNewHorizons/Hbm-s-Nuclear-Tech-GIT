@@ -51,7 +51,7 @@ public class ItemBobmazonPacket implements IMessage {
 			World world = p.worldObj;
 			if(world.provider.dimensionId != 0)
 			{
-				p.addChatMessage(new ChatComponentTranslation("chat.item_bobmazon_packet.bobmazon_out_of_range"));
+				p.addChatMessage(new ChatComponentTranslation("chat.bobmazon_packet.bobmazon_out_of_range"));
 				return null;
 			}
 			Offer offer = null;
@@ -59,8 +59,8 @@ public class ItemBobmazonPacket implements IMessage {
 			if(p.getHeldItem() != null && p.getHeldItem().getItem() == ModItems.bobmazon_hidden) offer = BobmazonOfferFactory.special.get(m.offer);
 			
 			if(offer == null) {
-				p.addChatMessage(new ChatComponentTranslation("chat.item_bobmazon_packet.bobmazon_there_appears_to_be_a_mismatch_between_the_offe"));
-				p.addChatMessage(new ChatComponentTranslation("chat.item_bobmazon_packet.bobmazon_engaging_fail_safe"));
+				p.addChatMessage(new ChatComponentTranslation("chat.bobmazon_packet.line.01"));
+				p.addChatMessage(new ChatComponentTranslation("chat.bobmazon_packet.bobmazon_engaging_fail_safe"));
 				p.attackEntityFrom(ModDamageSource.nuclearBlast, 1000);
 				p.motionY = 2.0D;
 				return null;
@@ -86,11 +86,11 @@ public class ItemBobmazonPacket implements IMessage {
 					
 					world.spawnEntityInWorld(bob);
 				} else {
-					p.addChatMessage(new ChatComponentTranslation("chat.item_bobmazon_packet.bobmazon_not_enough_caps"));
+					p.addChatMessage(new ChatComponentTranslation("chat.bobmazon_packet.bobmazon_not_enough_caps"));
 				}
 				
 			} else {
-				p.addChatMessage(new ChatComponentTranslation("chat.item_bobmazon_packet.bobmazon_achievement_requirement_not_met"));
+				p.addChatMessage(new ChatComponentTranslation("chat.bobmazon_packet.line.01"));
 			}
 			
 			return null;

@@ -76,10 +76,10 @@ public class GUIScreenRadioTorchController extends GuiScreen {
 		this.fontRendererObj.drawString(name, this.guiLeft + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, this.guiTop + 6, 4210752);
 
 		if(guiLeft + 173 <= x && guiLeft + 173 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { rtty.polling ? I18nUtil.resolveKey("gui.guiscreen_radio_torch_controller.polling") : I18nUtil.resolveKey("gui.guiscreen_radio_torch_controller.state_change") }), x, y);
+			func_146283_a(Arrays.asList(new String[] { rtty.polling ? I18nUtil.resolveKey("gui.common.polling") : I18nUtil.resolveKey("gui.common.state_change") }), x, y);
 		}
 		if(guiLeft + 209 <= x && guiLeft + 209 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { I18nUtil.resolveKey("gui.guiscreen_radio_torch_controller.save_settings") }), x, y);
+			func_146283_a(Arrays.asList(new String[] { I18nUtil.resolveKey("gui.common.save") }), x, y);
 		}
 		if(guiLeft + 137 <= x && guiLeft + 137 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
 			ForgeDirection dir = ForgeDirection.getOrientation(rtty.getBlockMetadata()).getOpposite();
@@ -88,7 +88,7 @@ public class GUIScreenRadioTorchController extends GuiScreen {
 				IRORInfo prov = (IRORInfo) tile;
 				String[] info = prov.getFunctionInfo();
 				List<String> lines = new ArrayList();
-				lines.add(I18nUtil.resolveKey("gui.guiscreen_radio_torch_controller.usable_functions"));
+				lines.add(I18nUtil.resolveKey("gui.radio_torch_controller.usable_functions"));
 				for(String s : info) {
 					if(s.startsWith(IRORValueProvider.PREFIX_FUNCTION))
 					lines.add(EnumChatFormatting.AQUA + s.substring(4));

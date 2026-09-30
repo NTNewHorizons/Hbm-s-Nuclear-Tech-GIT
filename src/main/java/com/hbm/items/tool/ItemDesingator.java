@@ -20,11 +20,11 @@ public class ItemDesingator extends Item implements IDesignatorItem {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.stackTagCompound != null) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_desingator.1"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.1", itemstack.stackTagCompound.getInteger(I18nUtil.resolveKey("gui.item_desingator.x_coord"))));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_tele_link.3", itemstack.stackTagCompound.getInteger(I18nUtil.resolveKey("gui.item_desingator.z_coord"))));
+			list.add(I18nUtil.resolveKey("desc.item.desingator.1"));
+			list.add(I18nUtil.resolveKey("desc.item.tele_link.1", itemstack.stackTagCompound.getInteger("xCoord")));
+			list.add(I18nUtil.resolveKey("desc.item.tele_link.3", itemstack.stackTagCompound.getInteger("zCoord")));
 		} else {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_desingator.2"));
+			list.add(I18nUtil.resolveKey("desc.item.desingator.2"));
 		}
 	}
 
@@ -40,7 +40,7 @@ public class ItemDesingator extends Item implements IDesignatorItem {
 			stack.stackTagCompound.setInteger("zCoord", z);
 			
 			if(world.isRemote) {
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_drop.1"));
+				player.addChatMessage(new ChatComponentTranslation("desc.misc.posSet"));
 			}
 
 			world.playSoundAtEntity(player, NTMSounds.TECH_BLEEP, 1.0F, 1.0F);

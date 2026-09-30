@@ -58,7 +58,7 @@ public class GUIScreenPreview extends GuiScreen {
 		GL11.glPopMatrix();
 
 		String nameString = Item.itemRegistry.getNameForObject(preview.getItem()) + ", " + preview.getItemDamage();
-		String zoomString = "Zoom: " + zoom;
+		String zoomString = I18nUtil.resolveKey("gui.preview.zoom", zoom);
 		String scaleString = I18nUtil.resolveKey("gui.preview.windows_scale", res.getScaleFactor());
 
 		GL11.glPushMatrix();

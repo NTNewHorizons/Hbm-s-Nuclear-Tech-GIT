@@ -184,25 +184,25 @@ public class GunB92 extends Item {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
 		if(MainRegistry.polaroidID == 11) {
-			list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.1"));
-			list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.2"));
+			list.add(I18nUtil.resolveKey("desc.item.gun_b92.1"));
+			list.add(I18nUtil.resolveKey("desc.item.gun_b92.2"));
 		} else if(MainRegistry.polaroidID == 18) {
-			list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.3"));
-			list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.4"));
+			list.add(I18nUtil.resolveKey("desc.item.gun_b92.3"));
+			list.add(I18nUtil.resolveKey("desc.item.gun_b92.4"));
 		} else {
-			list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.5"));
+			list.add(I18nUtil.resolveKey("desc.item.gun_b92.5"));
 		}
 		list.add("");
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.6"));
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.7"));
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.8"));
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.9"));
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.10"));
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.11"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92.6"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92.7"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92.8"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92.9"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92.10"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92.11"));
 		list.add("");
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.12"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92.12"));
 		list.add("");
-		list.add(I18nUtil.resolveKey("item.tooltip.gun_b92.13"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92.13"));
 	}
 
 	@Override

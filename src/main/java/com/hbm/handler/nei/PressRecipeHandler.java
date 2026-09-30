@@ -73,7 +73,7 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.press_recipe_handler.name");
+		return I18nUtil.resolveKey("nei.press.name");
 	}
 
 	@Override

@@ -39,11 +39,11 @@ public class CommandPacketInfo extends CommandBase {
 				case "toggleThreadingStatus":
 					GeneralConfig.enablePacketThreading = !GeneralConfig.enablePacketThreading; // Force toggle.
 					PacketThreading.init(); // Reinit threads.
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_packet_sending_status_toggled_to_s", EnumChatFormatting.GREEN, GeneralConfig.enablePacketThreading));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.packet_sending_status_toggled_to", EnumChatFormatting.GREEN, GeneralConfig.enablePacketThreading));
 					return;
 				case "forceLock":
 					PacketThreading.lock.lock(); // oh my fucking god never do this please unless you really have to
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_packet_thread_lock_acquired_this_may_freeze_the_main_t", EnumChatFormatting.RED));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.text.01", EnumChatFormatting.RED));
 					MainRegistry.logger.error("Packet thread lock acquired by {}, this may freeze the main thread!", sender.getCommandSenderName());
 					return;
 				case "forceUnlock":
@@ -51,37 +51,37 @@ public class CommandPacketInfo extends CommandBase {
 					MainRegistry.logger.warn("Packet thread lock released by {}.", sender.getCommandSenderName());
 					return;
 				case "info":
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_ntm_packet_debugger_v1_2", EnumChatFormatting.GOLD));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.ntm_packet_debugger_v1_2", EnumChatFormatting.GOLD));
 
 					if (PacketThreading.isTriggered() && GeneralConfig.enablePacketThreading)
-						sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_packet_threading_errored_check_log", EnumChatFormatting.RED));
+						sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.packet_threading_errored_check_l", EnumChatFormatting.RED));
 					else if (GeneralConfig.enablePacketThreading)
-						sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_packet_threading_active", EnumChatFormatting.GREEN));
+						sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.packet_threading_active", EnumChatFormatting.GREEN));
 					else
-						sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_packet_threading_inactive", EnumChatFormatting.RED));
+						sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.packet_threading_inactive", EnumChatFormatting.RED));
 
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_thread_pool_info", EnumChatFormatting.YELLOW));
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_threads_total_s", EnumChatFormatting.YELLOW, PacketThreading.threadPool.getPoolSize()));
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_threads_core_s", EnumChatFormatting.YELLOW, PacketThreading.threadPool.getCorePoolSize()));
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_threads_idle_s", EnumChatFormatting.YELLOW, (PacketThreading.threadPool.getPoolSize() - PacketThreading.threadPool.getActiveCount())));
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_threads_maximum_s", EnumChatFormatting.YELLOW, PacketThreading.threadPool.getMaximumPoolSize()));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.thread_pool_info", EnumChatFormatting.YELLOW));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.threads_total", EnumChatFormatting.YELLOW, PacketThreading.threadPool.getPoolSize()));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.threads_core", EnumChatFormatting.YELLOW, PacketThreading.threadPool.getCorePoolSize()));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.threads_idle", EnumChatFormatting.YELLOW, (PacketThreading.threadPool.getPoolSize() - PacketThreading.threadPool.getActiveCount())));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.threads_maximum", EnumChatFormatting.YELLOW, PacketThreading.threadPool.getMaximumPoolSize()));
 
 					for (ThreadInfo thread : ManagementFactory.getThreadMXBean().dumpAllThreads(false, false))
 						if (thread.getThreadName().startsWith(PacketThreading.threadPrefix)) {
-							sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_thread_name_s", EnumChatFormatting.GOLD, thread.getThreadName()));
-							sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_thread_id_s", EnumChatFormatting.YELLOW, thread.getThreadId()));
-							sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_thread_state_s", EnumChatFormatting.YELLOW, thread.getThreadState()));
-							sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_locked_by_s", EnumChatFormatting.YELLOW, (thread.getLockOwnerName() == null ? "None" : thread.getLockName())));
+							sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.thread_name", EnumChatFormatting.GOLD, thread.getThreadName()));
+							sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.thread_id", EnumChatFormatting.YELLOW, thread.getThreadId()));
+							sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.thread_state", EnumChatFormatting.YELLOW, thread.getThreadState()));
+							sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.locked_by", EnumChatFormatting.YELLOW, (thread.getLockOwnerName() == null ? "None" : thread.getLockName())));
 						}
 
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_packet_info", EnumChatFormatting.GOLD));
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_amount_total_s", EnumChatFormatting.YELLOW, totalCnt));
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_amount_remaining_s", EnumChatFormatting.YELLOW, PacketThreading.threadPool.getQueue().size()));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.packet_info", EnumChatFormatting.GOLD));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.amount_total", EnumChatFormatting.YELLOW, totalCnt));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.amount_remaining", EnumChatFormatting.YELLOW, PacketThreading.threadPool.getQueue().size()));
 
 					if (totalCnt != 0)
-						sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_remaining_to_process_s", EnumChatFormatting.YELLOW, BobMathUtil.roundDecimal(((double) PacketThreading.threadPool.getQueue().size() / totalCnt) * 100, 2)));
+						sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.remaining_to_process", EnumChatFormatting.YELLOW, BobMathUtil.roundDecimal(((double) PacketThreading.threadPool.getQueue().size() / totalCnt) * 100, 2)));
 
-					sender.addChatMessage(new ChatComponentTranslation("chat.command_packet_info.s_time_spent_waiting_on_thread_s_last_tick_sms", EnumChatFormatting.YELLOW, BobMathUtil.roundDecimal(TimeUnit.MILLISECONDS.convert(PacketThreading.nanoTimeWaited, TimeUnit.NANOSECONDS), 4)));
+					sender.addChatMessage(new ChatComponentTranslation("commands.packet_info.text.02", EnumChatFormatting.YELLOW, BobMathUtil.roundDecimal(TimeUnit.MILLISECONDS.convert(PacketThreading.nanoTimeWaited, TimeUnit.NANOSECONDS), 4)));
 					return;
 			}
 		}

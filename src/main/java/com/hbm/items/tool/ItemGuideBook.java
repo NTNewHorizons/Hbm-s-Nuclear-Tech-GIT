@@ -73,17 +73,17 @@ public class ItemGuideBook extends Item implements IGUIProvider {
 		
 		List<GuidePage> pages = new ArrayList();
 		
-		pages.add(new GuidePage().addTitle("Title LMAO", 0x800000, 1F)
+		pages.add(new GuidePage().addTitle("book.test.title1", 0x800000, 1F)
 				.addText("book.test.page1", 2F)
 				.addImage(new ResourceLocation(RefStrings.MODID + ":textures/gui/book/smileman.png"), 100, 40, 40));
-		pages.add(new GuidePage().addTitle("LA SEXO", 0x800000, 0.5F)
+		pages.add(new GuidePage().addTitle("book.test.title2", 0x800000, 0.5F)
 				.addText("book.test.page1", 1.75F)
 				.addImage(new ResourceLocation(RefStrings.MODID + ":textures/gui/book/smileman.png"), 100, 40, 40));
-		pages.add(new GuidePage().addText("test test"));
-		pages.add(new GuidePage().addText("test test test"));
-		pages.add(new GuidePage().addText("test test"));
-		pages.add(new GuidePage().addText("test test test"));
-		pages.add(new GuidePage().addText("test test"));
+		pages.add(new GuidePage().addText("book.test.page2"));
+		pages.add(new GuidePage().addText("book.test.page3"));
+		pages.add(new GuidePage().addText("book.test.page2"));
+		pages.add(new GuidePage().addText("book.test.page3"));
+		pages.add(new GuidePage().addText("book.test.page2"));
 		
 		return pages;
 	}

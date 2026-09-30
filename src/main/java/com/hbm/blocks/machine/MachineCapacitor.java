@@ -98,41 +98,41 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 
 		TileEntityCapacitor battery = (TileEntityCapacitor) te;
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.machine_capacitor.s_s_he", BobMathUtil.getShortNumber(battery.getPower()), BobMathUtil.getShortNumber(battery.getMaxPower())));
+		text.add(I18nUtil.resolveKey("overlay.common.energy", BobMathUtil.getShortNumber(battery.getPower()), BobMathUtil.getShortNumber(battery.getMaxPower())));
 
 		double percent = (double) battery.getPower() / (double) battery.getMaxPower();
 		int charge = (int) Math.floor(percent * 10_000D);
 		int color = ((int) (0xFF - 0xFF * percent)) << 16 | ((int)(0xFF * percent) << 8);
 		text.add("&[" + color + "&]" + (charge / 100D) + "%");
-		text.add(I18nUtil.resolveKey("overlay.machine_capacitor.s_s_s_he_t", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(battery.powerReceived)));
-		text.add(I18nUtil.resolveKey("overlay.machine_capacitor.s_s_s_he_t_2", EnumChatFormatting.RED, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(battery.powerSent)));
+		text.add(I18nUtil.resolveKey("overlay.capacitor.he_t", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(battery.powerReceived)));
+		text.add(I18nUtil.resolveKey("overlay.capacitor.he_t.2", EnumChatFormatting.RED, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(battery.powerSent)));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.s_s_s_he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(persistentTag.getLong(I18nUtil.resolveKey("gui.machine_capacitor.max_power")))));
+		list.add(I18nUtil.resolveKey("desc.block.capacitor.he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(persistentTag.getLong("maxPower"))));
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.s_stores_up_to_s_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power)));
-		list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.s_charge_speed_s_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power / 200)));
-		list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.s_discharge_speed_s_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power / 600)));
+		list.add(I18nUtil.resolveKey("desc.block.capacitor.stores_up_to_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power)));
+		list.add(I18nUtil.resolveKey("desc.block.capacitor.charge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power / 200)));
+		list.add(I18nUtil.resolveKey("desc.block.capacitor.discharge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power / 600)));
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			for(String s : I18nUtil.resolveKeyArray("tile.capacitor.desc")) list.add(EnumChatFormatting.YELLOW + s);
 		} else {
-			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC +I18nUtil.resolveKey("gui.machine_capacitor.hold") +
-					EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.machine_capacitor.lshift") +
-					EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.machine_capacitor.to_display_more_info"));
+			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC +I18nUtil.resolveKey("desc.misc.hold_prefix") +
+					EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.misc.lshift_key") +
+					EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.misc.more_info_suffix"));
 		}
 		if(this == ModBlocks.capacitor_complex) {
-			list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.ta_cd_sa236_7_n_boosted_anti_mass_core_surrounded_by"));
-			list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.flashlead_antimatter_lattice_in_a_bf_stabilization_matri"));
-			list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.subjected_to_the_ferric_osmiridium_lutece"));
-			list.add(I18nUtil.resolveKey("tooltip.machine_capacitor.x_t_aei_px_et_wavefunction"));
+			list.add(I18nUtil.resolveKey("desc.block.capacitor.line.03"));
+			list.add(I18nUtil.resolveKey("desc.block.capacitor.line.01"));
+			list.add(I18nUtil.resolveKey("desc.block.capacitor.line.02"));
+			list.add(I18nUtil.resolveKey("desc.block.xt_aei_px_et"));
 		}
 
 	}

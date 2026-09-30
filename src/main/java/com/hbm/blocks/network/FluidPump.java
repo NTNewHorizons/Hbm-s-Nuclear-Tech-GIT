@@ -87,7 +87,7 @@ public class FluidPump extends BlockContainer implements INBTBlockTransformable,
 						TileEntityFluidPump pump = (TileEntityFluidPump) tile;
 						pump.tank[0].setTankType(type);
 						pump.markDirty();
-						player.addChatComponentMessage(new ChatComponentTranslation("chat.fluid_pump.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+						player.addChatComponentMessage(new ChatComponentTranslation("chat.common.changed_type").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 					}
 					return true;
 				}
@@ -112,9 +112,9 @@ public class FluidPump extends BlockContainer implements INBTBlockTransformable,
 		TileEntityFluidPump pump = (TileEntityFluidPump) tile;
 
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.fluid_pump.s_s_s_s_pu_sm_b_t_s", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, pump.tank[0].getTankType().getLocalizedName(), pump.tank[0].getPressure(), BobMathUtil.format(pump.bufferSize), EnumChatFormatting.RED));
-		text.add(I18nUtil.resolveKey("overlay.fluid_pump.priority_s_s", EnumChatFormatting.YELLOW, pump.priority.name()));
-		if(pump.tank[0].getFill() > 0) text.add(I18nUtil.resolveKey("overlay.fluid_pump.sm_b_buffered", BobMathUtil.format(pump.tank[0].getFill())));
+		text.add(I18nUtil.resolveKey("overlay.fluid_pump.pu_mb_t", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, pump.tank[0].getTankType().getLocalizedName(), pump.tank[0].getPressure(), BobMathUtil.format(pump.bufferSize), EnumChatFormatting.RED));
+		text.add(I18nUtil.resolveKey("overlay.fluid_pump.priority", EnumChatFormatting.YELLOW, pump.priority.name()));
+		if(pump.tank[0].getFill() > 0) text.add(I18nUtil.resolveKey("overlay.fluid_pump.mb_buffered", BobMathUtil.format(pump.tank[0].getFill())));
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 

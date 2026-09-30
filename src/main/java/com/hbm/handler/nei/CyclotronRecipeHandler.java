@@ -62,7 +62,7 @@ public class CyclotronRecipeHandler extends TemplateRecipeHandler implements ICo
     
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.cyclotron_recipe_handler.name");
+		return I18nUtil.resolveKey("nei.cyclotron.name");
 	}
 
 	@Override

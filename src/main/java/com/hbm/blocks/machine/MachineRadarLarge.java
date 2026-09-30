@@ -35,7 +35,7 @@ public class MachineRadarLarge extends BlockDummyable {
 		
 		if(y < TileEntityMachineRadarNT.radarAltitude) {
 			if(world.isRemote)
-				player.addChatMessage(new ChatComponentTranslation("chat.machine_radar_large.radar_error_radar_altitude_not_sufficient").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				player.addChatMessage(new ChatComponentTranslation("chat.radar_large.line.01").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			return true;
 		}
 		

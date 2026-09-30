@@ -170,7 +170,7 @@ public class ArmorHEV extends ArmorFSBPowered implements IItemRendererProvider {
 			else if(radiation < 1)
 				delta = "<1";
 
-			Minecraft.getMinecraft().fontRenderer.drawString(I18nUtil.resolveKey("gui.armor_hev.s_rad_s", delta), dX, dY, 0xFF0000);
+			Minecraft.getMinecraft().fontRenderer.drawString(I18nUtil.resolveKey("gui.armor_hev.rad", delta), dX, dY, 0xFF0000);
 		}
 
 		GL11.glColor4f(1F, 1F, 1F, 1F);

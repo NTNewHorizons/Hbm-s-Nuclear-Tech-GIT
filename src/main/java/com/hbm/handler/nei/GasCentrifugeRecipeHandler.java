@@ -84,7 +84,7 @@ public class GasCentrifugeRecipeHandler extends TemplateRecipeHandler implements
 
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.gas_centrifuge_recipe_handler.name");
+		return I18nUtil.resolveKey("nei.gas_centrifuge.name");
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class GasCentrifugeRecipeHandler extends TemplateRecipeHandler implements
 		
 		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 		
-		String centrifuges = set.centNumber + " G. Cents";
+		String centrifuges = I18nUtil.resolveKey("nei.gas_centrifuge.centrifuges", set.centNumber);
 		fontRenderer.drawString(centrifuges, (50 - fontRenderer.getStringWidth(centrifuges) / 2), 21 - 11, 65280);
 	}
 	

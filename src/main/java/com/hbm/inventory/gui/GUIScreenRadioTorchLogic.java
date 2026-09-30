@@ -98,13 +98,13 @@ public class GUIScreenRadioTorchLogic extends GuiScreen {
 		this.fontRendererObj.drawString(name, this.guiLeft + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, this.guiTop + 6, 4210752);
 		//TODO add localization for *every* RTTY
 		if(guiLeft + 137 <= x && guiLeft + 137 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { logic.descending ? I18nUtil.resolveKey("gui.guiscreen_radio_torch_logic.descending_order") : I18nUtil.resolveKey("gui.guiscreen_radio_torch_logic.ascending_order") }), x, y);
+			func_146283_a(Arrays.asList(new String[] { logic.descending ? I18nUtil.resolveKey("gui.radio_torch_logic.descending_order") : I18nUtil.resolveKey("gui.radio_torch_logic.ascending_order") }), x, y);
 		}
 		if(guiLeft + 173 <= x && guiLeft + 173 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { logic.polling ? I18nUtil.resolveKey("gui.guiscreen_radio_torch_logic.polling") : I18nUtil.resolveKey("gui.guiscreen_radio_torch_logic.state_change") }), x, y);
+			func_146283_a(Arrays.asList(new String[] { logic.polling ? I18nUtil.resolveKey("gui.common.polling") : I18nUtil.resolveKey("gui.common.state_change") }), x, y);
 		}
 		if(guiLeft + 209 <= x && guiLeft + 209 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
-			func_146283_a(Arrays.asList(new String[] { I18nUtil.resolveKey("gui.guiscreen_radio_torch_logic.save_settings") }), x, y);
+			func_146283_a(Arrays.asList(new String[] { I18nUtil.resolveKey("gui.common.save") }), x, y);
 		}
 		for(int j = 0; j < 16; j++) {
 			if(guiLeft + 7 + (130 * (j / 8)) <= x && guiLeft + 7 + 18 + (130 * (j / 8)) > x && guiTop + 53 + (18 * (j % 8)) <= y && guiTop + 53 + 18 + (18 * (j % 8)) > y) {

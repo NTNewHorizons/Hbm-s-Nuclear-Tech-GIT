@@ -240,9 +240,9 @@ public class BlockEmitter extends BlockContainer implements IToolable, ITooltipP
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.block_emitter.s_use_screwdriver_to_widen_beam", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tooltip.block_emitter.s_use_defuser_to_narrow_beam", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tooltip.block_emitter.s_use_hand_drill_to_cycle_special_effects", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tooltip.block_emitter.s_use_dye_to_change_color", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.screwdriver_widen_beam", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.defuser_narrow_beam", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.hand_drill_cycle_special_effects", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.emitter.use_dye_to_change_color", EnumChatFormatting.GOLD));
 	}
 }

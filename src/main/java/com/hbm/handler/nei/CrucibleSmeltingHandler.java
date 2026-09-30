@@ -73,7 +73,7 @@ public class CrucibleSmeltingHandler extends TemplateRecipeHandler implements IC
 
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.crucible_smelting_handler.name");
+		return I18nUtil.resolveKey("nei.crucible_smelting.name");
 	}
 
 	@Override

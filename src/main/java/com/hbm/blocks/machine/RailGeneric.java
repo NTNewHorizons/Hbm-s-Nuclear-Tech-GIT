@@ -82,15 +82,15 @@ public class RailGeneric extends BlockRailBase implements ITooltipProvider {
 		float speed = this.maxSpeed / this.baseSpeed;
 
 		if(speed != 1F) {
-			list.add(I18nUtil.resolveKey("tooltip.rail_generic.s_speed_s", (speed > 1 ? EnumChatFormatting.BLUE : EnumChatFormatting.RED), ((int) (speed * 100))));
+			list.add(I18nUtil.resolveKey("desc.block.rail_generic.speed", (speed > 1 ? EnumChatFormatting.BLUE : EnumChatFormatting.RED), ((int) (speed * 100))));
 		}
 
 		if(!flexible) {
-			list.add(I18nUtil.resolveKey("tooltip.rail_generic.s_cannot_be_used_for_turns", EnumChatFormatting.RED));
+			list.add(I18nUtil.resolveKey("desc.block.cannot_used_turns", EnumChatFormatting.RED));
 		}
 
 		if(!slopable) {
-			list.add(I18nUtil.resolveKey("tooltip.rail_generic.s_cannot_be_used_for_slopes", EnumChatFormatting.RED));
+			list.add(I18nUtil.resolveKey("desc.block.cannot_used_slopes", EnumChatFormatting.RED));
 		}
 	}
 }

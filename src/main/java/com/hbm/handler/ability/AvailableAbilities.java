@@ -93,7 +93,7 @@ public class AvailableAbilities {
 				.sorted(Comparator.comparing(Map.Entry<IBaseAbility, Integer>::getKey).thenComparing(Map.Entry<IBaseAbility, Integer>::getValue)).collect(Collectors.toList());
 
 		if(!toolAbilities.isEmpty()) {
-			list.add(I18nUtil.resolveKey("tooltip.available_abilities.abilities"));
+			list.add(I18nUtil.resolveKey("desc.misc.available_abilities.abilities"));
 
 			toolAbilities.forEach(entry -> {
 				IBaseAbility ability = entry.getKey();
@@ -102,16 +102,16 @@ public class AvailableAbilities {
 				list.add("  " + EnumChatFormatting.GOLD + ability.getFullName(level));
 			});
 
-			list.add(I18nUtil.resolveKey("tooltip.available_abilities.right_click_to_cycle_through_presets"));
-			list.add(I18nUtil.resolveKey("tooltip.available_abilities.sneak_click_to_go_to_first_preset"));
-			list.add(I18nUtil.resolveKey("tooltip.available_abilities.alt_click_to_open_customization_gui"));
+			list.add(I18nUtil.resolveKey("desc.misc.right_click_cycle_presets"));
+			list.add(I18nUtil.resolveKey("desc.misc.sneak_click_go_first_preset"));
+			list.add(I18nUtil.resolveKey("desc.misc.alt_click_open_customization_gui"));
 		}
 
 		List<Map.Entry<IBaseAbility, Integer>> weaponAbilities = abilities.entrySet().stream().filter(entry -> (entry.getKey() instanceof IWeaponAbility && entry.getKey() != IWeaponAbility.NONE))
 				.sorted(Comparator.comparing(Map.Entry<IBaseAbility, Integer>::getKey).thenComparing(Map.Entry<IBaseAbility, Integer>::getValue)).collect(Collectors.toList());
 
 		if(!weaponAbilities.isEmpty()) {
-			list.add(I18nUtil.resolveKey("tooltip.available_abilities.weapon_modifiers"));
+			list.add(I18nUtil.resolveKey("desc.misc.weapon_modifiers"));
 
 			weaponAbilities.forEach(entry -> {
 				IBaseAbility ability = entry.getKey();

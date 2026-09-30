@@ -49,7 +49,7 @@ public abstract class ItemInventory implements IInventory {
 			byte[] abyte = CompressedStreamTools.compress(nbt);
 
 			if (abyte.length > 6000) {
-				player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_inventory.1", EnumChatFormatting.RED));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.inventory.1", EnumChatFormatting.RED));
 				for (int i1 = 0; i1 < this.getSizeInventory(); ++i1) {
 					ItemStack itemstack = this.getStackInSlot(i1);
 

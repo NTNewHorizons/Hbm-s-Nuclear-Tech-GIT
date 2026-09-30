@@ -68,7 +68,7 @@ public class RadiolysisRecipeHandler extends TemplateRecipeHandler implements IC
 
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.radiolysis_recipe_handler.name");
+		return I18nUtil.resolveKey("nei.radiolysis.name");
 	}
 
 	@Override

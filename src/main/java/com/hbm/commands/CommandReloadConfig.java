@@ -51,7 +51,7 @@ public abstract class CommandReloadConfig extends CommandBase {
 		
 		if("reload".equals(operator)) {
 			reload();
-			sender.addChatMessage(new ChatComponentTranslation("chat.command_reload_config.s_variables_loaded_from_config_file", EnumChatFormatting.YELLOW));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reload_config.variables_loaded_config_file", EnumChatFormatting.YELLOW));
 			return;
 		}
 
@@ -61,7 +61,10 @@ public abstract class CommandReloadConfig extends CommandBase {
 		
 		if("get".equals(operator)) {
 			ConfigWrapper wrapper = getConfigMap().get(key);
-			if(wrapper == null) throw new CommandException("commands.command_reload_config.key_does_not_exist");
+			if(wrapper == null) {
+				sender.addChatMessage(new ChatComponentTranslation("commands.reload_config.key_does_not_exist"));
+				return;
+			}
 			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + key + ": " + EnumChatFormatting.YELLOW + wrapper.value));
 			return;
 		}
@@ -72,14 +75,17 @@ public abstract class CommandReloadConfig extends CommandBase {
 		
 		if("set".equals(operator)) {
 			ConfigWrapper wrapper = getConfigMap().get(key);
-			if(wrapper == null) throw new CommandException("commands.command_reload_config.key_does_not_exist");
+			if(wrapper == null) {
+				sender.addChatMessage(new ChatComponentTranslation("commands.reload_config.key_does_not_exist"));
+				return;
+			}
 			
 			try {
 				wrapper.update(value);
 				refresh();
-				sender.addChatMessage(new ChatComponentTranslation("chat.command_reload_config.s_value_updated", EnumChatFormatting.YELLOW));
+				sender.addChatMessage(new ChatComponentTranslation("commands.reload_config.value_updated", EnumChatFormatting.YELLOW));
 			} catch(Exception ex) {
-				throw new CommandException("commands.command_reload_config.error_parsing_type_for_s_s", wrapper.value.getClass().getSimpleName(), ex.getLocalizedMessage());
+				sender.addChatMessage(new ChatComponentTranslation("commands.reload_config.error_parsing_type_for", wrapper.value.getClass().getSimpleName(), ex.getLocalizedMessage()));
 			}
 			
 			return;

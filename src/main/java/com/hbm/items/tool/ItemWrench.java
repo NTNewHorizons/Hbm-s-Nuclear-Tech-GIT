@@ -54,7 +54,7 @@ public class ItemWrench extends ItemSword {
 					stack.stackTagCompound.setInteger("z", z);
 
 					if(!world.isRemote) {
-						player.addChatMessage(new ChatComponentTranslation("item.message.item_wrench.1"));
+						player.addChatMessage(new ChatComponentTranslation("chat.wrench.1"));
 					}
 				} else if(!world.isRemote) {
 
@@ -71,19 +71,19 @@ public class ItemWrench extends ItemSword {
 							case 0:
 								first.addConnection(x, y, z);
 								second.addConnection(x1, y1, z1);
-								player.addChatMessage(new ChatComponentTranslation("item.message.item_wrench.2"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wrench.2"));
 								break;
-							case 1: player.addChatMessage(new ChatComponentTranslation("item.message.item_wrench.3")); break;
-							case 2: player.addChatMessage(new ChatComponentTranslation("item.message.item_wrench.4")); break;
-							case 3: player.addChatMessage(new ChatComponentTranslation("item.message.item_wrench.5")); break;
-							case 4: player.addChatMessage(new ChatComponentTranslation("item.message.item_wrench.6")); break;
+							case 1: player.addChatMessage(new ChatComponentTranslation("chat.wrench.3")); break;
+							case 2: player.addChatMessage(new ChatComponentTranslation("chat.wrench.4")); break;
+							case 3: player.addChatMessage(new ChatComponentTranslation("chat.wrench.5")); break;
+							case 4: player.addChatMessage(new ChatComponentTranslation("chat.wrench.6")); break;
 						}
 						
 						stack.stackTagCompound = null;
 
 					} else {
 
-						player.addChatMessage(new ChatComponentTranslation("item.message.item_wrench.7"));
+						player.addChatMessage(new ChatComponentTranslation("chat.wrench.7"));
 						stack.stackTagCompound = null;
 					}
 				}
@@ -117,11 +117,11 @@ public class ItemWrench extends ItemSword {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.stackTagCompound != null) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wrench.1", itemstack.stackTagCompound.getInteger("x")));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wrench.2", itemstack.stackTagCompound.getInteger("y")));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wrench.3", itemstack.stackTagCompound.getInteger("z")));
+			list.add(I18nUtil.resolveKey("desc.item.wrench.1", itemstack.stackTagCompound.getInteger("x")));
+			list.add(I18nUtil.resolveKey("desc.item.wrench.2", itemstack.stackTagCompound.getInteger("y")));
+			list.add(I18nUtil.resolveKey("desc.item.wrench.3", itemstack.stackTagCompound.getInteger("z")));
 		} else {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wrench.4"));
+			list.add(I18nUtil.resolveKey("desc.item.wrench.4"));
 		}
 	}
 

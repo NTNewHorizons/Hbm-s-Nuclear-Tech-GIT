@@ -31,13 +31,13 @@ public class ItemModHeavyBoots extends ItemArmorMod {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.1"));
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.2"));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.mod_heavy_boots.1"));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.mod_heavy_boots.2"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
-		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.3"));
-		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.4"));
-		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_mod_heavy_boots.5"));
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.mod_heavy_boots.3"));
+		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.mod_heavy_boots.4"));
+		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.mod_heavy_boots.5"));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

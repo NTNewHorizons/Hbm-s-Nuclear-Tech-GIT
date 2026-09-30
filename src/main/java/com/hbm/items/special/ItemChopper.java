@@ -142,11 +142,11 @@ public class ItemChopper extends Item {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
 		if(this == ModItems.spawn_worm) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_chopper.1"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_chopper.2"));
+			list.add(I18nUtil.resolveKey("desc.item.chopper.1"));
+			list.add(I18nUtil.resolveKey("desc.item.chopper.2"));
 			list.add("");
-			list.add(I18nUtil.resolveKey("item.tooltip.item_chopper.3"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_chopper.4"));
+			list.add(I18nUtil.resolveKey("desc.item.chopper.3"));
+			list.add(I18nUtil.resolveKey("desc.item.chopper.4"));
 		}
 	}
 

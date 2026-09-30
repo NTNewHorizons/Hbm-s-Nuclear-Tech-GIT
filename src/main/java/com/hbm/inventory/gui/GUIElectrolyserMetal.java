@@ -43,13 +43,13 @@ public class GUIElectrolyserMetal extends GuiInfoContainer {
 		if(electrolyser.leftStack != null) {
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 58, guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.YELLOW + I18nUtil.resolveKey(electrolyser.leftStack.material.getUnlocalizedName()) + ": " + Mats.formatAmount(electrolyser.leftStack.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));
 		} else {
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 58, guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guielectrolyser_metal.empty"));
+			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 58, guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.RED + I18nUtil.resolveKey("gui.electrolyser_metal.empty"));
 		}
 		
 		if(electrolyser.rightStack != null) {
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 96, guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.YELLOW + I18nUtil.resolveKey(electrolyser.rightStack.material.getUnlocalizedName()) + ": " + Mats.formatAmount(electrolyser.rightStack.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));
 		} else {
-			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 96, guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guielectrolyser_metal.empty"));
+			this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 96, guiTop + 18, 34, 42, mouseX, mouseY, EnumChatFormatting.RED + I18nUtil.resolveKey("gui.electrolyser_metal.empty"));
 		}
 		
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 186, guiTop + 18, 16, 89, electrolyser.power, electrolyser.maxPower);

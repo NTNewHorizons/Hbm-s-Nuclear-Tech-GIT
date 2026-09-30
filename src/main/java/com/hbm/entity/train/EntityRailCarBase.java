@@ -109,7 +109,7 @@ public abstract class EntityRailCarBase extends Entity implements ILookOverlay {
 					if(neighbor.ltu != null) neighbor.ltu.dissolveTrain();
 					player.swingItem();
 					
-					player.addChatComponentMessage(new ChatComponentTranslation("chat.entity_rail_car_base.coupled_s_s_to_s_s", this.hashCode(), closestOwnCoupling.name(), neighbor.hashCode(), closestNeighborCoupling.name()));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.entity_rail_car_base.coupled_to", this.hashCode(), closestOwnCoupling.name(), neighbor.hashCode(), closestNeighborCoupling.name()));
 					
 					return true;
 				}

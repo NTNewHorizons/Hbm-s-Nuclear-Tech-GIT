@@ -64,15 +64,15 @@ public class ItemSettingsTool extends Item {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_settings_tool.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_settings_tool.2"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_settings_tool.3"));
+		list.add(I18nUtil.resolveKey("desc.item.settings_tool.1"));
+		list.add(I18nUtil.resolveKey("desc.item.settings_tool.2"));
+		list.add(I18nUtil.resolveKey("desc.item.settings_tool.3"));
 		if(stack.stackTagCompound != null) {
 			NBTTagCompound nbt = stack.stackTagCompound;
 			if (nbt.hasKey("tileName")){
-				list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey(nbt.getString(I18nUtil.resolveKey("gui.item_settings_tool.tile_name")) + ".name"));
+				list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey(nbt.getString("tileName") + ".name"));
 			} else {
-				list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_settings_tool.4"));
+				list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.settings_tool.4"));
 			}
 
 		}
@@ -105,13 +105,13 @@ public class ItemSettingsTool extends Item {
 					player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 							.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 							.next("] ").color(EnumChatFormatting.DARK_AQUA)
-							.nextTranslation("item.message.item_settings_tool.1", copiable.getSettingsSourceDisplay(schrodinger)).color(EnumChatFormatting.AQUA).flush());
+							.nextTranslation("chat.settings_tool.1", copiable.getSettingsSourceDisplay(schrodinger)).color(EnumChatFormatting.AQUA).flush());
 				}
 			} else {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 						.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 						.next("] ").color(EnumChatFormatting.DARK_AQUA)
-						.nextTranslation("item.message.item_settings_tool.2", copiable.getSettingsSourceDisplay(schrodinger)).color(EnumChatFormatting.RED).flush());
+						.nextTranslation("chat.settings_tool.2", copiable.getSettingsSourceDisplay(schrodinger)).color(EnumChatFormatting.RED).flush());
 			}
 
 		} else if(stack.hasTagCompound()) {

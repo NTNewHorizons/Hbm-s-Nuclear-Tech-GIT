@@ -55,7 +55,7 @@ public class ItemCustomLore extends Item {
 
 			try {
 				if(player.worldObj.rand.nextInt(10) == 0) {
-					list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("item.tooltip.item_custom_lore.1"));
+					list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("desc.item.custom_lore.1"));
 				} else {
 					Random rand = new Random(System.currentTimeMillis() / 500);
 
@@ -69,11 +69,11 @@ public class ItemCustomLore extends Item {
 					if(item != null) {
 						list.add(new ItemStack(item).getDisplayName());
 					} else {
-						list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_custom_lore.2", r));
+						list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.custom_lore.2", r));
 					}
 				}
 			} catch(Exception ex) {
-				list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("item.tooltip.item_custom_lore.1"));
+				list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("desc.item.custom_lore.1"));
 			}
 		}
 	}
@@ -112,6 +112,7 @@ public class ItemCustomLore extends Item {
 	public String getItemStackDisplayName(ItemStack stack) {
 		if(stack.getItem() != ModItems.undefined || stack.getItemDamage() != 99) return ("" + StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name")).trim();
 
+		if(!localizedNames) localizeNames();
 		return name.getResult();
 	}
 
@@ -124,12 +125,15 @@ public class ItemCustomLore extends Item {
 	public static ScramblingName name = new ScramblingName("");
 	private static boolean localizedNames;
 
+	/** Scramble names are stored as keys until the client resolves them, so the language can change at runtime. */
+	private static void localizeNames() {
+		for(int i = 0; i < names.length; i++) names[i] = I18nUtil.resolveKey(names[i]);
+		name = new ScramblingName(names[0]);
+		localizedNames = true;
+	}
+
 	public static void updateSystem() {
-		if(!localizedNames) {
-			for(int i = 0; i < names.length; i++) names[i] = I18nUtil.resolveKey(names[i]);
-			name = new ScramblingName(names[0]);
-			localizedNames = true;
-		}
+		if(!localizedNames) localizeNames();
 		name.updateTick(names);
 	}
 

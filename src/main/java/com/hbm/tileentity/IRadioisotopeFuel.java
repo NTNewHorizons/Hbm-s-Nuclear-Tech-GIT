@@ -139,12 +139,12 @@ public interface IRadioisotopeFuel
 			tooltip.add(BobMathUtil.toPercentage(instance.getLifespan(stack), instance.getMaxLifespan()));
 			if (showAdv)
 			{
-				tooltip.add(I18nUtil.resolveKey("gui.iradioisotope_fuel.extended_info"));
-				tooltip.add(String.format(Locale.US, I18nUtil.resolveKey("gui.iradioisotope_fuel.s_s_ticks"), instance.getLifespan(stack), instance.getMaxLifespan()));
+				tooltip.add(I18nUtil.resolveKey("gui.rtg_fuel.extended_info"));
+				tooltip.add(String.format(Locale.US, I18nUtil.resolveKey("gui.rtg_fuel.ticks"), instance.getLifespan(stack), instance.getMaxLifespan()));
 				final String[] timeLeft = BobMathUtil.ticksToDate(instance.getLifespan(stack));
 				final String[] maxLife = BobMathUtil.ticksToDate(instance.getMaxLifespan());
-				tooltip.add(String.format(Locale.US, I18nUtil.resolveKey("gui.iradioisotope_fuel.time_remaining_s_y_s_d_s_h"), (Object[]) timeLeft));
-				tooltip.add(String.format(Locale.US, I18nUtil.resolveKey("gui.iradioisotope_fuel.maximum_life_s_y_s_d_s_h"), (Object[]) maxLife));
+				tooltip.add(String.format(Locale.US, I18nUtil.resolveKey("gui.rtg_fuel.time_remaining_y_d_h"), (Object[]) timeLeft));
+				tooltip.add(String.format(Locale.US, I18nUtil.resolveKey("gui.rtg_fuel.maximum_life_y_d_h"), (Object[]) maxLife));
 			}
 		}
 	}

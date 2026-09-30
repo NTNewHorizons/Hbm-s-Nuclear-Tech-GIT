@@ -60,7 +60,7 @@ public class BookRecipeHandler extends TemplateRecipeHandler implements ICompatN
     
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.book_recipe_handler.name");
+		return I18nUtil.resolveKey("nei.book.name");
 	}
 
 	@Override

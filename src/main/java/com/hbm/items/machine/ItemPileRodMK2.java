@@ -69,9 +69,9 @@ public class ItemPileRodMK2 extends ItemEnumMulti {
 		EnumPileRod rod = EnumUtil.grabEnumSafely(EnumPileRod.class, stack.getItemDamage());
 		
 		if(rod.life > 0) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_pile_rod_m_k2.1", (int) Math.round(rod.life)));
+			list.add(I18nUtil.resolveKey("desc.item.pile_rod_mk2.1", (int) Math.round(rod.life)));
 			double depletion = getDepletionPercent(stack);
-			if(depletion > 0) list.add(I18nUtil.resolveKey("item.tooltip.item_pile_rod_m_k2.2", (int) Math.round(depletion)));
+			if(depletion > 0) list.add(I18nUtil.resolveKey("desc.item.pile_rod_mk2.2", (int) Math.round(depletion)));
 		}
 		
 		for(String loc : I18nUtil.autoBreak(Minecraft.getMinecraft().fontRenderer, I18nUtil.resolveKey(this.getUnlocalizedName(stack) + ".desc"), 225)) {

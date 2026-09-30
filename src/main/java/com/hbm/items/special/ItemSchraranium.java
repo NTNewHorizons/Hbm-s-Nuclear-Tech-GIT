@@ -41,6 +41,6 @@ public class ItemSchraranium extends ItemCustomLore {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		if(GeneralConfig.enableLBSM && GeneralConfig.enableLBSMFullSchrab) list.add(I18nUtil.resolveKey("item.tooltip.item_schraranium.1"));
+		if(GeneralConfig.enableLBSM && GeneralConfig.enableLBSMFullSchrab) list.add(I18nUtil.resolveKey("desc.item.schraranium.1"));
 	}
 }

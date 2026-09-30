@@ -41,16 +41,16 @@ public class ItemModOxy extends ItemArmorMod implements IFillableItem {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("item.tooltip.jetpack_fueled_base.1", fuel.getLocalizedName(), getFuel(itemstack), this.maxFuel));
+		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("desc.item.jetpack_fueled_base.1", fuel.getLocalizedName(), getFuel(itemstack), this.maxFuel));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
-		list.add(EnumChatFormatting.GOLD + I18n.format(I18nUtil.resolveKey("gui.item_mod_oxy.armor_must_seal")));
+		list.add(EnumChatFormatting.GOLD + I18n.format("armor.mustSeal"));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_mod_oxy.1", stack.getDisplayName(), fuel.getLocalizedName(), getFuel(stack), this.maxFuel));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.mod_oxy.1", stack.getDisplayName(), fuel.getLocalizedName(), getFuel(stack), this.maxFuel));
 	}
 
 	@Override

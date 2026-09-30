@@ -47,8 +47,8 @@ public class ItemVOTVdrive extends ItemEnumMulti {
 
 			if(identifier.equals("")) identifier = "0x" + Integer.toHexString(new ChunkCoordIntPair(destination.x, destination.z).hashCode()).toUpperCase();
 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_v_o_t_vdrive.1"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_v_o_t_vdrive.2", identifier));
+			list.add(I18nUtil.resolveKey("desc.item.votvdrive.1"));
+			list.add(I18nUtil.resolveKey("desc.item.votvdrive.2", identifier));
 
 			if(player.worldObj.provider.dimensionId != destination.body.getDimensionId()) {
 				for(String s : I18nUtil.resolveKey("item.hard_drive_full.orbit.desc").split("\\$")) {
@@ -61,19 +61,19 @@ public class ItemVOTVdrive extends ItemEnumMulti {
 
 		int processingLevel = destination.body.getProcessingLevel(CelestialBody.getBody(player.worldObj));
 
-		list.add(I18nUtil.resolveKey("item.tooltip.item_v_o_t_vdrive.8", EnumChatFormatting.AQUA, I18nUtil.resolveKey("body." + destination.body.name)));
+		list.add(I18nUtil.resolveKey("desc.item.votvdrive.8", EnumChatFormatting.AQUA, I18nUtil.resolveKey("body." + destination.body.name)));
 
 		if(destination.x == 0 && destination.z == 0) {
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_v_o_t_vdrive.3"));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.votvdrive.3"));
 		} else if(!getProcessed(stack)) {
 			// Display processing level info if not processed
-			list.add(I18nUtil.resolveKey("item.tooltip.item_v_o_t_vdrive.4", processingLevel));
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_v_o_t_vdrive.5"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_v_o_t_vdrive.6", destination.x, destination.z));
+			list.add(I18nUtil.resolveKey("desc.item.votvdrive.4", processingLevel));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.votvdrive.5"));
+			list.add(I18nUtil.resolveKey("desc.item.votvdrive.6", destination.x, destination.z));
 		} else {
 			// Display destination info if processed
-			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_v_o_t_vdrive.7"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_v_o_t_vdrive.6", destination.x, destination.z));
+			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.votvdrive.7"));
+			list.add(I18nUtil.resolveKey("desc.item.votvdrive.6", destination.x, destination.z));
 		}
 
 		if(player.worldObj.provider.dimensionId == destination.body.getDimensionId()) {
@@ -284,9 +284,9 @@ public class ItemVOTVdrive extends ItemEnumMulti {
 				Destination target = new Destination(CelestialBody.getEnum(world), x, z);
 
 				if(station.recallPod(target)) {
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_v_o_t_vdrive.1", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC, x, z));
+					player.addChatMessage(new ChatComponentTranslation("chat.votvdrive.1", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC, x, z));
 				} else {
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_v_o_t_vdrive.2", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC));
+					player.addChatMessage(new ChatComponentTranslation("chat.votvdrive.2", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC));
 				}
 			}
 
@@ -301,7 +301,7 @@ public class ItemVOTVdrive extends ItemEnumMulti {
 		setProcessed(stack, true);
 
 		if(!world.isRemote)
-			player.addChatMessage(new ChatComponentTranslation("item.message.item_v_o_t_vdrive.3", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC, x, z));
+			player.addChatMessage(new ChatComponentTranslation("chat.votvdrive.3", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC, x, z));
 
 		return true;
 	}

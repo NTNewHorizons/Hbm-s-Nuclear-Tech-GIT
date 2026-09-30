@@ -73,16 +73,16 @@ public class ItemSurveyScanner extends Item {
 				}
 			}
 
-			if(hasOil) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.1").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLACK)));
-			if(hasGas) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.2").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE)));
-			if(hasBrine) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.3").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE)));
-			if(hasBedrockOil) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.4").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLACK)));
-			if(hasColtan) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.5").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
-			if(hasDepth) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.6").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
-			if(hasSchist) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.7").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
-			if(hasAussie) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.8").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
-			for(String rich : richOres) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.9", rich.toUpperCase(Locale.US)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
-			if(tile != null && tile.resource != null) player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_survey_scanner.10", tile.resource.getDisplayName()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+			if(hasOil) player.addChatComponentMessage(new ChatComponentTranslation("chat.survey_scanner.1").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLACK)));
+			if(hasGas) player.addChatComponentMessage(new ChatComponentTranslation("chat.survey_scanner.2").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE)));
+			if(hasBrine) player.addChatComponentMessage(new ChatComponentTranslation("chat.survey_scanner.3").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE)));
+			if(hasBedrockOil) player.addChatComponentMessage(new ChatComponentTranslation("chat.survey_scanner.4").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLACK)));
+			if(hasColtan) player.addChatComponentMessage(new ChatComponentTranslation("chat.survey_scanner.5").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
+			if(hasDepth) player.addChatComponentMessage(new ChatComponentTranslation("chat.survey_scanner.6").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
+			if(hasSchist) player.addChatComponentMessage(new ChatComponentTranslation("chat.survey_scanner.7").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+			if(hasAussie) player.addChatComponentMessage(new ChatComponentTranslation("chat.survey_scanner.8").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			for(String rich : richOres) player.addChatComponentMessage(new ChatComponentTranslation("chat.survey_scanner.9", rich.toUpperCase(Locale.US)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+			if(tile != null && tile.resource != null) player.addChatComponentMessage(new ChatComponentTranslation("chat.survey_scanner.10", tile.resource.getDisplayName()).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 		}
 
 		player.swingItem();

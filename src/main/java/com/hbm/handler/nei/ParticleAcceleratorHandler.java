@@ -5,6 +5,7 @@ import java.util.Locale;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.recipes.ParticleAcceleratorRecipes;
 import com.hbm.inventory.recipes.ParticleAcceleratorRecipes.ParticleAcceleratorRecipe;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -29,7 +30,7 @@ public class ParticleAcceleratorHandler extends NEIUniversalHandler {
 		
 		if(paRecipe != null) {
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-			String momentum = "Momentum: " + String.format(Locale.US, "%,d", paRecipe.momentum);
+			String momentum = I18nUtil.resolveKey("nei.particle_accelerator.momentum", String.format(Locale.US, "%,d", paRecipe.momentum));
 			int side = 8;
 			fontRenderer.drawString(momentum, side, 52, 0x404040);
 		}

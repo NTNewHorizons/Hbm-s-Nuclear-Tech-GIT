@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 public class WaterTableHandler extends NEICelestialHandler {
 
 	public WaterTableHandler() {
-		super("nei.water_table_handler.name", new ItemStack[] { new ItemStack(ModBlocks.pump_electric), new ItemStack(ModBlocks.pump_steam) }, getRecipes());
+		super("nei.water_table.name", new ItemStack[] { new ItemStack(ModBlocks.pump_electric), new ItemStack(ModBlocks.pump_steam) }, getRecipes());
 	}
 
 	@Override

@@ -53,9 +53,9 @@ public class ItemGunNI4NI extends ItemGunBaseNT implements ICustomizable {
 
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_gun_n_i4_n_i.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_gun_n_i4_n_i.2", EnumChatFormatting.RED, EnumChatFormatting.GRAY));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_gun_n_i4_n_i.3"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_ni4ni.1"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_ni4ni.2", EnumChatFormatting.RED, EnumChatFormatting.GRAY));
+		list.add(I18nUtil.resolveKey("desc.item.gun_ni4ni.3"));
 		super.addInformation(stack, player, list, ext);
 	}
 
@@ -64,13 +64,13 @@ public class ItemGunNI4NI extends ItemGunBaseNT implements ICustomizable {
 		
 		if(args.length == 0) {
 			resetColors(stack);
-			player.addChatComponentMessage(ChatBuilder.startTranslation("item.message.item_gun_n_i4_n_i.1").color(EnumChatFormatting.GREEN).flush());
+			player.addChatComponentMessage(ChatBuilder.startTranslation("chat.gun_ni4ni.1").color(EnumChatFormatting.GREEN).flush());
 			return;
 		}
 		
 		if(args.length != 3) {
 			resetColors(stack);
-			player.addChatComponentMessage(ChatBuilder.startTranslation("item.message.item_gun_n_i4_n_i.2").color(EnumChatFormatting.RED).flush());
+			player.addChatComponentMessage(ChatBuilder.startTranslation("chat.gun_ni4ni.2").color(EnumChatFormatting.RED).flush());
 			return;
 		}
 		
@@ -80,12 +80,12 @@ public class ItemGunNI4NI extends ItemGunBaseNT implements ICustomizable {
 			int grip = Integer.parseInt(args[2], 16);
 			
 			if(dark < 0 || dark > 0xffffff || light < 0 || light > 0xffffff || grip < 0 || grip > 0xffffff) {
-				player.addChatComponentMessage(ChatBuilder.startTranslation("item.message.item_gun_n_i4_n_i.3").color(EnumChatFormatting.RED).flush());
+				player.addChatComponentMessage(ChatBuilder.startTranslation("chat.gun_ni4ni.3").color(EnumChatFormatting.RED).flush());
 				return;
 			}
 			
 			setColors(stack, dark, light, grip);
-			player.addChatComponentMessage(ChatBuilder.startTranslation("item.message.item_gun_n_i4_n_i.4").color(EnumChatFormatting.GREEN).flush());
+			player.addChatComponentMessage(ChatBuilder.startTranslation("chat.gun_ni4ni.4").color(EnumChatFormatting.GREEN).flush());
 			
 		} catch(Throwable ex) {
 			player.addChatComponentMessage(ChatBuilder.start(ex.getLocalizedMessage()).color(EnumChatFormatting.RED).flush());

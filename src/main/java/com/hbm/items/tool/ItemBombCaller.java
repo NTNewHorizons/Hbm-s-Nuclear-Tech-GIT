@@ -27,19 +27,19 @@ public class ItemBombCaller extends Item {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.1"));
+		list.add(I18nUtil.resolveKey("desc.item.bomb_caller.1"));
 
 		switch (stack.getItemDamage()) {
-			case 0: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.2")); break;
-			case 1: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.3")); break;
-			case 2: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.4")); break;
-			case 3: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.5")); break;
-			case 4: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.6")); break;
-			case 5: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.7")); break;
-			case 6: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.8")); break;
-			case 7: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.9")); break;
-			case 8: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.10")); break;
-			default: list.add(I18nUtil.resolveKey("item.tooltip.item_bomb_caller.11"));
+			case 0: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.2")); break;
+			case 1: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.3")); break;
+			case 2: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.4")); break;
+			case 3: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.5")); break;
+			case 4: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.6")); break;
+			case 5: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.7")); break;
+			case 6: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.8")); break;
+			case 7: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.9")); break;
+			case 8: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.10")); break;
+			default: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.11"));
 
 		}
 	}
@@ -74,9 +74,9 @@ public class ItemBombCaller extends Item {
 			world.playSoundAtEntity(player, NTMSounds.TECH_BLEEP, 1.0F, 1.0F);
 
 			if(b2) {
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_bomb_caller.1"));
+				player.addChatMessage(new ChatComponentTranslation("chat.bomb_caller.1"));
 			} else {
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_bomb_caller.2"));
+				player.addChatMessage(new ChatComponentTranslation("chat.bomb_caller.2"));
 			}
 
 		}

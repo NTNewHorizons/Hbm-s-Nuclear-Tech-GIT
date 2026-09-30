@@ -60,7 +60,7 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 				.outputItems(new ItemStack(ModItems.billet_flashlead, 1)));
 		
 		//CP-1
-		String autoPile = "autoswitch.pile";
+		String autoPile = "..autoswitch.pile";
 		this.register((PUREXRecipe) new PUREXRecipe("purex.pilepu239").setup(40, pilePower).setNameWrapper("purex.recycle").setGroup(autoPile, this)
 				.inputItems(new ComparableStack(ModItems.pile_rod, 1, EnumPileRod.PU239))
 				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 100))
@@ -81,7 +81,7 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 				.setIconToFirstIngredient());
 		
 		// ZIRNOX
-		String autoZirnox = "autoswitch.zirnox";
+		String autoZirnox = "..autoswitch.zirnox";
 		this.register((PUREXRecipe) new PUREXRecipe("purex.zirnoxnu").setup(100, zirnoxPower).setNameWrapper("purex.recycle").setGroup(autoZirnox, this)
 				.inputItems(new ComparableStack(ModItems.waste_natural_uranium))
 				.inputFluids(new FluidStack(Fluids.KEROSENE, 500), new FluidStack(Fluids.NITRIC_ACID, 250))
@@ -163,7 +163,7 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 				.setIconToFirstIngredient());
 
 		// Plate Fuel
-		String autoPlate = "autoswitch.plate";
+		String autoPlate = "..autoswitch.plate";
 		this.register((PUREXRecipe) new PUREXRecipe("purex.platemox").setup(100, platePower).setNameWrapper("purex.recycle").setGroup(autoPlate, this)
 				.inputItems(new ComparableStack(ModItems.waste_plate_mox))
 				.inputFluids(new FluidStack(Fluids.KEROSENE, 500), new FluidStack(Fluids.NITRIC_ACID, 250))
@@ -228,7 +228,7 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 				.setIconToFirstIngredient());
 
 		// PWR
-		String autoPWR = "autoswitch.pwr";
+		String autoPWR = "..autoswitch.pwr";
 		this.register((PUREXRecipe) new PUREXRecipe("purex.pwrmeu").setup(100, pwrPower).setNameWrapper("purex.recycle").setGroup(autoPWR, this)
 				.inputItems(new ComparableStack(ModItems.pwr_fuel_depleted, 1, EnumPWRFuel.MEU))
 				.inputFluids(new FluidStack(Fluids.KEROSENE, 500), new FluidStack(Fluids.NITRIC_ACID, 250))
@@ -374,7 +374,7 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 						new ChanceOutput(new ItemStack(ModItems.nuclear_waste_tiny, 1), 0.25F)));
 
 		// Watz
-		String autoWatz = "autoswitch.watz";
+		String autoWatz = "..autoswitch.watz";
 		this.register((PUREXRecipe) new PUREXRecipe("purex.watzschrab").setup(60, watzPower).setNameWrapper("purex.recycle").setGroup(autoWatz, this)
 				.inputItems(new ComparableStack(ModItems.watz_pellet_depleted, 1, EnumWatzType.SCHRABIDIUM))
 				.inputFluids(new FluidStack(Fluids.KEROSENE, 500), new FluidStack(Fluids.NITRIC_ACID, 250))
@@ -523,7 +523,7 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 						new ItemStack(ModItems.nugget_neptunium, 2))
 				.setIconToFirstIngredient());
 
-		String autoSchrab = "autoswitch.schrab";
+		String autoSchrab = "..autoswitch.schrab";
 		this.register((PUREXRecipe) new PUREXRecipe("purex.schrabzirnox").setup(200, 50_000).setNameWrapper("purex.schrab").setGroup(autoSchrab, this)
 				.inputItems(new ComparableStack(ModItems.waste_plutonium))
 				.inputFluids(new FluidStack(Fluids.SOLVENT, 4_000), new FluidStack(Fluids.SCHRABIDIC, 250))

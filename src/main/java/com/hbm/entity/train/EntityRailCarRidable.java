@@ -287,10 +287,10 @@ public abstract class EntityRailCarRidable extends EntityRailCarCargo {
 	@SideOnly(Side.CLIENT)
 	public void printHook(RenderGameOverlayEvent.Pre event, World world, int x, int y, int z) {
 		List<String> text = new ArrayList();
-		/*text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.ltu_s", this.ltu));
-		text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.front_s", this.coupledFront));
-		text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.back_s", this.coupledBack));*/
-		text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.nearest_seat_s", this.getNearestSeat(MainRegistry.proxy.me())));
+		/*text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.ltu", this.ltu));
+		text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.front", this.coupledFront));
+		text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.back", this.coupledBack));*/
+		text.add(I18nUtil.resolveKey("overlay.entity_rail_car_ridable.nearest_seat", this.getNearestSeat(MainRegistry.proxy.me())));
 		//ILookOverlay.printGeneric(event, this.getClass().getSimpleName() + " " + this.hashCode(), 0xffff00, 0x404000, text);
 	}
 }

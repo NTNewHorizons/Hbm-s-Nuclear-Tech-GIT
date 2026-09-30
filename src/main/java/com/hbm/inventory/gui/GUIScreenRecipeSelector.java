@@ -151,15 +151,15 @@ public class GUIScreenRecipeSelector extends GuiScreen {
 		}
 
 		if(guiLeft + 152 <= mouseX && guiLeft + 152 + 16 > mouseX && guiTop + 90 < mouseY && guiTop + 90 + 16 >= mouseY) {
-			this.drawCreativeTabHoveringText(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guiscreen_recipe_selector.close"), mouseX, mouseY);
+			this.drawCreativeTabHoveringText(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.recipe_selector.close"), mouseX, mouseY);
 		}
 
 		if(guiLeft + 134 <= mouseX && guiLeft + 134 + 16 > mouseX && guiTop + 108 < mouseY && guiTop + 108 + 16 >= mouseY) {
-			this.drawCreativeTabHoveringText(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guiscreen_recipe_selector.clear_search"), mouseX, mouseY);
+			this.drawCreativeTabHoveringText(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.recipe_selector.clear_search"), mouseX, mouseY);
 		}
 
 		if(guiLeft + 8 <= mouseX && guiLeft + 8 + 16 > mouseX && guiTop + 108 < mouseY && guiTop + 108 + 16 >= mouseY) {
-			this.drawCreativeTabHoveringText(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.guiscreen_recipe_selector.press_enter_to_toggle_focus"), mouseX, mouseY);
+			this.drawCreativeTabHoveringText(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.recipe_selector.press_enter_to_toggle_focus"), mouseX, mouseY);
 		}
 	}
 	

@@ -108,7 +108,7 @@ public class GUIWarController extends GuiInfoContainer {
 		case "setpos":
 			if(parts.length < 3) {
 				addCommandHistory("> " + command);
-				addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.error_invalid_args"), EnumChatFormatting.RED);
+				addCommandHistory(I18nUtil.resolveKey("gui.war_controller.error_invalid_args"), EnumChatFormatting.RED);
 				return;
 			}
 
@@ -116,12 +116,12 @@ public class GUIWarController extends GuiInfoContainer {
 			String zValueStr = parts[2];
 			if(sucker.slots[1] == null) {
 				addCommandHistory("> " + command);
-				addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.no_drive"), EnumChatFormatting.RED);
+				addCommandHistory(I18nUtil.resolveKey("gui.war_controller.no_drive"), EnumChatFormatting.RED);
 				return;
 			}
 			if(!xValueStr.matches("-?\\d+") || !zValueStr.matches("-?\\d+")) {
 				addCommandHistory("> " + command);
-				addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.invalid_number_format"), EnumChatFormatting.RED);
+				addCommandHistory(I18nUtil.resolveKey("gui.war_controller.invalid_number_format"), EnumChatFormatting.RED);
 				return;
 			}
 
@@ -129,7 +129,7 @@ public class GUIWarController extends GuiInfoContainer {
 			int zValue = Integer.parseInt(zValueStr);
 
 			addCommandHistory("> " + command);
-			addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.set_to_x") + xValue + ", Z=" + zValue);
+			addCommandHistory(I18nUtil.resolveKey("gui.war_controller.set_to_x") + xValue + ", Z=" + zValue);
 
 			data.setInteger("xcoord", xValue);
 			data.setInteger("zcoord", zValue);
@@ -139,26 +139,26 @@ public class GUIWarController extends GuiInfoContainer {
 
 		case "health":
 			addCommandHistory("> " + command);
-			addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.requesting") + cmd + "...");
+			addCommandHistory(I18nUtil.resolveKey("gui.war_controller.requesting") + cmd + "...");
 
 			if(sat == null) {
-				addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.satellite_not_in_orbit"), EnumChatFormatting.RED);
+				addCommandHistory(I18nUtil.resolveKey("gui.war_controller.satellite_not_in_orbit"), EnumChatFormatting.RED);
 			} else {
-				addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.health") + sat.health);
+				addCommandHistory(I18nUtil.resolveKey("gui.war_controller.health") + sat.health);
 			}
 
 			break;
 
 		case "fire":
 			if(sat == null) {
-				addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.satellite_not_in_orbit"), EnumChatFormatting.RED);
+				addCommandHistory(I18nUtil.resolveKey("gui.war_controller.satellite_not_in_orbit"), EnumChatFormatting.RED);
 			} else {
 				if(sat instanceof SatelliteWar) {
-					addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.firing"));
+					addCommandHistory(I18nUtil.resolveKey("gui.war_controller.firing"));
 
 					// PacketDispatcher.wrapper.sendToServer(new SatActivatePacket(satId));
 				} else {
-					addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.wrong_satellite") + EnumChatFormatting.RED);
+					addCommandHistory(I18nUtil.resolveKey("gui.war_controller.wrong_satellite") + EnumChatFormatting.RED);
 				}
 			}
 			break;
@@ -166,21 +166,21 @@ public class GUIWarController extends GuiInfoContainer {
 		case "getsat":
 			addCommandHistory("> " + command);
 			if(sucker.slots[2] == null) {
-				addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.no_satellite_chip_in_slot_2"), EnumChatFormatting.RED);
+				addCommandHistory(I18nUtil.resolveKey("gui.war_controller.no_satellite_chip_in_slot_2"), EnumChatFormatting.RED);
 			} else {
-				addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.requesting_satellite_id") + satId);
+				addCommandHistory(I18nUtil.resolveKey("gui.war_controller.requesting_satellite_id") + satId);
 
 				if(sat == null) {
-					addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.satellite_not_in_orbit"), EnumChatFormatting.RED);
+					addCommandHistory(I18nUtil.resolveKey("gui.war_controller.satellite_not_in_orbit"), EnumChatFormatting.RED);
 				} else {
-					addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.satellite") + sat.getClass().getSimpleName());
+					addCommandHistory(I18nUtil.resolveKey("gui.war_controller.satellite") + sat.getClass().getSimpleName());
 				}
 			}
 			break;
 
 		default:
 			addCommandHistory("> " + command);
-			addCommandHistory(I18nUtil.resolveKey("gui.guiwar_controller.unknown_command"), EnumChatFormatting.RED);
+			addCommandHistory(I18nUtil.resolveKey("gui.war_controller.unknown_command"), EnumChatFormatting.RED);
 			break;
 		}
 

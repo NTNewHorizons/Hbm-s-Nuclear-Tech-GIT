@@ -64,7 +64,7 @@ public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 				TileEntityMachineSatLink link = (TileEntityMachineSatLink) te;
 				
 				link.freq = ISatChip.getFreqS(player.getHeldItem());
-				player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_sat_link.set_frequency_to_s", link.freq).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.sat_link.set_frequency_to", link.freq).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 				world.playSoundAtEntity(player, NTMSounds.TECH_BLEEP, 1F, 1F);
 
 				return true;
@@ -88,8 +88,8 @@ public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 		TileEntityMachineSatLink link = (TileEntityMachineSatLink) te;
 		
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.machine_sat_link.freq_s", link.freq));
-		text.add(I18nUtil.resolveKey("overlay.machine_sat_link.connected_s", (link.connected ? (EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.machine_sat_link.yes")) : (EnumChatFormatting.RED + I18nUtil.resolveKey("gui.machine_sat_link.no")))));
+		text.add(I18nUtil.resolveKey("overlay.sat_link.freq", link.freq));
+		text.add(I18nUtil.resolveKey("overlay.sat_link.connected", (link.connected ? (EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.sat_link.yes")) : (EnumChatFormatting.RED + I18nUtil.resolveKey("gui.sat_link.no")))));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

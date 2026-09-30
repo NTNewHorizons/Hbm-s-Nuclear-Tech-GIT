@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 public class OilExtractionHandler extends NEICelestialHandler {
 
 	public OilExtractionHandler() {
-		super("nei.oil_extraction_handler.name", new ItemStack[] { new ItemStack(ModBlocks.machine_well), new ItemStack(ModBlocks.machine_pumpjack), new ItemStack(ModBlocks.machine_fracking_tower) }, getRecipes());
+		super("nei.oil_extraction.name", new ItemStack[] { new ItemStack(ModBlocks.machine_well), new ItemStack(ModBlocks.machine_pumpjack), new ItemStack(ModBlocks.machine_fracking_tower) }, getRecipes());
 	}
 
 	@Override

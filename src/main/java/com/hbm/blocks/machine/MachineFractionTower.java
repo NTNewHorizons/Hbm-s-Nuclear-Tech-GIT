@@ -68,12 +68,12 @@ public class MachineFractionTower extends BlockDummyable implements ILookOverlay
 				TileEntityMachineFractionTower frac = (TileEntityMachineFractionTower) te;
 
 				if(world.getTileEntity(pos[0], pos[1] - 3, pos[2]) instanceof TileEntityMachineFractionTower) {
-					player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_fraction_tower.s_you_can_only_change_the_type_in_the_bottom_segment", EnumChatFormatting.RED));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.fraction_tower.line.01", EnumChatFormatting.RED));
 				} else {
 					FluidType type = ((IItemFluidIdentifier) player.getHeldItem().getItem()).getType(world, pos[0], pos[1], pos[2], player.getHeldItem());
 					frac.tanks[0].setTankType(type);
 					frac.markDirty();
-					player.addChatComponentMessage(new ChatComponentTranslation("chat.machine_fraction_tower.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.common.changed_type").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 				}
 
 				return true;
@@ -115,7 +115,7 @@ public class MachineFractionTower extends BlockDummyable implements ILookOverlay
 		List<String> text = new ArrayList();
 
 		for(int i = 0; i < cracker.tanks.length; i++)
-			text.add(I18nUtil.resolveKey("overlay.machine_fraction_tower.s_s_s_s_sm_b", (i == 0 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, cracker.tanks[i].getTankType().getLocalizedName(), cracker.tanks[i].getFill(), cracker.tanks[i].getMaxFill()));
+			text.add(I18nUtil.resolveKey("overlay.common.tank", (i == 0 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, cracker.tanks[i].getTankType().getLocalizedName(), cracker.tanks[i].getFill(), cracker.tanks[i].getMaxFill()));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

@@ -28,9 +28,9 @@ public class ItemDesignatorArtyRange extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.getTagCompound() == null) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_designator_arty_range.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.designator_arty_range.1"));
 		} else {
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_designator_arty_range.2", itemstack.stackTagCompound.getInteger("x"), itemstack.stackTagCompound.getInteger("y"), itemstack.stackTagCompound.getInteger("z")));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.designator_arty_range.2", itemstack.stackTagCompound.getInteger("x"), itemstack.stackTagCompound.getInteger("y"), itemstack.stackTagCompound.getInteger("z")));
 		}
 	}
 

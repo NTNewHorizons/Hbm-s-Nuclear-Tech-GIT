@@ -44,17 +44,17 @@ public class ItemPancake extends ItemFood {
     	}
     	
     	if(!world.isRemote)
-    		player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_pancake.1", EnumChatFormatting.YELLOW));
+    		player.addChatComponentMessage(new ChatComponentTranslation("chat.pancake.1", EnumChatFormatting.YELLOW));
     	
     	return stack;
     }
 	
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_pancake.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_pancake.2"));
+		list.add(I18nUtil.resolveKey("desc.item.pancake.1"));
+		list.add(I18nUtil.resolveKey("desc.item.pancake.2"));
 		list.add("");
-		list.add(I18nUtil.resolveKey("item.tooltip.item_pancake.3"));
+		list.add(I18nUtil.resolveKey("desc.item.pancake.3"));
 	}
 
 }

@@ -76,7 +76,7 @@ public class RefineryRecipeHandler extends TemplateRecipeHandler implements ICom
     
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.refinery_recipe_handler.name");
+		return I18nUtil.resolveKey("nei.refinery.name");
 	}
 
 	@Override

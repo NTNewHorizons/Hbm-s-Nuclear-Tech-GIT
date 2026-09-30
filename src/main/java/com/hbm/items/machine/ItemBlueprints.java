@@ -116,9 +116,9 @@ public class ItemBlueprints extends Item {
 			return;
 		}
 		if(poolName.startsWith(GenericRecipes.POOL_PREFIX_SECRET)) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_blueprints.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.blueprints.1"));
 		} else {
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_blueprints.2"));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.blueprints.2"));
 		}
 		
 		for(String name : pool) {

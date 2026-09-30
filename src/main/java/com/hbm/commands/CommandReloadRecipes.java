@@ -42,10 +42,10 @@ public class CommandReloadRecipes extends CommandBase {
 			LogicBlockInteractions.initialize();
 
 
-			sender.addChatMessage(new ChatComponentTranslation("chat.command_reload_recipes.s_reload_complete", EnumChatFormatting.YELLOW));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reload_recipes.reload_complete", EnumChatFormatting.YELLOW));
 		} catch(Exception ex) {
 			sender.addChatMessage(ChatBuilder.start("----------------------------------").color(EnumChatFormatting.GRAY).flush());
-			sender.addChatMessage(ChatBuilder.startTranslation("chat.command_reload_recipes.an_error_has_occoured_during_loading_consult_the_log_for").color(EnumChatFormatting.RED).flush());
+			sender.addChatMessage(ChatBuilder.startTranslation("commands.reload_recipes.text.01").color(EnumChatFormatting.RED).flush());
 			sender.addChatMessage(ChatBuilder.start(ex.getLocalizedMessage()).color(EnumChatFormatting.RED).flush());
 			sender.addChatMessage(ChatBuilder.start(ex.getStackTrace()[0].toString()).color(EnumChatFormatting.RED).flush());
 			sender.addChatMessage(ChatBuilder.start("----------------------------------").color(EnumChatFormatting.GRAY).flush());

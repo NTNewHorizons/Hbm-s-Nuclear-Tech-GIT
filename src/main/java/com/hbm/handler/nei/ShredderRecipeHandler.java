@@ -82,7 +82,7 @@ public class ShredderRecipeHandler extends TemplateRecipeHandler implements ICom
 
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.shredder_recipe_handler.name");
+		return I18nUtil.resolveKey("nei.shredder.name");
 	}
 
 	@Override

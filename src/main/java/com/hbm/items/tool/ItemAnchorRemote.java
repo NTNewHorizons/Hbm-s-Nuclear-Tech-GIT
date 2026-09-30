@@ -23,8 +23,8 @@ public class ItemAnchorRemote extends ItemBattery {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		long charge = maxCharge;
 		if(stack.hasTagCompound()) charge = getCharge(stack);
-		list.add(I18nUtil.resolveKey("item.tooltip.item_battery.1", BobMathUtil.getShortNumber(charge), BobMathUtil.getShortNumber(maxCharge)));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_battery.2", BobMathUtil.getShortNumber(chargeRate)));
+		list.add(I18nUtil.resolveKey("desc.item.battery.1", BobMathUtil.getShortNumber(charge), BobMathUtil.getShortNumber(maxCharge)));
+		list.add(I18nUtil.resolveKey("desc.item.battery.2", BobMathUtil.getShortNumber(chargeRate)));
 	}
 
 	@Override

@@ -74,8 +74,8 @@ public class JetpackVectorized extends JetpackFueledBase {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
-		list.add(I18nUtil.resolveKey("item.tooltip.jetpack_vectorized.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.jetpack_vectorized.2"));
+		list.add(I18nUtil.resolveKey("desc.item.jetpack_vectorized.1"));
+		list.add(I18nUtil.resolveKey("desc.item.jetpack_vectorized.2"));
 
 		super.addInformation(stack, player, list, ext);
 	}

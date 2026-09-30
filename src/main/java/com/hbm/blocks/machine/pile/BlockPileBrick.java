@@ -77,25 +77,25 @@ public class BlockPileBrick extends BlockFlammable implements IToolable {
 			
 			/// SIZE CHECKS ///
 			if(posHeight + negHeight + 1 < MIN_V_SIZE) {
-				MachinePWRController.sendError(world, x, y + posHeight, z, "Height too low (<" + MIN_V_SIZE + ")", player);
-				MachinePWRController.sendError(world, x, y - negHeight, z, "Height too low (<" + MIN_V_SIZE + ")", player);
+				MachinePWRController.sendError(world, x, y + posHeight, z, "chat.pile.height_too_low", "v:" + MIN_V_SIZE, player);
+				MachinePWRController.sendError(world, x, y - negHeight, z, "chat.pile.height_too_low", "v:" + MIN_V_SIZE, player);
 				return true;
 			}
 			
 			if(left + right + 1 < MIN_H_SIZE) {
-				MachinePWRController.sendError(world, x + dirLeft.offsetX * left, y, z + dirLeft.offsetZ * right, "Width too low (<" + MIN_H_SIZE + ")", player);
-				MachinePWRController.sendError(world, x - dirLeft.offsetX * right, y, z - dirLeft.offsetZ * right, "Width too low (<" + MIN_H_SIZE + ")", player);
+				MachinePWRController.sendError(world, x + dirLeft.offsetX * left, y, z + dirLeft.offsetZ * right, "chat.pile.width_too_low", "v:" + MIN_H_SIZE, player);
+				MachinePWRController.sendError(world, x - dirLeft.offsetX * right, y, z - dirLeft.offsetZ * right, "chat.pile.width_too_low", "v:" + MIN_H_SIZE, player);
 				return true;
 			}
 			
 			if(depth + 1 < MIN_H_SIZE) {
-				MachinePWRController.sendError(world, x + dir.offsetX * depth, y, z + dir.offsetZ * depth, "Depth too low (<" + MIN_H_SIZE + ")", player);
+				MachinePWRController.sendError(world, x + dir.offsetX * depth, y, z + dir.offsetZ * depth, "chat.pile.depth_too_low", "v:" + MIN_H_SIZE, player);
 				return true;
 			}
 
 			/// CORE EDGE CHECK ///
 			if(posHeight == 0 || negHeight == 0 || left == 0 || right == 0) {
-				MachinePWRController.sendError(world, x, y, z, "Core cannot be on an edge", player);
+				MachinePWRController.sendError(world, x, y, z, "chat.core_cannot_be_on_an_edge", player);
 				return true;
 			}
 
@@ -108,7 +108,7 @@ public class BlockPileBrick extends BlockFlammable implements IToolable {
 						int iZ = z - dirLeft.offsetZ * v + dir.offsetZ * d;
 						
 						if(world.getBlock(iX, iY, iZ) != this) {
-							MachinePWRController.sendError(world, iX, iY, iZ, "Graphite block missing", player);
+							MachinePWRController.sendError(world, iX, iY, iZ, "chat.graphite_block_missing", player);
 							return true;
 						}
 					}

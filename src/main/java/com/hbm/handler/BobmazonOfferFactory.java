@@ -153,11 +153,11 @@ public class BobmazonOfferFactory {
 				), Requirement.HIDDEN, 64));
 
 		special.add(new Offer(I18nUtil.setItemName(ItemKitNBT.create(
-				I18nUtil.setItemName(new ItemStack(ModItems.rod_of_discord), "item.name.bobmazon_offer_factory.cock_joke"),
-				I18nUtil.setItemName(ModItems.canned_conserve.stackFromEnum(64, EnumFoodType.SLIME), "item.name.bobmazon_offer_factory.class_a_horse_semen"),
-				I18nUtil.setItemName(new ItemStack(ModItems.pipe_lead), "item.name.bobmazon_offer_factory.get_nutted_dumbass"),
+				I18nUtil.setItemName(new ItemStack(ModItems.rod_of_discord), "bobmazon.offer.cock_joke"),
+				I18nUtil.setItemName(ModItems.canned_conserve.stackFromEnum(64, EnumFoodType.SLIME), "bobmazon.offer.class_a_horse_semen"),
+				I18nUtil.setItemName(new ItemStack(ModItems.pipe_lead), "bobmazon.offer.get_nutted_dumbass"),
 				new ItemStack(ModItems.gem_alexandrite)
-				), "item.name.bobmazon_offer_factory.the_nut_bucket"), Requirement.HIDDEN, 64));
+				), "bobmazon.offer.the_nut_bucket"), Requirement.HIDDEN, 64));
 
 		special.add(new Offer(I18nUtil.setItemName(ItemKitNBT.create(
 				new ItemStack(ModItems.rpa_helmet),
@@ -168,7 +168,7 @@ public class BobmazonOfferFactory {
 				new ItemStack(ModItems.ammo_standard, 64, EnumAmmo.CAPACITOR_OVERCHARGE.ordinal()),
 				new ItemStack(ModItems.ammo_standard, 64, EnumAmmo.CAPACITOR_OVERCHARGE.ordinal()),
 				new ItemStack(ModItems.ammo_standard, 64, EnumAmmo.CAPACITOR_OVERCHARGE.ordinal())
-				), "item.name.bobmazon_offer_factory.frenchie_s_reward"), Requirement.HIDDEN, 32));
+				), "bobmazon.offer.frenchie_reward"), Requirement.HIDDEN, 32));
 	}
 
 	public static List<Offer> getOffers(ItemStack stack) {

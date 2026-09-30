@@ -97,9 +97,9 @@ public class GUIScreenBobmazon extends GuiScreen {
 		}
 
 		if(currentPage != 0)
-			buttons.add(new FolderButton(guiLeft + 25 - 18, guiTop + 26 + (27 * 3), 1, I18nUtil.resolveKey("gui.guiscreen_bobmazon.previous")));
+			buttons.add(new FolderButton(guiLeft + 25 - 18, guiTop + 26 + (27 * 3), 1, I18nUtil.resolveKey("gui.bobmazon.previous")));
 		if(currentPage != getPageCount())
-			buttons.add(new FolderButton(guiLeft + 25 + (27 * 4) + 18 + 41, guiTop + 26 + (27 * 3), 2, I18nUtil.resolveKey("gui.guiscreen_bobmazon.next")));
+			buttons.add(new FolderButton(guiLeft + 25 + (27 * 4) + 18 + 41, guiTop + 26 + (27 * 3), 2, I18nUtil.resolveKey("gui.bobmazon.next")));
 	}
 
 	protected void mouseClicked(int i, int j, int k) {
@@ -274,9 +274,7 @@ public class GUIScreenBobmazon extends GuiScreen {
 				gui.fontRendererObj.drawString(I18n.format(offer.getDisplayName()) + count, (int) ((x + 20) / scale), (int) ((y - 12) / scale), 4210752);
 				GL11.glPopMatrix();
 
-				String price = cost + " Cap";
-				if(cost != 1)
-					price += "s";
+				String price = I18nUtil.resolveKey(cost != 1 ? "gui.bobmazon.price_plural" : "gui.bobmazon.price", cost);
 
 				gui.fontRendererObj.drawString(price, x + 62, y - 3, 4210752);
 

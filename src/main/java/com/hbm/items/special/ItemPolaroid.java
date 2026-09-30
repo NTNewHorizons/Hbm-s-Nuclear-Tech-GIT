@@ -60,65 +60,65 @@ public class ItemPolaroid extends Item implements IBauble, IBaubleExpanded {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
-		list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.1"));
+		list.add(I18nUtil.resolveKey("desc.item.polaroid.1"));
 		list.add("");
 		switch(MainRegistry.polaroidID) {
 		case 1: 
 			list.add("...");
 			break;
 		case 2: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.2"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.2"));
 			break;
 		case 3: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.3"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.3"));
 			break;
 		case 4: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.4"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.4"));
 			break;
 		case 5: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.5"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.5"));
 			break;
 		case 6: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.6"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.6"));
 			break;
 		case 7: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.7"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.7"));
 			break;
 		case 8: 
 			list.add("11011100");
 			break;
 		case 9: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.8"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.8"));
 			break;
 		case 10: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.9"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.9"));
 			break;
 		case 11: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.10"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.10"));
 			break;
 		case 12: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.11"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.11"));
 			break;
 		case 13: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.12"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.12"));
 			break;
 		case 14: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.13"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.13"));
 			break;
 		case 15: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.14"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.14"));
 			break;
 		case 16: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.15"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.15"));
 			break;
 		case 17: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.16"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.16"));
 			break;
 		case 18: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.17"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.17"));
 			list.add("");
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.18"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_polaroid.19"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.18"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.19"));
 			break;
 		}
 	}

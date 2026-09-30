@@ -86,17 +86,17 @@ public class MachineHTRF4 extends BlockDummyable implements ILookOverlay {
 		if(!thruster.isFacingPrograde()) {
 			text.add("&[" + (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00) + "&]! ! ! " + I18nUtil.resolveKey("atmosphere.engineFacing") + " ! ! !");
 		} else {
-			text.add(I18nUtil.resolveKey("overlay.machine_htrf4.s_s_he", (thruster.power == 0 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(thruster.power)));
+			text.add(I18nUtil.resolveKey("overlay.common.energy_value", (thruster.power == 0 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(thruster.power)));
 			for(int i = 0; i < thruster.tanks.length; i++) {
 				FluidTank tank = thruster.tanks[i];
-				text.add(I18nUtil.resolveKey("overlay.machine_htrf4.s_s_s_s_sm_b", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, tank.getTankType().getLocalizedName(), tank.getFill(), tank.getMaxFill()));
+				text.add(I18nUtil.resolveKey("overlay.common.tank_input", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, tank.getTankType().getLocalizedName(), tank.getFill(), tank.getMaxFill()));
 			}
 
 			if(world.getTileEntity(x, y, z) instanceof TileEntityProxyCombo) {
 				if(pos[0] == x || pos[2] == z) {
-					text.add(I18nUtil.resolveKey("overlay.machine_htrf4.connect_to_plasma_heater_from_here"));
+					text.add(I18nUtil.resolveKey("overlay.htrf4.connect_plasma_heater_here"));
 				} else {
-					text.add(I18nUtil.resolveKey("overlay.machine_htrf4.connect_to_power_from_here"));
+					text.add(I18nUtil.resolveKey("overlay.htrf4.connect_to_power_from_here"));
 				}
 			}
 		}

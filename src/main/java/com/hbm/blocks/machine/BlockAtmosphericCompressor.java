@@ -80,10 +80,10 @@ public class BlockAtmosphericCompressor extends BlockDummyable implements ILookO
 
 		List<String> text = new ArrayList<String>();
 		if(!CelestialBody.hasTrait(world, CBT_Atmosphere.class)) {
-			text.add(((EnumChatFormatting.RED + I18nUtil.resolveKey("gui.block_atmospheric_compressor.error"))) + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.block_atmospheric_compressor.cannot_collect_in_vacuum"));
+			text.add(((EnumChatFormatting.RED + I18nUtil.resolveKey("gui.atmospheric_compressor.error"))) + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.atmospheric_compressor.cannot_collect_in_vacuum"));
 		} else {
-			text.add(I18nUtil.resolveKey("overlay.block_atmospheric_compressor.s_power_s_he", (tower.power < tower.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(tower.power)));
-			text.add(I18nUtil.resolveKey("overlay.block_atmospheric_compressor.s_s_s_s_sm_b", ((EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, I18nUtil.resolveKey("hbmfluid." + tower.tank.getTankType().getName().toLowerCase()), tower.tank.getFill(), tower.tank.getMaxFill()));
+			text.add(I18nUtil.resolveKey("overlay.common.power", (tower.power < tower.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(tower.power)));
+			text.add(I18nUtil.resolveKey("overlay.common.tank", ((EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, I18nUtil.resolveKey("hbmfluid." + tower.tank.getTankType().getName().toLowerCase()), tower.tank.getFill(), tower.tank.getMaxFill()));
 		}
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
@@ -131,7 +131,7 @@ public class BlockAtmosphericCompressor extends BlockDummyable implements ILookO
 			FluidType type = ((IItemFluidIdentifier) player.getHeldItem().getItem()).getType(world, x, y, z, player.getHeldItem());
 			if(compressor.switchGas(type)) {
 				compressor.markDirty();
-				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_atmospheric_compressor.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.common.changed_type").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 			}
 			
 			return true;

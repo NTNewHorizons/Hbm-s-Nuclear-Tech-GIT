@@ -16,8 +16,8 @@ public class ItemStructureSolid extends ItemStructureTool {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_structure_solid.1"));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_structure_solid.2"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_solid.1"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_solid.2"));
 	}
 
 	@Override

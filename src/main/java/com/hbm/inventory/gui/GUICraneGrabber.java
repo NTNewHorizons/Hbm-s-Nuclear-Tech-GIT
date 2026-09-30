@@ -43,7 +43,7 @@ public class GUICraneGrabber extends GuiInfoContainer {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
 	
 				if(this.isMouseOverSlot(slot, x, y) && grabber.matcher.modes[i] != null) {
-					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guicrane_grabber.right_click_to_change"), ModulePatternMatcher.getLabel(grabber.matcher.modes[i]) }), x, y - 30);
+					this.func_146283_a(Arrays.asList(new String[] { EnumChatFormatting.RED + I18nUtil.resolveKey("gui.common.change"), ModulePatternMatcher.getLabel(grabber.matcher.modes[i]) }), x, y - 30);
 				}
 			}
 		}

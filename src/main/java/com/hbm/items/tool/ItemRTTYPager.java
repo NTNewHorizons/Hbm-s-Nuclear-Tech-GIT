@@ -96,9 +96,9 @@ public class ItemRTTYPager extends Item implements IItemControlReceiver, IGUIPro
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(!stack.hasTagCompound() || !stack.stackTagCompound.hasKey(KEY_CHANNEL) || stack.stackTagCompound.getString(KEY_CHANNEL).isEmpty()) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_r_t_t_y_pager.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.rtty_pager.1"));
 		} else {
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_r_t_t_y_pager.2", stack.stackTagCompound.getString(KEY_CHANNEL)));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.rtty_pager.2", stack.stackTagCompound.getString(KEY_CHANNEL)));
 		}
 	}
 

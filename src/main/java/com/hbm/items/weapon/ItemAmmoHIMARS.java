@@ -82,45 +82,45 @@ public class ItemAmmoHIMARS extends Item {
 
 		switch(stack.getItemDamage()) {
 		case SMALL:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.9"));
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.2"));
-			list.add(b + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.3"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.9"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.2"));
+			list.add(b + I18nUtil.resolveKey("desc.item.ammo_arty.3"));
 			break;
 		case SMALL_HE:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.9"));
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.2"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.6"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.9"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.2"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		case SMALL_WP:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.9"));
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.2"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.7"));
-			list.add(b + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.3"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.9"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.2"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.7"));
+			list.add(b + I18nUtil.resolveKey("desc.item.ammo_arty.3"));
 			break;
 		case SMALL_TB:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.9"));
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_h_i_m_a_r_s.1"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.6"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.9"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_himars.1"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		case SMALL_MINI_NUKE:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.9"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.10"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.6"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.9"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.10"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		case SMALL_LAVA:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.9"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_h_i_m_a_r_s.2"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.6"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.9"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_himars.2"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		case LARGE:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_h_i_m_a_r_s.3"));
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.5"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.6"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_himars.3"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.5"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		case LARGE_TB:
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_h_i_m_a_r_s.3"));
-			list.add(y + I18nUtil.resolveKey("item.tooltip.item_ammo_h_i_m_a_r_s.4"));
-			list.add(r + I18nUtil.resolveKey("item.tooltip.item_ammo_arty.6"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_himars.3"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_himars.4"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		}
 	}

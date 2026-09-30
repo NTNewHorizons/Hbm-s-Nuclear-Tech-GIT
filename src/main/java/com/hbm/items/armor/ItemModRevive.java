@@ -21,22 +21,22 @@ public class ItemModRevive extends ItemArmorMod {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
 		if(this == ModItems.scrumpy) {
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_mod_revive.1"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_mod_revive.2"));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.mod_revive.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.mod_revive.2"));
 		}
 		if(this == ModItems.wild_p) {
-			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("item.tooltip.item_mod_revive.3", EnumChatFormatting.RED, EnumChatFormatting.DARK_GRAY, EnumChatFormatting.RED));
+			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.mod_revive.3", EnumChatFormatting.RED, EnumChatFormatting.DARK_GRAY, EnumChatFormatting.RED));
 		}
 		
-		/*list.add(I18nUtil.resolveKey("tooltip.item_mod_revive.s_in_the_news", EnumChatFormatting.ITALIC));
-		list.add(I18nUtil.resolveKey("tooltip.item_mod_revive.s_s_man_literally_too_angry_to_die", EnumChatFormatting.RED, EnumChatFormatting.BOLD));
+		/*list.add(I18nUtil.resolveKey("desc.item.mod_revive.in_the_news", EnumChatFormatting.ITALIC));
+		list.add(I18nUtil.resolveKey("desc.item.man_literally_too_angry_die", EnumChatFormatting.RED, EnumChatFormatting.BOLD));
 		list.add("");
-		list.add(I18nUtil.resolveKey("tooltip.item_mod_revive.s_i_ain_t_got_time_to_die_says_local", EnumChatFormatting.ITALIC));
-		list.add(I18nUtil.resolveKey("tooltip.item_mod_revive.sman_after_ripping_the_physical_manifestation", EnumChatFormatting.ITALIC));
-		list.add(I18nUtil.resolveKey("tooltip.item_mod_revive.sof_disaster_itself_in_half", EnumChatFormatting.ITALIC));*/
+		list.add(I18nUtil.resolveKey("desc.item.mod_revive.i_ain_t_got_time", EnumChatFormatting.ITALIC));
+		list.add(I18nUtil.resolveKey("desc.item.mod_revive.line.01", EnumChatFormatting.ITALIC));
+		list.add(I18nUtil.resolveKey("desc.item.disaster_itself_half", EnumChatFormatting.ITALIC));*/
 		
 		list.add("");
-		list.add(EnumChatFormatting.GOLD + "" + I18nUtil.resolveKey("item.tooltip.item_mod_revive.4", (stack.getMaxDamage() - stack.getItemDamage())));
+		list.add(EnumChatFormatting.GOLD + "" + I18nUtil.resolveKey("desc.item.mod_revive.4", (stack.getMaxDamage() - stack.getItemDamage())));
 		list.add("");
 		super.addInformation(stack, player, list, bool);
 	}
@@ -44,6 +44,6 @@ public class ItemModRevive extends ItemArmorMod {
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 
-		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_mod_revive.5", stack.getDisplayName(), (stack.getMaxDamage() - stack.getItemDamage())));
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.mod_revive.5", stack.getDisplayName(), (stack.getMaxDamage() - stack.getItemDamage())));
 	}
 }

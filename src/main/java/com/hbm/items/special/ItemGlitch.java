@@ -42,10 +42,10 @@ public class ItemGlitch extends Item implements IBatteryItem {
 		if(!world.isRemote)
 			switch(itemRand.nextInt(31)) {
 			case 0:
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.1"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.1"));
 				break;
 			case 1:
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.2"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.line.01"));
 				break;
 			case 2:
 				player.attackEntityFrom(ModDamageSource.radiation, 1000);
@@ -69,7 +69,7 @@ public class ItemGlitch extends Item implements IBatteryItem {
 				break;
 			case 8:
 				player.inventory.addItemStackToInventory(new ItemStack(ModItems.ammo_container, 10));
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.3"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.3"));
 				break;
 			case 9:
 				player.inventory.addItemStackToInventory(new ItemStack(ModItems.nuke_advanced_kit, 1));
@@ -97,7 +97,7 @@ public class ItemGlitch extends Item implements IBatteryItem {
 				player.inventory.addItemStackToInventory(new ItemStack(ModItems.gun_heavy_revolver_lilmac));
 				player.inventory.addItemStackToInventory(new ItemStack(ModItems.bottle_sparkle));
 				player.inventory.addItemStackToInventory(new ItemStack(ModItems.geiger_counter));
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.4"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.4"));
 				break;
 			case 14:
 				player.inventory.dropAllItems();
@@ -108,43 +108,43 @@ public class ItemGlitch extends Item implements IBatteryItem {
 					player.inventory.addItemStackToInventory(new ItemStack(Blocks.dirt, 64));
 				break;
 			case 16:
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.5"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.5"));
 				break;
 			case 17:
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.6"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.6"));
 				break;
 			case 18:
 				player.inventory.addItemStackToInventory(new ItemStack(ModItems.gun_maresleg));
 				player.inventory.addItemStackToInventory(new ItemStack(ModItems.ammo_standard, 12, EnumAmmo.G12.ordinal()));
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.7"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.7"));
 				break;
 			case 19:
 				player.addChatMessage(new ChatComponentText("Ë"));
 				break;
 			case 20:
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.8"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.8"));
 				break;
 			case 21:
 				player.inventory.addItemStackToInventory(new ItemStack(ModItems.missile_nuclear));
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.9"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.9"));
 				break;
 			case 22:
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.10"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.10"));
 				break;
 			case 23:
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.11"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.11"));
 				break;
 			case 24:
 				player.addPotionEffect(new PotionEffect(Potion.resistance.id, 60 * 20, 9));
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.12"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.12"));
 				break;
 			case 25:
 				player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 60 * 20, 9));
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.13"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.13"));
 				break;
 			case 26:
 				player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 60 * 20, 9));
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.14"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.14"));
 				break;
 			case 27:
 				EntityVortex vortex = new EntityVortex(world, 2.5F);
@@ -159,15 +159,15 @@ public class ItemGlitch extends Item implements IBatteryItem {
 				mirv.posY = player.posY + 100;
 				mirv.posZ = player.posZ;
 				world.spawnEntityInWorld(mirv);
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.15"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.15"));
 				break;
 			case 29:
 				ExplosionLarge.spawnBurst(world, player.posX, player.posY, player.posZ, 27, 3);
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.16"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.16"));
 				break;
 			case 30:
 				player.inventory.addItemStackToInventory(new ItemStack(ModItems.plate_saturnite));
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.17"));
+				player.addChatMessage(new ChatComponentTranslation("chat.glitch.17"));
 				break;
 			}
 		
@@ -179,62 +179,62 @@ public class ItemGlitch extends Item implements IBatteryItem {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
-		list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.1"));
+		list.add(I18nUtil.resolveKey("desc.item.glitch.1"));
 		list.add("");
 		switch(MainRegistry.polaroidID) {
 		case 1: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.2"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.2"));
 			break;
 		case 2: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.3"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.3"));
 			break;
 		case 3: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.4"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.4"));
 			break;
 		case 4: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.5"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.5"));
 			break;
 		case 5: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.6"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.6"));
 			break;
 		case 6: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.7"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.7"));
 			break;
 		case 7: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.8"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.8"));
 			break;
 		case 8: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.9"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.9"));
 			break;
 		case 9: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.10"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.10"));
 			break;
 		case 10: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.11"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.11"));
 			break;
 		case 11: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.12"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.12"));
 			break;
 		case 12: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.13"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.13"));
 			break;
 		case 13: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.14"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.14"));
 			break;
 		case 14: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.15"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.15"));
 			break;
 		case 15: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.16"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.16"));
 			break;
 		case 16: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.17"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.17"));
 			break;
 		case 17: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.18"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.18"));
 			break;
 		case 18: 
-			list.add(I18nUtil.resolveKey("item.tooltip.item_glitch.19"));
+			list.add(I18nUtil.resolveKey("desc.item.glitch.19"));
 			break;
 		}
 	}

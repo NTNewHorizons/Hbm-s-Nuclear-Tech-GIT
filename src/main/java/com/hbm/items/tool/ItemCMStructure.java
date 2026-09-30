@@ -157,10 +157,10 @@ public class ItemCMStructure extends Item implements ILookOverlay {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_c_m_structure.1"));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_c_m_structure.2"));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_c_m_structure.3"));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_c_m_structure.4"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.cm_structure.1"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.cm_structure.2"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.cm_structure.3"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.cm_structure.4"));
 	}
 
 	@Override
@@ -172,24 +172,24 @@ public class ItemCMStructure extends Item implements ILookOverlay {
 
 		if(anchor == null) {
 
-			text.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_c_m_structure.5"));
+			text.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cm_structure.5"));
 		} else {
 			int anchorX = stack.stackTagCompound.getInteger("anchorX");
 			int anchorY = stack.stackTagCompound.getInteger("anchorY");
 			int anchorZ = stack.stackTagCompound.getInteger("anchorZ");
-			text.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_c_m_structure.6", anchorX, anchorY, anchorZ));
+			text.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.cm_structure.6", anchorX, anchorY, anchorZ));
 			if(stack.stackTagCompound.hasKey("x1")) {
 				int x1 = stack.stackTagCompound.getInteger("x1");
 				int y1 = stack.stackTagCompound.getInteger("y1");
 				int z1 = stack.stackTagCompound.getInteger("z1");
 
-				text.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_c_m_structure.7", x1, y1, z1));
+				text.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.cm_structure.7", x1, y1, z1));
 			}
 			if(stack.stackTagCompound.hasKey("x2")) {
 				int x2 = stack.stackTagCompound.getInteger("x2");
 				int y2 = stack.stackTagCompound.getInteger("y2");
 				int z2 = stack.stackTagCompound.getInteger("z2");
-				text.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_c_m_structure.8", x2, y2, z2));
+				text.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.cm_structure.8", x2, y2, z2));
 			}
 		}
 

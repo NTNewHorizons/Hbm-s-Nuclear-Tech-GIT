@@ -21,14 +21,14 @@ public class ItemModSerum extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		
-		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_mod_serum.1"));
+		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.mod_serum.1"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 	
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_mod_serum.2", stack.getDisplayName()));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.mod_serum.2", stack.getDisplayName()));
 	}
 	
 	@Override

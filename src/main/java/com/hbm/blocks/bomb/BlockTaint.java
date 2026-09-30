@@ -115,6 +115,6 @@ public class BlockTaint extends Block implements ITooltipProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.block_taint.do_not_touch_breathe_or_stare_at"));
+		list.add(I18nUtil.resolveKey("desc.block.touch_breathe_stare"));
 	}
 }

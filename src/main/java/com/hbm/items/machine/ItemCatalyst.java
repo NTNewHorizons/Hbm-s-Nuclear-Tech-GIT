@@ -39,8 +39,8 @@ public class ItemCatalyst extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
-		list.add(I18nUtil.resolveKey("item.tooltip.item_catalyst.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_catalyst.2"));
+		list.add(I18nUtil.resolveKey("desc.item.catalyst.1"));
+		list.add(I18nUtil.resolveKey("desc.item.catalyst.2"));
 	}
 	
 	public static long getPowerAbs(ItemStack stack) {

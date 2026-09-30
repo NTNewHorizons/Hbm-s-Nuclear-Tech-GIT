@@ -49,13 +49,13 @@ public class ItemDiscord extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_discord.1"));
-		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_discord.2"));
+		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.1"));
+		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.2"));
 		list.add("");
-		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_discord.3"));
-		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_discord.4"));
+		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.3"));
+		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.4"));
 		list.add("");
-		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_discord.5"));
-		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_discord.6"));
+		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.5"));
+		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.6"));
 	}
 }

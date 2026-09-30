@@ -84,7 +84,7 @@ public class MachineMiningLaser extends BlockDummyable implements ITooltipProvid
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.machine_mining_laser.3x3x3_multiblock"));
-		list.add(I18nUtil.resolveKey("tooltip.machine_mining_laser.only_placeable_on_a_ceiling"));
+		list.add(I18nUtil.resolveKey("desc.block.mining_laser.3x3x3_multiblock"));
+		list.add(I18nUtil.resolveKey("desc.block.placeable_ceiling"));
 	}
 }

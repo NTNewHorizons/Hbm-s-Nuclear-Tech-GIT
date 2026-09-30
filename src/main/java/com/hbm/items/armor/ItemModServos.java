@@ -27,12 +27,12 @@ public class ItemModServos extends ItemArmorMod {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		
 		if(this == ModItems.servo_set) {
-			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.1"));
-			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.2"));
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.1"));
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.2"));
 		}
 		if(this == ModItems.servo_set_desh) {
-			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.3"));
-			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.4"));
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.3"));
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.4"));
 		}
 		
 		list.add("");
@@ -47,20 +47,20 @@ public class ItemModServos extends ItemArmorMod {
 		if(item.armorType == 1) {
 
 			if(this == ModItems.servo_set) {
-				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.5", stack.getDisplayName()));
+				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.5", stack.getDisplayName()));
 			}
 			if(this == ModItems.servo_set_desh) {
-				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.6", stack.getDisplayName()));
+				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.6", stack.getDisplayName()));
 			}
 		}
 		
 		if(item.armorType == 2) {
 
 			if(this == ModItems.servo_set) {
-				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.7", stack.getDisplayName()));
+				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.7", stack.getDisplayName()));
 			}
 			if(this == ModItems.servo_set_desh) {
-				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_mod_servos.8", stack.getDisplayName()));
+				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.8", stack.getDisplayName()));
 			}
 		}
 	}

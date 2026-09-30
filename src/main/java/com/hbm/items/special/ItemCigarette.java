@@ -128,10 +128,10 @@ public class ItemCigarette extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
 		if (this == ModItems.cigarette) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_cigarette.1"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_cigarette.2"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_cigarette.3"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_cigarette.4"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.2"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.3"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.4"));
 		} else if (this == ModItems.crackpipe) {
 			String[] colors = new String[] {
 					EnumChatFormatting.RED + "",
@@ -144,10 +144,10 @@ public class ItemCigarette extends Item {
 					EnumChatFormatting.LIGHT_PURPLE + "",
 			};
 			int len = 2000;
-			list.add(I18nUtil.resolveKey("gui.item_cigarette.this_can_t_be_good_for_me_but_i_feel")
-					+ colors[(int) (System.currentTimeMillis() % len * colors.length / len)] + I18nUtil.resolveKey("gui.item_cigarette.great"));
+			list.add(I18nUtil.resolveKey("gui.cigarette.t_good_me_but_i")
+					+ colors[(int) (System.currentTimeMillis() % len * colors.length / len)] + I18nUtil.resolveKey("gui.cigarette.great"));
 		} else if (this == ModItems.joint) {
-			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_cigarette.5"));
+			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.cigarette.5"));
 		}
 	}
 }

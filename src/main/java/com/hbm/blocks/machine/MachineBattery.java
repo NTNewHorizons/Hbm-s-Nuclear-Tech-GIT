@@ -230,7 +230,7 @@ public class MachineBattery extends BlockContainer implements ILookOverlay, IPer
 		TileEntityMachineBattery battery = (TileEntityMachineBattery) te;
 
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.machine_battery.s_s_he", BobMathUtil.getShortNumber(battery.getPower()), BobMathUtil.getShortNumber(battery.getMaxPower())));
+		text.add(I18nUtil.resolveKey("overlay.common.energy", BobMathUtil.getShortNumber(battery.getPower()), BobMathUtil.getShortNumber(battery.getMaxPower())));
 
 		double percent = (double) battery.getPower() / (double) battery.getMaxPower();
 		int charge = (int) Math.floor(percent * 10_000D);
@@ -281,14 +281,14 @@ public class MachineBattery extends BlockContainer implements ILookOverlay, IPer
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.machine_battery.s_s_s_he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(this.maxPower)));
+		list.add(I18nUtil.resolveKey("desc.block.battery.he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(this.maxPower)));
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.machine_battery.s_stores_up_to_s_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower)));
-		list.add(I18nUtil.resolveKey("tooltip.machine_battery.s_charge_speed_s_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower / 200)));
-		list.add(I18nUtil.resolveKey("tooltip.machine_battery.s_discharge_speed_s_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower / 600)));
+		list.add(I18nUtil.resolveKey("desc.block.battery.stores_up_to_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower)));
+		list.add(I18nUtil.resolveKey("desc.block.battery.charge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower / 200)));
+		list.add(I18nUtil.resolveKey("desc.block.battery.discharge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower / 600)));
 	}
 
 }

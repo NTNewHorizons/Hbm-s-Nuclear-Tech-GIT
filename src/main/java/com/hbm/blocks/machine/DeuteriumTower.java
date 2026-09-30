@@ -74,10 +74,10 @@ public class DeuteriumTower extends BlockDummyable implements ILookOverlay {
 		TileEntityDeuteriumTower tower = (TileEntityDeuteriumTower) te;
 
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.deuterium_tower.s_power_s_he", (tower.power < tower.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(tower.power)));
+		text.add(I18nUtil.resolveKey("overlay.common.power", (tower.power < tower.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(tower.power)));
 
 		for(int i = 0; i < tower.tanks.length; i++)
-			text.add(I18nUtil.resolveKey("overlay.deuterium_tower.s_s_s_s_sm_b", (i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, tower.tanks[i].getTankType().getLocalizedName(), tower.tanks[i].getFill(), tower.tanks[i].getMaxFill()));
+			text.add(I18nUtil.resolveKey("overlay.common.tank", (i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, tower.tanks[i].getTankType().getLocalizedName(), tower.tanks[i].getFill(), tower.tanks[i].getMaxFill()));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

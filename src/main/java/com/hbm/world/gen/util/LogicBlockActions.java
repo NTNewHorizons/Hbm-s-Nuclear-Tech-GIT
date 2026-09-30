@@ -299,7 +299,7 @@ public class LogicBlockActions {
 
 		if(tile.phase != 1) return;
 
-		world.getClosestPlayer(x,y,z, 25).addChatMessage(new ChatComponentTranslation("chat.logic_block_actions.s_command_unit_s_missile_fired", EnumChatFormatting.LIGHT_PURPLE, EnumChatFormatting.RESET));
+		world.getClosestPlayer(x,y,z, 25).addChatMessage(new ChatComponentTranslation("chat.logic_block_actions.command_unit_missile_fired", EnumChatFormatting.LIGHT_PURPLE, EnumChatFormatting.RESET));
 
 		ForgeDirection parallel = tile.direction.getRotation(ForgeDirection.UP);
 

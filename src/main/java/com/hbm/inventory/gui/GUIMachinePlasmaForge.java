@@ -58,9 +58,9 @@ public class GUIMachinePlasmaForge extends GuiInfoContainer {
 		PlasmaForgeRecipe recipe = (PlasmaForgeRecipe) forge.plasmaModule.getRecipe();
 		
 		if(recipe != null) {
-			drawCustomInfoStat(mouseX, mouseY, guiLeft + 25, guiTop + 115, 18, 18, mouseX, mouseY, EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + BobMathUtil.getShortNumber(forge.plasmaEnergySync) + I18nUtil.resolveKey("gui.guimachine_plasma_forge.tu") + BobMathUtil.getShortNumber(recipe.ignitionTemp) + "TU");
+			drawCustomInfoStat(mouseX, mouseY, guiLeft + 25, guiTop + 115, 18, 18, mouseX, mouseY, EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + BobMathUtil.getShortNumber(forge.plasmaEnergySync) + I18nUtil.resolveKey("gui.plasma_forge.tu") + BobMathUtil.getShortNumber(recipe.ignitionTemp) + "TU");
 		} else {
-			drawCustomInfoStat(mouseX, mouseY, guiLeft + 25, guiTop + 115, 18, 18, mouseX, mouseY, I18nUtil.resolveKey("gui.guimachine_plasma_forge.0_tu_0_tu"));
+			drawCustomInfoStat(mouseX, mouseY, guiLeft + 25, guiTop + 115, 18, 18, mouseX, mouseY, I18nUtil.resolveKey("gui.plasma_forge.0_tu_0_tu"));
 		}
 		
 		if(this.isMouseOverSlot(this.inventorySlots.getSlot(2), mouseX, mouseY) && forge.slots[2] == null && this.mc.thePlayer.inventory.getItemStack() == null) {
@@ -78,7 +78,7 @@ public class GUIMachinePlasmaForge extends GuiInfoContainer {
 				list.set(cycle, selected);
 			}
 			
-			lines.add(new Object[] {I18nUtil.resolveKey("gui.guimachine_plasma_forge.booster_isotope")});
+			lines.add(new Object[] {I18nUtil.resolveKey("gui.plasma_forge.booster_isotope")});
 			
 			if(list.size() < 10) {
 				lines.add(list.toArray());

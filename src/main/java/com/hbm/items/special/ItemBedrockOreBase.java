@@ -59,7 +59,7 @@ public class ItemBedrockOreBase extends Item {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		SolarSystem.Body body = getOreBody(stack);
-		list.add(I18nUtil.resolveKey("item.tooltip.item_bedrock_ore_base.1", I18nUtil.resolveKey("body." + body.name)));
+		list.add(I18nUtil.resolveKey("desc.item.bedrock_ore_base.1", I18nUtil.resolveKey("body." + body.name)));
 
 		for(CelestialBedrockOreType type : CelestialBedrockOre.get(body).types) {
 			double amount = getOreAmount(stack, type);

@@ -228,11 +228,11 @@ public class MachineDysonLauncher extends BlockDummyable implements ILookOverlay
 		List<String> text = new ArrayList<String>();
 
 		if(launcher.swarmId > 0) {
-			text.add(I18nUtil.resolveKey("overlay.machine_dyson_launcher.id_s", launcher.swarmId));
-			text.add(I18nUtil.resolveKey("overlay.machine_dyson_launcher.swarm_s_members", launcher.swarmCount));
-			text.add(I18nUtil.resolveKey("overlay.machine_dyson_launcher.s_power_s_he", (launcher.power < TileEntityDysonLauncher.MAX_POWER ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(launcher.power)));
+			text.add(I18nUtil.resolveKey("overlay.dyson_launcher.id", launcher.swarmId));
+			text.add(I18nUtil.resolveKey("overlay.dyson_launcher.swarm_members", launcher.swarmCount));
+			text.add(I18nUtil.resolveKey("overlay.common.power", (launcher.power < TileEntityDysonLauncher.MAX_POWER ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(launcher.power)));
 		} else {
-			text.add(I18nUtil.resolveKey("overlay.machine_dyson_launcher.no_satellite_id_chip_installed"));
+			text.add(I18nUtil.resolveKey("overlay.dyson_launcher.no_satellite_id_chip_installed"));
 		}
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);

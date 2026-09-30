@@ -73,17 +73,17 @@ public class ItemInfiniteFluid extends Item implements net.minecraftforge.fluids
 		FluidType currentFluid = Fluids.fromID(stack.stackTagCompound.getInteger("fluid"));
 
 		if(currentFluid == Fluids.NONE) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_infinite_fluid.1"));
+			list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.1"));
 		} else {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_infinite_fluid.2"));
+			list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.2"));
 		}
 
-		list.add(I18nUtil.resolveKey("item.tooltip.item_infinite_fluid.3", type.getLocalizedName()));
+		list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.3", type.getLocalizedName()));
 
 		if(currentFluid == Fluids.NONE) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_infinite_fluid.4"));
+			list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.4"));
 		} else {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_infinite_fluid.5", currentFluid.getLocalizedName()));
+			list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.5", currentFluid.getLocalizedName()));
 		}
 	}
 

@@ -37,8 +37,8 @@ public class Substation extends BlockDummyable implements ITooltipProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.substation.s_connection_type_s_quadruple", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
-		list.add(I18nUtil.resolveKey("tooltip.substation.s_connection_range_s20m", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.block.connection_type_quadruple.2", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.block.substation.connection_range_s20m", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
 	}
 
 	@Override

@@ -74,7 +74,7 @@ public class AlloyFurnaceRecipeHandler extends TemplateRecipeHandler implements 
 
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.alloy_furnace_recipe_handler.name");
+		return I18nUtil.resolveKey("nei.alloy_furnace.name");
 	}
 
 	@Override

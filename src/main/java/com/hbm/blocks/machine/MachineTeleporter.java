@@ -61,13 +61,13 @@ public class MachineTeleporter extends BlockContainer implements ILookOverlay {
 		List<String> text = new ArrayList();
 		
 		if(tele.targetY == -1) {
-			text.add(I18nUtil.resolveKey("overlay.machine_teleporter.s_no_destination_set", EnumChatFormatting.RED));
+			text.add(I18nUtil.resolveKey("overlay.teleporter.no_destination_set", EnumChatFormatting.RED));
 		} else {
 			text.add((tele.power >= tele.consumption ? EnumChatFormatting.GREEN : EnumChatFormatting.RED) + String.format("%,d", tele.power) + " / " + String.format("%,d", tele.maxPower));
 			if(world.provider.dimensionId != tele.targetDim) {
-				text.add(I18nUtil.resolveKey("overlay.machine_teleporter.s_s_sm_b", I18nUtil.resolveKey("hbmfluid." + tele.tank.getTankType().getName().toLowerCase()), tele.tank.getFill(), tele.tank.getMaxFill()));
+				text.add(I18nUtil.resolveKey("overlay.teleporter.mb", I18nUtil.resolveKey("hbmfluid." + tele.tank.getTankType().getName().toLowerCase()), tele.tank.getFill(), tele.tank.getMaxFill()));
 			}
-			text.add(I18nUtil.resolveKey("overlay.machine_teleporter.destination_s_s_s_d_s", tele.targetX, tele.targetY, tele.targetZ, tele.targetDim));
+			text.add(I18nUtil.resolveKey("overlay.teleporter.destination_d", tele.targetX, tele.targetY, tele.targetZ, tele.targetDim));
 		}
 		
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);

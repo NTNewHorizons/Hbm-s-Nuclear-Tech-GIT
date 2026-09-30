@@ -202,12 +202,12 @@ public class TileEntityPileCore extends TileEntityTickingBase {
 			int iX = x + dir.offsetX * i;
 			int iY = y + dir.offsetY * i;
 			int iZ = z + dir.offsetZ * i;
-			if(worldObj.getBlock(iX, iY, iZ) != ModBlocks.pile_block) { MachinePWRController.sendError(worldObj, iX, iY, iZ, "Foreign block in reactor", player); error = true; }
+			if(worldObj.getBlock(iX, iY, iZ) != ModBlocks.pile_block) { MachinePWRController.sendError(worldObj, iX, iY, iZ, "chat.foreign_block_in_reactor", player); error = true; }
 			int meta = worldObj.getBlockMetadata(iX, iY, iZ);
-			if(meta == BlockPile.META_EDGE) { MachinePWRController.sendError(worldObj, iX, iY, iZ, "Cannot drill along edge", player); error = true; }
-			else if(meta == BlockPile.META_CORE) { MachinePWRController.sendError(worldObj, iX, iY, iZ, "Cannot intersect core", player); error = true; }
-			else if(meta == BlockPile.META_CHANNEL) { MachinePWRController.sendError(worldObj, iX, iY, iZ, "Cannot intersect channel", player); error = true; }
-			else if(meta != BlockPile.META_DUMMY) { MachinePWRController.sendError(worldObj, iX, iY, iZ, "Cannot intersect channel IO", player); error = true; }
+			if(meta == BlockPile.META_EDGE) { MachinePWRController.sendError(worldObj, iX, iY, iZ, "chat.cannot_drill_along_edge", player); error = true; }
+			else if(meta == BlockPile.META_CORE) { MachinePWRController.sendError(worldObj, iX, iY, iZ, "chat.cannot_intersect_core", player); error = true; }
+			else if(meta == BlockPile.META_CHANNEL) { MachinePWRController.sendError(worldObj, iX, iY, iZ, "chat.cannot_intersect_channel", player); error = true; }
+			else if(meta != BlockPile.META_DUMMY) { MachinePWRController.sendError(worldObj, iX, iY, iZ, "chat.cannot_intersect_channel_io", player); error = true; }
 		}
 		
 		if(error) return false;

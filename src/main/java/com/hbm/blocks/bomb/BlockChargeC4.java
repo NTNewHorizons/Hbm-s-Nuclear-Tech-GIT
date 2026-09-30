@@ -52,7 +52,7 @@ public class BlockChargeC4 extends BlockChargeBase {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
-		list.add(I18nUtil.resolveKey("tooltip.block_charge_c4.s_does_not_drop_blocks", EnumChatFormatting.BLUE));
+		list.add(I18nUtil.resolveKey("desc.block.charge_c4.does_not_drop_blocks", EnumChatFormatting.BLUE));
 	}
 
 }

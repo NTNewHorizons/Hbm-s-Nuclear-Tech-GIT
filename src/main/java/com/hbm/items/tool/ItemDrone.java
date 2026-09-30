@@ -65,8 +65,8 @@ public class ItemDrone extends ItemEnumMulti {
 			for(String s : I18nUtil.resolveKeyArray(stack.getUnlocalizedName() + ".desc"))
 				list.add(EnumChatFormatting.YELLOW + s);
 		} else {
-			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_drone.hold") + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_drone.lshift") + EnumChatFormatting.DARK_GRAY
-					+ "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("gui.item_drone.to_display_more_info"));
+			list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.misc.hold_prefix") + EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.misc.lshift_key") + EnumChatFormatting.DARK_GRAY
+					+ "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.misc.more_info_suffix"));
 		}
 	}
 }

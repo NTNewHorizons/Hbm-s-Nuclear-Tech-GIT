@@ -66,8 +66,8 @@ public class ItemToolBox extends Item implements IGUIProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_tool_box.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_tool_box.2"));
+		list.add(I18nUtil.resolveKey("desc.item.tool_box.1"));
+		list.add(I18nUtil.resolveKey("desc.item.tool_box.2"));
 	}
 
 	// Finds active rows in the toolbox (rows with items inside them).
@@ -116,9 +116,9 @@ public class ItemToolBox extends Item implements IGUIProvider {
 
 		if(extraToolboxes > 0) {
 			if(extraToolboxes == 1)
-				player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_tool_box.1").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))); // TODO: tell someone else to do i18n stuff; i don't want to
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.tool_box.1").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))); // TODO: tell someone else to do i18n stuff; i don't want to
 			else
-				player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_tool_box.2", extraToolboxes).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))); // TODO: this too :ayo:
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.tool_box.2", extraToolboxes).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED))); // TODO: this too :ayo:
 		}
 
 		// Move stacks around inside the box, mostly shifts rows to other rows and shifts the top row to the hotbar.
@@ -190,7 +190,7 @@ public class ItemToolBox extends Item implements IGUIProvider {
 				byte[] abyte = CompressedStreamTools.compress(nbt);
 
 				if (abyte.length > 6000) {
-					player.addChatComponentMessage(new ChatComponentTranslation("item.message.item_inventory.1", EnumChatFormatting.RED));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.inventory.1", EnumChatFormatting.RED));
 					ItemStack[] stacks1 = ItemStackUtil.readStacksFromNBT(box, 24 /* Toolbox inv size. */);
 					if(stacks1 == null)
 						return;

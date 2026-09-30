@@ -33,7 +33,7 @@ public class ItemReactorSensor extends Item {
 				stack.stackTagCompound = new NBTTagCompound();
 
 			if(!world.isRemote) {
-				SendMessage(player, "item.message.reactor_sensor.position_set");
+				SendMessage(player, "chat.reactor_sensor.position_set");
 			}
 
 			stack.stackTagCompound.setInteger("x", x);
@@ -62,7 +62,7 @@ public class ItemReactorSensor extends Item {
 			if(entity == null) return false;
 
 			if(!world.isRemote) {
-				SendMessage(player, "item.message.reactor_sensor.stardar_linked");
+				SendMessage(player, "chat.reactor_sensor.stardar_linked");
 				entity.TryLink(stack);
 			}
 
@@ -85,11 +85,11 @@ public class ItemReactorSensor extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if (itemstack.stackTagCompound != null) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_reactor_sensor.1", itemstack.stackTagCompound.getInteger("x")));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_reactor_sensor.2", itemstack.stackTagCompound.getInteger("y")));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_reactor_sensor.3", itemstack.stackTagCompound.getInteger("z")));
+			list.add(I18nUtil.resolveKey("desc.item.reactor_sensor.1", itemstack.stackTagCompound.getInteger("x")));
+			list.add(I18nUtil.resolveKey("desc.item.reactor_sensor.2", itemstack.stackTagCompound.getInteger("y")));
+			list.add(I18nUtil.resolveKey("desc.item.reactor_sensor.3", itemstack.stackTagCompound.getInteger("z")));
 		} else {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_reactor_sensor.4"));
+			list.add(I18nUtil.resolveKey("desc.item.reactor_sensor.4"));
 		}
 	}
 }

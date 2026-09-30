@@ -40,8 +40,8 @@ public class ItemCounterfeitKeys extends Item {
 
 				return true;
 			} else if(!locked.cheesable){
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_counterfeit_keys.1", EnumChatFormatting.LIGHT_PURPLE));
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_counterfeit_keys.2", EnumChatFormatting.LIGHT_PURPLE));
+				player.addChatMessage(new ChatComponentTranslation("chat.counterfeit_keys.1", EnumChatFormatting.LIGHT_PURPLE));
+				player.addChatMessage(new ChatComponentTranslation("chat.counterfeit_keys.2", EnumChatFormatting.LIGHT_PURPLE));
 			}
 		}
 
@@ -50,7 +50,7 @@ public class ItemCounterfeitKeys extends Item {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_counterfeit_keys.1"));
+		list.add(I18nUtil.resolveKey("desc.item.counterfeit_keys.1"));
 	}
 
 }

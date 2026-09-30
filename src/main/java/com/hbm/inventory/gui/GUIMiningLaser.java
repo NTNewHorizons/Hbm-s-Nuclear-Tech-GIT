@@ -34,16 +34,16 @@ public class GUIMiningLaser extends GuiInfoContainer {
 		
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 106 - 88, 16, 88, laser.power, laser.maxPower);
 
-		String[] text = new String[] { I18nUtil.resolveKey("gui.guimining_laser.acceptable_upgrades"),
-				I18nUtil.resolveKey("gui.guimining_laser.speed_stacks_to_level_12"),
-				I18nUtil.resolveKey("gui.guimining_laser.effectiveness_stacks_to_level_12"),
-				I18nUtil.resolveKey("gui.guimining_laser.overdrive_stacks_to_level_3"),
-				I18nUtil.resolveKey("gui.guimining_laser.fortune_stacks_to_level_3"),
-				I18nUtil.resolveKey("gui.guimining_laser.smelter_exclusive"),
-				I18nUtil.resolveKey("gui.guimining_laser.shredder_exclusive"),
-				I18nUtil.resolveKey("gui.guimining_laser.centrifuge_exclusive"),
-				I18nUtil.resolveKey("gui.guimining_laser.crystallizer_exclusive"),
-				I18nUtil.resolveKey("gui.guimining_laser.nullifier")};
+		String[] text = new String[] { I18nUtil.resolveKey("gui.mining_laser.acceptable_upgrades"),
+				I18nUtil.resolveKey("gui.mining_laser.speed_stacks_to_level_12"),
+				I18nUtil.resolveKey("gui.mining_laser.effectiveness_stacks_to_level_12"),
+				I18nUtil.resolveKey("gui.mining_laser.overdrive_stacks_to_level_3"),
+				I18nUtil.resolveKey("gui.mining_laser.fortune_stacks_to_level_3"),
+				I18nUtil.resolveKey("gui.mining_laser.smelter_exclusive"),
+				I18nUtil.resolveKey("gui.mining_laser.shredder_exclusive"),
+				I18nUtil.resolveKey("gui.mining_laser.centrifuge_exclusive"),
+				I18nUtil.resolveKey("gui.mining_laser.crystallizer_exclusive"),
+				I18nUtil.resolveKey("gui.mining_laser.nullifier")};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 87, guiTop + 31, 8, 8, guiLeft + 141, guiTop + 39 + 16, text);
 
 		laser.tank.renderTankInfo(this, mouseX, mouseY, guiLeft + 35, guiTop + 124 - 52, 7, 52);

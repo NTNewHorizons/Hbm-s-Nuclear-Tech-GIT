@@ -24,7 +24,7 @@ public class ItemMeteorRemote extends Item {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_meteor_remote.1"));
+		list.add(I18nUtil.resolveKey("desc.item.meteor_remote.1"));
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class ItemMeteorRemote extends Item {
 
 		if(!world.isRemote) {
 			BossSpawnHandler.spawnMeteorAtPlayer(player, false);
-			player.addChatMessage(new ChatComponentTranslation("item.message.item_glitch.15"));
+			player.addChatMessage(new ChatComponentTranslation("chat.glitch.15"));
 		}
 
 		world.playSoundAtEntity(player, NTMSounds.TECH_BLEEP, 1.0F, 1.0F);

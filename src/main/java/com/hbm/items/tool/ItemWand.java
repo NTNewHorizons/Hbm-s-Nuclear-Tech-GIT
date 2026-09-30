@@ -19,18 +19,18 @@ public class ItemWand extends Item {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_wand.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_wand.2"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_wand.3"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_wand.4"));
+		list.add(I18nUtil.resolveKey("desc.item.wand.1"));
+		list.add(I18nUtil.resolveKey("desc.item.wand.2"));
+		list.add(I18nUtil.resolveKey("desc.item.wand.3"));
+		list.add(I18nUtil.resolveKey("desc.item.wand.4"));
 
 		if(stack.stackTagCompound != null && !(stack.stackTagCompound.getInteger("x") == 0 && stack.stackTagCompound.getInteger("y") == 0 && stack.stackTagCompound.getInteger("z") == 0)) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wand.5", stack.stackTagCompound.getInteger("x"), stack.stackTagCompound.getInteger("y"), stack.stackTagCompound.getInteger("z")));
+			list.add(I18nUtil.resolveKey("desc.item.wand.5", stack.stackTagCompound.getInteger("x"), stack.stackTagCompound.getInteger("y"), stack.stackTagCompound.getInteger("z")));
 		} else {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wand.6"));
+			list.add(I18nUtil.resolveKey("desc.item.wand.6"));
 		}
 		if(stack.stackTagCompound != null)
-			list.add(I18nUtil.resolveKey("item.tooltip.item_wand.7", Block.getBlockById(stack.stackTagCompound.getInteger("block")).getUnlocalizedName()));
+			list.add(I18nUtil.resolveKey("desc.item.wand.7", Block.getBlockById(stack.stackTagCompound.getInteger("block")).getUnlocalizedName()));
 	}
 
 	@Override
@@ -43,14 +43,14 @@ public class ItemWand extends Item {
 			stack.stackTagCompound.setInteger("block", Block.getIdFromBlock(world.getBlock(x, y, z)));
 			stack.stackTagCompound.setInteger("meta", world.getBlockMetadata(x, y, z));
 			if(world.isRemote)
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_wand.1", Block.getBlockById(stack.stackTagCompound.getInteger("block")).getUnlocalizedName()));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand.1", Block.getBlockById(stack.stackTagCompound.getInteger("block")).getUnlocalizedName()));
 		} else {
 			if(stack.stackTagCompound.getInteger("x") == 0 && stack.stackTagCompound.getInteger("y") == 0 && stack.stackTagCompound.getInteger("z") == 0) {
 				stack.stackTagCompound.setInteger("x", x);
 				stack.stackTagCompound.setInteger("y", y);
 				stack.stackTagCompound.setInteger("z", z);
 				if(world.isRemote)
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_drop.1"));
+					player.addChatMessage(new ChatComponentTranslation("desc.misc.posSet"));
 			} else {
 
 				int ox = stack.stackTagCompound.getInteger("x");
@@ -76,7 +76,7 @@ public class ItemWand extends Item {
 					}
 				}
 				if(world.isRemote)
-					player.addChatMessage(new ChatComponentTranslation("item.message.item_wand.2"));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand.2"));
 			}
 		}
 
@@ -92,7 +92,7 @@ public class ItemWand extends Item {
 			stack.stackTagCompound.setInteger("block", 0);
 			stack.stackTagCompound.setInteger("meta", 0);
 			if(world.isRemote)
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_wand.1", Block.getBlockById(stack.stackTagCompound.getInteger("block")).getUnlocalizedName()));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand.1", Block.getBlockById(stack.stackTagCompound.getInteger("block")).getUnlocalizedName()));
 		}
 
 		return stack;

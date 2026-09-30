@@ -120,6 +120,6 @@ public class PartEmitter extends BlockContainer implements IToolable, ITooltipPr
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.part_emitter.s_use_hand_drill_to_cycle_special_effects", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.hand_drill_cycle_special_effects", EnumChatFormatting.GOLD));
 	}
 }

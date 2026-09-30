@@ -238,7 +238,7 @@ public abstract class ModuleMachineBase {
 		if(!isSlotValid) return false;
 		ItemStack stack = slots[slot];
 		if(stack == null) return false;
-		return !isItemValid(slot, stack); // we need to use this because it also handles autoswitch correctly, otherwise autoswitch items may be ejected instantly
+		return !isItemValid(slot, stack); // we need to use this because it also handles ..autoswitch correctly, otherwise ..autoswitch items may be ejected instantly
 	}
 	
 	public void serialize(ByteBuf buf) {

@@ -411,6 +411,6 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 
 	@Override
 	public IChatComponent func_145748_c_() {
-		return new ChatComponentTranslation("chat.cbt_invasion.wave_s", wave);
+		return new ChatComponentTranslation("chat.cbt_invasion.wave", wave);
 	}
 }

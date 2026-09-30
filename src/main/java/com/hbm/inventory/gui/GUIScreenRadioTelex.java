@@ -88,19 +88,19 @@ public class GUIScreenRadioTelex extends GuiScreen {
 
 	private void drawGuiContainerForegroundLayer(int x, int y) {
 
-		if(checkClick(x, y, 7, 85, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.guiscreen_radio_telex.bell"), I18nUtil.resolveKey("gui.guiscreen_radio_telex.plays_a_bell_when_this_character_is_received")}), x, y);
-		if(checkClick(x, y, 27, 85, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.guiscreen_radio_telex.print"), I18nUtil.resolveKey("gui.guiscreen_radio_telex.forces_recipient_to_print_message_after_transmission_end")}), x, y);
-		if(checkClick(x, y, 47, 85, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.guiscreen_radio_telex.clear_screen"), I18nUtil.resolveKey("gui.guiscreen_radio_telex.wipes_message_buffer_when_this_character_is_received")}), x, y);
-		if(checkClick(x, y, 67, 85, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.guiscreen_radio_telex.format"), I18nUtil.resolveKey("gui.guiscreen_radio_telex.inserts_format_character_for_message_formatting")}), x, y);
-		if(checkClick(x, y, 87, 85, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.guiscreen_radio_telex.pause"), I18nUtil.resolveKey("gui.guiscreen_radio_telex.pauses_message_transmission_for_one_second")}), x, y);
+		if(checkClick(x, y, 7, 85, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.radio_telex.bell"), I18nUtil.resolveKey("gui.radio_telex.text.04")}), x, y);
+		if(checkClick(x, y, 27, 85, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.radio_telex.print"), I18nUtil.resolveKey("gui.radio_telex.text.01")}), x, y);
+		if(checkClick(x, y, 47, 85, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.radio_telex.clear_screen"), I18nUtil.resolveKey("gui.radio_telex.text.05")}), x, y);
+		if(checkClick(x, y, 67, 85, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.radio_telex.format"), I18nUtil.resolveKey("gui.radio_telex.text.02")}), x, y);
+		if(checkClick(x, y, 87, 85, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GOLD + I18nUtil.resolveKey("gui.radio_telex.pause"), I18nUtil.resolveKey("gui.radio_telex.text.03")}), x, y);
 
-		if(checkClick(x, y, 127, 105, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.guiscreen_radio_telex.save_id")}), x, y);
-		if(checkClick(x, y, 147, 105, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guiscreen_radio_telex.send_message")}), x, y);
-		if(checkClick(x, y, 167, 105, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guiscreen_radio_telex.delete_message_buffer")}), x, y);
+		if(checkClick(x, y, 127, 105, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.radio_telex.save_id")}), x, y);
+		if(checkClick(x, y, 147, 105, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.radio_telex.send_message")}), x, y);
+		if(checkClick(x, y, 167, 105, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.RED + I18nUtil.resolveKey("gui.radio_telex.delete_message_buffer")}), x, y);
 		
-		if(checkClick(x, y, 127, 219, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.guiscreen_radio_telex.save_id")}), x, y);
-		if(checkClick(x, y, 147, 219, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.AQUA + I18nUtil.resolveKey("gui.guiscreen_radio_telex.print_message")}), x, y);
-		if(checkClick(x, y, 167, 219, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guiscreen_radio_telex.clear_screen")}), x, y);
+		if(checkClick(x, y, 127, 219, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.radio_telex.save_id")}), x, y);
+		if(checkClick(x, y, 147, 219, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.AQUA + I18nUtil.resolveKey("gui.radio_telex.print_message")}), x, y);
+		if(checkClick(x, y, 167, 219, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.RED + I18nUtil.resolveKey("gui.radio_telex.clear_screen")}), x, y);
 	}
 
 	private void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {

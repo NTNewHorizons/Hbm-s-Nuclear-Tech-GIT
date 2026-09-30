@@ -98,7 +98,7 @@ public class MachineTurbineGas extends BlockDummyable implements ILookOverlay {
 		}
 
 		if(hitCheck(dir, pos[0], pos[1], pos[2], 0, -4, 1, x, y, z)) {
-			text.add(I18nUtil.resolveKey("overlay.machine_turbine_gas.s_s_power", EnumChatFormatting.RED, EnumChatFormatting.RESET));
+			text.add(I18nUtil.resolveKey("overlay.turbine_gas.power", EnumChatFormatting.RED, EnumChatFormatting.RESET));
 		}
 
 		if(!text.isEmpty()) {

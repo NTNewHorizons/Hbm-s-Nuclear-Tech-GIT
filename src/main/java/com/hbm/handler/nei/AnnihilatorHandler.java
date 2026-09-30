@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class AnnihilatorHandler extends NEIUniversalHandler {
 
 	public AnnihilatorHandler() {
-		super("nei.annihilator_handler.name", ModBlocks.machine_annihilator, AnnihilatorRecipes.getRecipes());
+		super("nei.annihilator.name", ModBlocks.machine_annihilator, AnnihilatorRecipes.getRecipes());
 	}
 
 	@Override

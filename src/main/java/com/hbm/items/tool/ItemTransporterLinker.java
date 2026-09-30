@@ -44,8 +44,8 @@ public class ItemTransporterLinker extends Item implements IGUIProvider {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_transporter_linker.1"));
-		list.add(I18nUtil.resolveKey("item.tooltip.item_transporter_linker.2"));
+		list.add(I18nUtil.resolveKey("desc.item.transporter_linker.1"));
+		list.add(I18nUtil.resolveKey("desc.item.transporter_linker.2"));
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class ItemTransporterLinker extends Item implements IGUIProvider {
 		if(player.isSneaking()) {
 			if(!world.isRemote) {
 				addTransporter(stack, world, transporter);
-				player.addChatMessage(new ChatComponentTranslation("item.message.item_transporter_linker.1"));
+				player.addChatMessage(new ChatComponentTranslation("chat.transporter_linker.1"));
 			}
 		} else if(world.isRemote) {
 			lastTransporter = TransporterInfo.from(world.provider.dimensionId, transporter);

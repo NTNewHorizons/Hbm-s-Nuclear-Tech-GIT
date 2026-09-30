@@ -51,12 +51,12 @@ public class ItemSoyuz extends Item {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(I18nUtil.resolveKey("item.tooltip.item_soyuz.1"));
+		list.add(I18nUtil.resolveKey("desc.item.soyuz.1"));
 		
 		switch(stack.getItemDamage()) {
-		case 0: list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_soyuz.2")); break;
-		case 1: list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.item_soyuz.3")); break;
-		case 2: list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_soyuz.4")); break;
+		case 0: list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.soyuz.2")); break;
+		case 1: list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.soyuz.3")); break;
+		case 2: list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.soyuz.4")); break;
 		}
 	}
 

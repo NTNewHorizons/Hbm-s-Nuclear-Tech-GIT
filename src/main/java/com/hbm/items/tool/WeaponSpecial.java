@@ -244,55 +244,55 @@ public class WeaponSpecial extends ItemSword {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(this == ModItems.schrabidium_hammer) {
-			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.1"));
-			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.2"));
+			list.add(I18nUtil.resolveKey("desc.item.weapon_special.1"));
+			list.add(I18nUtil.resolveKey("desc.item.weapon_special.2"));
 		}
 		if(this == ModItems.ullapool_caber) {
-			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.3"));
-			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.4"));
+			list.add(I18nUtil.resolveKey("desc.item.weapon_special.3"));
+			list.add(I18nUtil.resolveKey("desc.item.weapon_special.4"));
 		}
 		if(this == ModItems.bottle_opener) {
-			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.5"));
-			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.6"));
+			list.add(I18nUtil.resolveKey("desc.item.weapon_special.5"));
+			list.add(I18nUtil.resolveKey("desc.item.weapon_special.6"));
 		}
 		if(this == ModItems.shimmer_sledge) {
 			if(MainRegistry.polaroidID == 11) {
-				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.7"));
-				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.8"));
-				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.9"));
-				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.7"));
-				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.10"));
+				list.add(I18nUtil.resolveKey("desc.item.weapon_special.7"));
+				list.add(I18nUtil.resolveKey("desc.item.weapon_special.8"));
+				list.add(I18nUtil.resolveKey("desc.item.weapon_special.9"));
+				list.add(I18nUtil.resolveKey("desc.item.weapon_special.7"));
+				list.add(I18nUtil.resolveKey("desc.item.weapon_special.10"));
 			} else {
-				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.11"));
+				list.add(I18nUtil.resolveKey("desc.item.weapon_special.11"));
 			}
 		}
 		if(this == ModItems.shimmer_axe) {
 			if(MainRegistry.polaroidID == 11) {
-				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.12"));
+				list.add(I18nUtil.resolveKey("desc.item.weapon_special.12"));
 			} else {
-				list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.13"));
+				list.add(I18nUtil.resolveKey("desc.item.weapon_special.13"));
 			}
 		}
 		if(this == ModItems.wrench_flipped) {
-			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.14"));
+			list.add(I18nUtil.resolveKey("desc.item.weapon_special.14"));
 		}
 		if(this == ModItems.memespoon) {
-			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("item.tooltip.weapon_special.15"));
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.tooltip.weapon_special.16"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.weapon_special.17"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.weapon_special.18"));
+			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.weapon_special.15"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.weapon_special.16"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.weapon_special.17"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.weapon_special.18"));
 		}
 
 		if(this == ModItems.wood_gavel) {
-			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.19"));
+			list.add(I18nUtil.resolveKey("desc.item.weapon_special.19"));
 		}
 		if(this == ModItems.lead_gavel) {
-			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.20"));
+			list.add(I18nUtil.resolveKey("desc.item.weapon_special.20"));
 		}
 		if(this == ModItems.diamond_gavel) {
-			list.add(I18nUtil.resolveKey("item.tooltip.weapon_special.21"));
+			list.add(I18nUtil.resolveKey("desc.item.weapon_special.21"));
 			list.add("");
-			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.tooltip.weapon_special.22"));
+			list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.weapon_special.22"));
 		}
 	}
 

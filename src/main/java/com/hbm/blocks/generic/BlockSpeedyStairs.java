@@ -35,6 +35,6 @@ public class BlockSpeedyStairs extends BlockGenericStairs implements IStepTickRe
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.block_speedy_stairs.s_increases_speed_by_s", EnumChatFormatting.BLUE, (MathHelper.floor_double((speed - 1) * 100))));
+		list.add(I18nUtil.resolveKey("desc.block.speedy_stairs.increases_speed_by", EnumChatFormatting.BLUE, (MathHelper.floor_double((speed - 1) * 100))));
 	}
 }

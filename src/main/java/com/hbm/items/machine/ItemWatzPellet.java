@@ -139,22 +139,22 @@ public class ItemWatzPellet extends ItemEnumMulti {
 		
 		EnumWatzType num = EnumUtil.grabEnumSafely(EnumWatzType.class, stack.getItemDamage());
 		
-		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_pile_rod_m_k2.2", String.format(Locale.US, "%.1f", getDurabilityForDisplay(stack) * 100D)));
+		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.pile_rod_mk2.2", String.format(Locale.US, "%.1f", getDurabilityForDisplay(stack) * 100D)));
 		
 		String color = EnumChatFormatting.GOLD + "";
 		String reset = EnumChatFormatting.RESET + "";
 
 		if(num.passive > 0){
-			list.add(color + I18nUtil.resolveKey("item.tooltip.item_watz_pellet.1", reset, num.passive));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_watz_pellet.2"));
+			list.add(color + I18nUtil.resolveKey("desc.item.watz_pellet.1", reset, num.passive));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.watz_pellet.2"));
 		}
-		if(num.heatEmission > 0) list.add(color + I18nUtil.resolveKey("item.tooltip.item_p_w_r_fuel.1", reset, num.heatEmission));
+		if(num.heatEmission > 0) list.add(color + I18nUtil.resolveKey("desc.item.pwr_fuel.1", reset, num.heatEmission));
 		if(num.burnFunc != null) {
-			list.add(color + I18nUtil.resolveKey("item.tooltip.item_p_w_r_fuel.2", reset, num.burnFunc.getLabelForFuel()));
-			list.add(color + I18nUtil.resolveKey("item.tooltip.item_p_w_r_fuel.3", reset, num.burnFunc.getDangerFromFuel()));
+			list.add(color + I18nUtil.resolveKey("desc.item.pwr_fuel.2", reset, num.burnFunc.getLabelForFuel()));
+			list.add(color + I18nUtil.resolveKey("desc.item.pwr_fuel.3", reset, num.burnFunc.getDangerFromFuel()));
 		}
-		if(num.heatDiv != null) list.add(color + I18nUtil.resolveKey("item.tooltip.item_watz_pellet.3", reset, num.heatDiv.getLabelForFuel()));
-		if(num.absorbFunc != null) list.add(color + I18nUtil.resolveKey("item.tooltip.item_watz_pellet.4", reset, num.absorbFunc.getLabelForFuel()));
+		if(num.heatDiv != null) list.add(color + I18nUtil.resolveKey("desc.item.watz_pellet.3", reset, num.heatDiv.getLabelForFuel()));
+		if(num.absorbFunc != null) list.add(color + I18nUtil.resolveKey("desc.item.watz_pellet.4", reset, num.absorbFunc.getLabelForFuel()));
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ItemBook extends Item implements IGUIProvider {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		
-		list.add(I18nUtil.resolveKey("item.tooltip.item_book.1"));
+		list.add(I18nUtil.resolveKey("desc.item.book.1"));
 	}
 
 	@Override

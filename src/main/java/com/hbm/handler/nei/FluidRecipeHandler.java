@@ -62,7 +62,7 @@ public class FluidRecipeHandler extends TemplateRecipeHandler implements ICompat
 
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.fluid_recipe_handler.name");
+		return I18nUtil.resolveKey("nei.fluid.name");
 	}
 
 	@Override

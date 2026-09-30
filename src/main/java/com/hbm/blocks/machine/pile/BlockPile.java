@@ -125,7 +125,7 @@ public class BlockPile extends BlockContainer implements IBlockCT, IToolable, IL
 			TileEntity tile = world.getTileEntity(x, y, z);
 			
 			if(tile instanceof TileEntityPileCore || world.getBlockMetadata(x, y, z) == META_CORE) {
-				MachinePWRController.sendError(world, x, y, z, "Cannot intersect core", player);
+				MachinePWRController.sendError(world, x, y, z, "chat.cannot_intersect_core", player);
 				return false;
 			}
 			
@@ -138,7 +138,7 @@ public class BlockPile extends BlockContainer implements IBlockCT, IToolable, IL
 				}
 			}
 			
-			MachinePWRController.sendError(world, x, y, z, "No core found", player);
+			MachinePWRController.sendError(world, x, y, z, "chat.no_core_found", player);
 		}
 		
 		return false;
@@ -148,17 +148,17 @@ public class BlockPile extends BlockContainer implements IBlockCT, IToolable, IL
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
 		List<String> text = new ArrayList();
-		if(meta == META_FUEL_IN) text.add(I18nUtil.resolveKey("overlay.block_pile.fuel_loading_port"));
-		if(meta == META_FUEL_OUT) text.add(I18nUtil.resolveKey("overlay.block_pile.fuel_ejection_port"));
-		if(meta == META_AIR_IN) text.add(I18nUtil.resolveKey("overlay.block_pile.air_inlet"));
-		if(meta == META_AIR_OUT) text.add(I18nUtil.resolveKey("overlay.block_pile.air_outlet"));
-		if(meta == META_CONTROL) text.add(I18nUtil.resolveKey("overlay.block_pile.control_rod_channel"));
+		if(meta == META_FUEL_IN) text.add(I18nUtil.resolveKey("overlay.pile.fuel_loading_port"));
+		if(meta == META_FUEL_OUT) text.add(I18nUtil.resolveKey("overlay.pile.fuel_ejection_port"));
+		if(meta == META_AIR_IN) text.add(I18nUtil.resolveKey("overlay.pile.air_inlet"));
+		if(meta == META_AIR_OUT) text.add(I18nUtil.resolveKey("overlay.pile.air_outlet"));
+		if(meta == META_CONTROL) text.add(I18nUtil.resolveKey("overlay.pile.control_rod_channel"));
 		
 		if(meta == META_CORE) {
 			TileEntity tile = world.getTileEntity(x, y, z);
 			if(tile instanceof TileEntityPileCore) {
 				TileEntityPileCore core = (TileEntityPileCore) tile;
-				text.add(I18nUtil.resolveKey("overlay.block_pile.max_temp_s_s_c", (int) Math.round(core.highestHeat), core.MAX_HEAT));
+				text.add(I18nUtil.resolveKey("overlay.pile.max_temp_c", (int) Math.round(core.highestHeat), core.MAX_HEAT));
 			}
 		}
 		

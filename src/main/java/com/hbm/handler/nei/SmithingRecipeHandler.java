@@ -75,7 +75,7 @@ public class SmithingRecipeHandler extends TemplateRecipeHandler implements ICom
 
 	@Override
 	public String getRecipeName() {
-		return I18nUtil.resolveKey("nei.smithing_recipe_handler.name");
+		return I18nUtil.resolveKey("nei.smithing.name");
 	}
 
 	@Override
@@ -159,7 +159,7 @@ public class SmithingRecipeHandler extends TemplateRecipeHandler implements ICom
 		RecipeSet rec = (RecipeSet) this.arecipes.get(recipe);
 
 		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-		fontRenderer.drawString(I18nUtil.resolveKey("gui.smithing_recipe_handler.tier_s", rec.tier), 52, 43, 0x404040);
+		fontRenderer.drawString(I18nUtil.resolveKey("gui.smithing.tier", rec.tier), 52, 43, 0x404040);
 	}
 
 	@Override

@@ -288,7 +288,7 @@ public class GUIAnvil extends GuiContainer {
 
 		List<String> list = new ArrayList();
 
-		list.add(I18nUtil.resolveKey("tooltip.guianvil.s_inputs", EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.misc.guianvil.inputs", EnumChatFormatting.YELLOW));
 
 		for(AStack stack : recipe.input) {
 			if(stack instanceof ComparableStack) {
@@ -334,13 +334,13 @@ public class GUIAnvil extends GuiContainer {
 						list.add(EnumChatFormatting.RED + ">" + input.stacksize + "x " + inStack.getDisplayName());
 					}
 				} else {
-					list.add(I18nUtil.resolveKey("tooltip.guianvil.i_am_error"));
+					list.add(I18nUtil.resolveKey("desc.misc.guianvil.i_am_error"));
 				}
 			}
 		}
 
 		list.add("");
-		list.add(I18nUtil.resolveKey("tooltip.guianvil.s_outputs", EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.misc.guianvil.outputs", EnumChatFormatting.YELLOW));
 
 		for(AnvilOutput stack : recipe.output) {
 			list.add(">" + stack.stack.stackSize + "x " + stack.stack.getDisplayName() + (stack.chance != 1F ? (" (" + (stack.chance * 100) + "%)") : ""));
@@ -361,7 +361,7 @@ public class GUIAnvil extends GuiContainer {
 		for(AStack stack : recipe.input) {
 			if(stack instanceof ComparableStack)  {
 				ItemStack input = ((ComparableStack) stack).toStack();
-				try { list.add(input.getDisplayName().toLowerCase(Locale.US)); } catch(Exception ex) { list.add(I18nUtil.resolveKey("gui.guianvil.i_am_error")); }
+				try { list.add(input.getDisplayName().toLowerCase(Locale.US)); } catch(Exception ex) { list.add(I18nUtil.resolveKey("gui.anvil.i_am_error")); }
 
 			} else if(stack instanceof OreDictStack) {
 				OreDictStack input = (OreDictStack) stack;
@@ -369,7 +369,7 @@ public class GUIAnvil extends GuiContainer {
 
 				if(ores.size() > 0) {
 					for(ItemStack ore : ores) {
-						try { list.add(ore.getDisplayName().toLowerCase(Locale.US)); } catch(Exception ex) { list.add(I18nUtil.resolveKey("gui.guianvil.i_am_error")); }
+						try { list.add(ore.getDisplayName().toLowerCase(Locale.US)); } catch(Exception ex) { list.add(I18nUtil.resolveKey("gui.anvil.i_am_error")); }
 					}
 				}
 			}

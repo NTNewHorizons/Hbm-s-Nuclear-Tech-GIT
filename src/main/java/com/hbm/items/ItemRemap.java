@@ -46,6 +46,6 @@ public class ItemRemap extends Item {
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.tooltip.item_remap.1"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.remap.1"));
 	}
 }

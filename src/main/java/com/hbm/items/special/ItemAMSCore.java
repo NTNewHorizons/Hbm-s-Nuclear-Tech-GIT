@@ -29,51 +29,51 @@ public class ItemAMSCore extends Item {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
 		if (this == ModItems.ams_core_sing) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.1"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.2"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.3"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.4"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.5"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.6"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.1"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.2"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.3"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.4"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.5"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.6"));
 		}
 
 		if (this == ModItems.ams_core_wormhole) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.7"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.8"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.9"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.10"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.11"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.12"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.13"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.14"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.15"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.16"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.7"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.8"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.9"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.10"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.11"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.12"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.13"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.14"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.15"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.16"));
 		}
 
 		if (this == ModItems.ams_core_eyeofharmony) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.17"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.18"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.19"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.20"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.21"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.22"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.23"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.17"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.18"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.19"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.20"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.21"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.22"));
+			list.add(I18nUtil.resolveKey("desc.item.ams_core.23"));
 		}
 
 		if (this == ModItems.ams_core_thingy) {
 			if(MainRegistry.polaroidID == 11) {
-				list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.24"));
+				list.add(I18nUtil.resolveKey("desc.item.ams_core.24"));
 			} else {
 				list.add("...");
 				list.add("...");
-				list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.25"));
-				list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.26"));
-				list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.27"));
-				list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.28"));
-				list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.29"));
-				list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.30"));
-				list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.31"));
-				list.add(I18nUtil.resolveKey("item.tooltip.item_a_m_s_core.32"));
+				list.add(I18nUtil.resolveKey("desc.item.ams_core.25"));
+				list.add(I18nUtil.resolveKey("desc.item.ams_core.26"));
+				list.add(I18nUtil.resolveKey("desc.item.ams_core.27"));
+				list.add(I18nUtil.resolveKey("desc.item.ams_core.28"));
+				list.add(I18nUtil.resolveKey("desc.item.ams_core.29"));
+				list.add(I18nUtil.resolveKey("desc.item.ams_core.30"));
+				list.add(I18nUtil.resolveKey("desc.item.ams_core.31"));
+				list.add(I18nUtil.resolveKey("desc.item.ams_core.32"));
 			}
 		}
 	}

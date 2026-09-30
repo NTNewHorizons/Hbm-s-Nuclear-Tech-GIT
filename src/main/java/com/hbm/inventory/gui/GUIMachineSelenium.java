@@ -39,38 +39,38 @@ public class GUIMachineSelenium extends GuiInfoContainer {
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 108, 160, 16, selenium.power, selenium.powerCap);
 
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.guimachine_selenium.s_accepted_fuels", EnumChatFormatting.YELLOW));
+		text.add(I18nUtil.resolveKey("overlay.selenium.accepted_fuels", EnumChatFormatting.YELLOW));
 		
 		for(FluidType type : Fluids.getInNiceOrder()) {
 			long energy = selenium.getHEFromFuel(type);
 			
 			if(energy > 0)
-				text.add(I18nUtil.resolveKey("overlay.guimachine_selenium.s_s_he_t", type.getLocalizedName(), BobMathUtil.getShortNumber(energy)));
+				text.add(I18nUtil.resolveKey("overlay.selenium.he_t", type.getLocalizedName(), BobMathUtil.getShortNumber(energy)));
 		}
 
-		text.add(I18nUtil.resolveKey("overlay.guimachine_selenium.s_these_numbers_are_base_values", EnumChatFormatting.ITALIC));
-		text.add(I18nUtil.resolveKey("overlay.guimachine_selenium.sactual_output_is_based", EnumChatFormatting.ITALIC));
-		text.add(I18nUtil.resolveKey("overlay.guimachine_selenium.son_piston_count", EnumChatFormatting.ITALIC));
+		text.add(I18nUtil.resolveKey("overlay.selenium.these_numbers_are_base_values", EnumChatFormatting.ITALIC));
+		text.add(I18nUtil.resolveKey("overlay.selenium.sactual_output_is_based", EnumChatFormatting.ITALIC));
+		text.add(I18nUtil.resolveKey("overlay.selenium.son_piston_count", EnumChatFormatting.ITALIC));
 		
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text.toArray(new String[0]));
 		
-		String[] text1 = new String[] { I18nUtil.resolveKey("gui.guimachine_selenium.fuel_consumption_rate"),
-				I18nUtil.resolveKey("gui.guimachine_selenium.1_m_b_t"),
-				I18nUtil.resolveKey("gui.guimachine_selenium.20_m_b_s"),
-				I18nUtil.resolveKey("gui.guimachine_selenium.consumption_rate_per_piston") };
+		String[] text1 = new String[] { I18nUtil.resolveKey("gui.selenium.fuel_consumption_rate"),
+				I18nUtil.resolveKey("gui.selenium.1_m_b_t"),
+				I18nUtil.resolveKey("gui.selenium.20_mb"),
+				I18nUtil.resolveKey("gui.selenium.consumption_rate_per_piston") };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
 		
 		if(selenium.pistonCount < 3) {
 			
-			String[] text2 = new String[] { I18nUtil.resolveKey("gui.guimachine_selenium.error_at_least_three_pistons_are"),
-					I18nUtil.resolveKey("gui.guimachine_selenium.required_to_operate_this_radial_engine") };
+			String[] text2 = new String[] { I18nUtil.resolveKey("gui.selenium.error_at_least_three_pistons_are"),
+					I18nUtil.resolveKey("gui.selenium.required_operate_radial_engine") };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 32, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
 		}
 		
 		if(!selenium.hasAcceptableFuel()) {
 			
-			String[] text2 = new String[] { I18nUtil.resolveKey("gui.guimachine_selenium.error_the_currently_set_fuel_type"),
-					I18nUtil.resolveKey("gui.guimachine_selenium.is_not_supported_by_this_engine") };
+			String[] text2 = new String[] { I18nUtil.resolveKey("gui.selenium.error_currently_set_fuel_type"),
+					I18nUtil.resolveKey("gui.selenium.is_not_supported_by_this_engine") };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 48, 16, 16, guiLeft - 8, guiTop + 36 + 16 + 32, text2);
 		}
 	}

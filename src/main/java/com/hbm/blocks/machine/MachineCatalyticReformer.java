@@ -83,7 +83,7 @@ public class MachineCatalyticReformer extends BlockDummyable implements IPersist
 		for(int i = 0; i < 4; i++) {
 			FluidTank tank = new FluidTank(Fluids.NONE, 0);
 			tank.readFromNBT(persistentTag, "" + i);
-			list.add(I18nUtil.resolveKey("tooltip.machine_catalytic_reformer.s_s_sm_b_s", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
+			list.add(I18nUtil.resolveKey("desc.block.catalytic_reformer.mb", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
 		}
 	}
 }

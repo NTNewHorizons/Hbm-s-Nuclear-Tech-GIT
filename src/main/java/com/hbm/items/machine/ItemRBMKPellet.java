@@ -82,20 +82,20 @@ public class ItemRBMKPellet extends ItemNuclearWaste {
 		super.addInformation(stack, player, list, bool);
 
 		list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey(this.fullName));
-		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.tooltip.item_r_b_m_k_pellet.1"));
+		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.rbmk_pellet.1"));
 
 		int meta = rectify(stack.getItemDamage());
 
 		switch(meta % 5) {
-		case 0: list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.tooltip.item_r_b_m_k_pellet.2")); break;
-		case 1: list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.tooltip.item_r_b_m_k_pellet.3")); break;
-		case 2: list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.tooltip.item_r_b_m_k_pellet.4")); break;
-		case 3: list.add(EnumChatFormatting.DARK_GREEN + I18nUtil.resolveKey("item.tooltip.item_r_b_m_k_pellet.5")); break;
-		case 4: list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("item.tooltip.item_r_b_m_k_pellet.6")); break;
+		case 0: list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.rbmk_pellet.2")); break;
+		case 1: list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.rbmk_pellet.3")); break;
+		case 2: list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.rbmk_pellet.4")); break;
+		case 3: list.add(EnumChatFormatting.DARK_GREEN + I18nUtil.resolveKey("desc.item.rbmk_pellet.5")); break;
+		case 4: list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.rbmk_pellet.6")); break;
 		}
 
 		if(hasXenon(meta))
-			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("item.tooltip.item_r_b_m_k_pellet.7"));
+			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.rbmk_pellet.7"));
 	}
 
 	@Override

@@ -21,16 +21,16 @@ public class ItemModCharm extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.tooltip.item_mod_charm.1"));
+		list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.1"));
 		
 		if(this == ModItems.protection_charm) {
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.tooltip.item_mod_charm.2"));
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.tooltip.item_mod_charm.3"));
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.tooltip.item_mod_charm.4"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.2"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.3"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.4"));
 		}
 		if(this == ModItems.meteor_charm) {
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.tooltip.item_mod_charm.5"));
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.tooltip.item_mod_charm.6"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.5"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.6"));
 		}
 		
 		super.addInformation(stack, player, list, bool);

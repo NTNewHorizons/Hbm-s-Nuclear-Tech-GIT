@@ -249,62 +249,62 @@ public class ItemEnergy extends Item {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
 		if(this == ModItems.can_smart) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.1"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.1"));
 		}
 		if(this == ModItems.can_creature) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.2"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.2"));
 		}
 		if(this == ModItems.can_redbomb) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.3"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.3"));
 		}
 		if(this == ModItems.can_mrsugar) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.4"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.4"));
 		}
 		if(this == ModItems.can_overcharge) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.5"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.5"));
 		}
 		if(this == ModItems.can_luna) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.6"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.6"));
 		}
 		if(this == ModItems.can_bepis) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.7"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.7"));
 		}
 		if(this == ModItems.can_breen) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.8"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.9"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.8"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.9"));
 		}
 		if(this == ModItems.chocolate_milk) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.10"));
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.11"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.10"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.11"));
 		}
 		if(this == ModItems.bottle_nuka) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.12"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.12"));
 		}
 		if(this == ModItems.bottle_cherry) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.13"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.13"));
 		}
 		if(this == ModItems.bottle_quantum) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.14"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.14"));
 		}
 		if(this == ModItems.bottle2_korl) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.15"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.15"));
 		}
 		if(this == ModItems.bottle2_fritz) {
-			list.add(I18nUtil.resolveKey("item.tooltip.item_energy.16"));
+			list.add(I18nUtil.resolveKey("desc.item.energy.16"));
 		}
 		if(this == ModItems.bottle_sparkle) {
 			if(MainRegistry.polaroidID == 11)
-				list.add(I18nUtil.resolveKey("item.tooltip.item_energy.17"));
+				list.add(I18nUtil.resolveKey("desc.item.energy.17"));
 			else
-				list.add(I18nUtil.resolveKey("item.tooltip.item_energy.18"));
+				list.add(I18nUtil.resolveKey("desc.item.energy.18"));
 		}
 		if(this == ModItems.bottle_rad) {
 			if(MainRegistry.polaroidID == 11)
-				list.add(I18nUtil.resolveKey("item.tooltip.item_energy.19"));
+				list.add(I18nUtil.resolveKey("desc.item.energy.19"));
 			else
-				list.add(I18nUtil.resolveKey("item.tooltip.item_energy.20"));
+				list.add(I18nUtil.resolveKey("desc.item.energy.20"));
 		}
 		
-		if(this.requiresOpener) list.add(I18nUtil.resolveKey("item.tooltip.item_energy.21"));
+		if(this.requiresOpener) list.add(I18nUtil.resolveKey("desc.item.energy.21"));
 	}
 }

@@ -23,8 +23,8 @@ public class GUILemegeton extends GuiContainer {
 
 	protected void drawGuiContainerForegroundLayer(int mX, int mY) {
 
-		Minecraft.getMinecraft().standardGalacticFontRenderer.drawString(I18nUtil.resolveKey("gui.guilemegeton.material_upgrade_conversion"), 28, 6, 4210752);
-		Minecraft.getMinecraft().standardGalacticFontRenderer.drawString(I18nUtil.resolveKey("gui.guilemegeton.standard_inventory"), 8, this.ySize - 96 + 2, 4210752);
+		Minecraft.getMinecraft().standardGalacticFontRenderer.drawString(I18nUtil.resolveKey("gui.lemegeton.material_upgrade_conversion"), 28, 6, 4210752);
+		Minecraft.getMinecraft().standardGalacticFontRenderer.drawString(I18nUtil.resolveKey("gui.lemegeton.standard_inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	protected void drawGuiContainerBackgroundLayer(float inter, int mX, int mY) {

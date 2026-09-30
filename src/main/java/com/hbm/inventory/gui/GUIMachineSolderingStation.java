@@ -41,9 +41,9 @@ public class GUIMachineSolderingStation extends GuiInfoContainer {
 		
 
 		this.drawCustomInfoStat(x, y, guiLeft + 5, guiTop + 66, 10, 10, x, y,
-				I18nUtil.resolveKey("gui.guimachine_soldering_station.recipe_collision_prevention") + (solderer.collisionPrevention ? EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.guimachine_soldering_station.on") : EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guimachine_soldering_station.off")),
-				I18nUtil.resolveKey("gui.guimachine_soldering_station.prevents_no_fluid_recipes_from_being_processed"),
-				I18nUtil.resolveKey("gui.guimachine_soldering_station.when_fluid_is_present"));
+				I18nUtil.resolveKey("gui.soldering_station.recipe_collision_prevention") + (solderer.collisionPrevention ? EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.common.on") : EnumChatFormatting.RED + I18nUtil.resolveKey("gui.common.off")),
+				I18nUtil.resolveKey("gui.soldering_station.text.01"),
+				I18nUtil.resolveKey("gui.soldering_station.when_fluid_is_present"));
 	}
 
 	@Override

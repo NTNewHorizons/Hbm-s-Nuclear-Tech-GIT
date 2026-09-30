@@ -60,16 +60,16 @@ public class GUIReactorResearch extends GuiInfoContainer {
 		super.drawScreen(mouseX, mouseY, f);
 		
 		String[] text = new String[] {
-				I18nUtil.resolveKey("gui.guireactor_research.the_reactor_has_to_be_submerged"),
-				I18nUtil.resolveKey("gui.guireactor_research.in_water_on_its_sides_to_cool"),
-				I18nUtil.resolveKey("gui.guireactor_research.the_neutron_flux_is_provided_to"),
-				I18nUtil.resolveKey("gui.guireactor_research.adjacent_breeding_reactors")
+				I18nUtil.resolveKey("gui.reactor_research.the_reactor_has_to_be_submerged"),
+				I18nUtil.resolveKey("gui.reactor_research.in_water_on_its_sides_to_cool"),
+				I18nUtil.resolveKey("gui.reactor_research.the_neutron_flux_is_provided_to"),
+				I18nUtil.resolveKey("gui.reactor_research.adjacent_breeding_reactors")
 		};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 14, guiTop + 23, 16, 16, guiLeft - 6, guiTop + 23 + 16, text);
 		
 		String[] text2 = new String[] {
-				I18nUtil.resolveKey("gui.guireactor_research.this_reactor_is_fueled_with_plate_fuel"),
-				I18nUtil.resolveKey("gui.guireactor_research.the_reaction_needs_a_neutron_source_to_start")
+				I18nUtil.resolveKey("gui.reactor_research.reactor_fueled_plate_fuel"),
+				I18nUtil.resolveKey("gui.reactor_research.text.01")
 		};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 14, guiTop + 61, 16, 16, guiLeft - 6, guiTop + 61 + 16, text2);
 	}
@@ -77,7 +77,7 @@ public class GUIReactorResearch extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		String name = this.reactor.hasCustomInventoryName() ? this.reactor.getInventoryName() : I18n.format(this.reactor.getInventoryName());
-		final String[] labels = { "Flux", "Heat", "Control" };
+		final String[] labels = { I18nUtil.resolveKey("gui.reactor_research.flux"), I18nUtil.resolveKey("gui.reactor_research.heat"), I18nUtil.resolveKey("gui.reactor_research.control") };
 		
 		this.fontRendererObj.drawString(name, 121 - this.fontRendererObj.getStringWidth(name) / 2, 6, 15066597);
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);

@@ -172,7 +172,7 @@ public class ItemPWRPrinter extends Item implements IGUIProvider {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("item.tooltip.item_p_w_r_printer.1"));
+		list.add(I18nUtil.resolveKey("desc.item.pwr_printer.1"));
 	}
 
 }

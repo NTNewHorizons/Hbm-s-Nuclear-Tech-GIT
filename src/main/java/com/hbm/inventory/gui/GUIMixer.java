@@ -52,12 +52,12 @@ public class GUIMixer extends GuiInfoContainer {
 		
 		if(recipes != null && recipes.length > 1) {
 			List<String> label = new ArrayList();
-			label.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.guimixer.current_recipe") + (mixer.recipeIndex + 1) + "/" + recipes.length + "):");
+			label.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.mixer.current_recipe") + (mixer.recipeIndex + 1) + "/" + recipes.length + "):");
 			MixerRecipe recipe = recipes[mixer.recipeIndex % recipes.length];
 			if(recipe.input1 != null) label.add("-" + recipe.input1.type.getLocalizedName());
 			if(recipe.input2 != null) label.add("-" + recipe.input2.type.getLocalizedName());
 			if(recipe.solidInput != null) label.add("-" + recipe.solidInput.extractForCyclingDisplay(20).getDisplayName());
-			label.add(EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guimixer.click_to_change"));
+			label.add(EnumChatFormatting.RED + I18nUtil.resolveKey("gui.mixer.click_to_change"));
 			this.drawCustomInfoStat(x, y, guiLeft + 71, guiTop + 17, 12, 12, x, y, label);
 		}
 

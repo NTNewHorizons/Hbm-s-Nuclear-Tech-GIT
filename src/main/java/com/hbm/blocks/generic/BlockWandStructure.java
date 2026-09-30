@@ -161,9 +161,9 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 
 		List<String> text = new ArrayList<String>();
 
-		text.add(I18nUtil.resolveKey("overlay.block_wand_structure.s_name_s_s", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, structure.name));
+		text.add(I18nUtil.resolveKey("overlay.wand_structure.name", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, structure.name));
 
-		text.add(I18nUtil.resolveKey("overlay.block_wand_structure.s_blacklist", EnumChatFormatting.GRAY));
+		text.add(I18nUtil.resolveKey("overlay.wand_structure.blacklist", EnumChatFormatting.GRAY));
 		for (Pair<Block, Integer> bm : structure.blacklist) {
 			text.add(EnumChatFormatting.RED + "- " + bm.getKey().getUnlocalizedName() + " : " + bm.getValue());
 		}
@@ -190,12 +190,12 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 
 		public void saveStructure(EntityPlayer player) {
 			if(name.isEmpty()) {
-				player.addChatMessage(new ChatComponentTranslation("chat.block_wand_structure.s_could_not_save_invalid_name", EnumChatFormatting.RED));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.could_not_save_invalid_name", EnumChatFormatting.RED));
 				return;
 			}
 
 			if(sizeX <= 0 || sizeY <= 0 || sizeZ <= 0) {
-				player.addChatMessage(new ChatComponentTranslation("chat.block_wand_structure.s_could_not_save_invalid_dimensions", EnumChatFormatting.RED));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.save_invalid_dimensions", EnumChatFormatting.RED));
 				return;
 			}
 
@@ -207,7 +207,7 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 			blacklist.remove(air);
 
 			if(file == null) {
-				player.addChatMessage(new ChatComponentTranslation("chat.block_wand_structure.s_failed_to_save_structure", EnumChatFormatting.RED));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.failed_to_save_structure", EnumChatFormatting.RED));
 				return;
 			}
 
@@ -215,12 +215,12 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 			fileText.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file.getParentFile().getAbsolutePath()));
 			fileText.getChatStyle().setUnderlined(true);
 
-			player.addChatMessage(new ChatComponentTranslation("chat.block_wand_structure.saved_structure_as").appendSibling(fileText));
+			player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.saved_structure_as").appendSibling(fileText));
 		}
 
 		public void loadStructure(EntityPlayer player) {
 			if(name.isEmpty()) {
-				player.addChatMessage(new ChatComponentTranslation("chat.block_wand_structure.s_could_not_load_no_filename_specified", EnumChatFormatting.RED));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.load_no_filename_specified", EnumChatFormatting.RED));
 				return;
 			}
 
@@ -244,10 +244,10 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 
 				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, 3);
 
-				player.addChatMessage(new ChatComponentTranslation("chat.block_wand_structure.structure_loaded"));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.structure_loaded"));
 
 			} catch (FileNotFoundException ex) {
-				player.addChatMessage(new ChatComponentTranslation("chat.block_wand_structure.s_could_not_load_file_not_found", EnumChatFormatting.RED));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.could_not_load_file_not_found", EnumChatFormatting.RED));
 			} finally {
 				ServerConfig.STRUCTURE_DEBUG.set(previousDebug);
 			}
@@ -386,7 +386,7 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 			textSizeZ = new GuiTextField(fontRendererObj, width / 2 - 50, 100, 50, 20);
 			textSizeZ.setText("" + tile.sizeZ);
 
-			performAction = new GuiButton(0, width / 2 - 150, 150, 300, 20, I18nUtil.resolveKey("gui.block_wand_structure.save"));
+			performAction = new GuiButton(0, width / 2 - 150, 150, 300, 20, I18nUtil.resolveKey("gui.wand_structure.save"));
 		}
 
 		@Override
@@ -497,7 +497,7 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 
 			fileList = new GuiFileList(mc, structureDirectory.listFiles(structureFilter), this::selectFile, nameFilter, width, height, 70, height - 90, 16);
 
-			performAction = new GuiButton(0, width / 2 - 150, height - 70, 300, 20, I18nUtil.resolveKey("gui.block_wand_structure.load"));
+			performAction = new GuiButton(0, width / 2 - 150, height - 70, 300, 20, I18nUtil.resolveKey("gui.wand_structure.load"));
 		}
 
 		public void selectFile(File file) {

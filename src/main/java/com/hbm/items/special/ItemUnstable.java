@@ -38,7 +38,7 @@ public class ItemUnstable extends Item {
     	if(stack.getItemDamage() != 0)
     		return;
 		
-		list.add(I18nUtil.resolveKey("item.tooltip.item_unstable.1", (getTimer(stack) * 100 / timer)));
+		list.add(I18nUtil.resolveKey("desc.item.unstable.1", (getTimer(stack) * 100 / timer)));
 	}
 	
     public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {

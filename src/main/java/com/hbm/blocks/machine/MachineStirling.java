@@ -159,8 +159,8 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 		TileEntityStirling stirling = (TileEntityStirling) te;
 
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.machine_stirling.s_tu_t", stirling.heat));
-		text.add(I18nUtil.resolveKey("overlay.machine_stirling.s_he_t", (stirling.hasCog ? stirling.powerBuffer : 0)));
+		text.add(I18nUtil.resolveKey("overlay.stirling.tu_t", stirling.heat));
+		text.add(I18nUtil.resolveKey("overlay.stirling.he_t", (stirling.hasCog ? stirling.powerBuffer : 0)));
 
 		if(this != ModBlocks.machine_stirling_creative) {
 			int maxHeat = stirling.maxHeat();
@@ -173,11 +173,11 @@ public class MachineStirling extends BlockDummyable implements ILookOverlay, ITo
 			text.add("&[" + color + "&]" + ((stirling.heat * 1000 / maxHeat) / 10D) + "%");
 			
 			if(stirling.heat > maxHeat) {
-				text.add(I18nUtil.resolveKey("overlay.machine_stirling.s_overspeed", (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00)));
+				text.add(I18nUtil.resolveKey("overlay.stirling.overspeed", (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00)));
 			}
 			
 			if(!stirling.hasCog) {
-				text.add(I18nUtil.resolveKey("overlay.machine_stirling.s_gear_missing", 0xff0000));
+				text.add(I18nUtil.resolveKey("overlay.stirling.gear_missing", 0xff0000));
 			}
 		}
 		

@@ -141,7 +141,7 @@ public class ModuleBurnTime {
 	public List<String> getTimeDesc() {
 		List<String> list = new ArrayList();
 
-		list.add(I18nUtil.resolveKey("tooltip.module_burn_time.s_burn_time_bonuses", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.misc.burn_time_bonuses", EnumChatFormatting.GOLD));
 
 		addIf(list, "Logs", modTime[modLog]);
 		addIf(list, "Wood", modTime[modWood]);
@@ -161,7 +161,7 @@ public class ModuleBurnTime {
 	public List<String> getHeatDesc() {
 		List<String> list = new ArrayList();
 
-		list.add(I18nUtil.resolveKey("tooltip.module_burn_time.s_burn_heat_bonuses", EnumChatFormatting.RED));
+		list.add(I18nUtil.resolveKey("desc.misc.burn_heat_bonuses", EnumChatFormatting.RED));
 
 		addIf(list, "Logs", modHeat[modLog]);
 		addIf(list, "Wood", modHeat[modWood]);

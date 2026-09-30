@@ -18,13 +18,13 @@ public class ItemPrototypeBlock extends ItemBlock {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
-		list.add(I18nUtil.resolveKey("item.tooltip.item_prototype_block.1"));
+		list.add(I18nUtil.resolveKey("desc.item.prototype_block.1"));
 		list.add("");
-		list.add(I18nUtil.resolveKey("item.tooltip.item_prototype_block.2"));
+		list.add(I18nUtil.resolveKey("desc.item.prototype_block.2"));
 		
-		/*list.add(I18nUtil.resolveKey("tooltip.item_prototype_block.in_memory_of_euphemia"));
+		/*list.add(I18nUtil.resolveKey("desc.item.memory_euphemia"));
 		list.add("");
-		list.add(I18nUtil.resolveKey("tooltip.item_prototype_block.rest_in_spaghetti_never_forgetti"));*/
+		list.add(I18nUtil.resolveKey("desc.item.rest_spaghetti_never_forgetti"));*/
 	}
 
 }

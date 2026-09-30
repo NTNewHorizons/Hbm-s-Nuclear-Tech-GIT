@@ -91,18 +91,18 @@ public class ItemCircuit extends ItemEnumMulti {
 		/*List<String> lines = new ArrayList();
 
 		switch(stack.getItemDamage()) {
-		case 0: lines.add(I18nUtil.resolveKey("gui.item_circuit.we_taught_this_filament_how_to_think")); break;
+		case 0: lines.add(I18nUtil.resolveKey("gui.circuit.we_taught_filament_how_think")); break;
 		case 1: lines.add("3300µF"); break;
-		case 2: lines.add(I18nUtil.resolveKey("gui.item_circuit.sorry_we_were_out_of_flux_capacitors_this_is_a_regular_o")); break;
-		case 3: lines.add(I18nUtil.resolveKey("gui.item_circuit.laminated_sandwich_structure")); break;
-		case 4: lines.add(I18nUtil.resolveKey("gui.item_circuit.microscopic_arcane_sigils_have_given_this_rock_anima")); break;
-		case 5: lines.add(I18nUtil.resolveKey("gui.item_circuit.less_tasty_than_it_sounds")); break;
-		case 6: lines.add(I18nUtil.resolveKey("gui.item_circuit.the_alu_is_probably_wired_together_correctly_probably")); break;
-		case 7: lines.add(I18nUtil.resolveKey("gui.item_circuit.one_final_act_of_goodwill")); lines.add(I18nUtil.resolveKey("gui.item_circuit.if_i_have_to_hear_the_words_interplay_or")); lines.add(I18nUtil.resolveKey("gui.item_circuit.objectively_better_one_more_time_i_ll_blow")); lines.add(I18nUtil.resolveKey("gui.item_circuit.up_chris_avellone_with_a_bazooka")); break;
-		case 8: lines.add(I18nUtil.resolveKey("gui.item_circuit.100_lead_solder_not_ro_hs_compliant")); break;
-		case 9: lines.add(I18nUtil.resolveKey("gui.item_circuit.it_s_red_that_means_it_s_better")); break;
-		case 10: lines.add(I18nUtil.resolveKey("gui.item_circuit.uses_that_exceptionally_stanky_90s_yellow_pcb")); break;
-		case 11: lines.add(I18nUtil.resolveKey("gui.item_circuit.can_do_up_to_three_different_things_instead_of_two")); break;
+		case 2: lines.add(I18nUtil.resolveKey("gui.circuit.text.03")); break;
+		case 3: lines.add(I18nUtil.resolveKey("gui.circuit.laminated_sandwich_structure")); break;
+		case 4: lines.add(I18nUtil.resolveKey("gui.circuit.text.02")); break;
+		case 5: lines.add(I18nUtil.resolveKey("gui.circuit.less_tasty_than_it_sounds")); break;
+		case 6: lines.add(I18nUtil.resolveKey("gui.circuit.text.04")); break;
+		case 7: lines.add(I18nUtil.resolveKey("gui.circuit.one_final_act_of_goodwill")); lines.add(I18nUtil.resolveKey("gui.circuit.i_hear_words_interplay")); lines.add(I18nUtil.resolveKey("gui.circuit.objectively_better_one_time_i")); lines.add(I18nUtil.resolveKey("gui.circuit.up_chris_avellone_with_a_bazooka")); break;
+		case 8: lines.add(I18nUtil.resolveKey("gui.circuit.100_lead_solder_rohs_compliant")); break;
+		case 9: lines.add(I18nUtil.resolveKey("gui.circuit.red_means_better")); break;
+		case 10: lines.add(I18nUtil.resolveKey("gui.circuit.uses_exceptionally_stanky_90s_ye")); break;
+		case 11: lines.add(I18nUtil.resolveKey("gui.circuit.text.01")); break;
 		}
 
 		for(String line : lines) {

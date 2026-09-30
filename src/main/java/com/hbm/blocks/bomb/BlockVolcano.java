@@ -64,12 +64,12 @@ public class BlockVolcano extends BlockContainer implements ITooltipProvider, IB
 		int meta = stack.getItemDamage();
 
 		if(meta == META_SMOLDERING) {
-			list.add(I18nUtil.resolveKey("tooltip.block_volcano.s_shield_volcano", EnumChatFormatting.GOLD));
+			list.add(I18nUtil.resolveKey("desc.block.volcano.shield_volcano", EnumChatFormatting.GOLD));
 			return;
 		}
 
-		list.add(BlockVolcano.isGrowing(meta) ? (EnumChatFormatting.RED + I18nUtil.resolveKey("gui.block_volcano.does_grow")) : (EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("gui.block_volcano.does_not_grow")));
-		list.add(BlockVolcano.isExtinguishing(meta) ? (EnumChatFormatting.RED + I18nUtil.resolveKey("gui.block_volcano.does_extinguish")) : (EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("gui.block_volcano.does_not_extinguish")));
+		list.add(BlockVolcano.isGrowing(meta) ? (EnumChatFormatting.RED + I18nUtil.resolveKey("gui.volcano.does_grow")) : (EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("gui.volcano.does_not_grow")));
+		list.add(BlockVolcano.isExtinguishing(meta) ? (EnumChatFormatting.RED + I18nUtil.resolveKey("gui.volcano.does_extinguish")) : (EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("gui.volcano.does_not_extinguish")));
 	}
 
 	public static final int META_STATIC_ACTIVE = 0;

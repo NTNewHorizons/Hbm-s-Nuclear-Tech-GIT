@@ -61,9 +61,9 @@ public class GUIPADipole extends GuiInfoContainer {
 		dipole.coolantTanks[1].renderTankInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 36, 16, 52);
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 18, 16, 52, dipole.power, dipole.getMaxPower());
 		
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 62, guiTop + 29, 12, 12, mouseX, mouseY, EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.guipadipole.player_orientation"), EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guipadipole.output_orientation"), dipole.ditToForgeDir(dipole.dirLower).name());
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 62, guiTop + 43, 12, 12, mouseX, mouseY, EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.guipadipole.player_orientation"), EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guipadipole.output_orientation"), dipole.ditToForgeDir(dipole.dirUpper).name());
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 62, guiTop + 57, 12, 12, mouseX, mouseY, EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.guipadipole.player_orientation"), EnumChatFormatting.RED + I18nUtil.resolveKey("gui.guipadipole.output_orientation"), dipole.ditToForgeDir(dipole.dirRedstone).name());
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 62, guiTop + 29, 12, 12, mouseX, mouseY, EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.padipole.player_orientation"), EnumChatFormatting.RED + I18nUtil.resolveKey("gui.padipole.output_orientation"), dipole.ditToForgeDir(dipole.dirLower).name());
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 62, guiTop + 43, 12, 12, mouseX, mouseY, EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.padipole.player_orientation"), EnumChatFormatting.RED + I18nUtil.resolveKey("gui.padipole.output_orientation"), dipole.ditToForgeDir(dipole.dirUpper).name());
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 62, guiTop + 57, 12, 12, mouseX, mouseY, EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.padipole.player_orientation"), EnumChatFormatting.RED + I18nUtil.resolveKey("gui.padipole.output_orientation"), dipole.ditToForgeDir(dipole.dirRedstone).name());
 	}
 
 	@Override

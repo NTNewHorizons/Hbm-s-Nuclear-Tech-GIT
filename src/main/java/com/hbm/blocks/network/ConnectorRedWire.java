@@ -62,7 +62,7 @@ public class ConnectorRedWire extends PylonBase {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tooltip.connector_red_wire.s_connection_type_s_single", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
-		list.add(I18nUtil.resolveKey("tooltip.connector_red_wire.s_connection_range_s10m", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.block.connection_type_single", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.block.connection_range_10m", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
 	}
 }

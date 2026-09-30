@@ -107,7 +107,7 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 
 				mileEntity.tank.setTankType(type);
 				mileEntity.markDirty();
-				player.addChatComponentMessage(new ChatComponentTranslation("chat.block_fluid_barrel.changed_type_to").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
+				player.addChatComponentMessage(new ChatComponentTranslation("chat.common.changed_type").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 				}
 			return true;
 
@@ -222,47 +222,47 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
 		FluidTank tank = new FluidTank(Fluids.NONE, 0);
 		tank.readFromNBT(persistentTag, "tank");
-		list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_s_sm_b_s", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
+		list.add(I18nUtil.resolveKey("desc.block.fluid_barrel.mb", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		
 		if(this == ModBlocks.barrel_plastic) {
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_capacity_12_000m_b", EnumChatFormatting.AQUA));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_cannot_store_hot_fluids", EnumChatFormatting.YELLOW));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_cannot_store_corrosive_fluids", EnumChatFormatting.YELLOW));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_cannot_store_antimatter", EnumChatFormatting.YELLOW));
+			list.add(I18nUtil.resolveKey("desc.block.fluid_barrel.capacity_12_000m_b", EnumChatFormatting.AQUA));
+			list.add(I18nUtil.resolveKey("desc.block.cannot_store_hot_fluids", EnumChatFormatting.YELLOW));
+			list.add(I18nUtil.resolveKey("desc.block.cannot_store_corrosive_fluids", EnumChatFormatting.YELLOW));
+			list.add(I18nUtil.resolveKey("desc.block.cannot_store_antimatter", EnumChatFormatting.YELLOW));
 		}
 		
 		if(this == ModBlocks.barrel_corroded) {
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_capacity_6_000m_b", EnumChatFormatting.AQUA));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_can_store_hot_fluids", EnumChatFormatting.GREEN));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_can_store_highly_corrosive_fluids", EnumChatFormatting.GREEN));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_cannot_store_antimatter", EnumChatFormatting.YELLOW));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_leaky", EnumChatFormatting.RED));
+			list.add(I18nUtil.resolveKey("desc.block.fluid_barrel.capacity_6_000m_b", EnumChatFormatting.AQUA));
+			list.add(I18nUtil.resolveKey("desc.block.store_hot_fluids", EnumChatFormatting.GREEN));
+			list.add(I18nUtil.resolveKey("desc.block.store_highly_corrosive_fluids", EnumChatFormatting.GREEN));
+			list.add(I18nUtil.resolveKey("desc.block.cannot_store_antimatter", EnumChatFormatting.YELLOW));
+			list.add(I18nUtil.resolveKey("desc.block.fluid_barrel.leaky", EnumChatFormatting.RED));
 		}
 		
 		if(this == ModBlocks.barrel_steel) {
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_capacity_16_000m_b", EnumChatFormatting.AQUA));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_can_store_hot_fluids", EnumChatFormatting.GREEN));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_can_store_corrosive_fluids", EnumChatFormatting.GREEN));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_cannot_store_highly_corrosive_fluids_properly", EnumChatFormatting.YELLOW));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_cannot_store_antimatter", EnumChatFormatting.YELLOW));
+			list.add(I18nUtil.resolveKey("desc.block.fluid_barrel.capacity_16_000m_b", EnumChatFormatting.AQUA));
+			list.add(I18nUtil.resolveKey("desc.block.store_hot_fluids", EnumChatFormatting.GREEN));
+			list.add(I18nUtil.resolveKey("desc.block.store_corrosive_fluids", EnumChatFormatting.GREEN));
+			list.add(I18nUtil.resolveKey("desc.block.fluid_barrel.line.01", EnumChatFormatting.YELLOW));
+			list.add(I18nUtil.resolveKey("desc.block.cannot_store_antimatter", EnumChatFormatting.YELLOW));
 		}
 		
 		if(this == ModBlocks.barrel_antimatter) {
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_capacity_16_000m_b", EnumChatFormatting.AQUA));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_can_store_hot_fluids", EnumChatFormatting.GREEN));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_can_store_highly_corrosive_fluids", EnumChatFormatting.GREEN));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_can_store_antimatter", EnumChatFormatting.GREEN));
+			list.add(I18nUtil.resolveKey("desc.block.fluid_barrel.capacity_16_000m_b", EnumChatFormatting.AQUA));
+			list.add(I18nUtil.resolveKey("desc.block.store_hot_fluids", EnumChatFormatting.GREEN));
+			list.add(I18nUtil.resolveKey("desc.block.store_highly_corrosive_fluids", EnumChatFormatting.GREEN));
+			list.add(I18nUtil.resolveKey("desc.block.store_antimatter", EnumChatFormatting.GREEN));
 		}
 		
 		if(this == ModBlocks.barrel_tcalloy) {
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_capacity_24_000m_b", EnumChatFormatting.AQUA));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_can_store_hot_fluids", EnumChatFormatting.GREEN));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_can_store_highly_corrosive_fluids", EnumChatFormatting.GREEN));
-			list.add(I18nUtil.resolveKey("tooltip.block_fluid_barrel.s_cannot_store_antimatter", EnumChatFormatting.YELLOW));
+			list.add(I18nUtil.resolveKey("desc.block.fluid_barrel.capacity_24_000m_b", EnumChatFormatting.AQUA));
+			list.add(I18nUtil.resolveKey("desc.block.store_hot_fluids", EnumChatFormatting.GREEN));
+			list.add(I18nUtil.resolveKey("desc.block.store_highly_corrosive_fluids", EnumChatFormatting.GREEN));
+			list.add(I18nUtil.resolveKey("desc.block.cannot_store_antimatter", EnumChatFormatting.YELLOW));
 		}
 	}
 }
