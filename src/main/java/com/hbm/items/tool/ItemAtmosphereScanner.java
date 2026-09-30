@@ -39,14 +39,14 @@ public class ItemAtmosphereScanner extends Item implements IBauble {
 				FluidEntry entry = atmosphere.fluids.get(i);
 				if(entry.pressure > 0.0001) {
 					String pressure = String.format("%.4f", BobMathUtil.roundDecimal(entry.pressure, 4));
-					PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.startTranslation(entry.fluid.getUnlocalizedName()).color(EnumChatFormatting.AQUA).next(": ").next(pressure + "atm").color(EnumChatFormatting.RESET).flush(), 969 + i, 4000), player);
+					PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.startTranslation(entry.fluid.getUnlocalizedName()).color(EnumChatFormatting.AQUA).next(": ").nextTranslation("desc.item.fluid_icon.2", pressure).color(EnumChatFormatting.RESET).flush(), 969 + i, 4000), player);
 					hasAtmosphere = true;
 				}
 			}
 		}
 
 		if(!hasAtmosphere) {
-			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("NEAR VACUUM").color(EnumChatFormatting.YELLOW).flush(), 969, 4000), player);
+			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.startTranslation("chat.atmosphere_scanner.near_vacuum").color(EnumChatFormatting.YELLOW).flush(), 969, 4000), player);
 		}
 	}
 

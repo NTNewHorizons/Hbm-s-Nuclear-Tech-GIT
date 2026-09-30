@@ -7,6 +7,7 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 
 import com.hbm.main.MainRegistry;
+import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,9 +34,9 @@ public class ItemColtanCompass extends Item implements IBauble {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add("Points towards the coltan deposit.");
-		list.add("The deposit is a large area where coltan ore spawns like standard ore,");
-		list.add("it's not one large blob of ore on that exact location.");
+		list.add(I18nUtil.resolveKey("desc.item.coltan_compass.points_towards_coltan_deposit"));
+		list.add(I18nUtil.resolveKey("desc.item.coltan_compass.2"));
+		list.add(I18nUtil.resolveKey("desc.item.coltan_compass.3"));
 	}
 
 	@Override
@@ -49,16 +50,16 @@ public class ItemColtanCompass extends Item implements IBauble {
 				lastX = stack.stackTagCompound.getInteger("colX");
 				lastZ = stack.stackTagCompound.getInteger("colZ");
 				lease = System.currentTimeMillis() + 1000;
-				
+
 				Vec3 vec = Vec3.createVectorHelper(entity.posX - lastX, 0, entity.posZ - lastZ);
 				MainRegistry.proxy.displayTooltip(((int) vec.lengthVector()) + "m", MainRegistry.proxy.ID_COMPASS);
 			}
-			
+
 			if(ItemColtanCompass.this.lease < System.currentTimeMillis()) {
 				lastX = 0;
 				lastZ = 0;
 			}
-			
+
 		} else {
 			if(!stack.hasTagCompound()) {
 				stack.stackTagCompound = new NBTTagCompound();
@@ -133,7 +134,7 @@ public class ItemColtanCompass extends Item implements IBauble {
 					double d5 = (double) ItemColtanCompass.this.lastZ - z;
 					yaw %= 360.0D;
 					angle = -((yaw - 90.0D) * Math.PI / 180.0D - Math.atan2(d5, d4));
-					
+
 				} else {
 					angle = Math.random() * Math.PI * 2.0D;
 				}

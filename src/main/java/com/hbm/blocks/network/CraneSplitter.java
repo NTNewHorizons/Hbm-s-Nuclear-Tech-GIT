@@ -237,7 +237,7 @@ public class CraneSplitter extends BlockDummyable implements IConveyorBelt, IEnt
 		TileEntityCraneSplitter crane = (TileEntityCraneSplitter) te;
 
 		List<String> text = new ArrayList<>();
-		text.add("Splitter ratio: " + crane.leftRatio + ":" + crane.rightRatio);
+		text.add(I18nUtil.resolveKey("overlay.crane_splitter.splitter_ratio", crane.leftRatio, crane.rightRatio));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

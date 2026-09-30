@@ -10,12 +10,12 @@ import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class MachineRadarLarge extends BlockDummyable {
 
@@ -29,16 +29,16 @@ public class MachineRadarLarge extends BlockDummyable {
 		if(meta >= 6) return new TileEntityProxyCombo().power();
 		return null;
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		
+
 		if(y < TileEntityMachineRadarNT.radarAltitude) {
 			if(world.isRemote)
-				player.addChatMessage(new ChatComponentText("[Radar] Error: Radar altitude not sufficient.").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				player.addChatMessage(new ChatComponentTranslation("chat.radar_large.radar_error_radar_altitude_not").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			return true;
 		}
-		
+
 		if(world.isRemote && !player.isSneaking()) {
 			int[] pos = this.findCore(world, x, y, z);
 			if(pos == null) return false;
@@ -71,7 +71,7 @@ public class MachineRadarLarge extends BlockDummyable {
 		this.makeExtra(world, x, y, z + 1);
 		this.makeExtra(world, x, y, z - 1);
 	}
-	
+
 	@Override
 	public boolean canProvidePower() {
 		return true;

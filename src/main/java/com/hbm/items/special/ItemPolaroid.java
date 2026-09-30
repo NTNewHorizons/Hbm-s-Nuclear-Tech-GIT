@@ -8,6 +8,7 @@ import baubles.api.expanded.BaubleExpandedSlots;
 import baubles.api.expanded.IBaubleExpanded;
 
 import com.hbm.main.MainRegistry;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +20,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class ItemPolaroid extends Item implements IBauble, IBaubleExpanded {
-	
+
     @Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
 		tickPolaroid(entity);
@@ -55,69 +56,69 @@ public class ItemPolaroid extends Item implements IBauble, IBaubleExpanded {
 
 	@Override
 	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) { return true; }
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
-		list.add("Fate chosen");
+		list.add(I18nUtil.resolveKey("desc.item.polaroid.1"));
 		list.add("");
 		switch(MainRegistry.polaroidID) {
-		case 1: 
+		case 1:
 			list.add("...");
 			break;
-		case 2: 
-			list.add("Clear as glass.");
+		case 2:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.2"));
 			break;
-		case 3: 
-			list.add("'M");
+		case 3:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.3"));
 			break;
-		case 4: 
-			list.add("It's about time.");
+		case 4:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.4"));
 			break;
-		case 5: 
-			list.add("If you stare long into the abyss, the abyss stares back.");
+		case 5:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.5"));
 			break;
-		case 6: 
-			list.add("public Party celebration = new Party();");
+		case 6:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.6"));
 			break;
-		case 7: 
-			list.add("V urnerq lbh yvxr EBG13!");
+		case 7:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.7"));
 			break;
-		case 8: 
+		case 8:
 			list.add("11011100");
 			break;
-		case 9: 
-			list.add("Vg'f nobhg gvzr.");
+		case 9:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.8"));
 			break;
-		case 10: 
-			list.add("Schrabidium dislikes the breeding reactor.");
+		case 10:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.9"));
 			break;
-		case 11: 
-			list.add("yss stares back.6public Party cel");
+		case 11:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.10"));
 			break;
-		case 12: 
-			list.add("Red streaks.");
+		case 12:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.11"));
 			break;
-		case 13: 
-			list.add("Q1");
+		case 13:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.12"));
 			break;
-		case 14: 
-			list.add("Q4");
+		case 14:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.13"));
 			break;
-		case 15: 
-			list.add("Q3");
+		case 15:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.14"));
 			break;
-		case 16: 
-			list.add("Q2");
+		case 16:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.15"));
 			break;
-		case 17: 
-			list.add("Two friends before christmas.");
+		case 17:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.16"));
 			break;
-		case 18: 
-			list.add("Duchess of the boxcars.");
+		case 18:
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.17"));
 			list.add("");
-			list.add("\"P.S.: Thirty-one.\"");
-			list.add("\"Huh, what does thirty-one mean?\"");
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.18"));
+			list.add(I18nUtil.resolveKey("desc.item.polaroid.19"));
 			break;
 		}
 	}

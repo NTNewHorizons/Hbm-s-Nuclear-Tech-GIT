@@ -44,9 +44,9 @@ public class PlasmaForgeRecipes extends GenericRecipes<PlasmaForgeRecipe> {
 
 	@Override
 	public void registerDefaults() {
-		
-		String autoPlate = "autoswitch.weldPlates";
-		
+
+		String autoPlate = "..autoswitch.weldPlates";
+
 		// Plates
 		this.register((PlasmaForgeRecipe) new PlasmaForgeRecipe("plsm.plateeuphemium").setInputEnergy(1_000_000).setup(600, 10_000_000).outputItems(new ItemStack(ModItems.plate_euphemium, 4))
 				.inputItems(new OreDictStack(EUPH.ingot(), 4), new OreDictStack(AT.dust(), 3), new OreDictStack(BI.dust(), 1), new OreDictStack(VOLCANIC.gem(), 1), new OreDictStack(OSMIRIDIUM.ingot())));
@@ -58,7 +58,7 @@ public class PlasmaForgeRecipes extends GenericRecipes<PlasmaForgeRecipe> {
 				.outputItems(DictFrame.fromOne(ModItems.part_generic, EnumPartType.HDE))
 				.inputItems(new OreDictStack(ANY_BISMOIDBRONZE.plateCast(), 2), new OreDictStack(CMB.plateWelded(), 1), new ComparableStack(ModItems.ingot_cft))
 				.inputFluids(new FluidStack(Fluids.STELLAR_FLUX, 4_000)));
-		
+
 		// Welded Plates
 		this.register((PlasmaForgeRecipe) new PlasmaForgeRecipe("plsm.weldiron").setInputEnergy(500_000).setup(50, 100L)
 				.outputItems(new ItemStack(ModItems.plate_welded, 1, Mats.MAT_IRON.id))
@@ -101,7 +101,7 @@ public class PlasmaForgeRecipes extends GenericRecipes<PlasmaForgeRecipe> {
 		this.register((PlasmaForgeRecipe) new PlasmaForgeRecipe("plsm.weldstainless").setInputEnergy(500_000).setup(125, 20_000L)
 				.outputItems(new ItemStack(ModItems.plate_welded, 1, Mats.MAT_STAINLESS.id))
 				.inputItems(new OreDictStack(STAINLESS.plateCast(), 2)).setGroup(autoPlate, this));
-		
+
 		// Fusion
 		this.register((PlasmaForgeRecipe) new PlasmaForgeRecipe("plsm.fusionvessel").setInputEnergy(3_000_000).setup(1_200, 2_000_000).outputItems(new ItemStack(ModBlocks.fusion_torus))
 				.inputItems(new ComparableStack(ModBlocks.fusion_component, 64, 0),
@@ -117,7 +117,7 @@ public class PlasmaForgeRecipes extends GenericRecipes<PlasmaForgeRecipe> {
 						new ComparableStack(ModBlocks.fusion_component, 64, 2),
 						new ComparableStack(ModItems.circuit, 4, EnumCircuitType.QUANTUM))
 				.setPools528(PlasmaForgeRecipes.POOL_PREFIX_528 + "chlorophyte"));
-		
+
 		// ICF
 		this.register((PlasmaForgeRecipe) new PlasmaForgeRecipe("plsm.icfcell").setInputEnergy(1_000_000).setup(800, 10_000_000).outputItems(new ItemStack(ModBlocks.icf_laser_component, 1, EnumICFPart.CELL.ordinal()))
 				.inputItems(new ComparableStack(ModItems.ingot_cft, 2), new OreDictStack(ANY_BISMOIDBRONZE.plateCast(), 4), new ComparableStack(ModBlocks.glass_quartz, 16))
@@ -182,7 +182,7 @@ public class PlasmaForgeRecipes extends GenericRecipes<PlasmaForgeRecipe> {
 						new ComparableStack(ModItems.fragment_meteorite, 64),
 						new ComparableStack(ModItems.fragment_meteorite, 64),
 						new ComparableStack(ModItems.fragment_meteorite, 64)));
-		
+
 		this.register((PlasmaForgeRecipe) new PlasmaForgeRecipe("ass.fensusan").setInputEnergy(50_000_000).setup(6_000, 50_000_000).outputItems(new ItemStack(ModBlocks.machine_battery_redd, 1))
 				.inputItems(new ComparableStack(ModItems.ingot_electronium, 64),
 						new ComparableStack(ModItems.battery_pack, 1, EnumBatteryPack.BATTERY_QUANTUM),

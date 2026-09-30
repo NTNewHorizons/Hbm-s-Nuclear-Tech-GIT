@@ -85,10 +85,10 @@ public class MachineCondenserPowered extends BlockDummyable implements ILookOver
 
 		List<String> text = new ArrayList<>();
 
-		text.add(BobMathUtil.getShortNumber(tower.power) + "HE / " + BobMathUtil.getShortNumber(TileEntityCondenserPowered.maxPower) + "HE");
+		text.add(I18nUtil.resolveKey("overlay.condenser_powered.he_he", BobMathUtil.getShortNumber(tower.power), BobMathUtil.getShortNumber(TileEntityCondenserPowered.maxPower)));
 
 		for(int i = 0; i < tower.tanks.length; i++)
-			text.add((i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET + tower.tanks[i].getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", tower.tanks[i].getFill()) + "/" + String.format(Locale.US, "%,d", tower.tanks[i].getMaxFill()) + "mB");
+			text.add(I18nUtil.resolveKey("overlay.common.tank", (i < 1 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, tower.tanks[i].getTankType().getLocalizedName(), String.format(Locale.US, "%,d", tower.tanks[i].getFill()), String.format(Locale.US, "%,d", tower.tanks[i].getMaxFill())));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

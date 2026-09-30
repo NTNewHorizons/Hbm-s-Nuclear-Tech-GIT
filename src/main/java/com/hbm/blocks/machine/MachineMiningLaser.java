@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
+import com.hbm.util.i18n.I18nUtil;
 
 public class MachineMiningLaser extends BlockDummyable implements ITooltipProvider {
 
@@ -83,7 +84,7 @@ public class MachineMiningLaser extends BlockDummyable implements ITooltipProvid
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add("3x3x3 Multiblock");
-		list.add("Only placeable on a ceiling.");
+		list.add(I18nUtil.resolveKey("desc.block.mining_laser.3x3x3_multiblock"));
+		list.add(I18nUtil.resolveKey("desc.block.placeable_ceiling"));
 	}
 }

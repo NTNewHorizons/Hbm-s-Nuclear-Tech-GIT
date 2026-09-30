@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
+import com.hbm.util.i18n.I18nUtil;
 
 public class Substation extends BlockDummyable implements ITooltipProvider {
 
@@ -36,8 +37,8 @@ public class Substation extends BlockDummyable implements ITooltipProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Quadruple");
-		list.add(EnumChatFormatting.GOLD + "Connection Range: " + EnumChatFormatting.YELLOW + "20m");
+		list.add(I18nUtil.resolveKey("desc.block.connection_type_quadruple.connection_type", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
+		list.add(I18nUtil.resolveKey("desc.block.substation.connection_range_s20m", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
 	}
 
 	@Override
