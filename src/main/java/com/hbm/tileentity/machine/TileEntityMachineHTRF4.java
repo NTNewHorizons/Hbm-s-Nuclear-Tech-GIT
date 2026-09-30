@@ -25,6 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class TileEntityMachineHTRF4 extends TileEntityMachineBase implements IPropulsion, IFluidStandardReceiver, IEnergyReceiverMK2 {
 
@@ -255,12 +256,12 @@ public class TileEntityMachineHTRF4 extends TileEntityMachineBase implements IPr
 	@Override
 	public void addErrors(List<String> errors) {
 		if(power < fuelCost * POWER_COST_MULTIPLIER) {
-			errors.add(EnumChatFormatting.RED + " - Insufficient power: needs " + BobMathUtil.getShortNumber(fuelCost * POWER_COST_MULTIPLIER) + "HE");
+			errors.add(I18nUtil.resolveKey("overlay.htrf4.insufficient_power_needs_he", EnumChatFormatting.RED, BobMathUtil.getShortNumber(fuelCost * POWER_COST_MULTIPLIER)));
 		}
 
 		for(FluidTank tank : tanks) {
 			if(tank.getFill() < fuelCost) {
-				errors.add(EnumChatFormatting.RED + " - Insufficient fuel: needs " + fuelCost + "mB");
+				errors.add(I18nUtil.resolveKey("overlay.htrf4.insufficient_fuel_needs_m_b", EnumChatFormatting.RED, fuelCost));
 			}
 		}
 	}

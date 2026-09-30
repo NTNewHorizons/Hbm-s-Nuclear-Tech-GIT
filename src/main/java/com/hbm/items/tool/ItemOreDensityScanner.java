@@ -32,13 +32,13 @@ public class ItemOreDensityScanner extends Item implements IBauble {
 
 	private void tickScanner(World world, Entity entity) {
 		if(!(entity instanceof EntityPlayerMP) || world.getTotalWorldTime() % 5 != 0) return;
-		
+
 		EntityPlayerMP player = (EntityPlayerMP) entity;
-		
+
 		double totalLevel = 0D;
 
 		CelestialBody body = CelestialBody.getBody(world);
-		
+
 		for(CelestialBedrockOreType type : CelestialBedrockOre.get(body.getEnum()).types) {
 			double level = ItemBedrockOreBase.getOreLevel(world, (int) Math.floor(player.posX), (int) Math.floor(player.posZ), type);
 			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(
@@ -50,20 +50,20 @@ public class ItemOreDensityScanner extends Item implements IBauble {
 			totalLevel += level;
 		}
 		totalLevel /= CelestialBedrockOre.get(body.getEnum()).types.length;
-		
+
 		int tier = BedrockOre.getTier(totalLevel);
 		FluidStack boreFluid = BedrockOre.getBoreFluid(totalLevel);
 
 		if(world.provider instanceof WorldProviderCelestial && ((WorldProviderCelestial) world.provider).getBedrockAcid() != null) {
 			boreFluid = ((WorldProviderCelestial) world.provider).getBedrockAcid();
 		}
-		
-		ChatBuilder builder = ChatBuilder.start("Tier " + tier).color(EnumChatFormatting.YELLOW);
+
+		ChatBuilder builder = ChatBuilder.startTranslation("item.siege_coin.desc1", tier).color(EnumChatFormatting.YELLOW);
 		if(boreFluid != null) {
-			builder.next(" - " + boreFluid.fill + "mB ")
+			builder.nextTranslation("chat.ore_density_scanner.1", boreFluid.fill)
 			.nextTranslation(boreFluid.type.getUnlocalizedName());
 		}
-		
+
 		PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(builder.flush(), 777 + ItemBedrockOreNew.CelestialBedrockOre.getTotalTypeCount(), 4000), player);
 	}
 
@@ -92,7 +92,7 @@ public class ItemOreDensityScanner extends Item implements IBauble {
 	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) {
 		return true;
 	}
-	
+
 	public static String translateDensity(double density) {
 		if(density <= 0.1) return "item.ore_density_scanner.verypoor";
 		if(density <= 0.35) return "item.ore_density_scanner.poor";
@@ -102,7 +102,7 @@ public class ItemOreDensityScanner extends Item implements IBauble {
 		if(density >= 1.25) return "item.ore_density_scanner.high";
 		return "item.ore_density_scanner.moderate";
 	}
-	
+
 	public static EnumChatFormatting getColor(double density) {
 		if(density <= 0.1) return EnumChatFormatting.DARK_RED;
 		if(density <= 0.35) return EnumChatFormatting.RED;

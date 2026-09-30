@@ -62,7 +62,7 @@ public class MachineFusionBoiler extends BlockDummyable implements ILookOverlay,
 
 		x += dir.offsetX * o;
 		z += dir.offsetZ * o;
-		
+
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
 		//this.makeExtra(world, x + dir.offsetX * 4, y + 2, z + dir.offsetZ * 4);
@@ -76,20 +76,20 @@ public class MachineFusionBoiler extends BlockDummyable implements ILookOverlay,
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		int[] pos = this.findCore(world, x, y, z);
 		if(pos == null) return;
-		
+
 		TileEntity te = world.getTileEntity(pos[0], pos[1], pos[2]);
-		
+
 		if(!(te instanceof TileEntityFusionBoiler)) return;
 		TileEntityFusionBoiler boiler = (TileEntityFusionBoiler) te;
-		
+
 		List<String> text = new ArrayList();
-		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + BobMathUtil.format(boiler.plasmaEnergy) + " TU");
+		text.add(I18nUtil.resolveKey("overlay.fusion_boiler.tu", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, BobMathUtil.format(boiler.plasmaEnergy)));
 
 		for(int i = 0; i < boiler.getAllTanks().length; i++) {
 			FluidTank tank = boiler.getAllTanks()[i];
-			text.add((i == 0 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET + tank.getTankType().getLocalizedName() + ": " + tank.getFill() + "/" + tank.getMaxFill() + "mB");
+			text.add(I18nUtil.resolveKey("overlay.common.tank", (i == 0 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, tank.getTankType().getLocalizedName(), tank.getFill(), tank.getMaxFill()));
 		}
-		
+
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 

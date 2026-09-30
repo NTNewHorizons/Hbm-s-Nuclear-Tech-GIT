@@ -73,8 +73,8 @@ public class MachineSteamEngine extends BlockDummyable implements ILookOverlay, 
 		TileEntitySteamEngine engine = (TileEntitySteamEngine) te;
 
 		List<String> text = new ArrayList();
-		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + engine.tanks[0].getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", engine.tanks[0].getFill()) + " / " + String.format(Locale.US, "%,d", engine.tanks[0].getMaxFill()) + "mB");
-		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + engine.tanks[1].getTankType().getLocalizedName() + ": " + String.format(Locale.US, "%,d", engine.tanks[1].getFill()) + " / " + String.format(Locale.US, "%,d", engine.tanks[1].getMaxFill()) + "mB");
+		text.add(I18nUtil.resolveKey("overlay.steam_engine.mb", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, engine.tanks[0].getTankType().getLocalizedName(), String.format(Locale.US, "%,d", engine.tanks[0].getFill()), String.format(Locale.US, "%,d", engine.tanks[0].getMaxFill())));
+		text.add(I18nUtil.resolveKey("overlay.steam_engine.mb.2", EnumChatFormatting.RED, EnumChatFormatting.RESET, engine.tanks[1].getTankType().getLocalizedName(), String.format(Locale.US, "%,d", engine.tanks[1].getFill()), String.format(Locale.US, "%,d", engine.tanks[1].getMaxFill())));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

@@ -116,7 +116,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 				if(worldObj.rand.nextInt(20) == 0 && MainRegistry.proxy.me().getDistance(xCoord + 0.5, yCoord + 6, zCoord + 0.5) < 50) {
 					worldObj.spawnParticle("cloud", xCoord + worldObj.rand.nextDouble(), yCoord + 6.5D, zCoord + worldObj.rand.nextDouble(), 0.0, 0.1, 0.0);
 				}
-				
+
 				if(MainRegistry.proxy.me().getDistance(xCoord , yCoord, zCoord) < 25) {
 					if(audio == null) {
 						audio = createAudioLoop();
@@ -127,7 +127,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 					audio.keepAlive();
 					audio.updateVolume(this.getVolume(1F));
 					audio.updatePitch(0.75F);
-					
+
 				} else {
 					if(audio != null) {
 						audio.stopSound();
@@ -425,7 +425,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 			info.add(EnumChatFormatting.RED + I18nUtil.resolveKey(this.KEY_CONSUMPTION, "+" + (level * 200) + "%"));
 		}
 		if(type == UpgradeType.OVERDRIVE) {
-			info.add((BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_GRAY) + "YES");
+			info.add((BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_GRAY) + I18nUtil.resolveKey("gui.common.yes_upper"));
 		}
 	}
 

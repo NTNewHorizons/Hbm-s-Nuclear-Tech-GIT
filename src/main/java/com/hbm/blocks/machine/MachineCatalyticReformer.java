@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
+import com.hbm.util.i18n.I18nUtil;
 
 public class MachineCatalyticReformer extends BlockDummyable implements IPersistentInfoProvider {
 
@@ -82,7 +83,7 @@ public class MachineCatalyticReformer extends BlockDummyable implements IPersist
 		for(int i = 0; i < 4; i++) {
 			FluidTank tank = new FluidTank(Fluids.NONE, 0);
 			tank.readFromNBT(persistentTag, "" + i);
-			list.add(EnumChatFormatting.YELLOW + "" + tank.getFill() + "/" + tank.getMaxFill() + "mB " + tank.getTankType().getLocalizedName());
+			list.add(I18nUtil.resolveKey("tile.catalytic_reformer.mb", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
 		}
 	}
 }
