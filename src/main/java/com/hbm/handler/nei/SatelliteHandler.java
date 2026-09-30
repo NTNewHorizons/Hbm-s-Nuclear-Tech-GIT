@@ -44,7 +44,7 @@ public class SatelliteHandler extends TemplateRecipeHandler implements ICompatNH
 	public String getGuiTexture() {
 		return RefStrings.MODID + ":textures/gui/nei/gui_nei_anvil.png";
 	}
-	
+
 	public static ComparableStack[] getMiningSatellites() {
 		return new ComparableStack[] {
 				new ComparableStack(ModItems.sat_miner),

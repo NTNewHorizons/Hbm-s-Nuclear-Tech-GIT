@@ -311,12 +311,12 @@ public class GuiQMAW extends GuiScreen {
 		int y = guiTop + 30;
 		int lineNum = 0;
 
-		
+
 		if(lines.size() > 1 && scrollProgress == lines.size() - 1) {
 			Minecraft.getMinecraft().getTextureManager().bindTexture(the_man);
 			drawTexturedModalRect(guiLeft + 60, guiTop + this.ySize - 84, 0, 0, 80, 80);
 			drawTexturedModalRect(guiLeft + 140, guiTop + this.ySize - 60, 0, 80, 77, 39);
-			
+
 		} else for(List<ManualElement> line : lines) {
 			lineNum++;
 

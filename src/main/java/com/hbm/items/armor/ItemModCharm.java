@@ -21,18 +21,18 @@ public class ItemModCharm extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.1"));
-		
+		list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.feel_blessed"));
+
 		if(this == ModItems.protection_charm) {
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.2"));
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.3"));
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.4"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.diverts_meteors_away_player"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.meteors_no_longer_destroy_blocks"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.halves_broadcaster_damage"));
 		}
 		if(this == ModItems.meteor_charm) {
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.5"));
-			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.6"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.disables_meteorite_spawning"));
+			list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_charm.negates_broadcaster_damage"));
 		}
-		
+
 		super.addInformation(stack, player, list, bool);
 	}
 
@@ -43,9 +43,9 @@ public class ItemModCharm extends ItemArmorMod {
 
 	@Override
 	public void modDamage(LivingHurtEvent event, ItemStack armor) {
-		
+
 		if(event.source == ModDamageSource.broadcast) {
-			
+
 			if(this == ModItems.protection_charm)
 				event.ammount *= 0.5F;
 			if(this == ModItems.meteor_charm)

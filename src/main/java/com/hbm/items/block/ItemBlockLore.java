@@ -41,7 +41,7 @@ public class ItemBlockLore extends ItemBlockBase {
 		if(this.field_150939_a == ModBlocks.meteor_battery) {
 			list.add(I18nUtil.resolveKey("desc.item.block_lore.2"));
 		}
-		
+
 		if(this.field_150939_a == ModBlocks.gravel_diamond) {
 			list.add(I18nUtil.resolveKey("desc.item.block_lore.3"));
 			list.add(I18nUtil.resolveKey("desc.item.block_lore.4"));

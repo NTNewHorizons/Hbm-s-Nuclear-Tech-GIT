@@ -18,7 +18,7 @@ public class GunB92Cell extends Item {
 	public void onUpdate(ItemStack stack, World world, Entity entity, int i, boolean b) {
 		if(entity instanceof EntityPlayer && getPower(stack) < 25) {
 			EntityPlayer player = (EntityPlayer) entity;
-			
+
 			for(int j = 0; j < player.inventory.mainInventory.length; j++) {
 				if(player.inventory.mainInventory[j] != null && player.inventory.mainInventory[j].getItem() == ModItems.gun_b92) {
 					int p = getPower(player.inventory.mainInventory[j]);
@@ -37,11 +37,11 @@ public class GunB92Cell extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.1"));
-		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.2"));
-		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.3"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.draws_energy_b92_allowing"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.reload_additional_times"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.cell_permanently_hold_charge"));
 		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.4"));
-		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.5"));
+		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.b92_rather_bomb"));
 		list.add("");
 		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.6", getPower(itemstack)));
 	}
@@ -64,7 +64,7 @@ public class GunB92Cell extends Item {
 		stack.stackTagCompound.setInteger("energy", i);
 
 	}
-	
+
 	public static ItemStack getFullCell() {
 		ItemStack stack = new ItemStack(ModItems.gun_b92_ammo, 1, 1);
 		setPower(stack, 25);

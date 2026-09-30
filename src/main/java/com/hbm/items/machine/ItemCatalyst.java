@@ -15,7 +15,7 @@ public class ItemCatalyst extends Item {
 	float powerMod;
 	float heatMod;
 	float fuelMod;
-	
+
 	public ItemCatalyst(int color) {
 		this.color = color;
 		this.powerAbs = 0;
@@ -23,7 +23,7 @@ public class ItemCatalyst extends Item {
 		this.heatMod = 1.0F;
 		this.fuelMod = 1.0F;
 	}
-	
+
 	public ItemCatalyst(int color, long powerAbs, float powerMod, float heatMod, float fuelMod) {
 		this.color = color;
 		this.powerAbs = powerAbs;
@@ -31,36 +31,36 @@ public class ItemCatalyst extends Item {
 		this.heatMod = heatMod;
 		this.fuelMod = fuelMod;
 	}
-	
+
 	public int getColor() {
 		return this.color;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
-		list.add(I18nUtil.resolveKey("desc.item.catalyst.1"));
-		list.add(I18nUtil.resolveKey("desc.item.catalyst.2"));
+		list.add(I18nUtil.resolveKey("desc.item.catalyst.adds_spice_core"));
+		list.add(I18nUtil.resolveKey("desc.item.catalyst.look_those_colors"));
 	}
-	
+
 	public static long getPowerAbs(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemCatalyst))
 			return 0;
 		return ((ItemCatalyst)stack.getItem()).powerAbs;
 	}
-	
+
 	public static float getPowerMod(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemCatalyst))
 			return 0;
 		return ((ItemCatalyst)stack.getItem()).powerMod;
 	}
-	
+
 	public static float getHeatMod(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemCatalyst))
 			return 0;
 		return ((ItemCatalyst)stack.getItem()).heatMod;
 	}
-	
+
 	public static float getFuelMod(ItemStack stack) {
 		if(stack == null || !(stack.getItem() instanceof ItemCatalyst))
 			return 0;

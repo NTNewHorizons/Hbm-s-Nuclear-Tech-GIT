@@ -22,10 +22,10 @@ public class ItemModServos extends ItemArmorMod {
 	public ItemModServos() {
 		super(ArmorModHandler.servos, false, true, true, false);
 	}
-    
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		
+
 		if(this == ModItems.servo_set) {
 			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.1"));
 			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.2"));
@@ -34,16 +34,16 @@ public class ItemModServos extends ItemArmorMod {
 			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.3"));
 			list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.4"));
 		}
-		
+
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		
+
 		ItemArmor item = (ItemArmor)armor.getItem();
-		
+
 		if(item.armorType == 1) {
 
 			if(this == ModItems.servo_set) {
@@ -53,7 +53,7 @@ public class ItemModServos extends ItemArmorMod {
 				list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("desc.item.mod_servos.6", stack.getDisplayName()));
 			}
 		}
-		
+
 		if(item.armorType == 2) {
 
 			if(this == ModItems.servo_set) {
@@ -64,11 +64,11 @@ public class ItemModServos extends ItemArmorMod {
 			}
 		}
 	}
-	
+
 	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
-		
+
 		ItemArmor item = (ItemArmor)armor.getItem();
-		
+
 		if(item.armorType == 1) {
 
 			if(this == ModItems.servo_set) {
@@ -78,7 +78,7 @@ public class ItemModServos extends ItemArmorMod {
 				entity.addPotionEffect(new PotionEffect(Potion.digSpeed.id, 60, 2));
 			}
 		}
-		
+
 		if(item.armorType == 2) {
 
 			if(this == ModItems.servo_set) {
@@ -89,33 +89,33 @@ public class ItemModServos extends ItemArmorMod {
 			}
 		}
 	}
-	
+
 	@Override
 	public Multimap getModifiers(ItemStack armor) {
 		Multimap multimap = super.getAttributeModifiers(armor);
-		
+
 		ItemArmor item = (ItemArmor)armor.getItem();
-		
+
 		if(item.armorType == 1) {
 			if(this == ModItems.servo_set)
 				multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
 						new AttributeModifier(ArmorModHandler.UUIDs[((ItemArmor)armor.getItem()).armorType], "NTM Armor Mod Servos", 0.5, 2));
-			
+
 			if(this == ModItems.servo_set_desh)
 				multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(),
 						new AttributeModifier(ArmorModHandler.UUIDs[((ItemArmor)armor.getItem()).armorType], "NTM Armor Mod Servos", 1.5, 2));
 		}
-		
+
 		if(item.armorType == 2) {
 			if(this == ModItems.servo_set)
 				multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(),
 						new AttributeModifier(ArmorModHandler.UUIDs[((ItemArmor)armor.getItem()).armorType], "NTM Armor Mod Servos", 0.25, 2));
-			
+
 			if(this == ModItems.servo_set_desh)
 				multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(),
 						new AttributeModifier(ArmorModHandler.UUIDs[((ItemArmor)armor.getItem()).armorType], "NTM Armor Mod Servos", 0.5, 2));
 		}
-		
+
 		return multimap;
 	}
 }

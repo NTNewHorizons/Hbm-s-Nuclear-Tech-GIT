@@ -16,7 +16,7 @@ public class CentrifugeRecipeHandler extends NEIUniversalHandler {
 	public String getKey() {
 		return "ntmCentrifuge";
 	}
-	
+
 	@Override
 	public void loadTransferRects() {
 		super.loadTransferRects();

@@ -46,7 +46,7 @@ public class ItemAtmosphereScanner extends Item implements IBauble {
 		}
 
 		if(!hasAtmosphere) {
-			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.startTranslation("chat.atmosphere_scanner.1").color(EnumChatFormatting.YELLOW).flush(), 969, 4000), player);
+			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.startTranslation("chat.atmosphere_scanner.near_vacuum").color(EnumChatFormatting.YELLOW).flush(), 969, 4000), player);
 		}
 	}
 

@@ -33,7 +33,7 @@ public class MachinePumpjack extends BlockDummyable implements IPersistentInfoPr
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		
+
 		if(meta >= 12) return new TileEntityMachinePumpjack();
 		if(meta >= 6) return new TileEntityProxyCombo(false, true, true);
 		return null;
@@ -68,36 +68,36 @@ public class MachinePumpjack extends BlockDummyable implements IPersistentInfoPr
 	@Override
 	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
-		
+
 		ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
 		MultiblockHandlerXR.fillSpace(world, x + rot.offsetX * 3, y, z + rot.offsetZ * 3, new int[] {0, 0, -1, 1, 1, 1}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x + rot.offsetX * 3, y, z + rot.offsetZ * 3, new int[] {0, 0, 1, -1, 2, 2}, this, dir);
-		
+
 		this.makeExtra(world, x + rot.offsetX * 3 + 1, y, z + rot.offsetZ * 3 + 1);
 		this.makeExtra(world, x + rot.offsetX * 3 + 1, y, z + rot.offsetZ * 3 - 1);
 		this.makeExtra(world, x + rot.offsetX * 3 - 1, y, z + rot.offsetZ * 3 + 1);
 		this.makeExtra(world, x + rot.offsetX * 3 - 1, y, z + rot.offsetZ * 3 - 1);
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		
+
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			
+
 			int[] pos = this.findCore(world, x, y, z);
-			
+
 			if(pos == null)
 				return false;
-			
+
 			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, world, pos[0], pos[1], pos[2]);
 			return true;
 		} else {
 			return true;
 		}
 	}
-	
+
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
 		return IPersistentNBT.getDrops(world, x, y, z, this);

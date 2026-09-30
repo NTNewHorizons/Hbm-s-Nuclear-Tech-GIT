@@ -46,7 +46,7 @@ public class EntityBFAngel extends EntityFlying implements IMob, IBossDisplayDat
 
 	public int courseChangeCooldown;
 	public int scanCooldown;
-	
+
 	public int hurtCooldown;
 	public int beamTimer;
 	private Entity target;

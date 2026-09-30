@@ -23,10 +23,10 @@ public class ItemCustomMachine extends ItemBlock {
 		this.setMaxDamage(0);
 		this.setHasSubtypes(true);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
-		
+
 		for(int i = 0; i < CustomMachineConfigJSON.niceList.size(); i++) {
 			ItemStack stack = new ItemStack(item, 1, i + 100);
 			list.add(stack);
@@ -35,18 +35,18 @@ public class ItemCustomMachine extends ItemBlock {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		
+
 		int id = stack.getItemDamage() - 100;
-		
+
 		if(id >= 0 && id < CustomMachineConfigJSON.customMachines.size()) {
 			MachineConfiguration conf = CustomMachineConfigJSON.niceList.get(id);
-			
+
 			if(conf != null) {
 				String localized = conf.localization.get(MainRegistry.proxy.getLanguageCode());
 				return localized != null ? localized : conf.localizedName;
 			}
 		}
-		
+
 		return I18nUtil.resolveKey("item.custom_machine.invalid");
 	}
 }

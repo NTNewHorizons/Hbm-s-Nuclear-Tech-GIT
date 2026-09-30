@@ -12,27 +12,27 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class ItemStructureSingle extends ItemStructureTool {
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
 		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_single.1"));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_single.2"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_single.line_targted_block_metadata"));
 	}
 
 	@Override
 	protected void doTheThing(ItemStack stack, World world, int x, int y, int z) {
-		
+
 		BlockPos pos = this.getAnchor(stack);
 		if(pos == null) return;
 
 		int ix = x - pos.getX();
 		int iy = y - pos.getY();
 		int iz = z - pos.getZ();
-		
+
 		Block b = world.getBlock(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		
+
 		String message = "placeBlockAtCurrentPosition(world, " + b.getUnlocalizedName() + ", " + meta + ", " + ix + ", " + iy + ", " + iz + ", box);\n";
 		System.out.print(message);
 		writeToFile(message);

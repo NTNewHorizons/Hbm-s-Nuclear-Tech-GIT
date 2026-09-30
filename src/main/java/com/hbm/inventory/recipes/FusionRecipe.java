@@ -13,14 +13,14 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.EnumChatFormatting;
 
 public class FusionRecipe extends GenericRecipe {
-	
+
 	// minimum klystron energy to ignite the plasma
 	public long ignitionTemp;
 	// plasma output energy at full blast
 	public long outputTemp;
 	// neutron output energy at full blast
 	public double neutronFlux;
-	
+
 	public float r = 1F;
 	public float g = 0.2F;
 	public float b = 0.6F;
@@ -46,16 +46,16 @@ public class FusionRecipe extends GenericRecipe {
 
 		return list;
 	}
-	
+
 	@Override
 	public void printNEIExtras() {
 
 		int side = 164;
 		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-		
+
 		String duration = BobMathUtil.getShortNumber(this.duration) + " ticks";
 		fontRenderer.drawString(duration, side - fontRenderer.getStringWidth(duration), 45, 0x404040);
-		
+
 		if(Clock.get_ms() % 2000 < 1000) {
 			String consumption = BobMathUtil.getShortNumber(this.power) + "HE/t";
 			fontRenderer.drawString(consumption, side - fontRenderer.getStringWidth(consumption), 57, 0x404040);

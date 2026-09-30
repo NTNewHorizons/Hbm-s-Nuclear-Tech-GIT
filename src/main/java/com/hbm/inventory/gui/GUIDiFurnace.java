@@ -31,7 +31,7 @@ public class GUIDiFurnace extends GuiContainer {
 		this.xSize = 176;
 		this.ySize = 166;
 	}
-	
+
 	@Override
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
@@ -39,21 +39,21 @@ public class GUIDiFurnace extends GuiContainer {
 		if(this.mc.thePlayer.inventory.getItemStack() == null) {
 			for(int i = 0; i < 3; i++) {
 				Slot slot = (Slot) this.inventorySlots.inventorySlots.get(i);
-				
+
 				if(this.isMouseOverSlot(slot, x, y)) {
-					
+
 					String label = EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.furnace.accepts_from");
 					byte dir = i == 0 ? diFurnace.sideUpper : i == 1 ? diFurnace.sideLower : diFurnace.sideFuel;
 					label += ForgeDirection.getOrientation(dir);
-					
+
 					this.func_146283_a(Arrays.asList(new String[] { label }), x, y - (slot.getHasStack() ? 15 : 0));
-					
+
 					return;
 				}
 			}
 		}
 	}
-	
+
 	protected boolean isMouseOverSlot(Slot slot, int x, int y) {
 		return this.func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y);
 	}

@@ -34,7 +34,7 @@ public class HbmPlayerProps implements IExtendedEntityProperties {
 	/** Keybind tracking */
 	private boolean[] keysPressed = new boolean[EnumKeybind.values().length];
 
-	
+
 	/* Dashes for bismuth armor/cloud in a bottle */
 	public boolean dashActivated = true;
 	public int dashCooldown = 0;
@@ -59,14 +59,14 @@ public class HbmPlayerProps implements IExtendedEntityProperties {
 
 	/** Hack for allowing ladders on multiblocks */
 	public boolean isOnLadder = false;
-	
+
 	/** Pulling the pin on a grenade - it's a player prop instead of an NBT trait */
 	public int grenadeDeployment;
 
 	public boolean hasWarped = false;
 
 	public int lastDimension = 0;
-	
+
 	/** Maskman timer */
 	public int maskManTimer = 0;
 

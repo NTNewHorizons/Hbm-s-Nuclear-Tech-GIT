@@ -18,12 +18,12 @@ public class BlockChargeSemtex extends BlockChargeBase {
 
 	@Override
 	public BombReturnCode explode(World world, int x, int y, int z) {
-		
+
 		if(!world.isRemote) {
 			safe = true;
 			world.setBlockToAir(x, y, z);
 			safe = false;
-			
+
 			ExplosionVNT xnt = new ExplosionVNT(world, x + 0.5, y + 0.5, z + 0.5, 10F);
 			xnt.setBlockAllocator(new BlockAllocatorStandard(32));
 			xnt.setBlockProcessor(new BlockProcessorStandard()
@@ -31,10 +31,10 @@ public class BlockChargeSemtex extends BlockChargeBase {
 					.setFortune(3));
 			xnt.explode();
 			ExplosionCreator.composeEffectSmall(world, x + 0.5, y + 1, z + 0.5);
-			
+
 			return BombReturnCode.DETONATED;
 		}
-		
+
 		return BombReturnCode.UNDEFINED;
 	}
 
@@ -42,14 +42,14 @@ public class BlockChargeSemtex extends BlockChargeBase {
 	public int getRenderType() {
 		return BlockChargeC4.renderID;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
-		list.add(I18nUtil.resolveKey("desc.block.drop_blocks.2", EnumChatFormatting.BLUE));
+		list.add(I18nUtil.resolveKey("desc.block.drop_blocks.drop_blocks", EnumChatFormatting.BLUE));
 		list.add(I18nUtil.resolveKey("desc.block.charge_semtex.does_not_do_damage", EnumChatFormatting.BLUE));
 		list.add(EnumChatFormatting.BLUE + "");
 		list.add(I18nUtil.resolveKey("desc.block.charge_semtex.fortune_iii", EnumChatFormatting.LIGHT_PURPLE));
 	}
-	
+
 }

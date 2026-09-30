@@ -48,10 +48,10 @@ public class BlockAtmosphereEditor extends BlockContainer implements IToolable, 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.line.04", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.line.03", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.line.01", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.line.02", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.screwdriver_turn_off", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.hand_drill_increase", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.defuser_switch_emission", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("desc.block.atmosphere_editor.fluid_identifier_change", EnumChatFormatting.GOLD));
 	}
 
 	@Override

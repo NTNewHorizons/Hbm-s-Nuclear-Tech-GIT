@@ -12,7 +12,7 @@ public class PUREXRecipe extends GenericRecipe {
 	public PUREXRecipe(String name) {
 		super(name);
 	}
-	
+
 	@Override
 	public void printNEIExtras() {
 

@@ -16,11 +16,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 public class ItemCassette extends Item {
-	
+
 	IIcon overlayIcon;
-	
+
 	public enum TrackType {
-		
+
 		NULL(				" ", 						null,												SoundType.SOUND,	0,			0),
 		HATCH(				"cassette.hatch.title", 				new ResourceLocation("hbm:alarm.hatch"),			SoundType.LOOP,		3358839,	250),
 		ATUOPILOT(			"cassette.atuopilot.title", 	new ResourceLocation("hbm:alarm.autopilot"),		SoundType.LOOP,		11908533,	50),
@@ -44,7 +44,7 @@ public class ItemCassette extends Item {
 		RAZORTRAIN(			"cassette.razortrain.title", 			new ResourceLocation("hbm:alarm.razortrainHorn"),	SoundType.SOUND,	7819501,	250),
 		DISEMBODIED(		"cassette.disembodied.title",						new ResourceLocation("hbm:alarm.ducc"),				SoundType.LOOP,		0xb3a8c1,	50),
 		SUICIDE(			"cassette.suicide.title",				new ResourceLocation("hbm:alarm.mama"),				SoundType.LOOP,		0xb3a8c1,	70);
-		
+
 		//Name of the track shown in GUI
 		private String title;
 		//Location of the sound
@@ -55,7 +55,7 @@ public class ItemCassette extends Item {
 		private int color;
 		//Range where the sound can be heard
 		private int volume;
-		
+
 		private TrackType(String name, ResourceLocation loc, SoundType sound, int msa, int intensity) {
 			title = name;
 			location = loc;
@@ -63,27 +63,27 @@ public class ItemCassette extends Item {
 			color = msa;
 			volume = intensity;
 		}
-		
+
 		public String getTrackTitle() {
 			return I18nUtil.resolveKey(title);
 		}
-		
+
 		public ResourceLocation getSoundLocation() {
 			return location;
 		}
-		
+
 		public SoundType getType() {
 			return type;
 		}
-		
+
 		public int getColor() {
 			return color;
 		}
-		
+
 		public int getVolume() {
 			return volume;
 		}
-		
+
 		public static TrackType getEnum(int i) {
 			if(i < TrackType.values().length)
 				return TrackType.values()[i];
@@ -91,7 +91,7 @@ public class ItemCassette extends Item {
 				return TrackType.NULL;
 		}
 	};
-	
+
 	public enum SoundType {
 		LOOP,
 		PASS,
@@ -110,7 +110,7 @@ public class ItemCassette extends Item {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(!(stack.getItem() instanceof ItemCassette)) return;
@@ -120,7 +120,7 @@ public class ItemCassette extends Item {
 		list.add(I18nUtil.resolveKey("desc.item.cassette.3", I18nUtil.resolveKey("item.cassette.sound_type." + TrackType.getEnum(stack.getItemDamage()).getType().name().toLowerCase(Locale.US))));
 		list.add(I18nUtil.resolveKey("desc.item.cassette.4", TrackType.getEnum(stack.getItemDamage()).getVolume()));
 	}
-	
+
 	public static TrackType getType(ItemStack stack) {
 		if(stack != null && stack.getItem() instanceof ItemCassette)
 			return TrackType.getEnum(stack.getItemDamage());

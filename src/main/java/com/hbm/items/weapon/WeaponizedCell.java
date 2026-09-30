@@ -59,7 +59,7 @@ public class WeaponizedCell extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(I18nUtil.resolveKey("desc.item.weaponized_cell.1"));
-		list.add(I18nUtil.resolveKey("desc.item.weaponized_cell.2"));
+		list.add(I18nUtil.resolveKey("desc.item.weaponized_cell.charged_energy_rigged_explode"));
+		list.add(I18nUtil.resolveKey("desc.item.weaponized_cell.left_floor_long"));
 	}
 }

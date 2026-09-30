@@ -24,19 +24,19 @@ public class ItemWiring extends Item {
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
 
 		if(!player.isSneaking()) {
-			
+
 			Block b = world.getBlock(x, y, z);
-			
+
 			if(b instanceof BlockDummyable) {
 				int[] core = ((BlockDummyable)b).findCore(world, x, y, z);
-				
+
 				if(core != null) {
 					x = core[0];
 					y = core[1];
 					z = core[2];
 				}
 			}
-			
+
 			TileEntity te = world.getTileEntity(x, y, z);
 
 			if(te != null && te instanceof TileEntityPylonBase) {
@@ -49,7 +49,7 @@ public class ItemWiring extends Item {
 					stack.stackTagCompound.setInteger("z", z);
 
 					if(!world.isRemote) {
-						player.addChatMessage(new ChatComponentTranslation("chat.wiring.1"));
+						player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_start"));
 					}
 				} else if(!world.isRemote) {
 
@@ -61,30 +61,30 @@ public class ItemWiring extends Item {
 
 						TileEntityPylonBase first = (TileEntityPylonBase) world.getTileEntity(x1, y1, z1);
 						TileEntityPylonBase second = ((TileEntityPylonBase) te);
-						
+
 						switch (TileEntityPylonBase.canConnect(first, second)) {
 							case 0:
 								first.addConnection(x, y, z);
 								second.addConnection(x1, y1, z1);
-								player.addChatMessage(new ChatComponentTranslation("chat.wiring.2"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_end"));
 								break;
 							case 1:
-								player.addChatMessage(new ChatComponentTranslation("chat.wiring.3"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_error_pylons_not_same"));
 								break;
 							case 2:
-								player.addChatMessage(new ChatComponentTranslation("chat.wiring.4"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_error_cannot_connect_same"));
 								break;
 							case 3:
-								player.addChatMessage(new ChatComponentTranslation("chat.wiring.5"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_error_pylon_far_away"));
 								break;
 						}
-						
+
 						stack.stackTagCompound = null;
 
 					} else {
 
 						if(!world.isRemote) {
-							player.addChatMessage(new ChatComponentTranslation("chat.wiring.6"));
+							player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_error"));
 						}
 						stack.stackTagCompound = null;
 					}
@@ -105,7 +105,7 @@ public class ItemWiring extends Item {
 			list.add(I18nUtil.resolveKey("desc.item.wiring.2", itemstack.stackTagCompound.getInteger("y")));
 			list.add(I18nUtil.resolveKey("desc.item.wiring.3", itemstack.stackTagCompound.getInteger("z")));
 		} else {
-			list.add(I18nUtil.resolveKey("desc.item.wiring.4"));
+			list.add(I18nUtil.resolveKey("desc.item.wiring.right_click_poles_connect"));
 		}
 	}
 
@@ -118,7 +118,7 @@ public class ItemWiring extends Item {
 						entity.posX - stack.stackTagCompound.getInteger("x"),
 						entity.posY - stack.stackTagCompound.getInteger("y"),
 						entity.posZ - stack.stackTagCompound.getInteger("z"));
-				
+
 				MainRegistry.proxy.displayTooltip(stack.getDisplayName() + ": " + ((int) vec.lengthVector()) + "m", MainRegistry.proxy.ID_CABLE);
 			}
 		}

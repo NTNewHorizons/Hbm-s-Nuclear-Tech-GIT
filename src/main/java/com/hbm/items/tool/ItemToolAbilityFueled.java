@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableItem {
-	
+
 	protected int fillRate;
 	protected int consumption;
 	protected int maxFuel;
@@ -36,7 +36,7 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
 		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.tool_ability_fueled.1", this.getFill(stack), this.maxFuel));
-		
+
 		for(FluidType type : acceptedFuels) {
 			list.add(EnumChatFormatting.YELLOW + "- " + type.getLocalizedName());
 		}
@@ -76,7 +76,7 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 			setFill(stack, maxFuel);
 			return maxFuel;
 		}
-		
+
 		return stack.stackTagCompound.getInteger("fuel");
 	}
 
@@ -84,7 +84,7 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 		if(stack.stackTagCompound == null) {
 			stack.stackTagCompound = new NBTTagCompound();
 		}
-		
+
 		stack.stackTagCompound.setInteger("fuel", fill);
 	}
 
@@ -95,14 +95,14 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 
 	@Override
 	public int tryFill(FluidType type, int amount, ItemStack stack) {
-		
+
 		if(!acceptsFluid(type, stack))
 			return amount;
-		
+
 		int toFill = Math.min(amount, this.fillRate);
 		toFill = Math.min(toFill, this.maxFuel - this.getFill(stack));
 		this.setFill(stack, this.getFill(stack) + toFill);
-		
+
 		return amount - toFill;
 	}
 
@@ -115,7 +115,7 @@ public class ItemToolAbilityFueled extends ItemToolAbility implements IFillableI
 	public int tryEmpty(FluidType type, int amount, ItemStack stack) {
 		return amount;
 	}
-	
+
 	public static ItemStack getEmptyTool(Item item) {
 		ItemToolAbilityFueled tool = (ItemToolAbilityFueled) item;
 		ItemStack stack = new ItemStack(item);

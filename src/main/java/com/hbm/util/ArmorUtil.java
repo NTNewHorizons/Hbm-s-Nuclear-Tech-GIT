@@ -41,7 +41,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import com.hbm.util.i18n.I18nUtil;
 
 public class ArmorUtil {
-	
+
 	public static List<Pair<Item, HazardClass[]>> external = new ArrayList();
 
 	public static HazardClass[] FULL_NO_LIGHT = new HazardClass[] {HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_LUNG, HazardClass.BACTERIA, HazardClass.GAS_BLISTERING, HazardClass.GAS_MONOXIDE, HazardClass.SAND};
@@ -69,20 +69,20 @@ public class ArmorUtil {
 		ArmorRegistry.registerHazard(ModItems.attachment_mask, HazardClass.SAND);
 
 		ArmorRegistry.registerHazard(ModItems.asbestos_helmet, HazardClass.SAND, HazardClass.LIGHT);
-		
+
 		ArmorRegistry.registerHazard(ModItems.hazmat_helmet, HazardClass.SAND);
 		ArmorRegistry.registerHazard(ModItems.hazmat_helmet_red, HazardClass.SAND);
 		ArmorRegistry.registerHazard(ModItems.hazmat_helmet_grey, HazardClass.SAND);
 		ArmorRegistry.registerHazard(ModItems.hazmat_paa_helmet, HazardClass.LIGHT, HazardClass.SAND);
 		ArmorRegistry.registerHazard(ModItems.liquidator_helmet, HazardClass.LIGHT, HazardClass.SAND);
-		
+
 		ArmorRegistry.registerHazard(ModItems.schrabidium_helmet, HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_LUNG, HazardClass.BACTERIA, HazardClass.GAS_BLISTERING, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);
 		ArmorRegistry.registerHazard(ModItems.euphemium_helmet, HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_LUNG, HazardClass.BACTERIA, HazardClass.GAS_BLISTERING, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);
 
 		for(Pair<Item, HazardClass[]> pair : external) {
 			ArmorRegistry.registerHazard(pair.getKey(), pair.getValue());
 		}
-		
+
 		//Ob ihr wirklich richtig steht, seht ihr wenn das Licht angeht!
 		registerIfExists(Compat.MOD_GT6, "gt.armor.hazmat.universal.head", HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_LUNG, HazardClass.BACTERIA, HazardClass.GAS_BLISTERING, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);
 		registerIfExists(Compat.MOD_GT6, "gt.armor.hazmat.biochemgas.head", HazardClass.PARTICLE_COARSE, HazardClass.PARTICLE_FINE, HazardClass.GAS_LUNG, HazardClass.BACTERIA, HazardClass.GAS_BLISTERING, HazardClass.GAS_MONOXIDE, HazardClass.LIGHT, HazardClass.SAND);

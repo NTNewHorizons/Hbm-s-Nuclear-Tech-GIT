@@ -25,9 +25,9 @@ public class ParticleAcceleratorHandler extends NEIUniversalHandler {
 	public void drawExtras(int recipe) {
 
 		RecipeSet rec = (RecipeSet) this.arecipes.get(recipe);
-		
+
 		ParticleAcceleratorRecipe paRecipe = ParticleAcceleratorRecipes.getOutput(rec.input[0].item, rec.input[1].item);
-		
+
 		if(paRecipe != null) {
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 			String momentum = I18nUtil.resolveKey("nei.particle_accelerator.momentum", String.format(Locale.US, "%,d", paRecipe.momentum));

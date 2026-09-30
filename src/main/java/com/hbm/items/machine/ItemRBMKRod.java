@@ -76,7 +76,7 @@ public class ItemRBMKRod extends Item {
 		this.setMaxStackSize(1);
 		this.setCreativeTab(MainRegistry.controlTab);
 	}
-	
+
 	public ItemRBMKRod setTint(int tint) {
 		this.colorTint = tint;
 		return this;
@@ -106,7 +106,7 @@ public class ItemRBMKRod extends Item {
 		this.depFunc = func;
 		return this;
 	}
-	
+
 	public ItemRBMKRod setHeatCoeff(double start, double length) {
 		this.heatCoeffStart = start;
 		this.heatCoeffLength = length;
@@ -170,7 +170,7 @@ public class ItemRBMKRod extends Item {
 
 		double mult = 1D;
 		double coreHeat = this.getCoreHeat(stack);
-		
+
 		if(this.heatCoeffStart != 0) {
 			if(coreHeat >= this.heatCoeffStart) {
 				double prog = (coreHeat - this.heatCoeffStart) / this.heatCoeffLength;
@@ -178,7 +178,7 @@ public class ItemRBMKRod extends Item {
 				mult = Math.sin((prog * Math.PI + Math.PI) / 2);
 			}
 		}
-		
+
 		double outFlux = reactivityFunc(inFlux, getEnrichment(stack) * mult) * RBMKDials.getReactivityMod(world);
 
 		//if depletion is enabled
@@ -503,18 +503,18 @@ public class ItemRBMKRod extends Item {
 			list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmk.melt", meltingPoint + "°C"));
 		}
 
-		/*list.add(I18nUtil.resolveKey("desc.item.rbmkrod.depletion", EnumChatFormatting.GREEN, ((int)(((yield - getYield(stack)) / yield) * 10000)) / 10000D));
-		list.add(I18nUtil.resolveKey("desc.item.rbmkrod.xenon_poison", EnumChatFormatting.DARK_PURPLE, ((getPoison(stack) * 100D) / 100D)));
-		list.add(I18nUtil.resolveKey("desc.item.rbmkrod.splits_with", EnumChatFormatting.BLUE, nType.unlocalized));
-		list.add(I18nUtil.resolveKey("desc.item.rbmkrod.splits_into", EnumChatFormatting.BLUE, rType.unlocalized));
-		list.add(I18nUtil.resolveKey("desc.item.rbmkrod.flux_function_x", EnumChatFormatting.YELLOW, EnumChatFormatting.WHITE, funcEnd, (selfRate > 0 ? (EnumChatFormatting.RED + " + " + selfRate) : "")));
-		list.add(I18nUtil.resolveKey("desc.item.rbmkrod.xenon_gen_function_sx", EnumChatFormatting.YELLOW, EnumChatFormatting.WHITE, xGen));
-		list.add(I18nUtil.resolveKey("desc.item.rbmkrod.xenon_burn_function_sx", EnumChatFormatting.YELLOW, EnumChatFormatting.WHITE, xBurn));
+		/*list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.depletion", EnumChatFormatting.GREEN, ((int)(((yield - getYield(stack)) / yield) * 10000)) / 10000D));
+		list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.xenon_poison", EnumChatFormatting.DARK_PURPLE, ((getPoison(stack) * 100D) / 100D)));
+		list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.splits_with", EnumChatFormatting.BLUE, nType.unlocalized));
+		list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.splits_into", EnumChatFormatting.BLUE, rType.unlocalized));
+		list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.flux_function_x", EnumChatFormatting.YELLOW, EnumChatFormatting.WHITE, funcEnd, (selfRate > 0 ? (EnumChatFormatting.RED + " + " + selfRate) : "")));
+		list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.xenon_gen_function_sx", EnumChatFormatting.YELLOW, EnumChatFormatting.WHITE, xGen));
+		list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.xenon_burn_function_sx", EnumChatFormatting.YELLOW, EnumChatFormatting.WHITE, xBurn));
 		list.add(I18nUtil.resolveKey("desc.item.heat_per_tick_full_power", EnumChatFormatting.GOLD, heat));
-		list.add(I18nUtil.resolveKey("desc.item.rbmkrod.diffusion_c_t", EnumChatFormatting.GOLD, diffusion));
-		list.add(I18nUtil.resolveKey("desc.item.rbmkrod.skin_temp_c", EnumChatFormatting.RED, ((int)(getHullHeat(stack) * 10D) / 10D)));
-		list.add(I18nUtil.resolveKey("desc.item.rbmkrod.core_temp_c", EnumChatFormatting.RED, ((int)(getCoreHeat(stack) * 10D) / 10D)));
-		list.add(I18nUtil.resolveKey("desc.item.rbmkrod.melting_point_c", EnumChatFormatting.DARK_RED, meltingPoint));*/
+		list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.diffusion_c_t", EnumChatFormatting.GOLD, diffusion));
+		list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.skin_temp_c", EnumChatFormatting.RED, ((int)(getHullHeat(stack) * 10D) / 10D)));
+		list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.core_temp_c", EnumChatFormatting.RED, ((int)(getCoreHeat(stack) * 10D) / 10D)));
+		list.add(I18nUtil.resolveKey("desc.item.rbmk_rod.melting_point_c", EnumChatFormatting.DARK_RED, meltingPoint));*/
 
 		super.addInformation(stack, player, list, bool);
 	}

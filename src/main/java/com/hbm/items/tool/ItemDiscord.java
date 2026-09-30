@@ -53,9 +53,9 @@ public class ItemDiscord extends Item {
 		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.2"));
 		list.add("");
 		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.3"));
-		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.4"));
+		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.imagine_getting_coiled_worm_bosses"));
 		list.add("");
-		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.5"));
-		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.6"));
+		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.oh_mean_terraria_item"));
+		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.idk_about_thing"));
 	}
 }

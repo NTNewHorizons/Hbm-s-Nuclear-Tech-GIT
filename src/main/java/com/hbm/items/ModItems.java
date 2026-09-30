@@ -3417,7 +3417,7 @@ public class ModItems {
 		pile_rod_boron = new ItemPileRod().setUnlocalizedName("pile_rod_boron").setCreativeTab(null).setTextureName(RefStrings.MODID + ":pile_rod_boron");
 		pile_rod_lithium = new ItemPileRod().setUnlocalizedName("pile_rod_lithium").setCreativeTab(null).setTextureName(RefStrings.MODID + ":pile_rod_lithium");
 		pile_rod_detector = new ItemPileRod().setUnlocalizedName("pile_rod_detector").setCreativeTab(null).setTextureName(RefStrings.MODID + ":pile_rod_detector");
-		
+
 		pile_rod = new ItemPileRodMK2().setUnlocalizedName("pile_rod").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":pile_rod");
 
 		plate_fuel_u233 = new ItemPlateFuel(2200000).setFunction(FunctionEnum.SQUARE_ROOT, 50).setUnlocalizedName("plate_fuel_u233").setMaxStackSize(1).setCreativeTab(null).setTextureName(RefStrings.MODID + ":plate_fuel_u233");
@@ -5994,7 +5994,7 @@ public class ModItems {
 		GameRegistry.registerItem(pile_rod_boron, pile_rod_boron.getUnlocalizedName());
 		GameRegistry.registerItem(pile_rod_lithium, pile_rod_lithium.getUnlocalizedName());
 		GameRegistry.registerItem(pile_rod_detector, pile_rod_detector.getUnlocalizedName());
-		
+
 		GameRegistry.registerItem(pile_rod, pile_rod.getUnlocalizedName());
 
 		//Plate Fuels

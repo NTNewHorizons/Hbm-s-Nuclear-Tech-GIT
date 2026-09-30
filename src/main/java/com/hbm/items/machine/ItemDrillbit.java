@@ -20,25 +20,25 @@ public class ItemDrillbit extends ItemEnumMulti {
 	public ItemDrillbit() {
 		super(EnumDrillType.class, true, true);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
 		Enum[] enums = theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
-		
+
 		for(int i = 0; i < icons.length; i++) {
 			Enum num = enums[i];
 			this.icons[i] = reg.registerIcon(this.getIconString() + "_" + num.name().toLowerCase(Locale.US));
 		}
 	}
-	
+
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 		Enum num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
 		return super.getUnlocalizedName() + "_" + num.name().toLowerCase(Locale.US);
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		EnumDrillType type = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
@@ -46,10 +46,10 @@ public class ItemDrillbit extends ItemEnumMulti {
 		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.drillbit.1", ((int) (type.speed * 100))));
 		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.drillbit.2", type.tier));
 		if(type.fortune > 0) list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("desc.item.drillbit.3", type.fortune));
-		if(type.vein) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.drillbit.4"));
-		if(type.silk) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.drillbit.5"));
+		if(type.vein) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.drillbit.vein_miner"));
+		if(type.silk) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.drillbit.silk_touch"));
 	}
-	
+
 	public static enum EnumDrillType {
 		STEEL			(1.0D, 1, 0, false, false),
 		STEEL_DIAMOND	(1.0D, 1, 2, false, true),
@@ -61,13 +61,13 @@ public class ItemDrillbit extends ItemEnumMulti {
 		TCALLOY_DIAMOND	(2.0D, 4, 4, true, true),
 		FERRO			(2.5D, 5, 1, true, true),
 		FERRO_DIAMOND	(2.5D, 5, 4, true, true);
-		
+
 		public double speed;
 		public int tier;
 		public int fortune;
 		public boolean vein;
 		public boolean silk;
-		
+
 		private EnumDrillType(double speed, int tier, int fortune, boolean vein, boolean silk) {
 			this.speed = speed;
 			this.tier = tier;

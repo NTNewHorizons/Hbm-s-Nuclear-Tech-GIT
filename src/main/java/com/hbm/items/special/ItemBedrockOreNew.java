@@ -122,7 +122,7 @@ public class ItemBedrockOreNew extends Item {
 		}
 
 		if(grade == BedrockOreGrade.BASE) {
-			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.bedrock_ore_new.1"));
+			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.bedrock_ore_new.processing_outputs"));
 			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.bedrock_ore_new.2", EnumChatFormatting.GRAY, I18nUtil.resolveKey(type.primary.mat.getUnlocalizedName())));
 			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.bedrock_ore_new.3", EnumChatFormatting.GRAY, I18nUtil.resolveKey(type.byproductAcid.mat.getUnlocalizedName())));
 			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.bedrock_ore_new.4", EnumChatFormatting.GRAY, I18nUtil.resolveKey(type.byproductSolvent.mat.getUnlocalizedName())));

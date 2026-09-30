@@ -40,7 +40,7 @@ public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 	@Override
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
-		
+
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 
 		this.makeExtra(world, x - dir.offsetX, y, z - dir.offsetZ);
@@ -54,7 +54,7 @@ public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 		if(!world.isRemote && !player.isSneaking()) {
 
 			if(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ISatChip) {
-				
+
 				int[] pos = this.findCore(world, x, y, z);
 				if(pos == null) return false;
 
@@ -62,7 +62,7 @@ public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 				if(!(te instanceof TileEntityMachineSatLink)) return false;
 
 				TileEntityMachineSatLink link = (TileEntityMachineSatLink) te;
-				
+
 				link.freq = ISatChip.getFreqS(player.getHeldItem());
 				player.addChatComponentMessage(new ChatComponentTranslation("chat.sat_link.set_frequency_to", link.freq).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 				world.playSoundAtEntity(player, NTMSounds.TECH_BLEEP, 1F, 1F);
@@ -78,7 +78,7 @@ public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		
+
 		int[] pos = this.findCore(world, x, y, z);
 		if(pos == null) return;
 
@@ -86,7 +86,7 @@ public class MachineSatLink extends BlockDummyable implements ILookOverlay {
 		if(!(te instanceof TileEntityMachineSatLink)) return;
 
 		TileEntityMachineSatLink link = (TileEntityMachineSatLink) te;
-		
+
 		List<String> text = new ArrayList();
 		text.add(I18nUtil.resolveKey("overlay.sat_link.freq", link.freq));
 		text.add(I18nUtil.resolveKey("overlay.sat_link.connected", (link.connected ? (EnumChatFormatting.GREEN + I18nUtil.resolveKey("gui.sat_link.yes")) : (EnumChatFormatting.RED + I18nUtil.resolveKey("gui.sat_link.no")))));

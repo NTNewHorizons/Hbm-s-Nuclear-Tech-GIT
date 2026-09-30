@@ -18,30 +18,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 public class ItemMachineUpgrade extends Item {
-	
+
 	public UpgradeType type;
 	public int tier = 0;
-	
+
 	public ItemMachineUpgrade() {
 		this.setMaxStackSize(1);
 		this.type = UpgradeType.SPECIAL;
 	}
-	
+
 	public ItemMachineUpgrade(UpgradeType type) {
 		this.setMaxStackSize(1);
 		this.type = type;
 	}
-	
+
 	public ItemMachineUpgrade(UpgradeType type, int tier) {
 		this(type);
 		this.tier = tier;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		
+
 		GuiScreen open = Minecraft.getMinecraft().currentScreen;
-		
+
 		if(open != null && open instanceof GuiContainer) {
 			GuiContainer guiContainer = (GuiContainer) open;
 			Container container = guiContainer.inventorySlots;
@@ -57,59 +57,59 @@ public class ItemMachineUpgrade extends Item {
 				}
 			}
 		}
-		
+
 		if(this == ModItems.upgrade_radius) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.1"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.2"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.3"));
 		}
-		
+
 		if(this == ModItems.upgrade_health) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.4"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.5"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.3"));
 		}
-		
+
 		if(this == ModItems.upgrade_smelter) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.7"));
 		}
-		
+
 		if(this == ModItems.upgrade_shredder) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.8"));
 		}
-		
+
 		if(this == ModItems.upgrade_centrifuge) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.9"));
 		}
-		
+
 		if(this == ModItems.upgrade_crystallizer) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.10"));
 		}
-		
+
 		if(this == ModItems.upgrade_screm) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.11"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.12"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.13"));
 		}
-		
+
 		if(this == ModItems.upgrade_nullifier) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.14"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.15"));
 		}
-		
+
 		if(this == ModItems.upgrade_gc_speed) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.16"));
 			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.17"));
 			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.machine_upgrade.18"));
 		}
 	}
-	
+
 	public static enum UpgradeType {
 		SPEED,
 		EFFECT,
@@ -126,11 +126,11 @@ public class ItemMachineUpgrade extends Item {
 		LM_CRYSTALLIZER(true),
 		GS_SPEED,
 		CLAUDE;
-		
+
 		public boolean mutex = false;
-		
+
 		private UpgradeType() { }
-		
+
 		private UpgradeType(boolean mutex) {
 			this.mutex = mutex;
 		}

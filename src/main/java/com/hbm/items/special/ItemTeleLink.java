@@ -18,47 +18,47 @@ public class ItemTeleLink extends Item {
 
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		
+
 		if(!player.isSneaking() && !world.isRemote) {
-			
+
 			TileEntity te = world.getTileEntity(x, y, z);
 
 			if(!(te instanceof TileEntityMachineTeleporter)) {
-				
+
 				if(stack.stackTagCompound == null) {
 					stack.stackTagCompound = new NBTTagCompound();
 				}
-	
+
 				stack.stackTagCompound.setInteger("x", x);
 				stack.stackTagCompound.setInteger("y", y);
 				stack.stackTagCompound.setInteger("z", z);
 				stack.stackTagCompound.setInteger("dim", player.dimension);
 				world.playSoundAtEntity(player, "hbm:item.techBleep", 1.0F, 1.0F);
-				player.addChatMessage(new ChatComponentTranslation("chat.tele_link.1", EnumChatFormatting.AQUA, x, y, z));
+				player.addChatMessage(new ChatComponentTranslation("chat.tele_link.telelink_teleporter_exit", EnumChatFormatting.AQUA, x, y, z));
 				player.swingItem();
-				
+
 				return true;
-				
+
 			} else {
-				
+
 				if(!stack.hasTagCompound()) {
 					world.playSoundAtEntity(player, "hbm:item.techBoop", 1.0F, 1.0F);
-					player.addChatMessage(new ChatComponentTranslation("chat.tele_link.2", EnumChatFormatting.RED));
+					player.addChatMessage(new ChatComponentTranslation("chat.tele_link.telelink_no_destination", EnumChatFormatting.RED));
 					return false;
 				}
-				
+
 				int x1 = stack.stackTagCompound.getInteger("x");
 				int y1 = stack.stackTagCompound.getInteger("y");
 				int z1 = stack.stackTagCompound.getInteger("z");
 				int dim = stack.stackTagCompound.getInteger("dim");
-				
+
 				TileEntityMachineTeleporter tele = (TileEntityMachineTeleporter) te;
 
 				tele.targetX = x1;
 				tele.targetY = y1;
 				tele.targetZ = z1;
 				tele.targetDim = dim;
-				
+
 				tele.markDirty();
 				world.playSoundAtEntity(player, "hbm:item.techBleep", 1.0F, 1.0F);
 				player.addChatMessage(new ChatComponentTranslation("chat.tele_link.3", EnumChatFormatting.AQUA));
@@ -78,7 +78,7 @@ public class ItemTeleLink extends Item {
 			list.add(I18nUtil.resolveKey("desc.item.tele_link.3", itemstack.stackTagCompound.getInteger("z")));
 			list.add(I18nUtil.resolveKey("desc.item.tele_link.4", itemstack.stackTagCompound.getInteger("dim")));
 		} else {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.tele_link.5"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.tele_link.select_exit_location_first"));
 		}
 	}
 

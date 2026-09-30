@@ -62,7 +62,7 @@ public class FluidTraitSimple {
 			info.add(EnumChatFormatting.RED + I18nUtil.resolveKey("gui.fluid_trait_simple.explosive"));
 		}
 	}
-	
+
 	public static class FT_Leaded extends FluidTrait {
 		@Override public void addInfoHidden(List<String> info) {
 			info.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.fluid_trait_simple.leaded_fuel"));

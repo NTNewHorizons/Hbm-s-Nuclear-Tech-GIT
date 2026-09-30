@@ -291,15 +291,15 @@ public class ModEventHandlerClient {
 					}
 
 					/*List<String> text = new ArrayList();
-					text.add(I18nUtil.resolveKey("overlay.mod_event_handler_client.meta", world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ)));
+					text.add(I18nUtil.resolveKey("overlay.armor_mod.meta", world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ)));
 					ILookOverlay.printGeneric(event, I18nUtil.resolveKey("gui.weapon.quality.debug"), 0xffff00, 0x4040000, text);*/
-					
+
 					if(ClientConfig.SHOW_BLOCK_META_OVERLAY.get()) {
 						Block b = world.getBlock(mop.blockX, mop.blockY, mop.blockZ);
 						int i = world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ);
 						List<String> text = new ArrayList();
 						text.add(b.getUnlocalizedName());
-						text.add(I18nUtil.resolveKey("overlay.mod_event_handler_client.meta", i));
+						text.add(I18nUtil.resolveKey("overlay.armor_mod.meta", i));
 						ILookOverlay.printGeneric(event, I18nUtil.resolveKey("gui.weapon.quality.debug"), 0xffff00, 0x4040000, text);
 					}
 
@@ -315,9 +315,9 @@ public class ModEventHandlerClient {
 			}
 
 			/*List<String> text = new ArrayList();
-			text.add(I18nUtil.resolveKey("overlay.mod_event_handler_client.impact", ImpactWorldHandler.getImpactForClient(world)));
-			text.add(I18nUtil.resolveKey("overlay.mod_event_handler_client.dust", ImpactWorldHandler.getDustForClient(world)));
-			text.add(I18nUtil.resolveKey("overlay.mod_event_handler_client.fire", ImpactWorldHandler.getFireForClient(world)));
+			text.add(I18nUtil.resolveKey("overlay.armor_mod.impact", ImpactWorldHandler.getImpactForClient(world)));
+			text.add(I18nUtil.resolveKey("overlay.armor_mod.dust", ImpactWorldHandler.getDustForClient(world)));
+			text.add(I18nUtil.resolveKey("overlay.armor_mod.fire", ImpactWorldHandler.getFireForClient(world)));
 			ILookOverlay.printGeneric(event, I18nUtil.resolveKey("gui.weapon.quality.debug"), 0xffff00, 0x4040000, text);*/
 
 			/*if(mop != null && mop.typeOfHit == mop.typeOfHit.BLOCK) {
@@ -847,7 +847,7 @@ public class ModEventHandlerClient {
 
 			} else {
 
-				list.add(I18nUtil.resolveKey("desc.misc.mod_event_handler_client.mods", EnumChatFormatting.YELLOW));
+				list.add(I18nUtil.resolveKey("desc.misc.armor_mod.mods", EnumChatFormatting.YELLOW));
 
 				ItemStack[] mods = ArmorModHandler.pryMods(stack);
 
@@ -889,7 +889,7 @@ public class ModEventHandlerClient {
 				list.add(EnumChatFormatting.YELLOW + (rads2 + "RAD/s"));
 
 				if(stack.stackSize > 1) {
-					list.add(I18nUtil.resolveKey("desc.misc.mod_event_handler_client.stack", EnumChatFormatting.YELLOW, ((Math.floor(level * 1000 * stack.stackSize) / 1000) + "RAD/s")));
+					list.add(I18nUtil.resolveKey("desc.misc.armor_mod.stack", EnumChatFormatting.YELLOW, ((Math.floor(level * 1000 * stack.stackSize) / 1000) + "RAD/s")));
 				}
 			}
 		}
@@ -909,7 +909,7 @@ public class ModEventHandlerClient {
 					list.add(I18nUtil.resolveKey("desc.misc.adds_custom_nuke_stage", EnumChatFormatting.GOLD, entry.value, entry.type));
 
 				if(entry.entry == EnumEntryType.MULT)
-					list.add(I18nUtil.resolveKey("desc.misc.mod_event_handler_client.line.01", EnumChatFormatting.GOLD, entry.value, entry.type));
+					list.add(I18nUtil.resolveKey("desc.misc.armor_mod.line.01", EnumChatFormatting.GOLD, entry.value, entry.type));
 			}
 		}
 
@@ -1078,14 +1078,14 @@ public class ModEventHandlerClient {
 			if(ArmorUtil.isWearingEmptyMask(mc.thePlayer)) {
 				MainRegistry.proxy.displayTooltip(EnumChatFormatting.RED + I18nUtil.resolveKey("gui.armor_mod.your_mask_has_no_filter"), ServerProxy.ID_FILTER);
 			}
-			
+
 			//prune other entities' muzzle flashes
 			if(mc.theWorld.getTotalWorldTime() % 30 == 0) {
 				long millis = System.currentTimeMillis();
 				//dead entities may have later insertion order than actively firing ones, so we be safe
 				ItemRenderWeaponBase.flashMap.values().removeIf(entry -> millis - entry.longValue() >= 150);
 			}
-			
+
 			CelestialBody body = CelestialBody.getBody(mc.theWorld);
 			CBT_Invasion invasion = body.getTrait(CBT_Invasion.class);
 

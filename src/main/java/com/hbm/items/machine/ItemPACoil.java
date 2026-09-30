@@ -29,7 +29,7 @@ public class ItemPACoil extends ItemEnumMulti {
 		public int diMin;
 		public int diMax;
 		public int diDistMin;
-		
+
 		private EnumCoilType(int quadMin, int quadMax, int diMin, int diMax, int diDistMin) {
 			this.quadMin = quadMin;
 			this.quadMax = quadMax;
@@ -42,10 +42,10 @@ public class ItemPACoil extends ItemEnumMulti {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		EnumCoilType type = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.pa_coil.1", EnumChatFormatting.RESET, String.format(Locale.US, "%,d", type.quadMin), String.format(Locale.US, "%,d", type.quadMax)));
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.pa_coil.2", EnumChatFormatting.RESET, String.format(Locale.US, "%,d", type.diMin), String.format(Locale.US, "%,d", type.diMax)));
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.pa_coil.3", EnumChatFormatting.RESET, type.diDistMin));
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.pa_coil.4"));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.pa_coil.quadrupole_operational_range", EnumChatFormatting.RESET, String.format(Locale.US, "%,d", type.quadMin), String.format(Locale.US, "%,d", type.quadMax)));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.pa_coil.dipole_operational_range", EnumChatFormatting.RESET, String.format(Locale.US, "%,d", type.diMin), String.format(Locale.US, "%,d", type.diMax)));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.pa_coil.dipole_minimum_side_length", EnumChatFormatting.RESET, type.diDistMin));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.pa_coil.minimums_not_met_result_power"));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.pa_coil.5"));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.pa_coil.6"));
 	}

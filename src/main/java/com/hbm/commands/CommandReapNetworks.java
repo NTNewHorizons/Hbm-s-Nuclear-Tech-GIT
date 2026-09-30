@@ -25,7 +25,7 @@ public class CommandReapNetworks extends CommandBase {
 	public void processCommand(ICommandSender sender, String[] args) {
 
 		try {
-			
+
 			UniNodespace.activeNodeNets.forEach((net) -> {
 				net.links.forEach((link) -> { ((GenNode)link).expired = true; });
 				net.links.clear();
@@ -36,7 +36,7 @@ public class CommandReapNetworks extends CommandBase {
 			UniNodespace.worlds.clear();
 
 			sender.addChatMessage(new ChatComponentTranslation("commands.reap_networks.nodespace_cleared", EnumChatFormatting.YELLOW));
-			
+
 		} catch(Exception ex) {
 			sender.addChatMessage(ChatBuilder.start("----------------------------------").color(EnumChatFormatting.GRAY).flush());
 			sender.addChatMessage(ChatBuilder.startTranslation("commands.reap_networks.text.01").color(EnumChatFormatting.RED).flush());

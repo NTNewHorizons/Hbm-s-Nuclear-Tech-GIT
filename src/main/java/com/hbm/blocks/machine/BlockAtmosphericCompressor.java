@@ -111,7 +111,7 @@ public class BlockAtmosphericCompressor extends BlockDummyable implements ILookO
 
 		return true;
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		if(player.isSneaking()) {
@@ -126,14 +126,14 @@ public class BlockAtmosphericCompressor extends BlockDummyable implements ILookO
 
 			TileEntity te = world.getTileEntity(pos[0], pos[1], pos[2]);
 			if(!(te instanceof TileEntityAtmosphericCompressor)) return true;
-			
+
 			TileEntityAtmosphericCompressor compressor = (TileEntityAtmosphericCompressor) te;
 			FluidType type = ((IItemFluidIdentifier) player.getHeldItem().getItem()).getType(world, x, y, z, player.getHeldItem());
 			if(compressor.switchGas(type)) {
 				compressor.markDirty();
 				player.addChatComponentMessage(new ChatComponentTranslation("chat.common.changed_type").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(type.getConditionalName())).appendSibling(new ChatComponentText("!")));
 			}
-			
+
 			return true;
 		}
 	}

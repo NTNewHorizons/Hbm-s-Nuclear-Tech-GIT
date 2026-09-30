@@ -14,12 +14,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemMS extends Item {
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("desc.item.ms.1"));
+		list.add(I18nUtil.resolveKey("desc.item.ms.lost_not_forgotten"));
 	}
-	
+
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int i, float a, float b, float c) {
 		if(!world.isRemote) {
 			if(world.getBlock(x, y, z) == ModBlocks.ntm_dirt) {

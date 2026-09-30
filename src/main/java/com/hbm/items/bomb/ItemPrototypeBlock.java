@@ -14,14 +14,14 @@ public class ItemPrototypeBlock extends ItemBlock {
 	public ItemPrototypeBlock(Block p_i45328_1_) {
 		super(p_i45328_1_);
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
 		list.add(I18nUtil.resolveKey("desc.item.prototype_block.1"));
 		list.add("");
 		list.add(I18nUtil.resolveKey("desc.item.prototype_block.2"));
-		
+
 		/*list.add(I18nUtil.resolveKey("desc.item.memory_euphemia"));
 		list.add("");
 		list.add(I18nUtil.resolveKey("desc.item.rest_spaghetti_never_forgetti"));*/

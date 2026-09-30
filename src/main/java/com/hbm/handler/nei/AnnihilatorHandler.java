@@ -22,14 +22,14 @@ public class AnnihilatorHandler extends NEIUniversalHandler {
 
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
-		
+
 		outer: for(Pair<Object, Object> recipe : recipes) {
 			ItemStack[][] ins = InventoryUtil.extractObject(recipe.getKey());
 			ItemStack[][] outs = InventoryUtil.extractObject(recipe.getValue());
-			
+
 			for(ItemStack[] array : ins) for(ItemStack stack : array) if(stack.getItem() == ModItems.item_secret) continue outer;
 			for(ItemStack[] array : outs) for(ItemStack stack : array) if(stack.getItem() == ModItems.item_secret) continue outer;
-			
+
 			match:
 			for(ItemStack[] array : outs) {
 				for(ItemStack stack : array) {

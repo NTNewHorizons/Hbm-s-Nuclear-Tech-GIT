@@ -23,7 +23,7 @@ public class ItemAnchorRemote extends ItemBattery {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		long charge = maxCharge;
 		if(stack.hasTagCompound()) charge = getCharge(stack);
-		list.add(I18nUtil.resolveKey("desc.item.battery.1", BobMathUtil.getShortNumber(charge), BobMathUtil.getShortNumber(maxCharge)));
+		list.add(I18nUtil.resolveKey("desc.item.battery.energy_stored_he", BobMathUtil.getShortNumber(charge), BobMathUtil.getShortNumber(maxCharge)));
 		list.add(I18nUtil.resolveKey("desc.item.battery.2", BobMathUtil.getShortNumber(chargeRate)));
 	}
 
@@ -56,7 +56,7 @@ public class ItemAnchorRemote extends ItemBattery {
 			world.playSoundAtEntity(player, NTMSounds.VANILLA_ORB, 0.25F, 0.75F);
 			return stack;
 		}
-		
+
 		if(this.getCharge(stack) < 10_000) {
 			world.playSoundAtEntity(player, NTMSounds.VANILLA_ORB, 0.25F, 0.75F);
 			return stack;
@@ -83,9 +83,9 @@ public class ItemAnchorRemote extends ItemBattery {
 			for(int i = 0; i < 32; ++i) {
 				world.spawnParticle("portal", player.posX, player.posY + player.getRNG().nextDouble() * 2.0D, player.posZ, player.getRNG().nextGaussian(), 0.0D, player.getRNG().nextGaussian());
 			}
-			
+
 			this.dischargeBattery(stack, 10_000);
-			
+
 		} else {
 			world.playSoundAtEntity(player, NTMSounds.VANILLA_ORB, 0.25F, 0.75F);
 		}

@@ -66,11 +66,11 @@ public class ItemCustomRocket extends Item implements ISatChip {
 		list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("desc.item.custom_rocket.1", EnumChatFormatting.GRAY, rocket.stages.size()));
 
 		if(hasFuel(stack)) {
-			list.add(EnumChatFormatting.GRAY + I18nUtil.resolveKey("desc.item.custom_rocket.2"));
+			list.add(EnumChatFormatting.GRAY + I18nUtil.resolveKey("desc.item.custom_rocket.fully_fueled"));
 		}
 
 		if(getFreq(stack) != 0) {
-			list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("desc.item.custom_rocket.3", EnumChatFormatting.GRAY, getFreq(stack)));
+			list.add(EnumChatFormatting.BOLD + I18nUtil.resolveKey("desc.item.custom_rocket.satellite_frequency", EnumChatFormatting.GRAY, getFreq(stack)));
 		}
 	}
 

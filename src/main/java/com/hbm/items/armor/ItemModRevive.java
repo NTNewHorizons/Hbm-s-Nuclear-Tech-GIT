@@ -25,18 +25,18 @@ public class ItemModRevive extends ItemArmorMod {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.mod_revive.2"));
 		}
 		if(this == ModItems.wild_p) {
-			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.mod_revive.3", EnumChatFormatting.RED, EnumChatFormatting.DARK_GRAY, EnumChatFormatting.RED));
+			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.mod_revive.explosive_reactive_plot_armor", EnumChatFormatting.RED, EnumChatFormatting.DARK_GRAY, EnumChatFormatting.RED));
 		}
-		
+
 		/*list.add(I18nUtil.resolveKey("desc.item.mod_revive.in_the_news", EnumChatFormatting.ITALIC));
 		list.add(I18nUtil.resolveKey("desc.item.man_literally_too_angry_die", EnumChatFormatting.RED, EnumChatFormatting.BOLD));
 		list.add("");
 		list.add(I18nUtil.resolveKey("desc.item.mod_revive.i_ain_t_got_time", EnumChatFormatting.ITALIC));
-		list.add(I18nUtil.resolveKey("desc.item.mod_revive.line.01", EnumChatFormatting.ITALIC));
+		list.add(I18nUtil.resolveKey("desc.item.mod_revive.man_after_ripping_physical", EnumChatFormatting.ITALIC));
 		list.add(I18nUtil.resolveKey("desc.item.disaster_itself_half", EnumChatFormatting.ITALIC));*/
-		
+
 		list.add("");
-		list.add(EnumChatFormatting.GOLD + "" + I18nUtil.resolveKey("desc.item.mod_revive.4", (stack.getMaxDamage() - stack.getItemDamage())));
+		list.add(EnumChatFormatting.GOLD + "" + I18nUtil.resolveKey("desc.item.mod_revive.revives_left", (stack.getMaxDamage() - stack.getItemDamage())));
 		list.add("");
 		super.addInformation(stack, player, list, bool);
 	}

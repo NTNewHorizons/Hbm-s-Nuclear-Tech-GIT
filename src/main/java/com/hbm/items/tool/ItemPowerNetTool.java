@@ -52,11 +52,11 @@ public class ItemPowerNetTool extends Item {
 
 				PowerNetMK2 net = node.net;
 				String id = Integer.toHexString(net.hashCode());
-				player.addChatComponentMessage(ChatBuilder.startTranslation("chat.power_net_tool.1", id).color(EnumChatFormatting.GOLD).flush());
+				player.addChatComponentMessage(ChatBuilder.startTranslation("chat.power_net_tool.start_diagnostic_network", id).color(EnumChatFormatting.GOLD).flush());
 				player.addChatComponentMessage(ChatBuilder.startTranslation("chat.power_net_tool.2", net.links.size()).color(EnumChatFormatting.YELLOW).flush());
 				player.addChatComponentMessage(ChatBuilder.startTranslation("chat.power_net_tool.3", net.providerEntries.size()).color(EnumChatFormatting.YELLOW).flush());
 				player.addChatComponentMessage(ChatBuilder.startTranslation("chat.power_net_tool.4", net.receiverEntries.size()).color(EnumChatFormatting.YELLOW).flush());
-				player.addChatComponentMessage(ChatBuilder.startTranslation("chat.power_net_tool.5", id).color(EnumChatFormatting.GOLD).flush());
+				player.addChatComponentMessage(ChatBuilder.startTranslation("chat.power_net_tool.end_diagnostic_network", id).color(EnumChatFormatting.GOLD).flush());
 
 				for(PowerNode link : net.links) {
 
@@ -71,7 +71,7 @@ public class ItemPowerNetTool extends Item {
 				}
 
 			} else {
-				player.addChatComponentMessage(ChatBuilder.startTranslation("chat.power_net_tool.6").color(EnumChatFormatting.RED).flush());
+				player.addChatComponentMessage(ChatBuilder.startTranslation("chat.power_net_tool.error_no_network_found").color(EnumChatFormatting.RED).flush());
 			}
 
 			return true;
@@ -84,12 +84,12 @@ public class ItemPowerNetTool extends Item {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.1"));
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.2"));
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.3"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.right_click_cable_analyze_power"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.links_cables_poles_etc_yellow"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.subscribers_receiver_blue"));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.4"));
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.5"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.displays_stats_link_subscriber"));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.6"));
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.7", radius));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.particles_spawn_block_radius", radius));
 	}
 }

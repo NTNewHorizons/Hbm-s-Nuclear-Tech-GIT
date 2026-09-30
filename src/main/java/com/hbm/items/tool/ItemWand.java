@@ -19,18 +19,18 @@ public class ItemWand extends Item {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("desc.item.wand.1"));
-		list.add(I18nUtil.resolveKey("desc.item.wand.2"));
-		list.add(I18nUtil.resolveKey("desc.item.wand.3"));
-		list.add(I18nUtil.resolveKey("desc.item.wand.4"));
+		list.add(I18nUtil.resolveKey("desc.item.wand.creative_item"));
+		list.add(I18nUtil.resolveKey("desc.item.wand.destruction_brings_creation"));
+		list.add(I18nUtil.resolveKey("desc.item.wand.positions_right_click"));
+		list.add(I18nUtil.resolveKey("desc.item.wand.block_shift_right_click"));
 
 		if(stack.stackTagCompound != null && !(stack.stackTagCompound.getInteger("x") == 0 && stack.stackTagCompound.getInteger("y") == 0 && stack.stackTagCompound.getInteger("z") == 0)) {
 			list.add(I18nUtil.resolveKey("desc.item.wand.5", stack.stackTagCompound.getInteger("x"), stack.stackTagCompound.getInteger("y"), stack.stackTagCompound.getInteger("z")));
 		} else {
-			list.add(I18nUtil.resolveKey("desc.item.wand.6"));
+			list.add(I18nUtil.resolveKey("desc.item.wand.positions_not"));
 		}
 		if(stack.stackTagCompound != null)
-			list.add(I18nUtil.resolveKey("desc.item.wand.7", Block.getBlockById(stack.stackTagCompound.getInteger("block")).getUnlocalizedName()));
+			list.add(I18nUtil.resolveKey("desc.item.wand.block_saved", Block.getBlockById(stack.stackTagCompound.getInteger("block")).getUnlocalizedName()));
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class ItemWand extends Item {
 					}
 				}
 				if(world.isRemote)
-					player.addChatMessage(new ChatComponentTranslation("chat.wand.2"));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand.selection_filled"));
 			}
 		}
 

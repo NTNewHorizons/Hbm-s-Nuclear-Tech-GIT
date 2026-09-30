@@ -24,7 +24,7 @@ public class ItemDetonator extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		list.add(I18nUtil.resolveKey("desc.item.drop.26"));
-		list.add(I18nUtil.resolveKey("desc.item.detonator.1"));
+		list.add(I18nUtil.resolveKey("desc.item.detonator.right_click_detonate"));
 		if(itemstack.getTagCompound() == null) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.misc.noPos"));
 		} else {
@@ -80,13 +80,13 @@ public class ItemDetonator extends Item {
 
 					if(GeneralConfig.enableExtendedLogging)
 						MainRegistry.logger.log(Level.INFO, "[DET] Tried to detonate block at " + x + " / " + y + " / " + z + " by " + player.getDisplayName() + "!");
-					
+
 					player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 							.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 							.next("] ").color(EnumChatFormatting.DARK_AQUA)
 							.nextTranslation(ret.getUnlocalizedMessage()).color(ret.wasSuccessful() ? EnumChatFormatting.YELLOW : EnumChatFormatting.RED).flush());
 				}
-				
+
 			} else {
 				if(!world.isRemote) {
 					player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)

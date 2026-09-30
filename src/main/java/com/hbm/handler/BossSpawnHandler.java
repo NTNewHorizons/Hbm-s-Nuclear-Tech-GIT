@@ -53,41 +53,41 @@ public class BossSpawnHandler {
 		 * - the player has either crafted or placed an ore acidizer before
 		 */
 		if(MobConfig.enableMaskman && world.getTotalWorldTime() % 20 == 0 && world.provider.isSurfaceWorld() && world.difficultySetting != EnumDifficulty.PEACEFUL) {
-			
+
 			for(Object o : world.playerEntities) {
 				if(!(o instanceof EntityPlayerMP)) return;
 				EntityPlayerMP player = (EntityPlayerMP) o;
-				
+
 				int id = Item.getIdFromItem(Item.getItemFromBlock(ModBlocks.machine_crystallizer));
 				StatBase statCraft = StatList.objectCraftStats[id];
 				StatBase statPlace = StatList.objectUseStats[id];
-				
+
 				boolean acidizerStat = !GeneralConfig.enableStatReRegistering || (statCraft != null && player.func_147099_x().writeStat(statCraft) > 0)|| (statPlace != null && player.func_147099_x().writeStat(statPlace) > 0);
 				boolean hasRads = ContaminationUtil.getRads(player) >= MobConfig.maskmanMinRad;
 				boolean underground = world.getHeightValue((int) Math.floor(player.posX), (int) Math.floor(player.posZ)) > player.posY + 3 || !MobConfig.maskmanUnderground;
-				
+
 				if(acidizerStat && hasRads && underground) {
 					HbmPlayerProps data = HbmPlayerProps.getData(player);
-					
+
 					data.maskManTimer++;
-					
+
 					if(data.maskManTimer == MobConfig.maskmanDelay - 60) {
 						player.addChatComponentMessage(new ChatComponentTranslation("chat.boss_spawn.the_mask_man_draws_near").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 					}
-					
+
 					if(data.maskManTimer >= MobConfig.maskmanDelay) {
 						data.maskManTimer = 0;
-						
+
 						double spawnX = player.posX + world.rand.nextGaussian() * 20;
 						double spawnZ = player.posZ + world.rand.nextGaussian() * 20;
 						double spawnY = world.getHeightValue((int) Math.floor(spawnX), (int) Math.floor(spawnZ));
 						if(trySpawn(world, (float) spawnX, (float) spawnY, (float) spawnZ, new EntityMaskMan(world))) {
-							player.addChatComponentMessage(new ChatComponentTranslation("chat.boss_spawn.line.01").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+							player.addChatComponentMessage(new ChatComponentTranslation("chat.boss_spawn.mask_man_about_claim_another").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 						} else {
 							player.addChatComponentMessage(new ChatComponentTranslation("chat.boss_spawn.seems_like_mask_man_couldn").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE)));
 						}
 					}
-					
+
 				} else {
 					HbmPlayerProps.getData(player).maskManTimer = 0;
 				}
@@ -198,7 +198,7 @@ public class BossSpawnHandler {
 			e.onSpawnWithEgg(null);
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -236,12 +236,12 @@ public class BossSpawnHandler {
 							}
 						}
 					}
-					
+
 					// only check if either charm is not present
 					if(!repell || strike) {
 						int x = (int) Math.floor(p.posX);
 						int z = (int) Math.floor(p.posZ);
-						
+
 						List<PedestalEntry> entries = BlockPedestal.getEntriesForDimension(world.provider.dimensionId);
 						if(entries != null) for(PedestalEntry entry : entries) {
 							if(Math.abs(entry.pos.getX() - x) <= 100 && Math.abs(entry.pos.getZ() - z) <= 100) {

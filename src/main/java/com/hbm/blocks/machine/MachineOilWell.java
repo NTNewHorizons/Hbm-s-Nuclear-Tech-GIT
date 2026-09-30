@@ -72,26 +72,26 @@ public class MachineOilWell extends BlockDummyable implements IPersistentInfoPro
 		MultiblockHandlerXR.fillSpace(world, x - 1, y + 1, z + 1, new int[] {-1, 1, 0, 0, 0, 0}, this, dir);
 		MultiblockHandlerXR.fillSpace(world, x - 1, y + 1, z - 1, new int[] {-1, 1, 0, 0, 0, 0}, this, dir);
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		
+
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
-			
+
 			int[] pos = this.findCore(world, x, y, z);
-			
+
 			if(pos == null)
 				return false;
-			
+
 			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, world, pos[0], pos[1], pos[2]);
 			return true;
 		} else {
 			return true;
 		}
 	}
-	
+
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
 		return IPersistentNBT.getDrops(world, x, y, z, this);
@@ -114,10 +114,10 @@ public class MachineOilWell extends BlockDummyable implements IPersistentInfoPro
 		if(pos == null) return;
 		TileEntity core = world.getTileEntity(pos[0], pos[1], pos[2]);
 		if(!(core instanceof TileEntityMachineOilWell)) return;
-		
+
 		world.setBlockToAir(x, y, z);
 		onBlockDestroyedByExplosion(world, x, y, z, explosion);
-		
+
 		TileEntityMachineOilWell well = (TileEntityMachineOilWell) core;
 		if(well.tanks[0].getFill() > 0 || well.tanks[1].getFill() > 0) {
 			well.tanks[0].setFill(0);
@@ -129,7 +129,7 @@ public class MachineOilWell extends BlockDummyable implements IPersistentInfoPro
 			xnt.setEntityProcessor(new EntityProcessorStandard());
 			xnt.setPlayerProcessor(new PlayerProcessorStandard());
 			xnt.explode();
-			
+
 			ExplosionCreator.composeEffect(world, pos[0] + 0.5, pos[1] + 0.5, pos[2] + 0.5, 10, 2F, 0.5F, 25F, 5, 8, 20, 0.75F, 1F, -2F, 150);
 		}
 	}

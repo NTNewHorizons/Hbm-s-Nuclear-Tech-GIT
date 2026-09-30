@@ -21,9 +21,9 @@ public class ItemModAuto extends ItemArmorMod {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.mod_auto.1"));
-		
+
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.mod_auto.imported_japsterdam"));
+
 		list.add("");
 		super.addInformation(stack, player, list, bool);
 	}
@@ -32,12 +32,12 @@ public class ItemModAuto extends ItemArmorMod {
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 		list.add(EnumChatFormatting.BLUE + "  " + stack.getDisplayName());
 	}
-	
+
 	@Override
 	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
-		
+
 		if(!entity.worldObj.isRemote) {
-			
+
 			if(HbmLivingProps.getDigamma(entity) >= 5F) {
 				ArmorModHandler.removeMod(armor, ArmorModHandler.extra);
 				entity.worldObj.playSoundAtEntity(entity, "hbm:item.syringe", 1.0F, 1.0F);

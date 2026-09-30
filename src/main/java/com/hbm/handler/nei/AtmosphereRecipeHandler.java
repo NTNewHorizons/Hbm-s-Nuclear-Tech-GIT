@@ -13,5 +13,5 @@ public class AtmosphereRecipeHandler extends NEIUniversalHandler {
 	public String getKey() {
 		return "ntmAtmoChem";
 	}
-	
+
 }

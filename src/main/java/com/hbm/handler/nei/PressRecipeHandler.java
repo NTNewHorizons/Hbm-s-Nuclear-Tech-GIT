@@ -84,9 +84,9 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results) {
 		if((outputId.equals("pressing")) && getClass() == PressRecipeHandler.class) {
-			
+
 			HashMap<Pair<AStack, StampType>, ItemStack> recipes = PressRecipes.recipes;
-			
+
 			for(Map.Entry<Pair<AStack, StampType>, ItemStack> recipe : recipes.entrySet()) {
 				this.arecipes.add(new SmeltingSet(ItemStamp.stamps.get(recipe.getKey().getValue()), recipe.getKey().getKey(), recipe.getValue()));
 			}
@@ -97,9 +97,9 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
-		
+
 		HashMap<Pair<AStack, StampType>, ItemStack> recipes = PressRecipes.recipes;
-		
+
 		for(Map.Entry<Pair<AStack, StampType>, ItemStack> recipe : recipes.entrySet()) {
 			if(NEIServerUtils.areStacksSameType(recipe.getValue(), result))
 				this.arecipes.add(new SmeltingSet(ItemStamp.stamps.get(recipe.getKey().getValue()), recipe.getKey().getKey(), recipe.getValue()));
@@ -117,13 +117,13 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
-		
+
 		HashMap<Pair<AStack, StampType>, ItemStack> recipes = PressRecipes.recipes;
-		
+
 		for(Map.Entry<Pair<AStack, StampType>, ItemStack> recipe : recipes.entrySet()) {
 			AStack in = recipe.getKey().getKey();
 			StampType stamp = recipe.getKey().getValue();
-			
+
 			if(in.matchesRecipe(ingredient, true))
 				this.arecipes.add(new SmeltingSet(ItemStamp.stamps.get(recipe.getKey().getValue()), new ComparableStack(ingredient), recipe.getValue()));
 			else if(ingredient.getItem() instanceof ItemStamp && ((ItemStamp)ingredient.getItem()).getStampType(ingredient.getItem(), ingredient.getItemDamage()) == stamp)

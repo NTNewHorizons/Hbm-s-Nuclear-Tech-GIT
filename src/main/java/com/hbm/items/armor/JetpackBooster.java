@@ -75,8 +75,8 @@ public class JetpackBooster extends JetpackFueledBase {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
-		list.add(I18nUtil.resolveKey("desc.item.jetpack_booster.1"));
-		list.add(I18nUtil.resolveKey("desc.item.jetpack_booster.2"));
+		list.add(I18nUtil.resolveKey("desc.item.jetpack_booster.high_powered_vectorized"));
+		list.add(I18nUtil.resolveKey("desc.item.jetpack_booster.highly_increased_fuel"));
 
 		super.addInformation(stack, player, list, ext);
 	}

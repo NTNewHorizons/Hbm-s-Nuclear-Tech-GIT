@@ -65,7 +65,7 @@ public class ItemSettingsTool extends Item {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		list.add(I18nUtil.resolveKey("desc.item.settings_tool.1"));
-		list.add(I18nUtil.resolveKey("desc.item.settings_tool.2"));
+		list.add(I18nUtil.resolveKey("desc.item.settings_tool.shift_right_click_copy_right"));
 		list.add(I18nUtil.resolveKey("desc.item.settings_tool.3"));
 		if(stack.stackTagCompound != null) {
 			NBTTagCompound nbt = stack.stackTagCompound;
@@ -105,7 +105,7 @@ public class ItemSettingsTool extends Item {
 					player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)
 							.nextTranslation(this.getUnlocalizedName() + ".name").color(EnumChatFormatting.DARK_AQUA)
 							.next("] ").color(EnumChatFormatting.DARK_AQUA)
-							.nextTranslation("chat.settings_tool.1", copiable.getSettingsSourceDisplay(schrodinger)).color(EnumChatFormatting.AQUA).flush());
+							.nextTranslation("chat.settings_tool.copied_settings", copiable.getSettingsSourceDisplay(schrodinger)).color(EnumChatFormatting.AQUA).flush());
 				}
 			} else {
 				player.addChatMessage(ChatBuilder.start("[").color(EnumChatFormatting.DARK_AQUA)

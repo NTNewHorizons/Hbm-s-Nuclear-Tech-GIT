@@ -12,7 +12,7 @@ public class DamageSourceSednaWithAttacker extends DamageSourceSednaNoAttacker {
 
 	public Entity projectile;
 	public Entity shooter;
-	
+
 	public DamageSourceSednaWithAttacker(String type, Entity projectile, Entity shooter) {
 		super(type.toLowerCase(Locale.US));
 		this.projectile = projectile;

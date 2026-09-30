@@ -14,18 +14,18 @@ public class ItemModTwoKick extends ItemArmorMod {
 	public ItemModTwoKick() {
 		super(ArmorModHandler.servos, false, true, false, false);
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
 		list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.mod_two_kick.1"));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_two_kick.2"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_two_kick.punches_fire_gauge_shells"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_two_kick.3", stack.getDisplayName()));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_two_kick.shotgun_punches", stack.getDisplayName()));
 	}
 }

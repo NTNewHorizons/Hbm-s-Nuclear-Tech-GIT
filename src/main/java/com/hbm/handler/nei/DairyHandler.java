@@ -22,7 +22,7 @@ public class DairyHandler extends NEIUniversalHandler {
     public static HashMap<Object, Object> getDairyRecipesForNEI() {
 
 		HashMap<Object, Object> recipes = new HashMap<>();
-        
+
         ItemStack[] in = new ItemStack[] {
             ItemFluidIcon.make(Fluids.MILK, 100),
         };
@@ -37,5 +37,5 @@ public class DairyHandler extends NEIUniversalHandler {
 
         return recipes;
 	}
-    
+
 }

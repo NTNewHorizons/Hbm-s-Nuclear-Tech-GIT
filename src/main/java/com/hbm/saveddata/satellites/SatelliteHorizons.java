@@ -16,12 +16,12 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.util.ChatComponentTranslation;
 
 public class SatelliteHorizons extends SatelliteBase {
-	
+
 	public static final String CMD_FIRE = "fire";
 	public static final String CMD_CANFIRE = "settarget";
-	
+
 	boolean used = false;
-	
+
 	public SatelliteHorizons() { }
 
 	@Override public String getType() { return "PAYLOAD_UNKNOWN"; }
@@ -49,12 +49,12 @@ public class SatelliteHorizons extends SatelliteBase {
 	@Override
 	public void onCommandImpl(World world, String... cmd) {
 		if(cmd.length <= 0) return;
-		
+
 		if(cmd[0].equals(CMD_FIRE)) {
 			theHorizons(world, targetX, targetZ);
 			return;
 		}
-		
+
 		if(cmd[0].equals(CMD_CANFIRE)) {
 			this.tx = (!used) + "";
 			this.tx = this.tx.toUpperCase(Locale.US);
@@ -67,10 +67,10 @@ public class SatelliteHorizons extends SatelliteBase {
 		this.setTarget(x, z);
 		this.theHorizons(world, x, z);
 	}
-	
+
 	public void theHorizons(World world, int x, int z) {
 		if(used) return;
-		
+
 		used = true;
 		SatelliteSavedData.getData(world, x, z).markDirty();
 

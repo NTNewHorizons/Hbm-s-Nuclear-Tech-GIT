@@ -73,7 +73,7 @@ public class BlockOre extends Block implements IBlockMultiPass, IBlockMulti, ITo
 		this(mat);
 		vanillaMap.put(vanillaBlock, this);
 	}
-	
+
 	@Override
 	public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int meta) {
 		if(this == ModBlocks.ore_oil) return false;

@@ -423,7 +423,7 @@ public class ModEventHandler {
 					 && !(((EntityDamageSource)event.source).getEntity() instanceof FakePlayer)) {
 
 				Random rng = event.entityLiving.getRNG();
-				
+
 				if(event.entityLiving instanceof EntitySpider && rng.nextInt(500) == 0) {
 					event.entityLiving.dropItem(ModItems.spider_milk, 1);
 				}
@@ -449,7 +449,7 @@ public class ModEventHandler {
 				if(event.entityLiving instanceof EntityVillager && event.entityLiving.getRNG().nextInt(1) == 0) {
 					event.entityLiving.dropItem(ModItems.flesh, 5);
 				}
-				
+
 				if(event.entityLiving instanceof EntityZombie) {
 					if(rng.nextInt(200) == 0) event.entityLiving.dropItem(ModItems.ingot_copper, 1);
 					if(rng.nextInt(200) == 0) event.entityLiving.dropItem(ModItems.ingot_aluminium, 1);
@@ -556,7 +556,7 @@ public class ModEventHandler {
 
 	private static ItemStack getSkelegun(float soot, Random rand) {
 		if(!MobConfig.enableMobWeapons) return null;
-		
+
 		soot -= MobConfig.mobWeaponSootReduction;
 		if(rand.nextDouble() > Math.log(soot) * 0.25) return null;
 
@@ -844,7 +844,7 @@ public class ModEventHandler {
 
 	@SubscribeEvent
 	public void worldTick(WorldTickEvent event) {
-		
+
 		World world = event.world;
 		long time = world.getTotalWorldTime();
 
@@ -916,7 +916,7 @@ public class ModEventHandler {
 					CelestialBody.updateChemistry(event.world);
 				}
 			}
-			
+
 			if(time % 20 == 0) {
 				BlockPedestal.checkPedestalEntries(world.provider.dimensionId, time);
 			}
@@ -1162,7 +1162,7 @@ public class ModEventHandler {
 		EntityLivingBase e = event.entityLiving;
 
 		float gravity = CelestialBody.getGravity(e);
-		
+
 
 		// Reduce fall damage on low gravity bodies
 		if(gravity < 0.3F) {
@@ -1635,7 +1635,7 @@ public class ModEventHandler {
 		CelestialBody body = CelestialBody.getTarget(world, pos.posX, pos.posZ).body;
 		CBT_Weather weather = CBT_Weather.ensureTrait(body);
 		if(weather == null || !CBT_Weather.supportsWeather(body)) {
-			sender.addChatMessage(new ChatComponentTranslation("commands.mod_event.text.01"));
+			sender.addChatMessage(new ChatComponentTranslation("commands.mod_event.celestial_body_no_weather_cycle"));
 			return;
 		}
 
@@ -2036,5 +2036,5 @@ public class ModEventHandler {
 		}
 	}
 
-	
+
 }

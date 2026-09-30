@@ -32,24 +32,24 @@ public class PylonRedWire extends BlockDummyable implements ITooltipProvider {
 		list.add(I18nUtil.resolveKey("desc.block.connection_type_single.4", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
 		list.add(I18nUtil.resolveKey("desc.block.connection_range_25m", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
 	}
-	
+
 	@Override
 	public int[] getDimensions() {
 		return new int[] {4, 0, 0, 0, 0, 0};
 	}
-	
+
 	@Override
 	public int getOffset() {
 		return 0;
 	}
-	
+
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block b, int m) {
 		TileEntity te = world.getTileEntity(x, y, z);
 		if(te instanceof TileEntityPylonBase) ((TileEntityPylonBase)te).disconnectAll();
 		super.breakBlock(world, x, y, z, b, m);
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		if(world.isRemote) {

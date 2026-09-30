@@ -286,7 +286,7 @@ public class ItemToolAbility extends ItemTool implements IDepthRockTool, IGUIPro
 
 		if(this.rockBreaker) {
 			list.add("");
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.tool_ability.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.tool_ability.break_depth_rock"));
 		}
 	}
 
@@ -388,7 +388,7 @@ public class ItemToolAbility extends ItemTool implements IDepthRockTool, IGUIPro
 
 			if(removedByPlayer && canHarvest) {
 				try {
-					
+
 					blockCaptureDrops.invoke(block, true);
 					block.harvestBlock(world, player, x, y, z, l);
 					List<ItemStack> drops = (List)blockCaptureDrops.invoke(block, false);
@@ -566,10 +566,10 @@ public class ItemToolAbility extends ItemTool implements IDepthRockTool, IGUIPro
 
 			World world = player.worldObj;
 			if(!canOperate(stack)) return;
-			
+
 			EntityPlayerMP playerMP = (EntityPlayerMP) player;
 			MovingObjectPosition mop = EntityDamageUtil.getMouseOver(playerMP, playerMP.theItemInWorldManager.getBlockReachDistance());
-			
+
 			if(mop != null && mop.typeOfHit == mop.typeOfHit.BLOCK) {
 				// this is horrifying and won't always produce the correct results, but it beats not having anything
 				// simply put, we check if we are aiming at a block, and if we do, we compare that block's onBlockActivated

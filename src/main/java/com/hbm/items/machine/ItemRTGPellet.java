@@ -24,20 +24,20 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class ItemRTGPellet extends Item {
-	
+
 	private short heat = 0;
 	private boolean doesDecay = false;
 	private ItemStack decayItem = null;
 	private long lifespan = 0;
-	
+
 	public static final List<ItemRTGPellet> pelletList = new ArrayList();
-	
+
 	public ItemRTGPellet(int heatIn) {
 		heat = (short) heatIn;
 		setMaxStackSize(1);
 		pelletList.add(this);
 	}
-	
+
 	private static final String[] facts = new String[] {
 			"item.rtg.fact.0",
 			"item.rtg.fact.1",
@@ -56,14 +56,14 @@ public class ItemRTGPellet extends Item {
 			"item.rtg.fact.14",
 			"item.rtg.fact.15"
 	};
-	
+
 	public ItemRTGPellet setDecays(DepletedRTGMaterial mat, long life) {
 		doesDecay = true;
 		decayItem = new ItemStack(ModItems.pellet_rtg_depleted, 1, mat.ordinal());
 		lifespan = life;
 		return this;
 	}
-	
+
 	public long getMaxLifespan() {
 		return lifespan;
 	}
@@ -80,7 +80,7 @@ public class ItemRTGPellet extends Item {
 	public boolean getDoesDecay() {
 		return this.doesDecay;
 	}
-	
+
 	public static ItemStack handleDecay(ItemStack stack, ItemRTGPellet instance) {
 		if (instance.getDoesDecay() && VersatileConfig.rtgDecay()) {
 			if (instance.getLifespan(stack) <= 0)
@@ -88,10 +88,10 @@ public class ItemRTGPellet extends Item {
 			else
 				instance.decay(stack);
 		}
-		
+
 		return stack;
 	}
-	
+
 	public void decay(ItemStack stack) {
 		if (stack != null && stack.getItem() instanceof ItemRTGPellet) {
 			if (!((ItemRTGPellet) stack.getItem()).getDoesDecay())
@@ -104,7 +104,7 @@ public class ItemRTGPellet extends Item {
 			}
 		}
 	}
-	
+
 	public long getLifespan(ItemStack stack)
 	{
 		if (stack != null && stack.getItem() instanceof ItemRTGPellet)
@@ -120,19 +120,19 @@ public class ItemRTGPellet extends Item {
 		}
 		return 0;
 	}
-	
+
 	public static short getScaledPower(ItemRTGPellet fuel, ItemStack stack) {
 		return (short) Math.ceil(fuel.getHeat() * ((double)fuel.getLifespan(stack) / (double)fuel.getMaxLifespan()));
 	}
-	
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-		
+
 		if(!world.isRemote && this == ModItems.pellet_rtg) {
 			player.addChatComponentMessage(new ChatComponentTranslation(facts[world.rand.nextInt(facts.length)]).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 			world.playSoundAtEntity(player, "random.orb", 1.0F, 1.0F);
 		}
-		
+
 		return stack;
 	}
 
@@ -140,13 +140,13 @@ public class ItemRTGPellet extends Item {
 	public boolean showDurabilityBar(ItemStack stack) {
 		return getDoesDecay() && getLifespan(stack) != getMaxLifespan();
 	}
-	
+
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 		final ItemRTGPellet instance = (ItemRTGPellet) stack.getItem();
 		return 1D - (double)instance.getLifespan(stack) / (double)instance.getMaxLifespan();
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		super.addInformation(stack, player, list, bool);
@@ -157,7 +157,7 @@ public class ItemRTGPellet extends Item {
 			list.add(I18nUtil.resolveKey("desc.item.rtgDecay", I18nUtil.resolveKey(instance.getDecayItem().getUnlocalizedName() + ".name"), instance.getDecayItem().stackSize));
 			list.add(BobMathUtil.toPercentage(instance.getLifespan(stack), instance.getMaxLifespan()));
 			if (bool) {
-				list.add(I18nUtil.resolveKey("desc.item.rtg_pellet.1"));
+				list.add(I18nUtil.resolveKey("desc.item.rtg_pellet.extended_info"));
 				list.add(String.format(Locale.US, I18nUtil.resolveKey("gui.rtgpellet.ticks"), instance.getLifespan(stack), instance.getMaxLifespan()));
 				final String[] timeLeft = BobMathUtil.ticksToDate(instance.getLifespan(stack));
 				final String[] maxLife = BobMathUtil.ticksToDate(instance.getMaxLifespan());
@@ -170,16 +170,16 @@ public class ItemRTGPellet extends Item {
 	public String getData() {
 		return String.format(Locale.US, "%s (%s HE/t) %s", I18nUtil.resolveKey(getUnlocalizedName().concat(".name")), getHeat(), (getDoesDecay() ? " (decays)" : ""));
 	}
-	
+
 	public static HashMap<ItemStack, ItemStack> getRecipeMap() {
 		HashMap<ItemStack, ItemStack> map = new HashMap<ItemStack, ItemStack>();
-		
+
 		for(ItemRTGPellet pellet : pelletList) {
 			if(pellet.decayItem != null) {
 				map.put(new ItemStack(pellet), pellet.decayItem.copy());
 			}
 		}
-		
+
 		return map;
 	}
 }

@@ -29,16 +29,16 @@ public class MachineRadarLarge extends BlockDummyable {
 		if(meta >= 6) return new TileEntityProxyCombo().power();
 		return null;
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		
+
 		if(y < TileEntityMachineRadarNT.radarAltitude) {
 			if(world.isRemote)
-				player.addChatMessage(new ChatComponentTranslation("chat.radar_large.line.01").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+				player.addChatMessage(new ChatComponentTranslation("chat.radar_large.radar_error_radar_altitude_not").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			return true;
 		}
-		
+
 		if(world.isRemote && !player.isSneaking()) {
 			int[] pos = this.findCore(world, x, y, z);
 			if(pos == null) return false;
@@ -71,7 +71,7 @@ public class MachineRadarLarge extends BlockDummyable {
 		this.makeExtra(world, x, y, z + 1);
 		this.makeExtra(world, x, y, z - 1);
 	}
-	
+
 	@Override
 	public boolean canProvidePower() {
 		return true;

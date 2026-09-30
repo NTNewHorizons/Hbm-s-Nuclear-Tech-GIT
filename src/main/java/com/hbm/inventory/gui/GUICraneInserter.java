@@ -20,18 +20,18 @@ import net.minecraft.util.ResourceLocation;
 import com.hbm.util.i18n.I18nUtil;
 
 public class GUICraneInserter extends GuiInfoContainer {
-	
+
 	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/storage/gui_crane_inserter.png");
 	private TileEntityCraneInserter inserter;
 
 	public GUICraneInserter(InventoryPlayer invPlayer, TileEntityCraneInserter tedf) {
 		super(new ContainerCraneInserter(invPlayer, tedf));
 		inserter = tedf;
-		
+
 		this.xSize = 176;
 		this.ySize = 185;
 	}
-	
+
 	@Override
 	public void drawScreen(int x, int y, float interp) {
 		super.drawScreen(x, y, interp);
@@ -52,7 +52,7 @@ public class GUICraneInserter extends GuiInfoContainer {
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, inserter.xCoord, inserter.yCoord, inserter.zCoord));
 		}
 	}
-	
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		String name = this.inserter.hasCustomInventoryName() ? this.inserter.getInventoryName() : I18n.format(this.inserter.getInventoryName());
@@ -65,7 +65,7 @@ public class GUICraneInserter extends GuiInfoContainer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-		
+
 		if(inserter.destroyer)
 			drawTexturedModalRect(guiLeft + 151, guiTop + 34, 176, 0, 18, 18);
 	}

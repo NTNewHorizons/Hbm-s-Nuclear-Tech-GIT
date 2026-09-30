@@ -21,12 +21,12 @@ import net.minecraft.util.ChatComponentTranslation;
 
 @Deprecated
 public class BlockGraphiteBreedingFuel extends BlockGraphiteDrilledTE implements IToolable {
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World world, int mets) {
 		return new TileEntityPileBreedingFuel();
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
@@ -36,20 +36,20 @@ public class BlockGraphiteBreedingFuel extends BlockGraphiteDrilledTE implements
 
 	@Override
 	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, int side, float fX, float fY, float fZ, ToolType tool) {
-		
+
 		if(!world.isRemote) {
-			
+
 			if(tool == ToolType.SCREWDRIVER) {
-	
+
 				int meta = world.getBlockMetadata(x, y, z);
 				int cfg = meta & 3;
-				
+
 				if(side == cfg * 2 || side == cfg * 2 + 1) {
 					world.setBlock(x, y, z, ModBlocks.block_graphite_drilled, meta, 3);
 					this.ejectItem(world, x, y, z, ForgeDirection.getOrientation(side), new ItemStack(ModItems.pile_rod_lithium));
 				}
 			}
-			
+
 			if(tool == ToolType.HAND_DRILL) {
 				TileEntityPileBreedingFuel pile = (TileEntityPileBreedingFuel) world.getTileEntity(x, y, z);
 				player.addChatComponentMessage(new ChatComponentTranslation("chat.graphite_breeding_fuel.cp1_fuel_assembly", x, y, z).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
@@ -57,13 +57,13 @@ public class BlockGraphiteBreedingFuel extends BlockGraphiteDrilledTE implements
 				player.addChatComponentMessage(new ChatComponentTranslation("chat.graphite_breeding_fuel.flux", pile.lastNeutrons).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	protected Item getInsertedItem() {
 		return ModItems.pile_rod_lithium;
 	}
-	
+
 }

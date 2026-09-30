@@ -408,18 +408,18 @@ public class TileEntityLaunchPadRocket extends TileEntityMachineBase implements 
 
 	public static boolean findDriveIssues(List<String> issues, RocketStruct rocket, ItemStack drive) {
 		if(drive == null || !(drive.getItem() instanceof ItemVOTVdrive)) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.line.01", EnumChatFormatting.YELLOW));
+			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.no_destination_drive_installed", EnumChatFormatting.YELLOW));
 			return true;
 		}
 
 		if(!ItemVOTVdrive.getProcessed(drive)) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.line.02", EnumChatFormatting.RED));
+			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.destination_drive_needs", EnumChatFormatting.RED));
 			return true;
 		}
 
 		SolarSystem.Body target = ItemVOTVdrive.getDestination(drive).body;
 		if(target == SolarSystem.Body.ORBIT && rocket.capsule.part != ModItems.rp_capsule_20 && rocket.capsule.part != ModItems.rp_station_core_20) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.line.03", EnumChatFormatting.RED));
+			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.satellite_target_must_planet", EnumChatFormatting.RED));
 			return true;
 		}
 

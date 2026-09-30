@@ -39,11 +39,11 @@ public class MachineBatterySocket extends BlockDummyable implements ITooltipProv
 
 	@Override public int[] getDimensions() { return new int[] {1, 0, 1, 0, 1, 0}; }
 	@Override public int getOffset() { return 0; }
-	
+
 	@Override
 	protected void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
-		
+
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 		this.makeExtra(world, x - dir.offsetX, y, z - dir.offsetZ);
 		this.makeExtra(world, x + rot.offsetX, y, z + rot.offsetZ);
@@ -67,30 +67,30 @@ public class MachineBatterySocket extends BlockDummyable implements ITooltipProv
 		if(pos == null) return 0;
 		TileEntity te = world.getTileEntity(pos[0], pos[1], pos[2]);
 		if(!(te instanceof TileEntityBatterySocket)) return 0;
-		
+
 		TileEntityBatterySocket battery = (TileEntityBatterySocket) te;
 		return battery.getComparatorPower();
 	}
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		
+
 		int[] pos = this.findCore(world, x, y, z);
 		if(pos == null) return;
 		TileEntity te = world.getTileEntity(pos[0], pos[1], pos[2]);
 		if(!(te instanceof TileEntityBatterySocket)) return;
 		TileEntityBatterySocket socket = (TileEntityBatterySocket) te;
 		if(socket.syncStack == null) return;
-		
+
 		List<String> text = new ArrayList();
 		text.add(I18nUtil.resolveKey("overlay.common.energy", BobMathUtil.getShortNumber(socket.syncPower), BobMathUtil.getShortNumber(socket.syncMaxPower)));
-		
+
 		double percent = (double) socket.syncPower / socket.syncMaxPower;
 		int charge = (int) Math.floor(percent * 10_000D);
 		int color = ((int) (0xFF - 0xFF * percent)) << 16 | ((int)(0xFF * percent) << 8);
-		
+
 		text.add("&[" + color + "&]" + (charge / 100D) + "%");
-		
+
 		ILookOverlay.printGeneric(event, socket.syncStack.getDisplayName(), 0xffff00, 0x404000, text);
 	}
 }

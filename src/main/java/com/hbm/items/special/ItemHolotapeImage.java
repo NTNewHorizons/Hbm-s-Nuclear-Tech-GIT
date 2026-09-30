@@ -30,12 +30,12 @@ public class ItemHolotapeImage extends ItemHoloTape implements IGUIProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		
+
 		EnumHoloImage holo = EnumUtil.grabEnumSafely(EnumHoloImage.class, stack.getItemDamage());
-		list.add(I18nUtil.resolveKey("desc.item.holotape_image.1", holo.colorCode, I18nUtil.resolveKey(holo.colorName)));
+		list.add(I18nUtil.resolveKey("desc.item.holotape_image.band_color", holo.colorCode, I18nUtil.resolveKey(holo.colorName)));
 		list.add(I18nUtil.resolveKey("desc.item.holotape_image.2", holo.name));
 	}
-	
+
 	public static enum EnumHoloImage {
 		HOLO_DIGAMMA(		EnumChatFormatting.RED,			"holotape.holo_digamma.color",	"D#",				"holotape.holo_digamma.text"),
 		HOLO_RESTORED(		EnumChatFormatting.RED,			"holotape.holo_restored.color",	"D0",				"holotape.holo_restored.text"),
@@ -56,19 +56,19 @@ public class ItemHolotapeImage extends ItemHoloTape implements IGUIProvider {
 		HOLO_O_3(			EnumChatFormatting.WHITE,		"holotape.holo_o_3.color",	"X02-FICTION",		"holotape.holo_o_3.text"),
 		HOLO_CHALLENGE(		EnumChatFormatting.GRAY,		"holotape.holo_challenge.color",		"-",				"holotape.holo_challenge.text"),
 		;
-		
+
 		private String name;
 		private String text;
 		private String colorName;
 		private EnumChatFormatting colorCode;
-		
+
 		private EnumHoloImage(EnumChatFormatting colorCode, String colorName, String name, String text) {
 			this.name = name;
 			this.text = text;
 			this.colorName = colorName;
 			this.colorCode = colorCode;
 		}
-		
+
 		public String getText() {
 			return I18nUtil.resolveKey(this.text);
 		}

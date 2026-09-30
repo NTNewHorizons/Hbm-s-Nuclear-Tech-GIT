@@ -21,7 +21,7 @@ public class ItemDigamma extends Item {
 
 	public ItemDigamma(int digamma) {
 		super();
-		
+
 		//obacht! the particle's digamma value is "ticks until half life" while the superclass' interpretation is "simply add flat value"
 		this.digamma = digamma;
 	}

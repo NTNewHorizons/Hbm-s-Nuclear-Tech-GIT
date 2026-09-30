@@ -28,13 +28,13 @@ public class ItemChopper extends Item {
 
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		
+
 		if(world.isRemote) {
 			return true;
 		} else {
-			
+
 			Block block = world.getBlock(x, y, z);
-			
+
 			x += Facing.offsetsXForSide[side];
 			y += Facing.offsetsYForSide[side];
 			z += Facing.offsetsZForSide[side];
@@ -58,13 +58,13 @@ public class ItemChopper extends Item {
 			return true;
 		}
 	}
-	
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-		
+
 		if(world.isRemote) {
 			return stack;
-			
+
 		} else {
 			MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
 
@@ -106,13 +106,13 @@ public class ItemChopper extends Item {
 
 	public Entity spawnCreature(World world, int dmg, double x, double y, double z) {
 		Entity entity = null;
-		
+
 		if(this == ModItems.spawn_chopper)
 			entity = new EntityHunterChopper(world);
-		
+
 		if(this == ModItems.spawn_worm)
 			entity = new EntityBOTPrimeHead(world);
-		
+
 		if(this == ModItems.spawn_ufo) {
 			entity = new EntityUFO(world);
 			((EntityUFO)entity).scanCooldown = 100;
@@ -124,7 +124,7 @@ public class ItemChopper extends Item {
 		}
 		if(this == ModItems.spawn_duck)
 			entity = new EntityDuck(world);
-		
+
 		if(entity != null) {
 
 			EntityLiving entityliving = (EntityLiving) entity;
@@ -142,8 +142,8 @@ public class ItemChopper extends Item {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
 		if(this == ModItems.spawn_worm) {
-			list.add(I18nUtil.resolveKey("desc.item.chopper.1"));
-			list.add(I18nUtil.resolveKey("desc.item.chopper.2"));
+			list.add(I18nUtil.resolveKey("desc.item.chopper.without_player_survival_mode"));
+			list.add(I18nUtil.resolveKey("desc.item.chopper.target_he_struggles_around_lot"));
 			list.add("");
 			list.add(I18nUtil.resolveKey("desc.item.chopper.3"));
 			list.add(I18nUtil.resolveKey("desc.item.chopper.4"));

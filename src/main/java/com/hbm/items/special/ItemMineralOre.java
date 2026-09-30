@@ -45,7 +45,7 @@ public class ItemMineralOre extends Item {
 	public final int CLUMP_HYDROCHLORIC = 4;
 	public final int CLUMP_SCHRABIDIC = 5;
 	/* non-item shell types */
-	
+
 	public ItemMineralOre() {
 		this.setHasSubtypes(true);
 		this.setCreativeTab(MainRegistry.partsTab);
@@ -60,7 +60,7 @@ public class ItemMineralOre extends Item {
 		String b = EnumChatFormatting.BLUE + "";
 		String o = EnumChatFormatting.GOLD + "";
 		String g = EnumChatFormatting.GREEN + "";
-		
+
 		switch(stack.getItemDamage()) {
 		case CLUMP_PEROXIDE:
 			list.add(y + I18nUtil.resolveKey("desc.item.mineral_ore.1"));
@@ -108,41 +108,41 @@ public class ItemMineralOre extends Item {
 		for(int i = 0; i < icons.length; i++) {
 			this.icons[i] = p_94581_1_.registerIcon(RefStrings.MODID + ":" + itemTypes[i].name);
 		}
-		
+
 	}
 
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconIndex(ItemStack stack) {
-		
+
 		return this.getIconFromDamage(stack.getItemDamage());
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
 		return this.icons[meta];
 	}
-	
+
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 		return "item." + itemTypes[Math.abs(stack.getItemDamage()) % itemTypes.length].name;
 	}
-	
+
 	//@Override
 	//public String getItemStackDisplayName(ItemStack stack) {
-		
+
 		//EnumMineralOre ore = EnumUtil.grabEnumSafely(EnumMineralOre.class, stack.getItemDamage());
 		//String oreName = StatCollector.translateToLocal("item.ore." + ore.oreName.toLowerCase());
 		///return StatCollector.translateToLocalFormatted(this.getUnlocalizedNameInefficiently(stack) + ".name", oreName);
 	//}
 	public abstract class Mineral {
-		
+
 		String name;
-		
+
 		public Mineral(String name) {
 			this.name = name;
 		}
-		
+
 	}
 	private void init() {
 		this.itemTypes[CLUMP_PEROXIDE] = new Mineral("clump_peroxide"){};
@@ -153,5 +153,5 @@ public class ItemMineralOre extends Item {
 		this.itemTypes[CLUMP_SCHRABIDIC] = new Mineral("clump_schrabidic") {};
 	}
 
-	
+
 }

@@ -16,14 +16,14 @@ public class ItemKeyPin extends Item {
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
 		if(getPins(itemstack) != 0)
-			list.add(I18nUtil.resolveKey("desc.item.key_pin.1", getPins(itemstack)));
+			list.add(I18nUtil.resolveKey("desc.item.key_pin.pin_configuration", getPins(itemstack)));
 		else
-			list.add(I18nUtil.resolveKey("desc.item.key_pin.2"));
-		
+			list.add(I18nUtil.resolveKey("desc.item.key_pin.pins_not"));
+
 		if(this == ModItems.key_fake) {
 
 			list.add("");
-			list.add(I18nUtil.resolveKey("desc.item.key_pin.3"));
+			list.add(I18nUtil.resolveKey("desc.item.key_pin.pins_neither_changed_nor_copied"));
 		}
 	}
 
@@ -34,14 +34,14 @@ public class ItemKeyPin extends Item {
 		}
 		return stack.stackTagCompound.getInteger("pins");
 	}
-	
+
 	public static void setPins(ItemStack stack, int i) {
 		if(stack.stackTagCompound == null) {
 			stack.stackTagCompound = new NBTTagCompound();
 		}
 		stack.stackTagCompound.setInteger("pins", i);
 	}
-	
+
 	public boolean canTransfer() {
 		return this != ModItems.key_fake;
 	}

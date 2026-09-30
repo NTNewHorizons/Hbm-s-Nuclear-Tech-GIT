@@ -24,37 +24,37 @@ public class ItemPancake extends ItemFood {
 
     @Override
 	protected void onFoodEaten(ItemStack stack, World world, EntityPlayer player) {
-    	
+
     	for(ItemStack st : player.inventory.armorInventory) {
-    		
+
     		if(st == null)
     			continue;
-    		
+
     		if(st.getItem() instanceof IBatteryItem) {
     			((IBatteryItem)st.getItem()).setCharge(st, ((IBatteryItem)st.getItem()).getMaxCharge(st));
     		}
     	}
     }
-    
+
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-    	
+
     	if(ArmorFSB.hasFSBArmorIgnoreCharge(player) && player.inventory.armorInventory[3].getItem() == ModItems.bj_helmet) {
         	return super.onItemRightClick(stack, world, player);
     	}
-    	
+
     	if(!world.isRemote)
-    		player.addChatComponentMessage(new ChatComponentTranslation("chat.pancake.1", EnumChatFormatting.YELLOW));
-    	
+    		player.addChatComponentMessage(new ChatComponentTranslation("chat.pancake.teeth_soft_eat", EnumChatFormatting.YELLOW));
+
     	return stack;
     }
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("desc.item.pancake.1"));
-		list.add(I18nUtil.resolveKey("desc.item.pancake.2"));
+		list.add(I18nUtil.resolveKey("desc.item.pancake.eaten_recharge_lunar_cybernetic_armor"));
+		list.add(I18nUtil.resolveKey("desc.item.pancake.not_people_weak_molars"));
 		list.add("");
-		list.add(I18nUtil.resolveKey("desc.item.pancake.3"));
+		list.add(I18nUtil.resolveKey("desc.item.pancake.half_burnt_smells_horrible"));
 	}
 
 }

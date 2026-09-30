@@ -25,7 +25,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 public class GUITransporterLinker extends GuiScreen {
-	
+
 	protected static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/tool/gui_transport_linker.png");
 
 	protected int xSize = 218;
@@ -42,7 +42,7 @@ public class GUITransporterLinker extends GuiScreen {
 	protected List<TransporterInfo> transporters;
 
 	private List<TransporterInfo> visibleTransporters;
-	
+
 	private final EntityPlayer player;
 
 	public GUITransporterLinker(EntityPlayer player, List<TransporterInfo> transporters, TransporterInfo linkFromTransporter) {
@@ -60,7 +60,7 @@ public class GUITransporterLinker extends GuiScreen {
 
 		if(!Mouse.isButtonDown(0) && !Mouse.isButtonDown(1) && Mouse.next()) {
 			int scroll = Mouse.getEventDWheel();
-			
+
 			if(scroll > 0 && index > 0) index--;
 			if(scroll < 0 && index < visibleTransporters.size() - 5) index++;
 		}
@@ -76,7 +76,7 @@ public class GUITransporterLinker extends GuiScreen {
 	public void initGui() {
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
-		
+
 		Keyboard.enableRepeatEvents(true);
 		search = new GuiTextField(fontRendererObj, guiLeft + 59, guiTop + 46, 86, 12);
 		search.setTextColor(-1);
@@ -118,7 +118,7 @@ public class GUITransporterLinker extends GuiScreen {
 		int width = fontRendererObj.getStringWidth(coordinates);
 		fontRendererObj.drawStringWithShadow(I18nUtil.resolveKey(linkFromTransporter.name), textLeftX, guiTop + 13, 0x00ff00);
 		fontRendererObj.drawStringWithShadow(coordinates, textRightX - width, guiTop + 23, 0x00ff00);
-		
+
 		// Draw linkable transporters
 		for(int i = index; i < Math.min(index + 5, visibleTransporters.size()); i++) {
 			TransporterInfo transporter = visibleTransporters.get(i);
@@ -134,7 +134,7 @@ public class GUITransporterLinker extends GuiScreen {
 			fontRendererObj.drawStringWithShadow(coordinates, textRightX - width, y + 9, 0x00ff00);
 		}
 	}
-	
+
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
@@ -192,7 +192,7 @@ public class GUITransporterLinker extends GuiScreen {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void mouseClickMove(int mouseX, int mouseY, int lastButtonClicked, long timeSinceLastClick) {
 		super.mouseClickMove(mouseX, mouseY, lastButtonClicked, timeSinceLastClick);
@@ -216,7 +216,7 @@ public class GUITransporterLinker extends GuiScreen {
 		return true;
 	}
 
-	
+
 	private void linkTransporters(TransporterInfo from, TransporterInfo to) {
 		if(from == null && to == null) return;
 
@@ -251,11 +251,11 @@ public class GUITransporterLinker extends GuiScreen {
 			mc.thePlayer.closeScreen();
 		}
 	}
-	
+
 	private void updateSearch() {
 		visibleTransporters = new ArrayList<>();
 		index = 0;
-		
+
 		String subs = search.getText().toLowerCase(Locale.US);
 
 		for(TransporterInfo transporter : transporters) {

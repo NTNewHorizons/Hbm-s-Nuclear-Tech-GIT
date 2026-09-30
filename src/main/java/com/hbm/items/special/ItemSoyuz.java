@@ -18,33 +18,33 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 
 public class ItemSoyuz extends Item {
-	
+
 	IIcon[] icons = new IIcon[3];
-	
+
 	public ItemSoyuz() {
         this.setHasSubtypes(true);
 	}
-    
+
     @Override
 	@SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-    	
+
     	for(int i = 0; i < icons.length; i++)
     		list.add(new ItemStack(item, 1, i));
     }
-    
+
     @Override
 	public EnumRarity getRarity(ItemStack stack) {
-    	
+
     	if(stack.getItemDamage() == 0)
     		return EnumRarity.uncommon;
-    	
+
     	if(stack.getItemDamage() == 1)
     		return EnumRarity.rare;
-    	
+
     	if(stack.getItemDamage() == 2)
     		return EnumRarity.epic;
-    	
+
 		return EnumRarity.common;
     }
 
@@ -52,11 +52,11 @@ public class ItemSoyuz extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
 		list.add(I18nUtil.resolveKey("desc.item.soyuz.1"));
-		
+
 		switch(stack.getItemDamage()) {
 		case 0: list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.soyuz.2")); break;
-		case 1: list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.soyuz.3")); break;
-		case 2: list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.soyuz.4")); break;
+		case 1: list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.soyuz.luna_space_center")); break;
+		case 2: list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.soyuz.post_war")); break;
 		}
 	}
 
@@ -67,7 +67,7 @@ public class ItemSoyuz extends Item {
     		icons[i] = reg.registerIcon(RefStrings.MODID + ":soyuz_" + i);
     	}
     }
-	
+
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int meta)
     {

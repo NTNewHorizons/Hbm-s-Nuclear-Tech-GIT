@@ -39,7 +39,7 @@ public interface IRadioisotopeFuel
 	{
 		return (short) Math.ceil(fuel.getHeat() * (fuel.getLifespan(stack) * fuel.getMaxLifespan()));
 	}
-	
+
 	@CheckForNull
 	public static IRadioisotopeFuel getInstance(Item item)
 	{
@@ -50,7 +50,7 @@ public interface IRadioisotopeFuel
 	{
 		return stack == null ? null : getInstance(stack.getItem());
 	}
-	
+
 	public default void decay(ItemStack stack)
 	{
 		if (stack != null && stack.getItem() instanceof IRadioisotopeFuel)
@@ -66,7 +66,7 @@ public interface IRadioisotopeFuel
 			}
 		}
 	}
-	
+
 	public default long getLifespan(ItemStack stack)
 	{
 		if (stack != null && stack.getItem() instanceof IRadioisotopeFuel)
@@ -148,7 +148,7 @@ public interface IRadioisotopeFuel
 			}
 		}
 	}
-	
+
 	public static double getDuraBar(ItemStack stack)
 	{
 		final IRadioisotopeFuel instance = (IRadioisotopeFuel) stack.getItem();

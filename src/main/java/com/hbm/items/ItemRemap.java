@@ -43,7 +43,7 @@ public class ItemRemap extends Item {
 	public int getColorFromItemStack(ItemStack stack, int pass) {
 		return 0xFF8080;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.remap.1"));

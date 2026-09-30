@@ -25,7 +25,7 @@ public class ItemInfiniteFluid extends Item implements net.minecraftforge.fluids
 	private int amount;
 	private int chance;
 	private boolean requiresTable; // Whether or not a CBT_Water with matching FluidType must be present to function
-	
+
 	public ItemInfiniteFluid(FluidType type, int amount) {
 		this(type, amount, 1, false);
 	}
@@ -37,7 +37,7 @@ public class ItemInfiniteFluid extends Item implements net.minecraftforge.fluids
 	public ItemInfiniteFluid(FluidType type, int amount, boolean requiresTable) {
 		this(type, amount, 1, requiresTable);
 	}
-	
+
 	public ItemInfiniteFluid(FluidType type, int amount, int chance, boolean requiresTable) {
 		this.type = type;
 		this.amount = amount;
@@ -56,7 +56,7 @@ public class ItemInfiniteFluid extends Item implements net.minecraftforge.fluids
 			stack.stackTagCompound.setInteger("fluid", 0);
 			return;
 		}
-		
+
 		// Check that the current body has a water table
 		CBT_Water table = CelestialBody.getTrait(world, CBT_Water.class);
 		boolean canOperate = table != null && table.fluid == type;
@@ -78,12 +78,12 @@ public class ItemInfiniteFluid extends Item implements net.minecraftforge.fluids
 			list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.2"));
 		}
 
-		list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.3", type.getLocalizedName()));
+		list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.requires_table", type.getLocalizedName()));
 
 		if(currentFluid == Fluids.NONE) {
 			list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.4"));
 		} else {
-			list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.5", currentFluid.getLocalizedName()));
+			list.add(I18nUtil.resolveKey("desc.item.infinite_fluid.current_environment_table", currentFluid.getLocalizedName()));
 		}
 	}
 

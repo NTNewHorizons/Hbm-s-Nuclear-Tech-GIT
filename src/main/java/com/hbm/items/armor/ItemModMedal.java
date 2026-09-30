@@ -27,10 +27,10 @@ public class ItemModMedal extends ItemArmorMod {
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.mod_medal.2", stack.getDisplayName()));
 	}
-	
+
 	@Override
 	public void modUpdate(EntityLivingBase entity, ItemStack armor) {
-		
+
 		if(!entity.worldObj.isRemote) {
 			float rad = HbmLivingProps.getRadiation(entity);
 			rad -= 0.5F;

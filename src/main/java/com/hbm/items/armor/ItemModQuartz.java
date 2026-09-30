@@ -16,23 +16,23 @@ public class ItemModQuartz extends ItemArmorMod {
 	public ItemModQuartz() {
 		super(ArmorModHandler.extra, true, true, true, true);
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		
-		list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.mod_quartz.1"));
+
+		list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.mod_quartz.taking_damage_removes_rad"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
-	
+
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 		list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.mod_quartz.2", stack.getDisplayName()));
 	}
-	
+
 	@Override
 	public void modDamage(LivingHurtEvent event, ItemStack armor) {
-		
+
 		if(!event.entityLiving.worldObj.isRemote) {
 			float rad = HbmLivingProps.getRadiation(event.entityLiving);
 			rad = Math.max(rad - 10, 0);

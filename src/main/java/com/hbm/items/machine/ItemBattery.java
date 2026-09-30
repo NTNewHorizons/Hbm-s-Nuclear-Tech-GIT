@@ -29,11 +29,11 @@ public class ItemBattery extends Item implements IBatteryItem {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		long charge = maxCharge;
-		
+
 		if(itemstack.hasTagCompound())
 			charge = getCharge(itemstack);
 
-		list.add(I18nUtil.resolveKey("desc.item.battery.1", BobMathUtil.getShortNumber(charge), BobMathUtil.getShortNumber(maxCharge)));
+		list.add(I18nUtil.resolveKey("desc.item.battery.energy_stored_he", BobMathUtil.getShortNumber(charge), BobMathUtil.getShortNumber(maxCharge)));
 		list.add(I18nUtil.resolveKey("desc.item.battery.2", BobMathUtil.getShortNumber(chargeRate)));
 		list.add(I18nUtil.resolveKey("desc.item.battery.3", BobMathUtil.getShortNumber(dischargeRate)));
 	}
@@ -139,7 +139,7 @@ public class ItemBattery extends Item implements IBatteryItem {
 		if(this.chargeRate > 0) {
 			list.add(getEmptyBattery(item));
 		}
-		
+
 		if(this.dischargeRate > 0) {
 			list.add(getFullBattery(item));
 		}

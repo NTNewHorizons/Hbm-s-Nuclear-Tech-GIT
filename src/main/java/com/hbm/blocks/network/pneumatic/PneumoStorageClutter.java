@@ -93,7 +93,7 @@ public class PneumoStorageClutter extends BlockContainer {
 
 	@Override
 	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-		
+
 		if(!world.isRemote && !ServerConfig.CRATE_KEEP_CONTENTS.get()) {
 			if(!player.capabilities.isCreativeMode) {
 				world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(this)));
@@ -166,7 +166,7 @@ public class PneumoStorageClutter extends BlockContainer {
 			}
 			if(stack.hasDisplayName()) inv.setCustomName(stack.getDisplayName());
 		}
-		
+
 		super.onBlockPlacedBy(world, x, y, z, player, stack);
 	}
 }

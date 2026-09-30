@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemCMStructure extends Item implements ILookOverlay {
-	
+
 	private static File file = new File(MainRegistry.configHbmDir, "CMstructureOutput.txt");
 
 	public static BlockPos getAnchor(ItemStack stack) {
@@ -65,18 +65,18 @@ public class ItemCMStructure extends Item implements ILookOverlay {
 		int maxY = Math.max(y1, y2);
 		int minZ = Math.min(z1, z2);
 		int maxZ = Math.max(z1, z2);
-		
+
 		try {
 			JsonWriter writer = new JsonWriter(new FileWriter(config));
 			writer.setIndent("  ");
 			writer.beginObject();
 			writer.name("components").beginArray();
-			
+
 			for(int x = minX; x <= maxX; x++) {
 				for(int y = minY; y <= maxY; y++) {
 					for(int z = minZ; z <= maxZ; z++) {
-						
-						int compY = y - anchorY; 
+
+						int compY = y - anchorY;
 						int compX = 0;
 						int compZ = 0;
 
@@ -97,12 +97,12 @@ public class ItemCMStructure extends Item implements ILookOverlay {
 							compZ = anchorX - x;
 							compX = z - anchorZ;
 						}
-						
+
 						if(x == anchorX && y == anchorY && z == anchorZ) continue;
 						Block block = world.getBlock(x, y, z);
 						int meta = world.getBlockMetadata(x, y, z);
 						if(block == Blocks.air) continue;
-						
+
 						writer.beginObject().setIndent("");
 						writer.name("block").value(Block.blockRegistry.getNameForObject(block));
 						writer.name("x").value(compX);

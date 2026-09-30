@@ -116,7 +116,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 				if(worldObj.rand.nextInt(20) == 0 && MainRegistry.proxy.me().getDistance(xCoord + 0.5, yCoord + 6, zCoord + 0.5) < 50) {
 					worldObj.spawnParticle("cloud", xCoord + worldObj.rand.nextDouble(), yCoord + 6.5D, zCoord + worldObj.rand.nextDouble(), 0.0, 0.1, 0.0);
 				}
-				
+
 				if(MainRegistry.proxy.me().getDistance(xCoord , yCoord, zCoord) < 25) {
 					if(audio == null) {
 						audio = createAudioLoop();
@@ -127,7 +127,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 					audio.keepAlive();
 					audio.updateVolume(this.getVolume(1F));
 					audio.updatePitch(0.75F);
-					
+
 				} else {
 					if(audio != null) {
 						audio.stopSound();

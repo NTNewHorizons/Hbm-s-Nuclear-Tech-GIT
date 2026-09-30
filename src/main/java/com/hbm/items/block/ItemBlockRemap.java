@@ -27,7 +27,7 @@ public class ItemBlockRemap extends ItemBlockBase {
 		BlockRemap remap = (BlockRemap) this.field_150939_a;
 		player.inventory.setInventorySlotContents(slot, new ItemStack(remap.remapBlock, stack.stackSize, remap.remapMeta));
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.remap.1"));

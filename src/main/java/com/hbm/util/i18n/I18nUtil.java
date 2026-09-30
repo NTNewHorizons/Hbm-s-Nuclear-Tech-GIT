@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class I18nUtil {
 	public static final String ITEM_NAME_KEY = "hbmI18nName";
 	public static final String ITEM_LORE_KEY = "hbmI18nLore";
-	
+
 
 	/**
 	 * Simple wrapper for I18n, for consistency

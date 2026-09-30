@@ -32,7 +32,7 @@ public class MachineChemicalFactory extends BlockDummyable implements ITooltipPr
 		if(meta >= 6) return new TileEntityProxyDyn().inventory().power().fluid();
 		return null;
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		return this.standardOpenBehavior(world, x, y, z, player, 0);
@@ -44,10 +44,10 @@ public class MachineChemicalFactory extends BlockDummyable implements ITooltipPr
 	@Override
 	public void fillSpace(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		super.fillSpace(world, x, y, z, dir, o);
-		
+
 		x -= dir.offsetX * 2;
 		z -= dir.offsetZ * 2;
-		
+
 		for(int i = -2; i <= 2; i++) for(int j = -2; j <= 2; j++) {
 			if(Math.abs(i) == 2 || Math.abs(j) == 2) this.makeExtra(world, x + i, y, z + j);
 		}
@@ -63,29 +63,29 @@ public class MachineChemicalFactory extends BlockDummyable implements ITooltipPr
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		this.addStandardInfo(stack, player, list, ext);
 	}
-	
+
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		int[] pos = this.findCore(world, x, y, z);
 		if(pos == null) return;
-		
+
 		TileEntity te = world.getTileEntity(pos[0], pos[1], pos[2]);
 		if(!(te instanceof TileEntityMachineChemicalFactory)) return;
 		TileEntityMachineChemicalFactory chemfac = (TileEntityMachineChemicalFactory) te;
-		
+
 		DirPos[] cool = chemfac.getCoolPos();
 		DirPos[] io = chemfac.getIOPos();
-		
+
 		for(DirPos dirPos : cool) if(dirPos.compare(x + dirPos.getDir().offsetX, y, z + dirPos.getDir().offsetZ)) {
 			List<String> text = new ArrayList();
-			
+
 			text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + chemfac.water.getTankType().getLocalizedName());
 			text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + chemfac.lps.getTankType().getLocalizedName());
-			
+
 			ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 			break;
 		}
-		
+
 		for(int i = 0; i < io.length; i++) {
 			DirPos port = io[i];
 			if(port.compare(x + port.getDir().offsetX, y, z + port.getDir().offsetZ)) {

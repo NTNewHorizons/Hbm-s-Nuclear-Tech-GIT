@@ -59,7 +59,7 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 	private Random rand = new Random();
 
 	public CBT_Invasion() {
-		
+
 	}
 
 	public CBT_Invasion(int wave, double waveTime, boolean isInvading) {
@@ -104,7 +104,7 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 				MainRegistry.proxy.me().playSound("hbm:alarm.ping", 10F, 1F);
 				MainRegistry.proxy.me().addChatComponentMessage(new ChatComponentTranslation("chat.cbt_invasion.incoming_invasion").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			}
-				
+
 			if(rand.nextInt(Math.max(1, 5 - wave)) == 0 && isInvading) {
 				WorldProviderCelestial.Meteor.addMeteor();
 			}
@@ -235,7 +235,7 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 	private void advanceWave(World world) {
 		wave++;
 		kills = 0;
-		broadcast(world, "Wave " + (wave == 4 ? "FINAL" : wave) + " is starting!", EnumChatFormatting.GOLD);
+		broadcast(world, new ChatComponentTranslation("chat.cbt_invasion.wave_starting", wave == 4 ? new ChatComponentTranslation("chat.cbt_invasion.final") : new ChatComponentText(String.valueOf(wave))), EnumChatFormatting.GOLD);
 	}
 
 	public void spawnAttempt(World world) {
@@ -249,9 +249,9 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 
 		if(world.getTotalWorldTime() % timer == 0) {
 			EntityPlayer player = (EntityPlayer) world.playerEntities.get(world.rand.nextInt(world.playerEntities.size()));
-			
+
 			if(player.posY < 50 && player.worldObj.getWorldInfo().getTerrainType() != WorldType.FLAT)
-				return; 
+				return;
 
 			double spawnX = player.posX + world.rand.nextGaussian() * 30;
 			double spawnZ = player.posZ + world.rand.nextGaussian() * 30;
@@ -279,7 +279,7 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 				EntitySiegeUFO smallUfo = new EntitySiegeUFO(world);
 				smallUfo.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0.0F);
 
-				float smallRoll = world.rand.nextFloat(); 
+				float smallRoll = world.rand.nextFloat();
 				SiegeTier chosen;
 
 				if(smallRoll < 0.15F - (waveFactor * 1.5F))			chosen = SiegeTier.CLAY;
@@ -290,7 +290,7 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 				else if(smallRoll < 0.90F - (waveFactor * 0.2F))	chosen = SiegeTier.DESH;
 				else if(smallRoll < 0.97F)							chosen = SiegeTier.SCHRAB;
 				else												chosen = SiegeTier.DNT;
-			
+
 				smallUfo.setTier(chosen);
 				world.spawnEntityInWorld(smallUfo);
 			}
@@ -309,7 +309,7 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 			kills += 10;
 			body.modifyTraits(this);
 		}
-		
+
 		if(wave >= 4 && entity instanceof EntityUFO) {
 			HashMap<Class<? extends CelestialBodyTrait>, CelestialBodyTrait> currentTraits = body.getTraits();
 
@@ -338,11 +338,10 @@ public class CBT_Invasion extends CelestialBodyTrait implements IBossDisplayData
 		world.spawnEntityInWorld(entity);
 	}
 
-	private void broadcast(World world, String text, EnumChatFormatting color) {
+	private void broadcast(World world, IChatComponent text, EnumChatFormatting color) {
 		for(Object p : world.playerEntities) {
 			if(p instanceof EntityPlayer) {
-				((EntityPlayer) p).addChatComponentMessage(new ChatComponentText(text)
-						.setChatStyle(new ChatStyle().setColor(color).setBold(true)));
+				((EntityPlayer) p).addChatComponentMessage(text.setChatStyle(new ChatStyle().setColor(color).setBold(true)));
 			}
 		}
 	}

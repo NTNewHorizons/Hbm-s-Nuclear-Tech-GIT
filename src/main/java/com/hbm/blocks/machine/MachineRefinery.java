@@ -45,10 +45,10 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 		if(meta >= 6) return new TileEntityProxyCombo().fluid().power().inventory();
 		return null;
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		
+
 		if(world.isRemote) {
 			return true;
 		} else if(!player.isSneaking()) {
@@ -56,9 +56,9 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 
 			if(pos == null)
 				return false;
-			
+
 			TileEntityMachineRefinery refinery = (TileEntityMachineRefinery) world.getTileEntity(pos[0], pos[1], pos[2]);
-			
+
 			if(refinery.hasExploded) return false;
 
 			FMLNetworkHandler.openGui(player, MainRegistry.instance, 0, world, pos[0], pos[1], pos[2]);
@@ -87,7 +87,7 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 	public int getOffset() {
 		return 1;
 	}
-	
+
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
 		return IPersistentNBT.getDrops(world, x, y, z, this);
@@ -95,7 +95,7 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		
+
 		for(int i = 0; i < 5; i++) {
 			FluidTank tank = new FluidTank(Fluids.NONE, 0);
 			tank.readFromNBT(persistentTag, "" + i);
@@ -115,18 +115,18 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 		if(pos == null) return;
 		TileEntity core = world.getTileEntity(pos[0], pos[1], pos[2]);
 		if(!(core instanceof TileEntityMachineRefinery)) return;
-		
+
 		TileEntityMachineRefinery refinery = (TileEntityMachineRefinery) core;
 		if(refinery.lastExplosion == explosion) return;
 		refinery.lastExplosion = explosion;
-		
+
 		if(!refinery.hasExploded) {
 			refinery.explode(world, x, y, z);
-			
+
 			if(explosion.exploder != null && explosion.exploder instanceof EntityBombletZeta) {
 				List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class,
 						AxisAlignedBB.getBoundingBox(x + 0.5, y + 0.5, z + 0.5, x + 0.5, y + 0.5, z + 0.5).expand(100, 100, 100));
-				
+
 				for(EntityPlayer p : players) p.triggerAchievement(MainRegistry.achInferno);
 			}
 		} else {

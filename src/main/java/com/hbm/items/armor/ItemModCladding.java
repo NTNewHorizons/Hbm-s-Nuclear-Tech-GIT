@@ -11,23 +11,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 public class ItemModCladding extends ItemArmorMod {
-	
+
 	public double rad;
-	
+
 	public ItemModCladding(double rad) {
 		super(ArmorModHandler.cladding, true, true, true, true);
 		this.rad = rad;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_cladding.1", rad));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_cladding.rad_resistance", rad));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_cladding.2", stack.getDisplayName(), rad));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_cladding.radiation_resistance", stack.getDisplayName(), rad));
 	}
 }

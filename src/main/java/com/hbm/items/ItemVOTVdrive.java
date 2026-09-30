@@ -284,9 +284,9 @@ public class ItemVOTVdrive extends ItemEnumMulti {
 				Destination target = new Destination(CelestialBody.getEnum(world), x, z);
 
 				if(station.recallPod(target)) {
-					player.addChatMessage(new ChatComponentTranslation("chat.votvdrive.1", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC, x, z));
+					player.addChatMessage(new ChatComponentTranslation("chat.votvdrive.recalling_drop_pod_coordinates", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC, x, z));
 				} else {
-					player.addChatMessage(new ChatComponentTranslation("chat.votvdrive.2", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC));
+					player.addChatMessage(new ChatComponentTranslation("chat.votvdrive.could_not_recall_drop_pod", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC));
 				}
 			}
 
@@ -301,7 +301,7 @@ public class ItemVOTVdrive extends ItemEnumMulti {
 		setProcessed(stack, true);
 
 		if(!world.isRemote)
-			player.addChatMessage(new ChatComponentTranslation("chat.votvdrive.3", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC, x, z));
+			player.addChatMessage(new ChatComponentTranslation("chat.votvdrive.landing_coordinates", EnumChatFormatting.YELLOW, EnumChatFormatting.ITALIC, x, z));
 
 		return true;
 	}

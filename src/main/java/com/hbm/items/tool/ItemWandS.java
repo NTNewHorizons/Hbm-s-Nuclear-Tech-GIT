@@ -24,9 +24,9 @@ public class ItemWandS extends Item {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("desc.item.wand.1"));
-		list.add(I18nUtil.resolveKey("desc.item.wand_s.1"));
-		list.add(I18nUtil.resolveKey("desc.item.wand_s.2"));
+		list.add(I18nUtil.resolveKey("desc.item.wand.creative_item"));
+		list.add(I18nUtil.resolveKey("desc.item.wand_s.replication_breeds_decadence"));
+		list.add(I18nUtil.resolveKey("desc.item.wand_s.saves_area_defined_right_clicks"));
 		list.add(I18nUtil.resolveKey("desc.item.wand_s.3"));
 
 		if(stack.stackTagCompound != null) {
@@ -37,7 +37,7 @@ public class ItemWandS extends Item {
 			if(px != 0 || py != 0 || pz != 0) {
 				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.wand_s.4", px, py, pz));
 			} else {
-				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.wand_s.5"));
+				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.wand_s.no_start_position"));
 			}
 
 			Set<Pair<Block, Integer>> blocks = getBlocks(stack);

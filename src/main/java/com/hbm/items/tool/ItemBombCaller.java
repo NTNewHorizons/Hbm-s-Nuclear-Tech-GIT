@@ -51,9 +51,9 @@ public class ItemBombCaller extends Item {
 		int x = pos.blockX;
 		int y = pos.blockY;
 		int z = pos.blockZ;
-		
+
 		boolean b2 = false;
-		
+
 		if(!world.isRemote) {
 			EntityBomber bomber;
 			switch(stack.getItemDamage()) {
@@ -74,9 +74,9 @@ public class ItemBombCaller extends Item {
 			world.playSoundAtEntity(player, NTMSounds.TECH_BLEEP, 1.0F, 1.0F);
 
 			if(b2) {
-				player.addChatMessage(new ChatComponentTranslation("chat.bomb_caller.1"));
+				player.addChatMessage(new ChatComponentTranslation("chat.bomb_caller.rerouted_civilian_traffic"));
 			} else {
-				player.addChatMessage(new ChatComponentTranslation("chat.bomb_caller.2"));
+				player.addChatMessage(new ChatComponentTranslation("chat.bomb_caller.called_airstrike"));
 			}
 
 		}

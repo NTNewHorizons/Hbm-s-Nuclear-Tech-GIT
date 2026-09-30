@@ -19,9 +19,9 @@ public class BlockWriting extends BlockPillar {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		if(world.isRemote) {
 			return true;
-			
+
 		} else if(!player.isSneaking()) {
-			
+
 			ChatStyle red = new ChatStyle().setColor(EnumChatFormatting.RED);
 			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.line.01").setChatStyle(red));
 			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.line.02").setChatStyle(red));
@@ -34,7 +34,7 @@ public class BlockWriting extends BlockPillar {
 			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.line.09").setChatStyle(red));
 			player.addChatMessage(new ChatComponentTranslation("chat.block_writing.line.10").setChatStyle(red));
 			return true;
-			
+
 		} else {
 			return false;
 		}

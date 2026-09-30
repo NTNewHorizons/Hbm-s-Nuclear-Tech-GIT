@@ -16,11 +16,11 @@ public class ItemModInk extends ItemArmorMod {
 	public ItemModInk() {
 		super(ArmorModHandler.extra, true, true, true, true);
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("desc.item.mod_ink.1"));
+		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("desc.item.mod_ink.chance_nullify_damage"));
 		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("desc.item.mod_ink.2"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
@@ -30,18 +30,18 @@ public class ItemModInk extends ItemArmorMod {
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 		list.add(EnumChatFormatting.LIGHT_PURPLE + I18nUtil.resolveKey("desc.item.mod_ink.3", stack.getDisplayName()));
 	}
-	
+
 	@Override
 	public void modDamage(LivingHurtEvent event, ItemStack armor) {
-		
+
 		if(event.entity.worldObj.rand.nextInt(10) == 0) {
 			event.ammount = 0;
-			
+
 			if(!event.entity.worldObj.isRemote) {
-				
+
 				if(event.entity.worldObj.rand.nextInt(10) == 0)
 					event.entity.entityDropItem(new ItemStack(Blocks.yellow_flower), 1.0F);
-				
+
 				event.entity.entityDropItem(new ItemStack(Blocks.red_flower, 1, event.entity.worldObj.rand.nextInt(9)), 1.0F);
 			}
 		}

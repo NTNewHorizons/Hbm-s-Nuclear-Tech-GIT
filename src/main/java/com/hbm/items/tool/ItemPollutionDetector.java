@@ -27,7 +27,7 @@ public class ItemPollutionDetector extends Item implements IBauble {
 
 	private void tickDetector(World world, Entity entity) {
 		if(!(entity instanceof EntityPlayerMP) || world.getTotalWorldTime() % 10 != 0) return;
-		
+
 		PollutionData data = PollutionHandler.getPollutionData(world, (int) Math.floor(entity.posX), (int) Math.floor(entity.posY), (int) Math.floor(entity.posZ));
 		if(data == null) data = new PollutionData();
 

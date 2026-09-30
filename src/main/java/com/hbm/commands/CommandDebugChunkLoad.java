@@ -27,26 +27,26 @@ public class CommandDebugChunkLoad extends CommandBase {
 
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
-		
+
 		if(args.length != 2) {
 			return;
 		}
 
 		int x = this.parseInt(sender, args[0]);
 		int z = this.parseInt(sender, args[1]);
-		
+
 		IChunkProvider prov = sender.getEntityWorld().getChunkProvider();
 		if(prov instanceof ChunkProviderServer) {
 			ChunkProviderServer serv = (ChunkProviderServer) prov;
 			IChunkLoader loader = serv.currentChunkLoader;
-			
+
 			if(loader instanceof AnvilChunkLoader) {
 				AnvilChunkLoader anvil = (AnvilChunkLoader) loader;
-				
+
 				try {
 					int cX = x >> 4;
 					int cZ = z >> 4;
-					
+
 					if(prov.chunkExists(cX, cZ)) {
 						Chunk chunk = sender.getEntityWorld().getChunkFromChunkCoords(cX, cZ);
 						if(chunk.isChunkLoaded) {
@@ -54,7 +54,7 @@ public class CommandDebugChunkLoad extends CommandBase {
 							return;
 						}
 					}
-					
+
 					Object[] data = anvil.loadChunk__Async(sender.getEntityWorld(), cX, cZ);
 					//Chunk chunk = (Chunk) data[0];
 					NBTTagCompound nbt = (NBTTagCompound) data[1];
@@ -62,33 +62,33 @@ public class CommandDebugChunkLoad extends CommandBase {
 					NBTTagList tagList = level.getTagList("TileEntities", 10);
 
 					if(tagList != null) {
-						
+
 						if(tagList.tagCount() <= 0) {
 							sender.addChatMessage(new ChatComponentTranslation("commands.debug_chunk_load.tag_list_empty", EnumChatFormatting.RED));
 						}
-						
+
 						for(int i1 = 0; i1 < tagList.tagCount(); ++i1) {
 							NBTTagCompound tileCompound = tagList.getCompoundTagAt(i1);
 							int tX = tileCompound.getInteger("x");
 							int tY = tileCompound.getInteger("y");
 							int tZ = tileCompound.getInteger("z");
 							String name = tileCompound.getString("id");
-							
+
 							int i = tX - cX * 16;
 							int j = tY;
 							int k = tZ - cZ * 16;
-							
+
 							EnumChatFormatting color = EnumChatFormatting.GREEN;
-							
+
 							if(i < 0 || i > 15 || j < 0 || j > 255 || k < 0 || k > 15) {
 								color = EnumChatFormatting.RED;
 							}
-							
+
 							sender.addChatMessage(new ChatComponentText(color + name + " " + i + " " + j + " " + k));
-							
+
 							if(i < 0 || i > 15 || j < 0 || j > 255 || k < 0 || k > 15) {
 								tileCompound.setString("id", "INVALID_POS_" + name);
-								
+
 								NBTTagCompound nbttagcompound = new NBTTagCompound();
 								NBTTagCompound nbttagcompound1 = new NBTTagCompound();
 								nbttagcompound.setTag("Level", nbttagcompound1);
@@ -99,7 +99,7 @@ public class CommandDebugChunkLoad extends CommandBase {
 					} else {
 						sender.addChatMessage(new ChatComponentTranslation("commands.debug_chunk_load.tag_list_null", EnumChatFormatting.RED));
 					}
-					
+
 				} catch(Exception e) {
 					sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "" + e.getLocalizedMessage()));
 				}

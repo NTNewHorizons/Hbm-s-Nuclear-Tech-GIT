@@ -55,7 +55,7 @@ public class ItemWandD extends Item {
 
 			} else {
 
-				
+
 				int targetId = stack.stackTagCompound.getInteger("dim");
 				targetId++;
 
@@ -124,15 +124,15 @@ public class ItemWandD extends Item {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("desc.item.wand_d.1"));
+		list.add(I18nUtil.resolveKey("desc.item.wand_d.dimension_teleporter_atmosphere"));
 
 		if(stack.stackTagCompound != null) {
 			int targetId = stack.stackTagCompound.getInteger("dim");
 			if(targetId == 0) {
-				list.add(I18nUtil.resolveKey("desc.item.wand_d.2"));
+				list.add(I18nUtil.resolveKey("desc.item.wand_d.teleportation_target_orbit"));
 			} else {
 				SolarSystem.Body target = SolarSystem.Body.values()[targetId];
-				list.add(I18nUtil.resolveKey("desc.item.wand_d.3", target.getBody().getUnlocalizedName()));
+				list.add(I18nUtil.resolveKey("desc.item.wand_d.teleportation_target", target.getBody().getUnlocalizedName()));
 			}
 		}
 	}

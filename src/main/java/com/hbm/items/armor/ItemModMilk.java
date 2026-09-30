@@ -33,7 +33,7 @@ public class ItemModMilk extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.WHITE + I18nUtil.resolveKey("desc.item.mod_milk.1"));
+		list.add(EnumChatFormatting.WHITE + I18nUtil.resolveKey("desc.item.mod_milk.removes_bad_potion_effects"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}

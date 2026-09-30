@@ -48,7 +48,7 @@ public class GunB92 extends Item {
 			j = event.charge;
 
 			boolean flag = true;
-			
+
 			if (flag) {
 				float f = j / 20.0F;
 				f = (f * f + f * 2.0F) / 3.0F;
@@ -65,18 +65,18 @@ public class GunB92 extends Item {
 					for(int i = 0; i < getPower(p_77615_1_); i++) {
 						EntityB92Beam entityarrow1;
 						entityarrow1 = new EntityB92Beam(p_77615_2_, p_77615_3_, 3.0F);
-						
+
 						float divergence = i * 0.2F;
-						
+
 						if(divergence > 1F)
 							divergence = 1F;
-						
+
 						if(i > 0) {
 							entityarrow1.motionX += rand.nextGaussian() * divergence;
 							entityarrow1.motionY += rand.nextGaussian() * divergence;
 							entityarrow1.motionZ += rand.nextGaussian() * divergence;
 						}
-				
+
 						p_77615_1_.damageItem(1, p_77615_3_);
 
 						p_77615_2_.spawnEntityInWorld(entityarrow1);
@@ -104,17 +104,17 @@ public class GunB92 extends Item {
 			if (j == 15) {
 				world.playSoundAtEntity(entity, "hbm:weapon.b92Reload", 2F, 0.9F);
 				setPower(stack, getPower(stack) + 1);
-				
+
 				if(getPower(stack) > 10) {
-					
+
 					setPower(stack, 0);
-					
+
 					if(!world.isRemote) {
 						EntityNukeExplosionMK3 ex = EntityNukeExplosionMK3.statFacFleija(world, entity.posX, entity.posY, entity.posZ, 50);
 						if(!ex.isDead) {
 							world.playSoundEffect(entity.posX, entity.posY, entity.posZ, "random.explode", 100.0f, world.rand.nextFloat() * 0.1F + 0.9F);
 							world.spawnEntityInWorld(ex);
-	
+
 							EntityCloudFleijaRainbow cloud = new EntityCloudFleijaRainbow(world, 50);
 							cloud.posX = entity.posX;
 							cloud.posY = entity.posY;

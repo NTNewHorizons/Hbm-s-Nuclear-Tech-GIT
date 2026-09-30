@@ -69,7 +69,7 @@ public class ItemWatzPellet extends ItemEnumMulti {
 		public Function burnFunc;	//flux to reactivity(0) (classic reactivity)
 		public Function heatDiv;	//reactivity(0) to reactivity(1) based on heat (temperature coefficient)
 		public Function absorbFunc;	//flux to heat (flux absobtion for non-active component)
-		
+
 		private EnumWatzType(int colorLight, int colorDark, double passive, double heatEmission, double mudContent, Function burnFunction, Function heatDivisor, Function absorbFunction) {
 			this.colorLight = colorLight;
 			this.colorDark = colorDark;
@@ -84,13 +84,13 @@ public class ItemWatzPellet extends ItemEnumMulti {
 
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister reg) {
-		
+
 		Enum[] enums = theEnum.getEnumConstants();
 		this.icons = new IIcon[enums.length];
-		
+
 		if(reg instanceof TextureMap) {
 			TextureMap map = (TextureMap) reg;
-			
+
 			for(int i = 0; i < EnumWatzType.values().length; i++) {
 				EnumWatzType type = EnumWatzType.values()[i];
 				String placeholderName = this.getIconString() + "-" + (type.name() + this.getUnlocalizedName());
@@ -101,15 +101,15 @@ public class ItemWatzPellet extends ItemEnumMulti {
 				icons[i] = mutableIcon;
 			}
 		}
-		
+
 		this.itemIcon = reg.registerIcon(this.getIconString());
 	}
-	
+
 	public static int desaturate(int color) {
 		int r = (color & 0xff0000) >> 16;
 		int g = (color & 0x00ff00) >> 8;
 		int b = (color & 0x0000ff);
-		
+
 		int avg = (r + g + b) / 3;
 		double approach = 0.9;
 		double mult = 0.75;
@@ -121,7 +121,7 @@ public class ItemWatzPellet extends ItemEnumMulti {
 		r *= mult;
 		g *= mult;
 		b *= mult;
-		
+
 		return (r << 16) | (g << 8) | b;
 	}
 
@@ -131,30 +131,30 @@ public class ItemWatzPellet extends ItemEnumMulti {
 		IIcon icon = super.getIconFromDamage(meta);
 		return icon == null ? this.itemIcon : icon; //fallback if TextureMap fails during register
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		
+
 		if(this != ModItems.watz_pellet) return;
-		
+
 		EnumWatzType num = EnumUtil.grabEnumSafely(EnumWatzType.class, stack.getItemDamage());
-		
+
 		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.pile_rod_mk2.2", String.format(Locale.US, "%.1f", getDurabilityForDisplay(stack) * 100D)));
-		
+
 		String color = EnumChatFormatting.GOLD + "";
 		String reset = EnumChatFormatting.RESET + "";
 
 		if(num.passive > 0){
-			list.add(color + I18nUtil.resolveKey("desc.item.watz_pellet.1", reset, num.passive));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.watz_pellet.2"));
+			list.add(color + I18nUtil.resolveKey("desc.item.watz_pellet.base_fission_rate", reset, num.passive));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.watz_pellet.self_igniting"));
 		}
-		if(num.heatEmission > 0) list.add(color + I18nUtil.resolveKey("desc.item.pwr_fuel.1", reset, num.heatEmission));
+		if(num.heatEmission > 0) list.add(color + I18nUtil.resolveKey("desc.item.pwr_fuel.heat_per_flux_tu", reset, num.heatEmission));
 		if(num.burnFunc != null) {
-			list.add(color + I18nUtil.resolveKey("desc.item.pwr_fuel.2", reset, num.burnFunc.getLabelForFuel()));
-			list.add(color + I18nUtil.resolveKey("desc.item.pwr_fuel.3", reset, num.burnFunc.getDangerFromFuel()));
+			list.add(color + I18nUtil.resolveKey("desc.item.pwr_fuel.reaction_function", reset, num.burnFunc.getLabelForFuel()));
+			list.add(color + I18nUtil.resolveKey("desc.item.pwr_fuel.fuel_type", reset, num.burnFunc.getDangerFromFuel()));
 		}
-		if(num.heatDiv != null) list.add(color + I18nUtil.resolveKey("desc.item.watz_pellet.3", reset, num.heatDiv.getLabelForFuel()));
-		if(num.absorbFunc != null) list.add(color + I18nUtil.resolveKey("desc.item.watz_pellet.4", reset, num.absorbFunc.getLabelForFuel()));
+		if(num.heatDiv != null) list.add(color + I18nUtil.resolveKey("desc.item.watz_pellet.thermal_multiplier_tu", reset, num.heatDiv.getLabelForFuel()));
+		if(num.absorbFunc != null) list.add(color + I18nUtil.resolveKey("desc.item.watz_pellet.flux_capture", reset, num.absorbFunc.getLabelForFuel()));
 	}
 
 	@Override
@@ -166,36 +166,36 @@ public class ItemWatzPellet extends ItemEnumMulti {
 	public double getDurabilityForDisplay(ItemStack stack) {
 		return 1D - getEnrichment(stack);
 	}
-	
+
 	public static double getEnrichment(ItemStack stack) {
 		EnumWatzType num = EnumUtil.grabEnumSafely(EnumWatzType.class, stack.getItemDamage());
 		return getYield(stack) / num.yield;
 	}
-	
+
 	public static double getYield(ItemStack stack) {
 		return getDouble(stack, "yield");
 	}
-	
+
 	public static void setYield(ItemStack stack, double yield) {
 		setDouble(stack, "yield", yield);
 	}
-	
+
 	public static void setDouble(ItemStack stack, String key, double yield) {
 		if(!stack.hasTagCompound()) setNBTDefaults(stack);
 		stack.stackTagCompound.setDouble(key, yield);
 	}
-	
+
 	public static double getDouble(ItemStack stack, String key) {
 		if(!stack.hasTagCompound()) setNBTDefaults(stack);
 		return stack.stackTagCompound.getDouble(key);
 	}
-	
+
 	private static void setNBTDefaults(ItemStack stack) {
 		EnumWatzType num = EnumUtil.grabEnumSafely(EnumWatzType.class, stack.getItemDamage());
 		stack.stackTagCompound = new NBTTagCompound();
 		setYield(stack, num.yield);
 	}
-	
+
 	@Override
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
 		if(this != ModItems.watz_pellet) return;

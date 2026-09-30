@@ -35,7 +35,7 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_lens.1", this.getFreq(itemstack)));
+		list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_lens.satellite_frequency", this.getFreq(itemstack)));
 		list.add("");
 
 		super.addInformation(itemstack, player, list, bool);

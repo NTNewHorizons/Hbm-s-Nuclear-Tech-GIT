@@ -13,7 +13,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.EnumChatFormatting;
 
 public class PlasmaForgeRecipe extends GenericRecipe {
-	
+
 	// minimum plasma energy to perform the recipe
 	public long ignitionTemp;
 
@@ -34,16 +34,16 @@ public class PlasmaForgeRecipe extends GenericRecipe {
 
 		return list;
 	}
-	
+
 	@Override
 	public void printNEIExtras() {
 
 		int side = 164;
 		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-		
+
 		String duration = BobMathUtil.getShortNumber(this.duration) + " ticks";
 		fontRenderer.drawString(duration, side - fontRenderer.getStringWidth(duration), 45, 0x404040);
-		
+
 		if(Clock.get_ms() % 2000 < 1000) {
 			String consumption = BobMathUtil.getShortNumber(this.power) + "HE/t";
 			fontRenderer.drawString(consumption, side - fontRenderer.getStringWidth(consumption), 57, 0x404040);

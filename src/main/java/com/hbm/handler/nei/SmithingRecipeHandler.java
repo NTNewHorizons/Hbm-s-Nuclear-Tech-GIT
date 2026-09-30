@@ -80,10 +80,10 @@ public class SmithingRecipeHandler extends TemplateRecipeHandler implements ICom
 
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results) {
-		
+
 		if(outputId.equals("ntmSmithing")) {
 			List<AnvilSmithingRecipe> recipes = AnvilRecipes.getSmithing();
-			
+
 			for(AnvilSmithingRecipe recipe : recipes) {
 				this.arecipes.add(new RecipeSet(recipe));
 			}
@@ -96,7 +96,7 @@ public class SmithingRecipeHandler extends TemplateRecipeHandler implements ICom
 	public void loadCraftingRecipes(ItemStack result) {
 
 		List<AnvilSmithingRecipe> recipes = AnvilRecipes.getSmithing();
-		
+
 		for(AnvilSmithingRecipe recipe : recipes) {
 			if(NEIServerUtils.areStacksSameTypeCrafting(recipe.getSimpleOutput(), result)) {
 				this.arecipes.add(new RecipeSet(recipe));
@@ -106,7 +106,7 @@ public class SmithingRecipeHandler extends TemplateRecipeHandler implements ICom
 
 	@Override
 	public void loadUsageRecipes(String inputId, Object... ingredients) {
-		
+
 		if(inputId.equals("ntmSmithing")) {
 			loadCraftingRecipes("ntmSmithing", new Object[0]);
 		} else {
@@ -118,17 +118,17 @@ public class SmithingRecipeHandler extends TemplateRecipeHandler implements ICom
 	public void loadUsageRecipes(ItemStack ingredient) {
 
 		List<AnvilSmithingRecipe> recipes = AnvilRecipes.getSmithing();
-		
+
 		outer:
 		for(AnvilSmithingRecipe recipe : recipes) {
-			
+
 			for(ItemStack left : recipe.getLeft()) {
 				if(NEIServerUtils.areStacksSameTypeCrafting(left, ingredient)) {
 					this.arecipes.add(new RecipeSet(recipe));
 					continue outer;
 				}
 			}
-			
+
 			for(ItemStack right : recipe.getRight()) {
 				if(NEIServerUtils.areStacksSameTypeCrafting(right, ingredient)) {
 					this.arecipes.add(new RecipeSet(recipe));

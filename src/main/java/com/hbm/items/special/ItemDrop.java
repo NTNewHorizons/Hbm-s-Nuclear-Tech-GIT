@@ -33,23 +33,23 @@ public class ItemDrop extends Item {
 	@Override
 	public boolean onEntityItemUpdate(EntityItem entityItem) {
 		if (entityItem != null) {
-			
+
 			if(this == ModItems.beta) {
 				entityItem.setDead();
 				return true;
 			}
-			
+
 			ItemStack stack = entityItem.getEntityItem();
 
 			if (stack.getItem() != null && stack.getItem() == ModItems.detonator_deadman) {
 				if (!entityItem.worldObj.isRemote) {
-					
+
 					if(stack.stackTagCompound != null) {
-						
+
 						 int x = stack.stackTagCompound.getInteger("x");
 						 int y = stack.stackTagCompound.getInteger("y");
 						 int z = stack.stackTagCompound.getInteger("z");
-						 
+
 						 if(entityItem.worldObj.getBlock(x, y, z) instanceof IBomb)
 						 {
 							if(!entityItem.worldObj.isRemote)
@@ -75,10 +75,10 @@ public class ItemDrop extends Item {
 		    		if(GeneralConfig.enableExtendedLogging)
 		    			MainRegistry.logger.log(Level.INFO, "[DET] Detonated dead man's explosive at " + ((int)entityItem.posX) + " / " + ((int)entityItem.posY) + " / " + ((int)entityItem.posZ) + "!");
 				}
-				
+
 				entityItem.setDead();
 			}
-			
+
 			if (entityItem.onGround) {
 
 				if (stack.getItem() != null && stack.getItem() == ModItems.cell_antimatter && WeaponConfig.dropCell) {
@@ -173,7 +173,7 @@ public class ItemDrop extends Item {
 		}
 		return false;
     }
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
@@ -230,38 +230,38 @@ public class ItemDrop extends Item {
 		if (this == ModItems.detonator_de) {
 			list.add(I18nUtil.resolveKey("desc.item.drop.30"));
 		}
-		
+
 		list.add(EnumChatFormatting.RED + "[" + I18nUtil.resolveKey("trait.drop") + "]");
 	}
-	
+
 	@Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_)
     {
 		if(this != ModItems.detonator_deadman) {
 			return super.onItemUse(stack, player, world, x, y, z, p_77648_7_, p_77648_8_, p_77648_9_, p_77648_10_);
 		}
-		
+
 		if(stack.stackTagCompound == null)
 		{
 			stack.stackTagCompound = new NBTTagCompound();
 		}
-		
+
 		if(player.isSneaking())
 		{
 			stack.stackTagCompound.setInteger("x", x);
 			stack.stackTagCompound.setInteger("y", y);
 			stack.stackTagCompound.setInteger("z", z);
-			
+
 			if(world.isRemote)
 			{
 				player.addChatMessage(new ChatComponentTranslation("desc.misc.posSet"));
 			}
-			
+
 	        world.playSoundAtEntity(player, "hbm:item.techBoop", 2.0F, 1.0F);
-        	
+
 			return true;
 		}
-		
+
 		return false;
     }
 

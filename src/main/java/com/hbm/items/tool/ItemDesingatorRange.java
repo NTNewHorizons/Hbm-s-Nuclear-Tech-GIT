@@ -22,11 +22,11 @@ public class ItemDesingatorRange extends Item implements IDesignatorItem {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.stackTagCompound != null) {
-			list.add(I18nUtil.resolveKey("desc.item.desingator.1"));
+			list.add(I18nUtil.resolveKey("desc.item.desingator.target_coordinates"));
 			list.add(I18nUtil.resolveKey("desc.item.tele_link.1", itemstack.stackTagCompound.getInteger("xCoord")));
 			list.add(I18nUtil.resolveKey("desc.item.tele_link.3", itemstack.stackTagCompound.getInteger("zCoord")));
 		} else {
-			list.add(I18nUtil.resolveKey("desc.item.desingator.2"));
+			list.add(I18nUtil.resolveKey("desc.item.desingator.please_select_target"));
 		}
 	}
 
@@ -38,7 +38,7 @@ public class ItemDesingatorRange extends Item implements IDesignatorItem {
 		int z = pos.blockZ;
 
 		if(!(world.getBlock(x, y, z) instanceof LaunchPad)) {
-			
+
 			if(stack.stackTagCompound == null)
 				stack.stackTagCompound = new NBTTagCompound();
 

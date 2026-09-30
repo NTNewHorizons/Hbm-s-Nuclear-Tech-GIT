@@ -11,12 +11,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class ItemStructureRandomized extends ItemStructureTool {
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_randomized.1"));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_randomized.2"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_randomized.click_print"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_randomized.line_block_selector"));
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class ItemStructureRandomized extends ItemStructureTool {
 
 	@Override
 	protected void doTheThing(ItemStack stack, World world, int x, int y, int z) {
-		
+
 		BlockPos pos = this.getAnchor(stack);
 		if(pos == null) return;
 

@@ -51,15 +51,15 @@ public class MachineTeleporter extends BlockContainer implements ILookOverlay {
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
-		
+
 		TileEntity tile = world.getTileEntity(x, y, z);
-		
+
 		if(!(tile instanceof TileEntityMachineTeleporter)) return;
-		
+
 		TileEntityMachineTeleporter tele = (TileEntityMachineTeleporter) tile;
-		
+
 		List<String> text = new ArrayList();
-		
+
 		if(tele.targetY == -1) {
 			text.add(I18nUtil.resolveKey("overlay.teleporter.no_destination_set", EnumChatFormatting.RED));
 		} else {
@@ -69,7 +69,7 @@ public class MachineTeleporter extends BlockContainer implements ILookOverlay {
 			}
 			text.add(I18nUtil.resolveKey("overlay.teleporter.destination_d", tele.targetX, tele.targetY, tele.targetZ, tele.targetDim));
 		}
-		
+
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 }

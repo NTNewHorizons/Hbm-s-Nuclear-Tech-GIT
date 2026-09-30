@@ -65,12 +65,12 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
-		
+
 		if(this.autocal == null || this.autocal.isInvalid()) {
 			Minecraft.getMinecraft().thePlayer.closeScreen();
 			return;
 		}
-		
+
 		this.drawDefaultBackground();
 		this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -128,7 +128,7 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 					script.setExecutable(false);
 					return;
 				}
-				
+
 				byte[] bytes = Files.readAllBytes(Paths.get(script.toURI()));
 				data = new NBTTagCompound();
 				data.setString("payload", new String(bytes, StandardCharsets.UTF_8));

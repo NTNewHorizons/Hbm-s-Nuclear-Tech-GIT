@@ -148,7 +148,7 @@ public class ItemSatellite extends ItemCustomMissilePart implements ISatChip, IG
 
 			XSatelliteRegistry.orbit(targetWorld, stack, getFreq(stack), player.posX, player.posY, player.posZ);
 
-			player.addChatMessage(new ChatComponentTranslation("chat.satellite.1"));
+			player.addChatMessage(new ChatComponentTranslation("chat.satellite.satellite_launched_successfully"));
 		}
 
 		stack.stackSize--;

@@ -99,7 +99,7 @@ public class ItemAmmoHIMARS extends Item {
 			break;
 		case SMALL_TB:
 			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.9"));
-			list.add(y + I18nUtil.resolveKey("desc.item.ammo_himars.1"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_himars.damage_modifier_10x"));
 			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		case SMALL_MINI_NUKE:
@@ -109,7 +109,7 @@ public class ItemAmmoHIMARS extends Item {
 			break;
 		case SMALL_LAVA:
 			list.add(y + I18nUtil.resolveKey("desc.item.ammo_arty.9"));
-			list.add(r + I18nUtil.resolveKey("desc.item.ammo_himars.2"));
+			list.add(r + I18nUtil.resolveKey("desc.item.ammo_himars.creates_volcanic_lava"));
 			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		case LARGE:
@@ -119,7 +119,7 @@ public class ItemAmmoHIMARS extends Item {
 			break;
 		case LARGE_TB:
 			list.add(y + I18nUtil.resolveKey("desc.item.ammo_himars.3"));
-			list.add(y + I18nUtil.resolveKey("desc.item.ammo_himars.4"));
+			list.add(y + I18nUtil.resolveKey("desc.item.ammo_himars.damage_modifier_12x"));
 			list.add(r + I18nUtil.resolveKey("desc.item.ammo_arty.6"));
 			break;
 		}

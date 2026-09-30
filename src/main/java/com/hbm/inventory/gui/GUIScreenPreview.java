@@ -28,20 +28,20 @@ public class GUIScreenPreview extends GuiScreen {
 	}
 
 	public void drawScreen(int mouseX, int mouseY, float f) {
-		
+
 		if(this.mc.theWorld != null) {
 			this.drawRect(0, 0, this.width, this.height, 0xFFC6C6C6);
 		} else {
 			this.drawBackground(0);
 		}
-		
+
 		if(!Mouse.isButtonDown(0) && !Mouse.isButtonDown(1) && Mouse.next()) {
 			int scroll = Mouse.getEventDWheel();
-			
+
 			if(scroll < 0 && this.zoom > 1) this.zoom--;
 			if(scroll > 0 && this.zoom < 15) this.zoom++;
 		}
-		
+
 		this.drawGuiContainerBackgroundLayer(f, mouseX, mouseY);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		this.drawGuiContainerForegroundLayer(mouseX, mouseY);
@@ -82,9 +82,9 @@ public class GUIScreenPreview extends GuiScreen {
 	}
 
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		
+
 		if(preview == null) return;
-		
+
 		GL11.glPushMatrix();
 		RenderHelper.enableGUIStandardItemLighting();
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
@@ -93,9 +93,9 @@ public class GUIScreenPreview extends GuiScreen {
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		
+
 		GL11.glScaled(zoom, zoom, zoom);
-		
+
 		ScaledResolution res = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
 		GL11.glTranslated(res.getScaledWidth_double() / 2D / zoom, res.getScaledHeight_double() / 2D / zoom, -200);
 
@@ -108,7 +108,7 @@ public class GUIScreenPreview extends GuiScreen {
 
 		itemRender.zLevel = 0.0F;
 		this.zLevel = 0.0F;
-		
+
 		GL11.glPopMatrix();
 	}
 

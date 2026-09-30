@@ -131,7 +131,7 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 		if(this == ModBlocks.capacitor_complex) {
 			list.add(I18nUtil.resolveKey("desc.block.capacitor.line.03"));
 			list.add(I18nUtil.resolveKey("desc.block.capacitor.line.01"));
-			list.add(I18nUtil.resolveKey("desc.block.capacitor.line.02"));
+			list.add(I18nUtil.resolveKey("desc.block.capacitor.subjected_ferric_osmiridium_lutece"));
 			list.add(I18nUtil.resolveKey("desc.block.xt_aei_px_et"));
 		}
 

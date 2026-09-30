@@ -65,11 +65,11 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 		double[] shell = HbmAnimations.getRelevantTransformation("SHELL");
 		double[] screw = HbmAnimations.getRelevantTransformation("SCREW");
 		double[] breech = HbmAnimations.getRelevantTransformation("BREECH");
-		
+
 		GL11.glTranslated(0, 1, -4);
 		GL11.glRotated(-equip[0], 1, 0, 0);
 		GL11.glTranslated(0, -1, 4);
-		
+
 		GL11.glTranslated(0, -2, -2);
 		GL11.glRotated(load[0], 1, 0, 0);
 		GL11.glTranslated(0, 2, 2);
@@ -77,7 +77,7 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 
 		ResourceManager.folly.renderPart("Cannon");
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslated(recoil[0], recoil[1], recoil[2]);
 		ResourceManager.folly.renderPart("Barrel");
@@ -96,20 +96,20 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 		GL11.glTranslated(0, -1, 0);
 		ResourceManager.folly.renderPart("Cog");
 		GL11.glPopMatrix();
-		
-		
+
+
 		boolean isAiming = gun.prevAimingProgress >= 1F && gun.aimingProgress >= 1F;
 		if(isAiming & !wasAiming) timeAiming = System.currentTimeMillis();
-		
+
 		if(isAiming) {
-			
+
 			String splash = getBootSplash();
-			
+
 			if(!jingle && !splash.isEmpty()) {
 				MainRegistry.proxy.playSoundClient(player.posX, player.posY, player.posZ, NTMSounds.GUN_VYLET_PONY_CUTIEMARKS_AND_THE_THINGS_THAT_BIND_US_INTRO_JINGLE, 0.5F, 1F);
 				jingle = true;
 			}
-	
+
 			GL11.glPushMatrix();
 			GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
 			GL11.glDisable(GL11.GL_LIGHTING);
@@ -118,7 +118,7 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 			FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 			float variance = 0.85F + player.getRNG().nextFloat() * 0.15F;
-			
+
 			if(System.currentTimeMillis() - timeAiming > 5000 && load[0] == 0) {
 				IMagazine mag = gun.getConfig(stack, 0).getReceivers(stack)[0].getMagazine(stack);
 				String msg = mag.getAmount(stack, player.inventory) > 0 ? "+" : I18nUtil.resolveKey("renderer.weapon.no_ammo");
@@ -131,7 +131,7 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 				font.drawString(msg, 0, 0, new Color(variance, variance * 0.5F, 0F).getRGB());
 				GL11.glPopMatrix();
 			}
-			
+
 			GL11.glPushMatrix();
 			float splashSize = 0.02F;
 			GL11.glTranslatef((font.getStringWidth(splash) / 2) * splashSize + 2, 1F + font.FONT_HEIGHT * splashSize / 2F, -2.75F);
@@ -140,7 +140,7 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 			GL11.glNormal3f(0.0F, 0.0F, -1.0F * splashSize);
 			font.drawString(splash, 0, 0, new Color(variance, variance * 0.5F, 0F).getRGB());
 			GL11.glPopMatrix();
-			
+
 			List<String> tty = getTTY();
 			if(!tty.isEmpty()) {
 				GL11.glPushMatrix();
@@ -155,14 +155,14 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 				}
 				GL11.glPopMatrix();
 			}
-			
+
 			GL11.glColor3f(1F, 1F, 1F);
-	
+
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glPopAttrib();
 			GL11.glPopMatrix();
-			
+
 			int brightness = player.worldObj.getLightBrightnessForSkyBlocks(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ), 0);
 			int j = brightness % 65536;
 			int k = brightness / 65536;
@@ -170,9 +170,9 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 		} else {
 			jingle = false;
 		}
-		
+
 		wasAiming = isAiming;
-		
+
 		GL11.glShadeModel(GL11.GL_FLAT);
 	}
 
@@ -206,13 +206,13 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 	@Override
 	public void renderOther(ItemStack stack, ItemRenderType type, Object... data) {
 		GL11.glEnable(GL11.GL_LIGHTING);
-		
+
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		Minecraft.getMinecraft().renderEngine.bindTexture(ResourceManager.folly_tex);
 		ResourceManager.folly.renderAll();
 		GL11.glShadeModel(GL11.GL_FLAT);
 	}
-	
+
 	public static String getBootSplash() {
 		long now = System.currentTimeMillis();
 		if(timeAiming + 5000 < now) return "";
@@ -232,7 +232,7 @@ public class ItemRenderFolly extends ItemRenderWeaponBase {
 		}
 		return splash;
 	}
-	
+
 	public static List<String> getTTY() {
 		List<String> tty = new ArrayList();
 		long now = System.currentTimeMillis();

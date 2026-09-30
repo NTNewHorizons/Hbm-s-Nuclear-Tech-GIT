@@ -36,13 +36,13 @@ public class FluidRecipeHandler extends TemplateRecipeHandler implements ICompat
 	}
 
 	public class SmeltingSet extends TemplateRecipeHandler.CachedRecipe {
-		
+
 		PositionedStack[] input;
 		PositionedStack result;
 
 		public SmeltingSet(ItemStack fluid, ItemStack empty, ItemStack full) {
 			fluid.stackSize = 1;
-			
+
 			this.input = new PositionedStack[empty == null ? 1 : 2];
 			this.input[0] = new PositionedStack(fluid, 30, 24);
 			if(empty != null) this.input[1] = new PositionedStack(empty, 48, 24);
@@ -69,7 +69,7 @@ public class FluidRecipeHandler extends TemplateRecipeHandler implements ICompat
 	public String getGuiTexture() {
 		return RefStrings.MODID + ":textures/gui/nei/gui_nei_fluid.png";
 	}
-	
+
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results) {
 		if ((outputId.equals("fluidcons")) && getClass() == FluidRecipeHandler.class) {
@@ -112,7 +112,7 @@ public class FluidRecipeHandler extends TemplateRecipeHandler implements ICompat
 				this.arecipes.add(new SmeltingSet(recipe.getX(), recipe.getY(), recipe.getZ()));
 		}
 	}
-	
+
 	private boolean compareFluidStacks(ItemStack sta1, ItemStack sta2) {
 		return sta1.getItem() == sta2.getItem() && sta1.getItemDamage() == sta2.getItemDamage();
 	}

@@ -43,7 +43,7 @@ public class BlockTaint extends Block implements ITooltipProvider {
 
 		int meta = world.getBlockMetadata(x, y, z);
 		if(meta >= 15) return;
-		
+
 		for(int i = -3; i <= 3; i++) for(int j = -3; j <= 3; j++) for(int k = -3; k <= 3; k++) {
 			if(Math.abs(i) + Math.abs(j) + Math.abs(k) > 4) continue;
 			if(rand.nextFloat() > 0.25F) continue;
@@ -75,7 +75,7 @@ public class BlockTaint extends Block implements ITooltipProvider {
 
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		
+
 		int meta = world.getBlockMetadata(x, y, z);
 		int level = 15 - meta;
 

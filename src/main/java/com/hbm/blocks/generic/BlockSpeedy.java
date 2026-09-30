@@ -17,7 +17,7 @@ import com.hbm.util.i18n.I18nUtil;
 public class BlockSpeedy extends Block implements IStepTickReceiver, ITooltipProvider {
 
 	double speed;
-	
+
 	public BlockSpeedy(Material mat, double speed) {
 		super(mat);
 		this.speed = speed;
@@ -25,10 +25,10 @@ public class BlockSpeedy extends Block implements IStepTickReceiver, ITooltipPro
 
 	@Override
 	public void onPlayerStep(World world, int x, int y, int z, EntityPlayer player) {
-		
+
 		if(!world.isRemote)
 			return;
-		
+
 		if(player.moveForward != 0 || player.moveStrafing != 0) {
 			player.motionX *= speed;
 			player.motionZ *= speed;

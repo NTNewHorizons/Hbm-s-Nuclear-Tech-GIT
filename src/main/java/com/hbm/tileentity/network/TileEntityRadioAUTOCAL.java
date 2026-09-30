@@ -26,38 +26,38 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 	public boolean isOn = false;
 	public boolean ignoreError = false;
 	public boolean autoReboot = false;
-	
+
 	public String[] script = new String[0];
 	public IParse msesv1ext = new ParseMSES1Ext1();
 	public ParseContext ctx;
-	
+
 	public String[] history = new String[] {"", "", "", "", "", ""};
 
 	@Override
 	public void updateEntity() {
-		
+
 		if(!worldObj.isRemote) {
-			
+
 			if(this.worldObj.getTotalWorldTime() % 60 == 0) this.markChanged(); // ensure we're always saved to disk
-			
+
 			if(this.ctx == null) {
 				this.ctx = new ParseContext(worldObj);
 			}
 			if(this.ctx.world != this.worldObj) this.ctx.world = this.worldObj;
-			
+
 			if(!this.isOn && this.autoReboot) {
 				this.isOn = true;
 			}
-			
+
 			if(this.isOn) {
-				
+
 				int emergencyBrake = 100;
 				for(int i = 0; i < this.ctx.clockSpeed && emergencyBrake > 0; i++) {
 					emergencyBrake--;
-					
+
 					if(this.ctx.current == this.script.length) { this.stop("gui.autocal.error.terminated"); break; }
 					if(this.ctx.current < 0 || this.ctx.current >= this.script.length) { this.stop("gui.autocal.error.index_out_of_bounds"); break; }
-					
+
 					try {
 						int index = this.ctx.current;
 						this.ctx.current ++;
@@ -79,20 +79,20 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 					}
 				}
 			}
-			
+
 			this.networkPackNT(15);
 		}
 	}
-	
+
 	public void pushMsg(String msg) {
-		
+
 		for(int i = 2; i < history.length; i++) {
 			history[i - 1] = history[i];
 		}
-		
+
 		history[history.length - 1] = msg;
 	}
-	
+
 	public void stop(String reason) {
 		this.isOn = false;
 		this.ctx.turnOff();
@@ -124,7 +124,7 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 		this.isOn = nbt.getBoolean("isOn");
 		this.ignoreError = nbt.getBoolean("ignoreError");
 		this.autoReboot = nbt.getBoolean("autoReboot");
-		
+
 		NBTTagList lineList = nbt.getTagList("script", 8);
 		this.script = new String[lineList.tagList.size()];
 		for(int i = 0; i < script.length; i++) {
@@ -142,13 +142,13 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 		nbt.setBoolean("isOn", isOn);
 		nbt.setBoolean("ignoreError", ignoreError);
 		nbt.setBoolean("autoReboot", autoReboot);
-		
+
 		NBTTagList lineList = new NBTTagList();
 		for(String line : this.script) {
 			lineList.appendTag(new NBTTagString(line));
 		}
 		nbt.setTag("script", lineList);
-		
+
 		this.ctx.writeToNBT(nbt);
 	}
 
@@ -163,12 +163,12 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 	@Override
 	public void receiveControl(NBTTagCompound data) {
 		if(data.hasKey("on")) {
-			if(this.isOn) stop("User requested shutdown");
+			if(this.isOn) stop("gui.autocal.error.user_shutdown");
 			else this.isOn = true;
 		}
 		if(data.hasKey("ignore")) this.ignoreError = !this.ignoreError;
 		if(data.hasKey("auto")) this.autoReboot = !this.autoReboot;
-		
+
 		if(data.hasKey("payload")) {
 			this.ctx.jmp.clear();
 			this.script = data.getString("payload").split("\n");
@@ -176,20 +176,20 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 				script[i] = script[i].trim();
 				this.msesv1ext.generateJumpPoints(ctx, script[i], i);
 			}
-			if(this.isOn) stop("Script has changed");
+			if(this.isOn) stop("gui.autocal.error.script_changed");
 		}
-		
+
 		this.markChanged();
 	}
-	
+
 	AxisAlignedBB bb = null;
-	
+
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		if(bb == null) bb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 2, zCoord + 1);
 		return bb;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public double getMaxRenderDistanceSquared() {

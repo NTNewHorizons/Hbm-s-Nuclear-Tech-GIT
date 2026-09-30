@@ -46,16 +46,16 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 
 	public FluidTank inputTank;
 	public FluidTank outputTank;
-	
+
 	public long power;
 	public long maxPower = 100_000;
 	public boolean didProcess = false;
-	
+
 	public boolean frame = false;
 	private AudioWrapper audio;
 
 	public ModuleMachineAssembler assemblerModule;
-	
+
 	public AssemblerArm[] arms = new AssemblerArm[2];
 	public double prevRing;
 	public double ring;
@@ -64,14 +64,14 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 	public int ringDelay;
 
 	public UpgradeManagerNT upgradeManager = new UpgradeManagerNT(this);
-	
+
 	public TileEntityMachineAssemblyMachine() {
 		super(17);
 		this.inputTank = new FluidTank(Fluids.NONE, 4_000);
 		this.outputTank = new FluidTank(Fluids.NONE, 4_000);
-		
+
 		for(int i = 0; i < this.arms.length; i++) this.arms[i] = new AssemblerArm();
-		
+
 		this.assemblerModule = new ModuleMachineAssembler(0, this, slots)
 				.itemInput(4).itemOutput(16)
 				.fluidInput(inputTank).fluidOutput(outputTank);
@@ -84,20 +84,20 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 
 	@Override
 	public void updateEntity() {
-		
+
 		if(maxPower <= 0) this.maxPower = 1_000_000;
-		
+
 		if(!worldObj.isRemote) {
-			
+
 			GenericRecipe recipe = assemblerModule.getRecipe();
 			if(recipe != null) {
 				this.maxPower = recipe.power * 100;
 			}
 			this.maxPower = BobMathUtil.max(this.power, this.maxPower, 100_000);
-			
+
 			this.power = Library.chargeTEFromItems(slots, 0, power, maxPower);
 			upgradeManager.checkSlots(slots, 2, 3);
-			
+
 			for(DirPos pos : getConPos()) {
 				this.trySubscribe(worldObj, pos);
 				if(inputTank.getTankType() != Fluids.NONE) this.trySubscribe(inputTank.getTankType(), worldObj, pos);
@@ -113,24 +113,24 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 			pow -= Math.min(upgradeManager.getLevel(UpgradeType.POWER), 3) * 0.25D;
 			pow += Math.min(upgradeManager.getLevel(UpgradeType.SPEED), 3) * 1D;
 			pow += Math.min(upgradeManager.getLevel(UpgradeType.OVERDRIVE), 3) * 10D / 3D;
-			
+
 			this.assemblerModule.update(speed, pow, true, slots[1]);
 			this.didProcess = this.assemblerModule.didProcess;
 			if(this.assemblerModule.markDirty) this.markDirty();
-			
+
 			if(didProcess) {
 				if(slots[0] != null && slots[0].getItem() == ModItems.meteorite_sword_alloyed)
 					slots[0] = new ItemStack(ModItems.meteorite_sword_machined);
 			}
-			
+
 			this.networkPackNT(100);
-			
+
 		} else {
-			
+
 			if(worldObj.getTotalWorldTime() % 20 == 0) {
 				frame = !worldObj.getBlock(xCoord, yCoord + 3, zCoord).isAir(worldObj, xCoord, yCoord + 3, zCoord);
 			}
-			
+
 			if(this.didProcess && MainRegistry.proxy.me().getDistance(xCoord , yCoord, zCoord) < 50) {
 				if(audio == null) {
 					audio = createAudioLoop();
@@ -141,7 +141,7 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 				audio.keepAlive();
 				audio.updatePitch(0.75F);
 				audio.updateVolume(this.getVolume(0.5F));
-				
+
 			} else {
 				if(audio != null) {
 					audio.stopSound();
@@ -156,14 +156,14 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 				} else{
 					arm.returnToNullPos();
 				}
-				
+
 				if(!this.muffled && arm.prevAngles[3] != arm.angles[3] && arm.angles[3] == -0.75) {
 					MainRegistry.proxy.playSoundClient(xCoord, yCoord, zCoord, NTMSounds.ASSEMBLER_STRIKE, this.getVolume(0.5F), 1F);
 				}
 			}
-			
+
 			this.prevRing = this.ring;
-			
+
 			if(didProcess) {
 				if(this.ring != this.ringTarget) {
 					double ringDelta = Math.abs(this.ringTarget - this.ring);
@@ -201,7 +201,7 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 		super.invalidate();
 		if(audio != null) { audio.stopSound(); audio = null; }
 	}
-	
+
 	public DirPos[] getConPos() {
 		return new DirPos[] {
 				new DirPos(xCoord + 2, yCoord, zCoord - 1, Library.POS_X),
@@ -240,12 +240,12 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 		this.maxPower = buf.readLong();
 		this.didProcess = buf.readBoolean();
 		this.assemblerModule.deserialize(buf);
-		
+
 		if(wasProcessing && !didProcess) {
 			MainRegistry.proxy.playSoundClient(xCoord, yCoord, zCoord, NTMSounds.ASSEMBLER_STOP, this.getVolume(0.25F), 1.5F);
 		}
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
@@ -255,7 +255,7 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 		this.maxPower = nbt.getLong("maxPower");
 		this.assemblerModule.readFromNBT(nbt);
 	}
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
@@ -309,21 +309,21 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 			}
 		}
 	}
-	
+
 	AxisAlignedBB bb = null;
-	
+
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		if(bb == null) bb = AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 3, zCoord + 2);
 		return bb;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public double getMaxRenderDistanceSquared() {
 		return 65536.0D;
 	}
-	
+
 	@Override
 	public boolean canProvideInfo(UpgradeType type, int level, boolean extendedInfo) {
 		return type == UpgradeType.SPEED || type == UpgradeType.POWER || type == UpgradeType.OVERDRIVE;
@@ -354,7 +354,7 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 	}
 
 	public static class AssemblerArm {
-		
+
 		public double[] angles = new double[4];
 		public double[] prevAngles = new double[4];
 		public double[] targetAngles = new double[4];
@@ -369,7 +369,7 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 			EXTEND_STRIKER,
 			RETRACT_STRIKER
 		}
-		
+
 		public AssemblerArm() {
 			this.resetSpeed();
 		}
@@ -379,16 +379,16 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 				prevAngles[i] = angles[i];
 			}
 		}
-		
+
 		private void returnToNullPos() {
 			for(int i = 0; i < 4; i++) this.targetAngles[i] = 0;
 			for(int i = 0; i < 3; i++) this.speed[i] = 3;
 			this.speed[3] = 0.25;
 			this.state = ArmActionState.RETRACT_STRIKER;
-			
+
 			this.move();
 		}
-		
+
 		private void resetSpeed() {
 			speed[0] = 15;	//Pivot
 			speed[1] = 15;	//Arm
@@ -444,7 +444,7 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 			this.targetAngles[1] = pos[chosen][1];
 			this.targetAngles[2] = pos[chosen][2];
 		}
-		
+
 		private boolean move() {
 			boolean didMove = false;
 
@@ -473,7 +473,7 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 
 			return !didMove;
 		}
-		
+
 		public double[] getPositions(float interp) {
 			return new double[] {
 					BobMathUtil.interp(this.prevAngles[0], this.angles[0], interp),
@@ -510,7 +510,7 @@ public class TileEntityMachineAssemblyMachine extends TileEntityMachineBase impl
 			this.markChanged();
 			return null;
 		}
-		
+
 		return null;
 	}
 }

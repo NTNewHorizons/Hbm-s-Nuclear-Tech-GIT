@@ -17,15 +17,15 @@ public class GUICoreReceiver extends GuiInfoContainer {
 
 	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/dfc/gui_receiver.png");
 	private TileEntityCoreReceiver receiver;
-	
+
 	public GUICoreReceiver(InventoryPlayer invPlayer, TileEntityCoreReceiver tedf) {
 		super(new ContainerCoreReceiver(invPlayer, tedf));
 		receiver = tedf;
-		
+
 		this.xSize = 176;
 		this.ySize = 166;
 	}
-	
+
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
@@ -42,10 +42,10 @@ public class GUICoreReceiver extends GuiInfoContainer {
 		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.core_receiver.spk", BobMathUtil.getShortNumber(receiver.joules)), 50, 35, 0xFF7F7F);
 		this.fontRendererObj.drawString(I18nUtil.resolveKey("info.template_out"), 40, 45, 0xFF7F7F);
 		this.fontRendererObj.drawString(I18nUtil.resolveKey("gui.core_receiver.he", BobMathUtil.getShortNumber(receiver.joules * 5000)), 50, 55, 0xFF7F7F);
-		
+
 		this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
-	
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

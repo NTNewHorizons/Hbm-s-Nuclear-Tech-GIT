@@ -16,9 +16,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class ItemFusionCore extends Item {
-	
+
 	private int charge;
-	
+
 	public ItemFusionCore(int charge) {
 		this.charge = charge;
 	}
@@ -53,8 +53,8 @@ public class ItemFusionCore extends Item {
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.fusion_core.1", BobMathUtil.getShortNumber(charge)));
-		list.add(I18nUtil.resolveKey("desc.item.fusion_core.2"));
+
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.fusion_core.charges_worn_armor_pieces_he", BobMathUtil.getShortNumber(charge)));
+		list.add(I18nUtil.resolveKey("desc.item.fusion_core.requires_full_electric_worn"));
 	}
 }

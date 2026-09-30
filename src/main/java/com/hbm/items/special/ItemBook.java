@@ -17,19 +17,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemBook extends Item implements IGUIProvider {
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		
-		list.add(I18nUtil.resolveKey("desc.item.book.1"));
+
+		list.add(I18nUtil.resolveKey("desc.item.book.edition_gold_lined_pages"));
 	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-		
+
 		if(!world.isRemote)
 			player.openGui(MainRegistry.instance, 0, world, 0, 0, 0);
-		
+
 		return stack;
 	}
 

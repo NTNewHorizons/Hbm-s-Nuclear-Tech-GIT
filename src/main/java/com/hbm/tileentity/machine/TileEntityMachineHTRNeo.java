@@ -38,7 +38,7 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 	public static long maxPower = 200_000_000L;
 
 	public static final int COOLANT_USE = 50;
-	
+
 	public float rotor;
 	public float prevRotor;
 	public float rotorSpeed;
@@ -129,7 +129,7 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 			this.networkPackNT(200);
 			this.plasmaEnergy = 0;
 		} else {
-			
+
 			if(power >= maxPower || isOn) this.rotorSpeed += 0.125F;
 			else this.rotorSpeed -= 0.125F;
 
@@ -155,7 +155,7 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 					audio.updateVolume(getVolume(1F));
 					audio.keepAlive();
 				}
-				
+
 				thrustAmount += 0.01D;
 				if(thrustAmount > 1) thrustAmount = 1;
 			} else {
@@ -163,7 +163,7 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 					audio.stopSound();
 					audio = null;
 				}
-				
+
 				thrustAmount -= 0.01D;
 				if(thrustAmount < 0) thrustAmount = 0;
 			}
@@ -240,7 +240,7 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 	@Override
 	public void addErrors(List<String> errors) {
 		if(plasmaEnergySync < fuelCost) {
-			errors.add(I18nUtil.resolveKey("overlay.htrneo.line.01", EnumChatFormatting.RED, BobMathUtil.getShortNumber(fuelCost)));
+			errors.add(I18nUtil.resolveKey("overlay.htrneo.insufficient_plasma_energy_needs_tu", EnumChatFormatting.RED, BobMathUtil.getShortNumber(fuelCost)));
 		}
 
 		if(power < maxPower) {

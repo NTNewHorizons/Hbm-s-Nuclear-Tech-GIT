@@ -16,10 +16,10 @@ public class ItemGlyphBlock extends ItemBlock {
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
-		
+
 		switch(itemstack.getItemDamage()) {
 		case 0: list.add(I18nUtil.resolveKey("desc.item.glyph_block.1")); break;
 		case 1: list.add(I18nUtil.resolveKey("desc.item.glyph_block.2")); break;
@@ -39,7 +39,7 @@ public class ItemGlyphBlock extends ItemBlock {
 		case 15: list.add(I18nUtil.resolveKey("desc.item.glyph_block.15")); break;
 		}
 	}
-	
+
     public int getMetadata(int meta)
     {
         return meta;

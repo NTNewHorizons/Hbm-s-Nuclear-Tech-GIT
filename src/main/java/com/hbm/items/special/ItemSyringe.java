@@ -365,7 +365,7 @@ public class ItemSyringe extends Item {
 				HbmLivingProps.setContagion(entity, 3 * 60 * 60 * 20);
 				world.playSoundAtEntity(entity, "hbm:item.syringe", 1.0F, 1.0F);
 				stack.stackSize--;
-				
+
 				if(GeneralConfig.enableExtendedLogging)
 					MainRegistry.logger.log(Level.INFO, "[MKU] " + entityPlayer.getCommandSenderName() + " used an MKU syringe!");
 			}

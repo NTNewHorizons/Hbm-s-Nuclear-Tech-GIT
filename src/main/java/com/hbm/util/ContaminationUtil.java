@@ -150,7 +150,7 @@ public class ContaminationUtil {
 		double eRad = ((int)(HbmLivingProps.getRadiation(player) * 10)) / 10D;
 
 		double neut = ((int)(HbmLivingProps.getNeutronActivation(player) * 10)) / 10D;
-		
+
 		double rads = ((int)(ChunkRadiationManager.proxy.getRadiation(world, (int) Math.floor(player.posX), (int) Math.floor(player.posY), (int) Math.floor(player.posZ)) * 10)) / 10D;
 		double env = ((int)(HbmLivingProps.getRadBuf(player) * 10D)) / 10D;
 
@@ -263,7 +263,7 @@ public class ContaminationUtil {
 			float radEnv = HbmLivingProps.getRadEnv(entity);
 			HbmLivingProps.setRadEnv(entity, radEnv + amount);
 		}
-		
+
 		if(hazard == HazardType.NEUTRON && !RadiationConfig.disableNeutron) {
 			float radEnv = HbmLivingProps.getRadEnv(entity);
 			HbmLivingProps.setRadEnv(entity, radEnv + amount*10);

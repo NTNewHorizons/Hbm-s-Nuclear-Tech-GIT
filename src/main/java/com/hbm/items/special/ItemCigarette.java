@@ -128,9 +128,9 @@ public class ItemCigarette extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 
 		if (this == ModItems.cigarette) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.1"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.2"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.3"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.asbestos_filter"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.high_tar"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.tobacco_contains_polonium"));
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.4"));
 		} else if (this == ModItems.crackpipe) {
 			String[] colors = new String[] {

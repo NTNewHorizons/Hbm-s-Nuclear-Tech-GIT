@@ -105,7 +105,7 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IL
 
 	@Override
 	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-		
+
 		if(!world.isRemote && !ServerConfig.CRATE_KEEP_CONTENTS.get()) {
 			dropInv = true;
 			if(!player.capabilities.isCreativeMode) {
@@ -377,7 +377,7 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IL
 
 	@Override
 	public void printHook(RenderGameOverlayEvent.Pre event, World world, int x, int y, int z) {
-		
+
 		TileEntity te = world.getTileEntity(x, y, z);
 
 		if (!(te instanceof IInventory))
@@ -387,7 +387,7 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IL
 
 		if (!inv.hasCustomInventoryName())
 			return;
-		
+
 		ILookOverlay.printGeneric(event, inv.getInventoryName(), 0xffff00, 0x404000, new ArrayList<String>(0));
 	}
 }

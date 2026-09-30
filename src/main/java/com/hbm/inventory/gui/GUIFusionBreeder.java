@@ -17,11 +17,11 @@ public class GUIFusionBreeder extends GuiInfoContainer {
 
 	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/reactors/gui_fusion_breeder.png");
 	public TileEntityFusionBreeder breeder;
-	
+
 	public GUIFusionBreeder(InventoryPlayer invPlayer, TileEntityFusionBreeder breeder) {
 		super(new ContainerFusionBreeder(invPlayer, breeder));
 		this.breeder = breeder;
-		
+
 		this.xSize = 176;
 		this.ySize = 200;
 	}
@@ -29,7 +29,7 @@ public class GUIFusionBreeder extends GuiInfoContainer {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float interp) {
 		super.drawScreen(mouseX, mouseY, interp);
-		
+
 		drawCustomInfoStat(mouseX, mouseY, guiLeft + 79, guiTop + 23, 18, 18, mouseX, mouseY, EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + (int) Math.ceil(breeder.neutronEnergy) + I18nUtil.resolveKey("gui.fusion_breeder.flux_t"));
 		drawCustomInfoStat(mouseX, mouseY, guiLeft + 67, guiTop + 46, 42, 14, mouseX, mouseY, BobMathUtil.format((int) Math.ceil(breeder.progress)) + " / " + BobMathUtil.format((int) Math.ceil(breeder.capacity)) + I18nUtil.resolveKey("gui.fusion_breeder.flux"));
 
@@ -48,12 +48,12 @@ public class GUIFusionBreeder extends GuiInfoContainer {
 	protected void drawGuiContainerBackgroundLayer(float interp, int x, int y) {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-		
+
 		int p = (int) Math.ceil(breeder.progress * 42 / breeder.capacity);
 		if(p > 0) drawTexturedModalRect(guiLeft + 67, guiTop + 48, 176, 0, p, 10);
-		
+
 		double gauge = 1D - Math.pow(Math.E, -breeder.neutronEnergy * 10 / breeder.capacity);
-		
+
 		// input flux
 		GUIElements.drawSmoothGauge(guiLeft + 88, guiTop + 32, this.zLevel, gauge, 5, 2, 1, 0xA00000);
 

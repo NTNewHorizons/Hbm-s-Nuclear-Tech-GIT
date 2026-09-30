@@ -16,9 +16,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 public class ItemStarmetal extends Item {
-	
+
 	private IIcon[] icons = new IIcon[4];
-	
+
 	public ItemStarmetal() {
 		this.setHasSubtypes(true);
 	}
@@ -33,26 +33,26 @@ public class ItemStarmetal extends Item {
 		this.icons[2] = reg.registerIcon(RefStrings.MODID + ":ingot_starmetal_ursa");
 		this.icons[3] = reg.registerIcon(RefStrings.MODID + ":ingot_starmetal_orion");
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
-		
+
 		super.getSubItems(item, tab, list);
-		
+
 		//for(int i = 0; i < 4; i++)
 		//	list.add(new ItemStack(item, 1, i));
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
-		
+
 		int s = Math.abs(meta) % 4;
 		return icons[s];
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		
+
 		switch(stack.getItemDamage()) {
 		case 1: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.starmetal.1")); break;
 		case 2: list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.starmetal.2")); break;
