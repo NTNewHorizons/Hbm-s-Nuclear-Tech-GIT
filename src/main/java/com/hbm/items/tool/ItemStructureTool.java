@@ -48,10 +48,10 @@ public abstract class ItemStructureTool extends Item implements ILookOverlay {
 		BlockPos anchor = this.getAnchor(stack);
 
 		if(anchor == null)
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.structure_tool.1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.structure_tool.desc1"));
 
 		if(GeneralConfig.enableDebugMode)
-			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.structure_tool.2"));
+			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.structure_tool.desc2"));
 	}
 
 	public static BlockPos getAnchor(ItemStack stack) {
@@ -122,24 +122,24 @@ public abstract class ItemStructureTool extends Item implements ILookOverlay {
 		BlockPos anchor = getAnchor(stack);
 
 		if(anchor == null) {
-			text.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cm_structure.5"));
+			text.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.cm_structure.desc5"));
 		} else {
 
 			int dX = x - anchor.getX();
 			int dY = y - anchor.getY();
 			int dZ = z - anchor.getZ();
-			text.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_tool.3", dX, dY, dZ));
+			text.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.structure_tool.desc3", dX, dY, dZ));
 
 			if(this.dualUse() && stack.stackTagCompound.hasKey("x")) {
 				int sX = Math.abs(x - stack.stackTagCompound.getInteger("x")) + 1;
 				int sY = Math.abs(y - stack.stackTagCompound.getInteger("y")) + 1;
 				int sZ = Math.abs(z - stack.stackTagCompound.getInteger("z")) + 1;
-				text.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.structure_tool.4", sX, sY, sZ));
+				text.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.structure_tool.desc4", sX, sY, sZ));
 			}
 		}
 
 		if(Minecraft.getMinecraft().thePlayer.isSneaking())
-			text.add(I18nUtil.resolveKey("desc.item.structure_tool.5", world.getBlock(x, y, z).getUnlocalizedName(), world.getBlockMetadata(x, y, z)));
+			text.add(I18nUtil.resolveKey("item.structure_tool.desc5", world.getBlock(x, y, z).getUnlocalizedName(), world.getBlockMetadata(x, y, z)));
 
 		ILookOverlay.printGeneric(event, this.getItemStackDisplayName(stack), 0xffff00, 0x404000, text);
 	}

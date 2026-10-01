@@ -49,10 +49,10 @@ public class ItemDiscord extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.1"));
-		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.2"));
+		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.discord.desc1"));
+		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.discord.desc2"));
 		list.add("");
-		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.3"));
+		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.discord.desc3"));
 		list.add(EnumChatFormatting.RED + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.imagine_getting_coiled_worm_bosses"));
 		list.add("");
 		list.add(EnumChatFormatting.YELLOW + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.discord.oh_mean_terraria_item"));

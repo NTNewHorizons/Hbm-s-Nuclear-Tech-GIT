@@ -35,30 +35,30 @@ public class ItemBlockLore extends ItemBlockBase {
 		}
 
 		if(this.field_150939_a instanceof RedBarrel) {
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.1"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc1"));
 		}
 
 		if(this.field_150939_a == ModBlocks.meteor_battery) {
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.2"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc2"));
 		}
 
 		if(this.field_150939_a == ModBlocks.gravel_diamond) {
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.3"));
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.4"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc3"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc4"));
 			list.add("");
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.5"));
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.6"));
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.7"));
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.8"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc5"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc6"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc7"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc8"));
 			list.add("");
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.9"));
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.10"));
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.11"));
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.12"));
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.13"));
-			list.add(I18nUtil.resolveKey("desc.item.block_lore.14"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc9"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc10"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc11"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc12"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc13"));
+			list.add(I18nUtil.resolveKey("item.block_lore.desc14"));
 			list.add("");
-			list.add(I18nUtil.resolveKey("desc.item.line.01"));
+			list.add(I18nUtil.resolveKey("item.line.desc01"));
 		}
 	}
 

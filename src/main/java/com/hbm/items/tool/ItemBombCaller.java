@@ -27,19 +27,19 @@ public class ItemBombCaller extends Item {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("desc.item.bomb_caller.1"));
+		list.add(I18nUtil.resolveKey("item.bomb_caller.desc1"));
 
 		switch (stack.getItemDamage()) {
-			case 0: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.2")); break;
-			case 1: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.3")); break;
-			case 2: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.4")); break;
-			case 3: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.5")); break;
-			case 4: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.6")); break;
-			case 5: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.7")); break;
-			case 6: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.8")); break;
-			case 7: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.9")); break;
-			case 8: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.10")); break;
-			default: list.add(I18nUtil.resolveKey("desc.item.bomb_caller.11"));
+			case 0: list.add(I18nUtil.resolveKey("item.bomb_caller.desc2")); break;
+			case 1: list.add(I18nUtil.resolveKey("item.bomb_caller.desc3")); break;
+			case 2: list.add(I18nUtil.resolveKey("item.bomb_caller.desc4")); break;
+			case 3: list.add(I18nUtil.resolveKey("item.bomb_caller.desc5")); break;
+			case 4: list.add(I18nUtil.resolveKey("item.bomb_caller.desc6")); break;
+			case 5: list.add(I18nUtil.resolveKey("item.bomb_caller.desc7")); break;
+			case 6: list.add(I18nUtil.resolveKey("item.bomb_caller.desc8")); break;
+			case 7: list.add(I18nUtil.resolveKey("item.bomb_caller.desc9")); break;
+			case 8: list.add(I18nUtil.resolveKey("item.bomb_caller.desc10")); break;
+			default: list.add(I18nUtil.resolveKey("item.bomb_caller.desc11"));
 
 		}
 	}

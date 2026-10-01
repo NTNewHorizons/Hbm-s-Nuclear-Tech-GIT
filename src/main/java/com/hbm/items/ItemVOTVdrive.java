@@ -47,8 +47,8 @@ public class ItemVOTVdrive extends ItemEnumMulti {
 
 			if(identifier.equals("")) identifier = "0x" + Integer.toHexString(new ChunkCoordIntPair(destination.x, destination.z).hashCode()).toUpperCase();
 
-			list.add(I18nUtil.resolveKey("desc.item.votvdrive.1"));
-			list.add(I18nUtil.resolveKey("desc.item.votvdrive.2", identifier));
+			list.add(I18nUtil.resolveKey("item.votvdrive.desc1"));
+			list.add(I18nUtil.resolveKey("item.votvdrive.desc2", identifier));
 
 			if(player.worldObj.provider.dimensionId != destination.body.getDimensionId()) {
 				for(String s : I18nUtil.resolveKey("item.hard_drive_full.orbit.desc").split("\\$")) {
@@ -61,19 +61,19 @@ public class ItemVOTVdrive extends ItemEnumMulti {
 
 		int processingLevel = destination.body.getProcessingLevel(CelestialBody.getBody(player.worldObj));
 
-		list.add(I18nUtil.resolveKey("desc.item.votvdrive.8", EnumChatFormatting.AQUA, I18nUtil.resolveKey("body." + destination.body.name)));
+		list.add(I18nUtil.resolveKey("item.votvdrive.desc8", EnumChatFormatting.AQUA, I18nUtil.resolveKey("body." + destination.body.name)));
 
 		if(destination.x == 0 && destination.z == 0) {
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.votvdrive.3"));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.votvdrive.desc3"));
 		} else if(!getProcessed(stack)) {
 			// Display processing level info if not processed
-			list.add(I18nUtil.resolveKey("desc.item.votvdrive.4", processingLevel));
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.votvdrive.5"));
-			list.add(I18nUtil.resolveKey("desc.item.votvdrive.6", destination.x, destination.z));
+			list.add(I18nUtil.resolveKey("item.votvdrive.desc4", processingLevel));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.votvdrive.desc5"));
+			list.add(I18nUtil.resolveKey("item.votvdrive.desc6", destination.x, destination.z));
 		} else {
 			// Display destination info if processed
-			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.votvdrive.7"));
-			list.add(I18nUtil.resolveKey("desc.item.votvdrive.6", destination.x, destination.z));
+			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.votvdrive.desc7"));
+			list.add(I18nUtil.resolveKey("item.votvdrive.desc6", destination.x, destination.z));
 		}
 
 		if(player.worldObj.provider.dimensionId == destination.body.getDimensionId()) {

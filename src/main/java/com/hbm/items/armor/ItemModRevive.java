@@ -21,8 +21,8 @@ public class ItemModRevive extends ItemArmorMod {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
 		if(this == ModItems.scrumpy) {
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.mod_revive.1"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.mod_revive.2"));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.mod_revive.desc1"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.mod_revive.desc2"));
 		}
 		if(this == ModItems.wild_p) {
 			list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.mod_revive.explosive_reactive_plot_armor", EnumChatFormatting.RED, EnumChatFormatting.DARK_GRAY, EnumChatFormatting.RED));
@@ -44,6 +44,6 @@ public class ItemModRevive extends ItemArmorMod {
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
 
-		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.mod_revive.5", stack.getDisplayName(), (stack.getMaxDamage() - stack.getItemDamage())));
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.mod_revive.desc5", stack.getDisplayName(), (stack.getMaxDamage() - stack.getItemDamage())));
 	}
 }

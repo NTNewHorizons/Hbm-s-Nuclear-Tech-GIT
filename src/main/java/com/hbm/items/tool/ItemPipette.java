@@ -108,7 +108,7 @@ public class ItemPipette extends Item implements IFillableItem, net.minecraftfor
 			list.add(I18nUtil.resolveKey("desc.item.pipette.corrosive"));
 		if(this == ModItems.pipette)
 			list.add(I18nUtil.resolveKey("desc.item.pipette.noCorrosive"));
-		list.add(I18nUtil.resolveKey("desc.item.pipette.1", this.getType(stack).getLocalizedName()));
+		list.add(I18nUtil.resolveKey("item.pipette.desc1", this.getType(stack).getLocalizedName()));
 		list.add(I18nUtil.resolveKey("desc.item.pipette.amount_mb_mb", this.getFill(stack), this.getContainerCapacity(stack), this.getMaxFill()));
 	}
 

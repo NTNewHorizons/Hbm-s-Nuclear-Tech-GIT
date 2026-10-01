@@ -31,7 +31,7 @@ public class ItemModTesla extends ItemArmorMod {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.mod_tesla.1"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.mod_tesla.desc1"));
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 	}

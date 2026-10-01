@@ -377,63 +377,63 @@ public class ItemSyringe extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(this == ModItems.syringe_antidote) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.1"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc1"));
 		}
 		if(this == ModItems.syringe_awesome) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.2"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc2"));
 		}
 		if(this == ModItems.syringe_metal_medx) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.3"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc3"));
 		}
 		if(this == ModItems.syringe_metal_psycho) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.4"));
-			list.add(I18nUtil.resolveKey("desc.item.syringe.5"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc4"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc5"));
 		}
 		if(this == ModItems.syringe_metal_stimpak) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.6"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc6"));
 		}
 		if(this == ModItems.syringe_metal_super) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.7"));
-			list.add(I18nUtil.resolveKey("desc.item.syringe.8"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc7"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc8"));
 		}
 		if(this == ModItems.syringe_poison) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.9"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc9"));
 		}
 		if(this == ModItems.med_bag) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.10"));
-			list.add(I18nUtil.resolveKey("desc.item.syringe.11"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc10"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc11"));
 		}
 		if(this == ModItems.radaway) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.12"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc12"));
 		}
 		if(this == ModItems.radaway_strong) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.13"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc13"));
 		}
 		if(this == ModItems.radaway_flush) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.14"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc14"));
 		}
 		if(this == ModItems.syringe_taint) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.15"));
-			list.add(I18nUtil.resolveKey("desc.item.syringe.16"));
-			list.add(I18nUtil.resolveKey("desc.item.syringe.17"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc15"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc16"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc17"));
 		}
 		if(this == ModItems.gas_mask_filter) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.18"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc18"));
 		}
 		if(this == ModItems.gas_mask_filter_mono) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.19"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc19"));
 		}
 		if(this == ModItems.jetpack_tank) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.20"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc20"));
 		}
 		if(this == ModItems.lox_tank) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.21"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc21"));
 		}
 		if(this == ModItems.gun_kit_1) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.22"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc22"));
 		}
 		if(this == ModItems.gun_kit_2) {
-			list.add(I18nUtil.resolveKey("desc.item.syringe.23"));
+			list.add(I18nUtil.resolveKey("item.syringe.desc23"));
 		}
 
 		if(this == ModItems.syringe_mkunicorn) {

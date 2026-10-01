@@ -145,8 +145,8 @@ public class ItemChopper extends Item {
 			list.add(I18nUtil.resolveKey("desc.item.chopper.without_player_survival_mode"));
 			list.add(I18nUtil.resolveKey("desc.item.chopper.target_he_struggles_around_lot"));
 			list.add("");
-			list.add(I18nUtil.resolveKey("desc.item.chopper.3"));
-			list.add(I18nUtil.resolveKey("desc.item.chopper.4"));
+			list.add(I18nUtil.resolveKey("item.chopper.desc3"));
+			list.add(I18nUtil.resolveKey("item.chopper.desc4"));
 		}
 	}
 

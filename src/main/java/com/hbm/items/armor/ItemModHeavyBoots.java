@@ -36,8 +36,8 @@ public class ItemModHeavyBoots extends ItemArmorMod {
 		list.add("");
 		super.addInformation(itemstack, player, list, bool);
 		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.mod_heavy_boots.worn_own"));
-		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.mod_heavy_boots.4"));
-		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.mod_heavy_boots.5"));
+		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.mod_heavy_boots.desc4"));
+		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("item.mod_heavy_boots.desc5"));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

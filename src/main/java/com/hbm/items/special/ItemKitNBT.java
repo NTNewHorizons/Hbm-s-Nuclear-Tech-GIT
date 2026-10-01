@@ -60,7 +60,7 @@ public class ItemKitNBT extends Item {
 
 		if(stacks != null) {
 
-			list.add(I18nUtil.resolveKey("desc.item.kit_nbt.1"));
+			list.add(I18nUtil.resolveKey("item.kit_nbt.desc1"));
 
 			for(ItemStack item : stacks) {
 				list.add("-" + item.getDisplayName() + (item.stackSize > 1 ? (" x" + item.stackSize) : ""));

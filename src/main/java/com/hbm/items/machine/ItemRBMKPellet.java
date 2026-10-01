@@ -87,7 +87,7 @@ public class ItemRBMKPellet extends ItemNuclearWaste {
 		int meta = rectify(stack.getItemDamage());
 
 		switch(meta % 5) {
-		case 0: list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.rbmk_pellet.2")); break;
+		case 0: list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("item.rbmk_pellet.desc2")); break;
 		case 1: list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.rbmk_pellet.barely_depleted")); break;
 		case 2: list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.rbmk_pellet.moderately_depleted")); break;
 		case 3: list.add(EnumChatFormatting.DARK_GREEN + I18nUtil.resolveKey("desc.item.rbmk_pellet.highly_depleted")); break;

@@ -30,7 +30,7 @@ public class ItemDesignatorArtyRange extends Item {
 		if(itemstack.getTagCompound() == null) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.designator_arty_range.no_turret_linked"));
 		} else {
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.designator_arty_range.2", itemstack.stackTagCompound.getInteger("x"), itemstack.stackTagCompound.getInteger("y"), itemstack.stackTagCompound.getInteger("z")));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.designator_arty_range.desc2", itemstack.stackTagCompound.getInteger("x"), itemstack.stackTagCompound.getInteger("y"), itemstack.stackTagCompound.getInteger("z")));
 		}
 	}
 

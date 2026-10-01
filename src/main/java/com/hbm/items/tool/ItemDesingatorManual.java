@@ -32,8 +32,8 @@ public class ItemDesingatorManual extends Item implements IDesignatorItem, IGUIP
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(stack.stackTagCompound != null) {
 			list.add(I18nUtil.resolveKey("desc.item.desingator.target_coordinates"));
-			list.add(I18nUtil.resolveKey("desc.item.tele_link.1", stack.stackTagCompound.getInteger("xCoord")));
-			list.add(I18nUtil.resolveKey("desc.item.tele_link.3", stack.stackTagCompound.getInteger("zCoord")));
+			list.add(I18nUtil.resolveKey("item.tele_link.desc1", stack.stackTagCompound.getInteger("xCoord")));
+			list.add(I18nUtil.resolveKey("item.tele_link.desc3", stack.stackTagCompound.getInteger("zCoord")));
 		} else {
 			list.add(I18nUtil.resolveKey("desc.item.desingator.please_select_target"));
 		}

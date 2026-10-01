@@ -39,7 +39,7 @@ public class ItemModV1 extends ItemArmorMod implements IArmorModDash {
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.mod_v1.2", stack.getDisplayName()));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.mod_v1.desc2", stack.getDisplayName()));
 	}
 
 	public int getDashes() {

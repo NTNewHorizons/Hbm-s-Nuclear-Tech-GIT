@@ -17,7 +17,7 @@ public class ItemStructurePattern extends ItemStructureTool {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
 		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_pattern.click_print"));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.structure_pattern.2"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.structure_pattern.desc2"));
 	}
 
 	@Override

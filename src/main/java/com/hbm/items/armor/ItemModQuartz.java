@@ -27,7 +27,7 @@ public class ItemModQuartz extends ItemArmorMod {
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("desc.item.mod_quartz.2", stack.getDisplayName()));
+		list.add(EnumChatFormatting.DARK_GRAY + I18nUtil.resolveKey("item.mod_quartz.desc2", stack.getDisplayName()));
 	}
 
 	@Override
