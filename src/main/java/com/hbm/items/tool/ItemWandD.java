@@ -102,10 +102,10 @@ public class ItemWandD extends Item {
 
 					// GOD
 					// DAMN
-					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.7", EnumChatFormatting.RED));
-					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.8", EnumChatFormatting.RED));
-					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.9", EnumChatFormatting.RED));
-					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.10", EnumChatFormatting.RED, EnumChatFormatting.OBFUSCATED));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.7").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.8").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.9").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
+					player.addChatMessage(new ChatComponentTranslation("chat.wand_d.10").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED).setObfuscated(true)));
 				} else {
 
 					star.clearTraits();

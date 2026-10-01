@@ -82,8 +82,8 @@ public class BlockAtmosphericCompressor extends BlockDummyable implements ILookO
 		if(!CelestialBody.hasTrait(world, CBT_Atmosphere.class)) {
 			text.add(((EnumChatFormatting.RED + I18nUtil.resolveKey("gui.atmospheric_compressor.error"))) + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.atmospheric_compressor.cannot_collect_in_vacuum"));
 		} else {
-			text.add(I18nUtil.resolveKey("overlay.common.power", (tower.power < tower.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(tower.power)));
-			text.add(I18nUtil.resolveKey("overlay.common.tank", ((EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, I18nUtil.resolveKey("hbmfluid." + tower.tank.getTankType().getName().toLowerCase()), tower.tank.getFill(), tower.tank.getMaxFill()));
+			text.add(((tower.power < tower.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)) + I18nUtil.resolveKey("overlay.common.power", BobMathUtil.getShortNumber(tower.power)));
+			text.add(I18nUtil.resolveKey("overlay.common.tank", ((EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET, I18nUtil.resolveKey("hbmfluid." + tower.tank.getTankType().getName().toLowerCase()), tower.tank.getFill(), tower.tank.getMaxFill()));
 		}
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);

@@ -256,12 +256,12 @@ public class TileEntityMachineHTRF4 extends TileEntityMachineBase implements IPr
 	@Override
 	public void addErrors(List<String> errors) {
 		if(power < fuelCost * POWER_COST_MULTIPLIER) {
-			errors.add(I18nUtil.resolveKey("overlay.htrf4.insufficient_power_needs_he", EnumChatFormatting.RED, BobMathUtil.getShortNumber(fuelCost * POWER_COST_MULTIPLIER)));
+			errors.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.htrf4.insufficient_power_needs_he", BobMathUtil.getShortNumber(fuelCost * POWER_COST_MULTIPLIER)));
 		}
 
 		for(FluidTank tank : tanks) {
 			if(tank.getFill() < fuelCost) {
-				errors.add(I18nUtil.resolveKey("overlay.htrf4.insufficient_fuel_needs_m_b", EnumChatFormatting.RED, fuelCost));
+				errors.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.htrf4.insufficient_fuel_needs_m_b", fuelCost));
 			}
 		}
 	}

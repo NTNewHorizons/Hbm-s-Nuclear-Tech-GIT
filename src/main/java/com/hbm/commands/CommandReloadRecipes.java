@@ -42,7 +42,7 @@ public class CommandReloadRecipes extends CommandBase {
 			LogicBlockInteractions.initialize();
 
 
-			sender.addChatMessage(new ChatComponentTranslation("commands.reload_recipes.reload_complete", EnumChatFormatting.YELLOW));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reload_recipes.reload_complete").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 		} catch(Exception ex) {
 			sender.addChatMessage(ChatBuilder.start("----------------------------------").color(EnumChatFormatting.GRAY).flush());
 			sender.addChatMessage(ChatBuilder.startTranslation("commands.reload_recipes.text.01").color(EnumChatFormatting.RED).flush());

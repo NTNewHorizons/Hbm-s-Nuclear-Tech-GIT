@@ -32,17 +32,17 @@ public class CommandReloadClient extends CommandReloadConfig {
 	@Override public void help(ICommandSender sender, String[] args) {
 		if(args.length >= 2) {
 			String command = args[1];
-			if("help".equals(command)) sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.help", EnumChatFormatting.YELLOW));
-			if("list".equals(command)) sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.shows_variable_names_values", EnumChatFormatting.YELLOW));
-			if("reload".equals(command)) sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.reads_variables_config_file", EnumChatFormatting.YELLOW));
-			if("get".equals(command)) sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.shows_value_specified_variable", EnumChatFormatting.YELLOW));
-			if("set".equals(command)) sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.text.02", EnumChatFormatting.YELLOW));
+			if("help".equals(command)) sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.help").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			if("list".equals(command)) sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.shows_variable_names_values").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			if("reload".equals(command)) sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.reads_variables_config_file").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			if("get".equals(command)) sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.shows_value_specified_variable").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			if("set".equals(command)) sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.text.02").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 		} else {
-			sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.ntmclient_shelp_command", EnumChatFormatting.YELLOW, EnumChatFormatting.GOLD, EnumChatFormatting.RED));
-			sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.ntmclient_slist", EnumChatFormatting.YELLOW, EnumChatFormatting.GOLD));
-			sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.ntmclient_sreload", EnumChatFormatting.YELLOW, EnumChatFormatting.GOLD));
-			sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.ntmclient_sget_name", EnumChatFormatting.YELLOW, EnumChatFormatting.GOLD, EnumChatFormatting.RED));
-			sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.ntmclient_sset_name_value", EnumChatFormatting.YELLOW, EnumChatFormatting.GOLD, EnumChatFormatting.RED));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.ntmclient_shelp_command", EnumChatFormatting.GOLD, EnumChatFormatting.RED).setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.ntmclient_slist", EnumChatFormatting.GOLD).setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.ntmclient_sreload", EnumChatFormatting.GOLD).setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.ntmclient_sget_name", EnumChatFormatting.GOLD, EnumChatFormatting.RED).setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reload_client.ntmclient_sset_name_value", EnumChatFormatting.GOLD, EnumChatFormatting.RED).setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 		}
 	}
 

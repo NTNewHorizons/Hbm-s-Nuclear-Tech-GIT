@@ -39,7 +39,7 @@ public class GUIMachineSelenium extends GuiInfoContainer {
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 108, 160, 16, selenium.power, selenium.powerCap);
 
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.selenium.accepted_fuels", EnumChatFormatting.YELLOW));
+		text.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("overlay.selenium.accepted_fuels"));
 
 		for(FluidType type : Fluids.getInNiceOrder()) {
 			long energy = selenium.getHEFromFuel(type);
@@ -48,9 +48,9 @@ public class GUIMachineSelenium extends GuiInfoContainer {
 				text.add(I18nUtil.resolveKey("overlay.selenium.he_t", type.getLocalizedName(), BobMathUtil.getShortNumber(energy)));
 		}
 
-		text.add(I18nUtil.resolveKey("overlay.selenium.these_numbers_are_base_values", EnumChatFormatting.ITALIC));
-		text.add(I18nUtil.resolveKey("overlay.selenium.sactual_output_is_based", EnumChatFormatting.ITALIC));
-		text.add(I18nUtil.resolveKey("overlay.selenium.son_piston_count", EnumChatFormatting.ITALIC));
+		text.add((EnumChatFormatting.ITALIC) + I18nUtil.resolveKey("overlay.selenium.these_numbers_are_base_values"));
+		text.add((EnumChatFormatting.ITALIC) + I18nUtil.resolveKey("overlay.selenium.sactual_output_is_based"));
+		text.add((EnumChatFormatting.ITALIC) + I18nUtil.resolveKey("overlay.selenium.son_piston_count"));
 
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text.toArray(new String[0]));
 

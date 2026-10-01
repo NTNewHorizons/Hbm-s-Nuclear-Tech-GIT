@@ -216,11 +216,11 @@ public class BlockWandTandem extends BlockContainer implements IBlockSideRotatio
 
 		List<String> text = new ArrayList<String>();
 
-		text.add(I18nUtil.resolveKey("overlay.wand_tandem.target_pool", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.pool));
-		text.add(I18nUtil.resolveKey("overlay.wand_tandem.target_name", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.target));
-		text.add(I18nUtil.resolveKey("overlay.wand_tandem.turns_into", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, GameRegistry.findUniqueIdentifierFor(jigsaw.replaceBlock).toString()));
-		text.add(I18nUtil.resolveKey("overlay.wand_tandem.with_meta", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, jigsaw.replaceMeta));
-		text.add(I18nUtil.resolveKey("overlay.wand_tandem.joint_type", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, (jigsaw.isRollable ? I18nUtil.resolveKey("gui.wand_tandem.rollable") : I18nUtil.resolveKey("gui.wand_tandem.aligned"))));
+		text.add((EnumChatFormatting.GRAY) + I18nUtil.resolveKey("overlay.wand_tandem.target_pool", EnumChatFormatting.RESET + String.valueOf(jigsaw.pool)));
+		text.add((EnumChatFormatting.GRAY) + I18nUtil.resolveKey("overlay.wand_tandem.target_name", EnumChatFormatting.RESET + String.valueOf(jigsaw.target)));
+		text.add((EnumChatFormatting.GRAY) + I18nUtil.resolveKey("overlay.wand_tandem.turns_into", EnumChatFormatting.RESET + String.valueOf(GameRegistry.findUniqueIdentifierFor(jigsaw.replaceBlock).toString())));
+		text.add((EnumChatFormatting.GRAY) + I18nUtil.resolveKey("overlay.wand_tandem.with_meta", EnumChatFormatting.RESET + String.valueOf(jigsaw.replaceMeta)));
+		text.add((EnumChatFormatting.GRAY) + I18nUtil.resolveKey("overlay.wand_tandem.joint_type", EnumChatFormatting.RESET + String.valueOf((jigsaw.isRollable ? I18nUtil.resolveKey("gui.wand_tandem.rollable") : I18nUtil.resolveKey("gui.wand_tandem.aligned")))));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

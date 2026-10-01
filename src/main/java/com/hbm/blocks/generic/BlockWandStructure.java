@@ -161,9 +161,9 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 
 		List<String> text = new ArrayList<String>();
 
-		text.add(I18nUtil.resolveKey("overlay.wand_structure.name", EnumChatFormatting.GRAY, EnumChatFormatting.RESET, structure.name));
+		text.add((EnumChatFormatting.GRAY) + I18nUtil.resolveKey("overlay.wand_structure.name", EnumChatFormatting.RESET + String.valueOf(structure.name)));
 
-		text.add(I18nUtil.resolveKey("overlay.wand_structure.blacklist", EnumChatFormatting.GRAY));
+		text.add((EnumChatFormatting.GRAY) + I18nUtil.resolveKey("overlay.wand_structure.blacklist"));
 		for (Pair<Block, Integer> bm : structure.blacklist) {
 			text.add(EnumChatFormatting.RED + "- " + bm.getKey().getUnlocalizedName() + " : " + bm.getValue());
 		}
@@ -190,12 +190,12 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 
 		public void saveStructure(EntityPlayer player) {
 			if(name.isEmpty()) {
-				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.could_not_save_invalid_name", EnumChatFormatting.RED));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.could_not_save_invalid_name").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
 				return;
 			}
 
 			if(sizeX <= 0 || sizeY <= 0 || sizeZ <= 0) {
-				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.save_invalid_dimensions", EnumChatFormatting.RED));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.save_invalid_dimensions").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
 				return;
 			}
 
@@ -207,7 +207,7 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 			blacklist.remove(air);
 
 			if(file == null) {
-				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.failed_to_save_structure", EnumChatFormatting.RED));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.failed_to_save_structure").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
 				return;
 			}
 
@@ -220,7 +220,7 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 
 		public void loadStructure(EntityPlayer player) {
 			if(name.isEmpty()) {
-				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.load_no_filename_specified", EnumChatFormatting.RED));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.load_no_filename_specified").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
 				return;
 			}
 
@@ -247,7 +247,7 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.structure_loaded"));
 
 			} catch (FileNotFoundException ex) {
-				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.could_not_load_file_not_found", EnumChatFormatting.RED));
+				player.addChatMessage(new ChatComponentTranslation("chat.wand_structure.could_not_load_file_not_found").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
 			} finally {
 				ServerConfig.STRUCTURE_DEBUG.set(previousDebug);
 			}

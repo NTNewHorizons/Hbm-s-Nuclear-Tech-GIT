@@ -29,10 +29,10 @@ public class HazardTypeDigamma extends HazardTypeBase {
 
 		float d = (float)(Math.floor(level * 10000F)) / 10F;
 		list.add(EnumChatFormatting.RED + "[" + I18nUtil.resolveKey("trait.digamma") + "]");
-		list.add(I18nUtil.resolveKey("desc.item.hazard_digamma.sm_drx", EnumChatFormatting.DARK_RED, d));
+		list.add((EnumChatFormatting.DARK_RED) + I18nUtil.resolveKey("desc.item.hazard_digamma.sm_drx", d));
 
 		if(stack.stackSize > 1) {
-			list.add(I18nUtil.resolveKey("desc.item.hazard_digamma.stack", EnumChatFormatting.DARK_RED, ((Math.floor(level * 10000F * stack.stackSize) / 10F) + I18nUtil.resolveKey("gui.hazard_digamma.mdrx"))));
+			list.add((EnumChatFormatting.DARK_RED) + I18nUtil.resolveKey("desc.item.hazard_digamma.stack", ((Math.floor(level * 10000F * stack.stackSize) / 10F) + I18nUtil.resolveKey("gui.hazard_digamma.mdrx"))));
 		}
 	}
 

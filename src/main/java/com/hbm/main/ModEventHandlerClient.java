@@ -847,7 +847,7 @@ public class ModEventHandlerClient {
 
 			} else {
 
-				list.add(I18nUtil.resolveKey("desc.misc.armor_mod.mods", EnumChatFormatting.YELLOW));
+				list.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("desc.misc.armor_mod.mods"));
 
 				ItemStack[] mods = ArmorModHandler.pryMods(stack);
 
@@ -868,7 +868,7 @@ public class ModEventHandlerClient {
 			List<String> names = ItemStackUtil.getOreDictNames(stack);
 
 			if(names.size() > 0) {
-				list.add(I18nUtil.resolveKey("desc.misc.ore_dict", EnumChatFormatting.BLUE));
+				list.add((EnumChatFormatting.BLUE) + I18nUtil.resolveKey("desc.misc.ore_dict"));
 				for(String s : names) {
 					list.add(EnumChatFormatting.AQUA + " -" + s);
 				}
@@ -889,7 +889,7 @@ public class ModEventHandlerClient {
 				list.add(EnumChatFormatting.YELLOW + (rads2 + "RAD/s"));
 
 				if(stack.stackSize > 1) {
-					list.add(I18nUtil.resolveKey("desc.misc.armor_mod.stack", EnumChatFormatting.YELLOW, ((Math.floor(level * 1000 * stack.stackSize) / 1000) + "RAD/s")));
+					list.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("desc.misc.armor_mod.stack", ((Math.floor(level * 1000 * stack.stackSize) / 1000) + "RAD/s")));
 				}
 			}
 		}
@@ -906,10 +906,10 @@ public class ModEventHandlerClient {
 					list.add("");
 
 				if(entry.entry == EnumEntryType.ADD)
-					list.add(I18nUtil.resolveKey("desc.misc.adds_custom_nuke_stage", EnumChatFormatting.GOLD, entry.value, entry.type));
+					list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("desc.misc.adds_custom_nuke_stage", entry.value, entry.type));
 
 				if(entry.entry == EnumEntryType.MULT)
-					list.add(I18nUtil.resolveKey("desc.misc.armor_mod.line.01", EnumChatFormatting.GOLD, entry.value, entry.type));
+					list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("desc.misc.armor_mod.line.01", entry.value, entry.type));
 			}
 		}
 
@@ -924,7 +924,7 @@ public class ModEventHandlerClient {
 				qmawTimestamp = Clock.get_ms();
 			}
 		} catch(Exception ex) {
-			list.add(I18nUtil.resolveKey("desc.misc.error_loading_cannery", EnumChatFormatting.RED, ex.getLocalizedMessage()));
+			list.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("desc.misc.error_loading_cannery", ex.getLocalizedMessage()));
 		}
 
 		try {
@@ -935,7 +935,7 @@ public class ModEventHandlerClient {
 				canneryTimestamp = Clock.get_ms();
 			}
 		} catch(Exception ex) {
-			list.add(I18nUtil.resolveKey("desc.misc.error_loading_cannery", EnumChatFormatting.RED, ex.getLocalizedMessage()));
+			list.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("desc.misc.error_loading_cannery", ex.getLocalizedMessage()));
 		}
 
 		/*ItemStack copy = stack.copy();
@@ -956,7 +956,7 @@ public class ModEventHandlerClient {
 					ore.addInformation(stack, event.entityPlayer, list, event.showAdvancedItemTooltips);
 				} else if(block == Blocks.coal_ore) {
 					// we don't have any celestial coal, special case
-					list.add(I18nUtil.resolveKey("desc.misc.found", EnumChatFormatting.GOLD));
+					list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.misc.found"));
 					list.add(EnumChatFormatting.AQUA + " - " + I18nUtil.resolveKey("body.kerbin"));
 				}
 			}

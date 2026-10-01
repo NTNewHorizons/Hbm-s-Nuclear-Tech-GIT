@@ -98,7 +98,7 @@ public class RocketStruct {
 		if(capsule == null && stages.size() == 0) return issues;
 
 		if(capsule == null || (capsule.part.attributes[0] != WarheadType.APOLLO && capsule.part.attributes[0] != WarheadType.SATELLITE))
-			issues.add(I18nUtil.resolveKey("overlay.rocket_struct.invalid_capsule_satellite", EnumChatFormatting.RED));
+			issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.rocket_struct.invalid_capsule_satellite"));
 
 		// Current stage stats
 		if(stageNum < stages.size()) {
@@ -114,23 +114,23 @@ public class RocketStruct {
 		for(int i = 0; i < stages.size(); i++) {
 			RocketStage stage = stages.get(i);
 			if(stage.fuselage == null)
-				issues.add(I18nUtil.resolveKey("overlay.rocket_struct.stage_missing_fuselage", EnumChatFormatting.RED, (i + 1)));
+				issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.rocket_struct.stage_missing_fuselage", (i + 1)));
 			if(stage.thruster == null)
-				issues.add(I18nUtil.resolveKey("overlay.rocket_struct.stage_missing_thruster", EnumChatFormatting.RED, (i + 1)));
+				issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.rocket_struct.stage_missing_thruster", (i + 1)));
 
 			if(stage.fuselage == null || stage.thruster == null)
 				continue;
 
 			if(stage.thrusterCount > stage.fuselageCount)
-				issues.add(I18nUtil.resolveKey("overlay.rocket_struct.stage_too_many_thrusters", EnumChatFormatting.RED, (i + 1)));
+				issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.rocket_struct.stage_too_many_thrusters", (i + 1)));
 			if(stage.fuselageCount % stage.thrusterCount != 0)
-				issues.add(I18nUtil.resolveKey("overlay.rocket_struct.stage_uneven_thrusters", EnumChatFormatting.RED, (i + 1)));
+				issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.rocket_struct.stage_uneven_thrusters", (i + 1)));
 
 			if(stage.fuselage.part.attributes[0] != FuelType.ANY && stage.fuselage.part.attributes[0] != stage.thruster.part.attributes[0])
-				issues.add(I18nUtil.resolveKey("overlay.rocket_struct.stage_fuel_mismatch", EnumChatFormatting.RED, (i + 1)));
+				issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.rocket_struct.stage_fuel_mismatch", (i + 1)));
 
 			if(i > 0 && stage.fins == null)
-				issues.add(I18nUtil.resolveKey("overlay.rocket_struct.stage_lacks_landing_legs", EnumChatFormatting.YELLOW, (i + 1)));
+				issues.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("overlay.rocket_struct.stage_lacks_landing_legs", (i + 1)));
 
 			// I was gonna add all sorts of realistic restrictions but then realised
 			// KSP lets you shit any part onto any part, and that's fun
@@ -143,11 +143,11 @@ public class RocketStruct {
 			int fuelCapacity = getFuelCapacity(stageNum);
 
 			if(fuelRequirement == Integer.MAX_VALUE) {
-				issues.add(I18nUtil.resolveKey("overlay.rocket_struct.insufficient_thrust", EnumChatFormatting.YELLOW));
+				issues.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("overlay.rocket_struct.insufficient_thrust"));
 			} else if(fuelCapacity < fuelRequirement) {
-				issues.add(I18nUtil.resolveKey("overlay.rocket_struct.insufficient_fuel_mb", EnumChatFormatting.YELLOW, fuelCapacity, fuelRequirement));
+				issues.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("overlay.rocket_struct.insufficient_fuel_mb", fuelCapacity, fuelRequirement));
 			} else if(fuelCapacity > 0 && fuelRequirement > 0) {
-				issues.add(I18nUtil.resolveKey("overlay.rocket_struct.trip_possible_mb", EnumChatFormatting.GREEN, fuelCapacity, fuelRequirement));
+				issues.add((EnumChatFormatting.GREEN) + I18nUtil.resolveKey("overlay.rocket_struct.trip_possible_mb", fuelCapacity, fuelRequirement));
 			}
 		}
 

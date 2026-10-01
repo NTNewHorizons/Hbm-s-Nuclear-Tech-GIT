@@ -104,22 +104,22 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 		int charge = (int) Math.floor(percent * 10_000D);
 		int color = ((int) (0xFF - 0xFF * percent)) << 16 | ((int)(0xFF * percent) << 8);
 		text.add("&[" + color + "&]" + (charge / 100D) + "%");
-		text.add(I18nUtil.resolveKey("overlay.capacitor.he_t", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(battery.powerReceived)));
-		text.add(I18nUtil.resolveKey("overlay.capacitor.he_t.2", EnumChatFormatting.RED, EnumChatFormatting.RESET, BobMathUtil.getShortNumber(battery.powerSent)));
+		text.add((EnumChatFormatting.GREEN) + "-> " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.capacitor.he_t", BobMathUtil.getShortNumber(battery.powerReceived)));
+		text.add((EnumChatFormatting.RED) + "<- " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.capacitor.he_t.2", BobMathUtil.getShortNumber(battery.powerSent)));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tile.capacitor.he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(persistentTag.getLong("maxPower"))));
+		list.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("tile.capacitor.he", BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(persistentTag.getLong("maxPower"))));
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tile.capacitor.stores_up_to_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power)));
-		list.add(I18nUtil.resolveKey("tile.capacitor.charge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power / 200)));
-		list.add(I18nUtil.resolveKey("tile.capacitor.discharge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power / 600)));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.capacitor.stores_up_to_he", BobMathUtil.getShortNumber(this.power)));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.capacitor.charge_speed_he", BobMathUtil.getShortNumber(this.power / 200)));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.capacitor.discharge_speed_he", BobMathUtil.getShortNumber(this.power / 600)));
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			for(String s : I18nUtil.resolveKeyArray("tile.capacitor.desc")) list.add(EnumChatFormatting.YELLOW + s);

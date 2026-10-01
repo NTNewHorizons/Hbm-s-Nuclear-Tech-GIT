@@ -6381,8 +6381,6 @@ turret.arty.manual_rocket=§eРучной режим$Радиус: 5,000м
 turret.machines=Целиться по машинам: %s
 turret.mobs=Целиться по мобам: %s
 turret.none=Ничего
-turret.off=ВЫКЛ
-turret.on=ВКЛ
 turret.players=Целиться по игрокам: %s
 
 upgrade.acid=Требуется кислота %s

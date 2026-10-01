@@ -96,8 +96,8 @@ public class MachineAtmosphericEmitter extends BlockDummyable implements ILookOv
 		TileEntityAtmosphericEmitter drain = (TileEntityAtmosphericEmitter) te;
 		List<String> text = new ArrayList<>();
 
-		text.add(I18nUtil.resolveKey("overlay.common.power", (drain.power < Math.max(drain.tank.getFill() / 2, 1) * 10 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(drain.power)));
-		text.add(I18nUtil.resolveKey("overlay.common.tank_input", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, drain.tank.getTankType().getLocalizedName(), drain.tank.getFill(), drain.tank.getMaxFill()));
+		text.add(((drain.power < Math.max(drain.tank.getFill() / 2, 1) * 10 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)) + I18nUtil.resolveKey("overlay.common.power", BobMathUtil.getShortNumber(drain.power)));
+		text.add((EnumChatFormatting.GREEN) + "-> " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.common.tank_input", drain.tank.getTankType().getLocalizedName(), drain.tank.getFill(), drain.tank.getMaxFill()));
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 

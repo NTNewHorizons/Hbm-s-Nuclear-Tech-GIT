@@ -83,11 +83,11 @@ public class MachineAlkylation extends BlockDummyable implements ILookOverlay {
 
 		List<String> text = new ArrayList<>();
 
-		text.add(I18nUtil.resolveKey("overlay.common.power", (alkylation.power < alkylation.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(alkylation.power)));
+		text.add(((alkylation.power < alkylation.getMaxPower() / 20 ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)) + I18nUtil.resolveKey("overlay.common.power", BobMathUtil.getShortNumber(alkylation.power)));
 
 		for(int i = 0; i < alkylation.tanks.length; i++) {
 			if(alkylation.tanks[i].getTankType() == Fluids.NONE) continue;
-			text.add(I18nUtil.resolveKey("overlay.common.tank", (i < 2 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, alkylation.tanks[i].getTankType().getLocalizedName(), alkylation.tanks[i].getFill(), alkylation.tanks[i].getMaxFill()));
+			text.add(I18nUtil.resolveKey("overlay.common.tank", (i < 2 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET, alkylation.tanks[i].getTankType().getLocalizedName(), alkylation.tanks[i].getFill(), alkylation.tanks[i].getMaxFill()));
 		}
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);

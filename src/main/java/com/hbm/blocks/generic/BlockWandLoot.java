@@ -127,10 +127,10 @@ public class BlockWandLoot extends BlockContainer implements ILookOverlay, ITool
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(I18nUtil.resolveKey("tile.wand_loot.define_loot_crates_piles_nbt"));
-		list.add(I18nUtil.resolveKey("tile.wand_loot.line.04", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tile.wand_loot.line.03", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tile.defuser_cycle_loot_types", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("tile.wand_loot.line.02", EnumChatFormatting.GOLD));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.wand_loot.line.04"));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.wand_loot.line.03"));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.defuser_cycle_loot_types"));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.wand_loot.line.02"));
 	}
 
 	@Override

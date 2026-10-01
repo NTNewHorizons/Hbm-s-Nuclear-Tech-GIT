@@ -40,8 +40,8 @@ public class ItemCounterfeitKeys extends Item {
 
 				return true;
 			} else if(!locked.cheesable){
-				player.addChatMessage(new ChatComponentTranslation("chat.counterfeit_keys.1", EnumChatFormatting.LIGHT_PURPLE));
-				player.addChatMessage(new ChatComponentTranslation("chat.counterfeit_keys.2", EnumChatFormatting.LIGHT_PURPLE));
+				player.addChatMessage(new ChatComponentTranslation("chat.counterfeit_keys.1").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE)));
+				player.addChatMessage(new ChatComponentTranslation("chat.counterfeit_keys.2").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE)));
 			}
 		}
 

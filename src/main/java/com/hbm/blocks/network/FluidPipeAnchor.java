@@ -74,8 +74,8 @@ public class FluidPipeAnchor extends FluidDuctBase implements ITooltipProvider, 
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tile.connection_type_single.desc3", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
-		list.add(I18nUtil.resolveKey("tile.connection_range_10m.connection_range_10m", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.connection_type_single.desc3", EnumChatFormatting.YELLOW + "Single"));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.connection_range_10m.connection_range_10m", EnumChatFormatting.YELLOW + "10m"));
 	}
 
 	@Override // didn't think this was overridable, that makes everything so much easier. good job martin

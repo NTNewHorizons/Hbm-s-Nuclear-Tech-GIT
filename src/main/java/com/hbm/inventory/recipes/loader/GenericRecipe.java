@@ -163,7 +163,7 @@ public class GenericRecipe {
 
 	protected void header(List<String> list) {
 		list.add(EnumChatFormatting.YELLOW + this.getLocalizedName());
-		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) list.add(I18nUtil.resolveKey("desc.misc.recipe.internal", EnumChatFormatting.DARK_GRAY, this.getInternalName()));
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) list.add((EnumChatFormatting.DARK_GRAY) + I18nUtil.resolveKey("desc.misc.recipe.internal", this.getInternalName()));
 	}
 
 	protected void autoSwitch(List<String> list) {
@@ -182,7 +182,7 @@ public class GenericRecipe {
 
 	protected void power(List<String> list) {
 		if(power > 0) {
-			list.add(I18nUtil.resolveKey("desc.misc.he_t", EnumChatFormatting.RED, I18nUtil.resolveKey("gui.recipe.consumption"), BobMathUtil.getShortNumber(power)));
+			list.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("desc.misc.he_t", I18nUtil.resolveKey("gui.recipe.consumption"), BobMathUtil.getShortNumber(power)));
 		}
 	}
 
@@ -192,7 +192,7 @@ public class GenericRecipe {
 			ItemStack display = stack.extractForCyclingDisplay(20);
 			list.add("  " + EnumChatFormatting.GRAY + display.stackSize + "x " + display.getDisplayName());
 		}
-		if (inputFluid != null) for (FluidStack fluid : inputFluid) list.add(I18nUtil.resolveKey("desc.misc.recipe.mb", EnumChatFormatting.BLUE, fluid.fill, fluid.type.getLocalizedName(), (fluid.pressure == 0 ? "" : " " + I18nUtil.resolveKey("gui.recipe.atPressure") + " " + EnumChatFormatting.RED + fluid.pressure + I18nUtil.resolveKey("gui.recipe.pu"))));
+		if (inputFluid != null) for (FluidStack fluid : inputFluid) list.add(I18nUtil.resolveKey("desc.misc.recipe.mb", EnumChatFormatting.BLUE + String.valueOf(fluid.fill), fluid.type.getLocalizedName(), (fluid.pressure == 0 ? "" : " " + I18nUtil.resolveKey("gui.recipe.atPressure") + " " + EnumChatFormatting.RED + fluid.pressure + I18nUtil.resolveKey("gui.recipe.pu"))));
 	}
 
 	protected void output(List<String> list) {
@@ -202,7 +202,7 @@ public class GenericRecipe {
 		if(outputFluid != null) for(FluidStack fluid : outputFluid) {
 			String pressurePart = fluid.pressure == 0 ? "" :
 				" " + I18nUtil.resolveKey("gui.recipe.atPressure") + " " + EnumChatFormatting.RED + fluid.pressure + " PU";
-			list.add(I18nUtil.resolveKey("desc.misc.recipe.mb", EnumChatFormatting.BLUE, fluid.fill, fluid.type.getLocalizedName(), pressurePart));
+			list.add(I18nUtil.resolveKey("desc.misc.recipe.mb", EnumChatFormatting.BLUE + String.valueOf(fluid.fill), fluid.type.getLocalizedName(), pressurePart));
 		}
 	}
 

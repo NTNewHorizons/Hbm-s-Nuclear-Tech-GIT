@@ -59,7 +59,7 @@ public class MachineIndustrialTurbine extends BlockDummyable implements ITooltip
 							world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "hbm:block.chungusLever", 1.5F, 1.0F);
 							entity.onLeverPull();
 						} else {
-							player.addChatComponentMessage(new ChatComponentTranslation("chat.industrial_turbine.line.01", EnumChatFormatting.RED));
+							player.addChatComponentMessage(new ChatComponentTranslation("chat.industrial_turbine.line.01").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
 						}
 					}
 					return true;
@@ -122,8 +122,8 @@ public class MachineIndustrialTurbine extends BlockDummyable implements ITooltip
 		int color = ((int) (0xFF - 0xFF * chungus.spin)) << 16 | ((int)(0xFF * chungus.spin) << 8);
 		int time = (int) ((world.getTotalWorldTime() / 4) % 4);
 
-		text.add(I18nUtil.resolveKey("overlay.common.tank_input", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, inputType.getLocalizedName(), String.format(Locale.US, "%,d", tankInput.getFill()), String.format(Locale.US, "%,d", tankInput.getMaxFill())));
-		text.add(I18nUtil.resolveKey("overlay.common.tank_output", EnumChatFormatting.RED, EnumChatFormatting.RESET, outputType.getLocalizedName(), String.format(Locale.US, "%,d", tankOutput.getFill()), String.format(Locale.US, "%,d", tankOutput.getMaxFill())));
+		text.add((EnumChatFormatting.GREEN) + "-> " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.common.tank_input", inputType.getLocalizedName(), String.format(Locale.US, "%,d", tankInput.getFill()), String.format(Locale.US, "%,d", tankInput.getMaxFill())));
+		text.add((EnumChatFormatting.RED) + "<- " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.common.tank_output", outputType.getLocalizedName(), String.format(Locale.US, "%,d", tankOutput.getFill()), String.format(Locale.US, "%,d", tankOutput.getMaxFill())));
 		text.add("&[" + color + "&]" + EnumChatFormatting.RED + "<- " + EnumChatFormatting.WHITE + BobMathUtil.getShortNumber(chungus.powerBuffer) + I18nUtil.resolveKey("gui.industrial_turbine.he") +
 				EnumChatFormatting.RESET + blocks[chungus.powerBuffer <= 0 ? 0 : time] + (int) Math.round(chungus.spin * 100) + "%" + EnumChatFormatting.WHITE + ")");
 

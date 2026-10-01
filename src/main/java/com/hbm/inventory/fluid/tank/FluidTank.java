@@ -260,8 +260,8 @@ public class FluidTank implements Cloneable {
 			list.add(I18nUtil.resolveKey("desc.item.fluid_tank.mb", fluid, maxFluid));
 
 			if(this.pressure != 0) {
-				list.add(I18nUtil.resolveKey("desc.item.fluid_tank.pressure_pu", EnumChatFormatting.RED, this.pressure));
-				list.add(I18nUtil.resolveKey("desc.item.pressurized_compressor", (BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_RED)));
+				list.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("desc.item.fluid_tank.pressure_pu", this.pressure));
+				list.add(((BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_RED)) + I18nUtil.resolveKey("desc.item.pressurized_compressor"));
 			}
 
 			type.addInfo(list);

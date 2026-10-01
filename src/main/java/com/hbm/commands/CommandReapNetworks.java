@@ -35,7 +35,7 @@ public class CommandReapNetworks extends CommandBase {
 			UniNodespace.activeNodeNets.clear();
 			UniNodespace.worlds.clear();
 
-			sender.addChatMessage(new ChatComponentTranslation("commands.reap_networks.nodespace_cleared", EnumChatFormatting.YELLOW));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reap_networks.nodespace_cleared").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 
 		} catch(Exception ex) {
 			sender.addChatMessage(ChatBuilder.start("----------------------------------").color(EnumChatFormatting.GRAY).flush());

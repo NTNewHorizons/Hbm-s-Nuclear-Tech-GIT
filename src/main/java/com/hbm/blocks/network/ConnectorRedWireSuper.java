@@ -57,7 +57,7 @@ public class ConnectorRedWireSuper extends PylonBase {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tile.connection_type_single.connection_type_single", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
-		list.add(I18nUtil.resolveKey("tile.connection_range_100m", EnumChatFormatting.GOLD, EnumChatFormatting.YELLOW));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.connection_type_single.connection_type_single", EnumChatFormatting.YELLOW + "Single"));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.connection_range_100m", EnumChatFormatting.YELLOW + "100m"));
 	}
 }

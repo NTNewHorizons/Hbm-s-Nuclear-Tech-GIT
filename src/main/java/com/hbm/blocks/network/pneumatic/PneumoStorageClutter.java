@@ -137,7 +137,7 @@ public class PneumoStorageClutter extends BlockContainer {
 					byte[] abyte = CompressedStreamTools.compress(drop.stackTagCompound);
 
 					if(abyte.length > 6000) {
-						player.addChatComponentMessage(new ChatComponentTranslation("chat.pneumo_storage_clutter.line.01", EnumChatFormatting.RED));
+						player.addChatComponentMessage(new ChatComponentTranslation("chat.pneumo_storage_clutter.line.01").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
 						world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(this)));
 						return world.setBlockToAir(x, y, z);
 					}

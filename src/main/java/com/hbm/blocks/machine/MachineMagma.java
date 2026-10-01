@@ -91,10 +91,10 @@ public class MachineMagma extends BlockDummyable implements ILookOverlay, IToolt
 		} else if(!drill.validPosition) {
 			text.add(I18nUtil.resolveKey("overlay.magma.insufficient_lava_found", (BobMathUtil.getBlink() ? 0xff0000 : 0xffff00)));
 		} else {
-			text.add(I18nUtil.resolveKey("overlay.common.power", (drill.power < drill.consumption ? EnumChatFormatting.RED : EnumChatFormatting.GREEN), BobMathUtil.getShortNumber(drill.power)));
+			text.add(((drill.power < drill.consumption ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)) + I18nUtil.resolveKey("overlay.common.power", BobMathUtil.getShortNumber(drill.power)));
 
 			for(int i = 0; i < drill.tanks.length; i++)
-				text.add(I18nUtil.resolveKey("overlay.common.tank", (i == 0 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")), EnumChatFormatting.RESET, drill.tanks[i].getTankType().getLocalizedName(), drill.tanks[i].getFill(), drill.tanks[i].getMaxFill()));
+				text.add(I18nUtil.resolveKey("overlay.common.tank", (i == 0 ? (EnumChatFormatting.GREEN + "-> ") : (EnumChatFormatting.RED + "<- ")) + EnumChatFormatting.RESET, drill.tanks[i].getTankType().getLocalizedName(), drill.tanks[i].getFill(), drill.tanks[i].getMaxFill()));
 
 			for(MaterialStack sta : drill.liquids) {
 				text.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey(sta.material.getUnlocalizedName()) + ": " + Mats.formatAmount(sta.amount, false));

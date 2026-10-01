@@ -44,7 +44,7 @@ public class ItemPancake extends ItemFood {
     	}
 
     	if(!world.isRemote)
-    		player.addChatComponentMessage(new ChatComponentTranslation("chat.pancake.teeth_soft_eat", EnumChatFormatting.YELLOW));
+    		player.addChatComponentMessage(new ChatComponentTranslation("chat.pancake.teeth_soft_eat").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 
     	return stack;
     }

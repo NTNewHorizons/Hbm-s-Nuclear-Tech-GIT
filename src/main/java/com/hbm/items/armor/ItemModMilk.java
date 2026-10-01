@@ -88,7 +88,7 @@ public class ItemModMilk extends ItemArmorMod {
 
 			player.addPotionEffect(new PotionEffect(Potion.confusion.id, 7 * 20, 0));
 			player.addChatMessage(
-					new ChatComponentTranslation("chat.mod_milk.1", EnumChatFormatting.GRAY, EnumChatFormatting.ITALIC));
+					new ChatComponentTranslation("chat.mod_milk.1").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.GRAY).setItalic(true)));
 
 			NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setString("type", "vomit");

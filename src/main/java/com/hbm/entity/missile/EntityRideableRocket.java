@@ -977,9 +977,9 @@ public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOv
 
 		// Check if the stage can make the journey
 		if(state == RocketState.NEEDSFUEL) {
-			text.add(I18nUtil.resolveKey("overlay.rocket.rocket_has_no_fuel", EnumChatFormatting.RED));
+			text.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.rocket.rocket_has_no_fuel"));
 		} else if(canLaunch && !rocket.hasSufficientFuel(from.body, to.body, from.inOrbit, to.inOrbit)) {
-			text.add(I18nUtil.resolveKey("overlay.rocket.rocket_can_t_reach_destination", EnumChatFormatting.RED));
+			text.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.rocket.rocket_can_t_reach_destination"));
 			canLaunch = false;
 		}
 

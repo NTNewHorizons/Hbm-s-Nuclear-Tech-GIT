@@ -51,7 +51,7 @@ public abstract class CommandReloadConfig extends CommandBase {
 
 		if("reload".equals(operator)) {
 			reload();
-			sender.addChatMessage(new ChatComponentTranslation("commands.reload_config.variables_loaded_config_file", EnumChatFormatting.YELLOW));
+			sender.addChatMessage(new ChatComponentTranslation("commands.reload_config.variables_loaded_config_file").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 			return;
 		}
 
@@ -83,7 +83,7 @@ public abstract class CommandReloadConfig extends CommandBase {
 			try {
 				wrapper.update(value);
 				refresh();
-				sender.addChatMessage(new ChatComponentTranslation("commands.reload_config.value_updated", EnumChatFormatting.YELLOW));
+				sender.addChatMessage(new ChatComponentTranslation("commands.reload_config.value_updated").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.YELLOW)));
 			} catch(Exception ex) {
 				sender.addChatMessage(new ChatComponentTranslation("commands.reload_config.error_parsing_type_for", wrapper.value.getClass().getSimpleName(), ex.getLocalizedMessage()));
 			}

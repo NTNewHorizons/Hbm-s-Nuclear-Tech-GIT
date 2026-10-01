@@ -116,7 +116,7 @@ public class BlockToolConversion extends BlockMulti implements IToolable, ILookO
 		if(result == null) return;
 
 		List<String> text = new ArrayList();
-		text.add(I18nUtil.resolveKey("overlay.tool_conversion.requires", EnumChatFormatting.GOLD));
+		text.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("overlay.tool_conversion.requires"));
 		List<AStack> materials = new ArrayList();
 		for(AStack stack : result.key) materials.add(stack);
 
@@ -129,7 +129,7 @@ public class BlockToolConversion extends BlockMulti implements IToolable, ILookO
 				ItemStack display = stack.extractForCyclingDisplay(20);
 				text.add("- " + display.getDisplayName() + " x" + display.stackSize);
 			} catch(Exception ex) {
-				text.add(I18nUtil.resolveKey("overlay.tool_conversion.error", EnumChatFormatting.RED));
+				text.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.tool_conversion.error"));
 			}
 		}
 

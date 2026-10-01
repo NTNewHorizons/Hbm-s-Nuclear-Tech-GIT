@@ -391,35 +391,35 @@ public class TileEntityLaunchPadRocket extends TileEntityMachineBase implements 
 				tankName = split[split.length - 1];
 			}
 			if(fill < maxFill) {
-				issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.drive_fill", EnumChatFormatting.YELLOW, fill, maxFill, tankName));
+				issues.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("overlay.launch_pad_rocket.drive_fill", fill, maxFill, tankName));
 			} else {
-				issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.drive_fill", EnumChatFormatting.GREEN, fill, maxFill, tankName));
+				issues.add((EnumChatFormatting.GREEN) + I18nUtil.resolveKey("overlay.launch_pad_rocket.drive_fill", fill, maxFill, tankName));
 			}
 		}
 
 		if(solidFuel.max > 0) {
 			if(solidFuel.level < solidFuel.max) {
-				issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.solid_fuel_skg", EnumChatFormatting.YELLOW, solidFuel.level, solidFuel.max));
+				issues.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("overlay.launch_pad_rocket.solid_fuel_skg", solidFuel.level, solidFuel.max));
 			} else {
-				issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.solid_fuel_skg", EnumChatFormatting.GREEN, solidFuel.level, solidFuel.max));
+				issues.add((EnumChatFormatting.GREEN) + I18nUtil.resolveKey("overlay.launch_pad_rocket.solid_fuel_skg", solidFuel.level, solidFuel.max));
 			}
 		}
 	}
 
 	public static boolean findDriveIssues(List<String> issues, RocketStruct rocket, ItemStack drive) {
 		if(drive == null || !(drive.getItem() instanceof ItemVOTVdrive)) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.no_destination_drive_installed", EnumChatFormatting.YELLOW));
+			issues.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("overlay.launch_pad_rocket.no_destination_drive_installed"));
 			return true;
 		}
 
 		if(!ItemVOTVdrive.getProcessed(drive)) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.destination_drive_needs", EnumChatFormatting.RED));
+			issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.launch_pad_rocket.destination_drive_needs"));
 			return true;
 		}
 
 		SolarSystem.Body target = ItemVOTVdrive.getDestination(drive).body;
 		if(target == SolarSystem.Body.ORBIT && rocket.capsule.part != ModItems.rp_capsule_20 && rocket.capsule.part != ModItems.rp_station_core_20) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.satellite_target_must_planet", EnumChatFormatting.RED));
+			issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.launch_pad_rocket.satellite_target_must_planet"));
 			return true;
 		}
 
@@ -428,15 +428,15 @@ public class TileEntityLaunchPadRocket extends TileEntityMachineBase implements 
 
 	public static void findTravelIssues(List<String> issues, RocketStruct rocket, Target from, Target to) {
 		if(to.inOrbit && !to.isValid && rocket.capsule.part != ModItems.rp_station_core_20) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.station_not_yet_launched", EnumChatFormatting.RED));
+			issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.launch_pad_rocket.station_not_yet_launched"));
 		}
 
 		if(to.inOrbit && to.isValid && rocket.capsule.part == ModItems.rp_station_core_20) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.station_already_launched", EnumChatFormatting.RED));
+			issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.launch_pad_rocket.station_already_launched"));
 		}
 
 		if(!rocket.hasSufficientFuel(from.body, to.body, from.inOrbit, to.inOrbit)) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.line.04", EnumChatFormatting.RED));
+			issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.launch_pad_rocket.line.04"));
 		}
 	}
 
@@ -449,11 +449,11 @@ public class TileEntityLaunchPadRocket extends TileEntityMachineBase implements 
 		RocketStruct rocket = ItemCustomRocket.get(slots[0]);
 
 		if(!canSeeSky) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.pad_is_obstructed", EnumChatFormatting.RED));
+			issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.launch_pad_rocket.pad_is_obstructed"));
 		}
 
 		if(power < maxPower * 0.75) {
-			issues.add(I18nUtil.resolveKey("overlay.launch_pad_rocket.insufficient_power", EnumChatFormatting.RED));
+			issues.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.launch_pad_rocket.insufficient_power"));
 		}
 
 		findTankIssues(issues, tanks, solidFuel);

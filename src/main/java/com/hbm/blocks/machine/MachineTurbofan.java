@@ -78,7 +78,7 @@ public class MachineTurbofan extends BlockDummyable implements ITooltipProvider 
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("tile.turbofan.fuel_efficiency", EnumChatFormatting.YELLOW));
+		list.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("tile.turbofan.fuel_efficiency"));
 		list.add(EnumChatFormatting.YELLOW + "-" + FuelGrade.AERO.getLocalizedName() + ": " + EnumChatFormatting.RED + "100%");
 	}
 }

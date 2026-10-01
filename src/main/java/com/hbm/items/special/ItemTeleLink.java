@@ -34,7 +34,7 @@ public class ItemTeleLink extends Item {
 				stack.stackTagCompound.setInteger("z", z);
 				stack.stackTagCompound.setInteger("dim", player.dimension);
 				world.playSoundAtEntity(player, "hbm:item.techBleep", 1.0F, 1.0F);
-				player.addChatMessage(new ChatComponentTranslation("chat.tele_link.telelink_teleporter_exit", EnumChatFormatting.AQUA, x, y, z));
+				player.addChatMessage(new ChatComponentTranslation("chat.tele_link.telelink_teleporter_exit", x, y, z).setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.AQUA)));
 				player.swingItem();
 
 				return true;
@@ -43,7 +43,7 @@ public class ItemTeleLink extends Item {
 
 				if(!stack.hasTagCompound()) {
 					world.playSoundAtEntity(player, "hbm:item.techBoop", 1.0F, 1.0F);
-					player.addChatMessage(new ChatComponentTranslation("chat.tele_link.telelink_no_destination", EnumChatFormatting.RED));
+					player.addChatMessage(new ChatComponentTranslation("chat.tele_link.telelink_no_destination").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
 					return false;
 				}
 
@@ -61,7 +61,7 @@ public class ItemTeleLink extends Item {
 
 				tele.markDirty();
 				world.playSoundAtEntity(player, "hbm:item.techBleep", 1.0F, 1.0F);
-				player.addChatMessage(new ChatComponentTranslation("chat.tele_link.3", EnumChatFormatting.AQUA));
+				player.addChatMessage(new ChatComponentTranslation("chat.tele_link.3").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.AQUA)));
 				player.swingItem();
 				return true;
 			}

@@ -54,7 +54,7 @@ public class ItemGunNI4NI extends ItemGunBaseNT implements ICustomizable {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		list.add(I18nUtil.resolveKey("item.gun_ni4ni.desc1"));
-		list.add(I18nUtil.resolveKey("item.gun_ni4ni.desc2", EnumChatFormatting.RED, EnumChatFormatting.GRAY));
+		list.add(I18nUtil.resolveKey("item.gun_ni4ni.desc2", EnumChatFormatting.RED + "fucking hate " + EnumChatFormatting.GRAY + "this game."));
 		list.add(I18nUtil.resolveKey("item.gun_ni4ni.desc3"));
 		super.addInformation(stack, player, list, ext);
 	}

@@ -90,7 +90,7 @@ public class MachineChemicalFactory extends BlockDummyable implements ITooltipPr
 			DirPos port = io[i];
 			if(port.compare(x + port.getDir().offsetX, y, z + port.getDir().offsetZ)) {
 				List<String> text = new ArrayList();
-				text.add(I18nUtil.resolveKey("overlay.chemical_factory.recipe_field", EnumChatFormatting.YELLOW, EnumChatFormatting.RESET, (i + 1)));
+				text.add((EnumChatFormatting.YELLOW) + "-> " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.chemical_factory.recipe_field", (i + 1)));
 				ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 				break;
 			}

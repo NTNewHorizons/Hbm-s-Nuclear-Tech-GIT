@@ -84,15 +84,15 @@ public class MachinePump extends BlockDummyable implements ITooltipProvider, ILo
 
 		if(te instanceof TileEntityMachinePumpSteam) {
 			TileEntityMachinePumpSteam pump = (TileEntityMachinePumpSteam) te;
-			text.add(I18nUtil.resolveKey("overlay.pump.mb", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, pump.steam.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.steam.getFill()), String.format(Locale.US, "%,d", pump.steam.getMaxFill())));
-			text.add(I18nUtil.resolveKey("overlay.pump.mb.2", EnumChatFormatting.RED, EnumChatFormatting.RESET, pump.lps.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.lps.getFill()), String.format(Locale.US, "%,d", pump.lps.getMaxFill())));
-			text.add(I18nUtil.resolveKey("overlay.pump.mb.2", EnumChatFormatting.RED, EnumChatFormatting.RESET, pump.water.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.water.getFill()), String.format(Locale.US, "%,d", pump.water.getMaxFill())));
+			text.add((EnumChatFormatting.GREEN) + "-> " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.pump.mb", pump.steam.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.steam.getFill()), String.format(Locale.US, "%,d", pump.steam.getMaxFill())));
+			text.add((EnumChatFormatting.RED) + "<- " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.pump.mb.2", pump.lps.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.lps.getFill()), String.format(Locale.US, "%,d", pump.lps.getMaxFill())));
+			text.add((EnumChatFormatting.RED) + "<- " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.pump.mb.2", pump.water.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.water.getFill()), String.format(Locale.US, "%,d", pump.water.getMaxFill())));
 		}
 
 		if(te instanceof TileEntityMachinePumpElectric) {
 			TileEntityMachinePumpElectric pump = (TileEntityMachinePumpElectric) te;
-			text.add(I18nUtil.resolveKey("overlay.pump.he", EnumChatFormatting.GREEN, EnumChatFormatting.RESET, String.format(Locale.US, "%,d", pump.power), String.format(Locale.US, "%,d", pump.maxPower)));
-			text.add(I18nUtil.resolveKey("overlay.pump.mb.2", EnumChatFormatting.RED, EnumChatFormatting.RESET, pump.water.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.water.getFill()), String.format(Locale.US, "%,d", pump.water.getMaxFill())));
+			text.add((EnumChatFormatting.GREEN) + "-> " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.pump.he", String.format(Locale.US, "%,d", pump.power), String.format(Locale.US, "%,d", pump.maxPower)));
+			text.add((EnumChatFormatting.RED) + "<- " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.pump.mb.2", pump.water.getTankType().getLocalizedName(), String.format(Locale.US, "%,d", pump.water.getFill()), String.format(Locale.US, "%,d", pump.water.getMaxFill())));
 		}
 
 		if(pos[1] > 70) {

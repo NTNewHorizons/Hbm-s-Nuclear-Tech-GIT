@@ -146,7 +146,7 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 
 		for(Triplet<Object, Object, ItemStack> recipe : blastFurnaceRecipes) {
 			if(!hiddenRecipes.contains(new ComparableStack(recipe.getZ()))) {
-				ItemStack nothing = I18nUtil.setItemName(new ItemStack(ModItems.nothing), "nei.blast_furnace.text.01");
+				ItemStack nothing = I18nUtil.setItemName(new ItemStack(ModItems.nothing), "nei.blast_furnace.1");
 				List<ItemStack> in1 = new ArrayList();
 				List<ItemStack> in2 = new ArrayList();
 				in1.add(nothing);

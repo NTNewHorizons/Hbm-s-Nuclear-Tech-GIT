@@ -39,7 +39,7 @@ public class ItemFusionShield extends Item {
 
 		list.add(I18nUtil.resolveKey("item.lens.desc1", (maxDamage - damage), maxDamage, percent));
 
-		list.add(I18nUtil.resolveKey("item.fusion_shield.desc1", EnumChatFormatting.RED, maxTemp));
+		list.add(I18nUtil.resolveKey("item.fusion_shield.desc1", EnumChatFormatting.RED + String.valueOf(maxTemp)));
 	}
 
 	public static void setShieldDamage(ItemStack stack, long damage) {

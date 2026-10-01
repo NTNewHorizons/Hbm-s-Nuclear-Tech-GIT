@@ -86,7 +86,7 @@ public class GUIMachineArcFurnaceLarge extends GuiInfoContainer {
 
 	protected void drawStackInfo(List<MaterialStack> stack, int mouseX, int mouseY, int x, int y) {
 		List<String> list = new ArrayList();
-		if(stack.isEmpty()) list.add(I18nUtil.resolveKey("desc.misc.arc_furnace_large.empty", EnumChatFormatting.RED));
+		if(stack.isEmpty()) list.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("desc.misc.arc_furnace_large.empty"));
 		for(MaterialStack sta : stack) list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey(sta.material.getUnlocalizedName()) + ": " + Mats.formatAmount(sta.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + x, guiTop + y, 16, 70, mouseX, mouseY, list);
 	}

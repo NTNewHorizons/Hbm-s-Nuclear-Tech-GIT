@@ -190,7 +190,7 @@ public class ItemToolBox extends Item implements IGUIProvider {
 				byte[] abyte = CompressedStreamTools.compress(nbt);
 
 				if (abyte.length > 6000) {
-					player.addChatComponentMessage(new ChatComponentTranslation("chat.inventory.1", EnumChatFormatting.RED));
+					player.addChatComponentMessage(new ChatComponentTranslation("chat.inventory.1").setChatStyle(new net.minecraft.util.ChatStyle().setColor(EnumChatFormatting.RED)));
 					ItemStack[] stacks1 = ItemStackUtil.readStacksFromNBT(box, 24 /* Toolbox inv size. */);
 					if(stacks1 == null)
 						return;

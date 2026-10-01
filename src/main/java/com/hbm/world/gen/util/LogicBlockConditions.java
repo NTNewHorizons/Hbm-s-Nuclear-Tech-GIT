@@ -85,7 +85,7 @@ public class LogicBlockConditions {
 		int z = tile.zCoord;
 
 		if(tile.phase == 0 &&  world.isBlockIndirectlyGettingPowered(x,y,z)){
-			world.getClosestPlayer(x,y,z, 25).addChatMessage(new ChatComponentTranslation("chat.logic_block_conditions.line.01", EnumChatFormatting.GOLD, EnumChatFormatting.RESET));
+			world.getClosestPlayer(x,y,z, 25).addChatMessage(new ChatComponentTranslation("chat.logic_block_conditions.line.01", EnumChatFormatting.GOLD + "great" + EnumChatFormatting.RESET + " ancient weapon, of questionable use in the modern age"));
 			world.setBlock(x,y + 1,z, ModBlocks.pedestal);
 			return true;
 		}

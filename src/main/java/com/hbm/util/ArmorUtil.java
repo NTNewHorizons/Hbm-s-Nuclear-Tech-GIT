@@ -536,11 +536,11 @@ public class ArmorUtil {
 		ItemStack filter = ((IGasMask)mask.getItem()).getFilter(mask, player);
 
 		if(filter == null) {
-			list.add(I18nUtil.resolveKey("desc.misc.armor_util.no_filter_installed", EnumChatFormatting.RED));
+			list.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("desc.misc.armor_util.no_filter_installed"));
 			return;
 		}
 
-		list.add(I18nUtil.resolveKey("desc.misc.armor_util.installed_filter", EnumChatFormatting.GOLD));
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("desc.misc.armor_util.installed_filter"));
 
 		int meta = filter.getItemDamage();
 		int max = filter.getMaxDamage();

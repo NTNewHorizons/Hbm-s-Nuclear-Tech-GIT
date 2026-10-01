@@ -99,7 +99,7 @@ public class GUICrucible extends GuiInfoContainer {
 		List<String> list = new ArrayList();
 
 		if(stack.isEmpty())
-			list.add(I18nUtil.resolveKey("desc.misc.guicrucible.empty", EnumChatFormatting.RED));
+			list.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("desc.misc.guicrucible.empty"));
 
 		for(MaterialStack sta : stack) {
 			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey(sta.material.getUnlocalizedName()) + ": " + Mats.formatAmount(sta.amount, Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)));

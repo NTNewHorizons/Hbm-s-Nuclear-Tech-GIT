@@ -6533,8 +6533,6 @@ turret.arty.manual_rocket=§eРучний режим$Макс радіус: 5,00
 turret.machines=Цілитись по машинам: %s
 turret.mobs=Цілитись по мобам: %s
 turret.none=None
-turret.off=ВИМК
-turret.on=ВВІМК
 turret.players=Цілитись по гравцям: %s
 
 upgrade.acid=Необхідна кислота %s

@@ -175,7 +175,7 @@ public class BlockPileDevice extends BlockContainer implements IBlockMulti, ILoo
 
 		if(tile instanceof TileEntityPileControl) {
 			TileEntityPileControl device = (TileEntityPileControl) tile;
-			text.add(I18nUtil.resolveKey("overlay.pile_device.extraction_level", (int) + (device.level * 100)));
+			text.add(I18nUtil.resolveKey("overlay.pile_device.extraction_level", (int) (device.level * 100)));
 		}
 
 		if(!text.isEmpty())
