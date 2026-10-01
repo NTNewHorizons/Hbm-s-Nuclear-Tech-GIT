@@ -92,7 +92,7 @@ public class BlockPipe extends Block implements ITooltipProvider, INBTBlockTrans
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("desc.block.pipe.purely_decorative"));
+		list.add(I18nUtil.resolveKey("tile.pipe.purely_decorative"));
 	}
 
 	@Override

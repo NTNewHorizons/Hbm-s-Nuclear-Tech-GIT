@@ -182,7 +182,7 @@ public class NTMAnvil extends BlockFallingNT implements ITooltipProvider, IGUIPr
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("desc.block.ntmanvil.tier_anvil", EnumChatFormatting.GOLD, tier));
+		list.add(I18nUtil.resolveKey("tile.ntmanvil.tier_anvil", EnumChatFormatting.GOLD, tier));
 	}
 
 	@Override

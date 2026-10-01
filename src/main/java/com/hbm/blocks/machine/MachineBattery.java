@@ -281,14 +281,14 @@ public class MachineBattery extends BlockContainer implements ILookOverlay, IPer
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("desc.block.battery.he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(this.maxPower)));
+		list.add(I18nUtil.resolveKey("tile.battery.he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(this.maxPower)));
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("desc.block.battery.stores_up_to_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower)));
-		list.add(I18nUtil.resolveKey("desc.block.battery.charge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower / 200)));
-		list.add(I18nUtil.resolveKey("desc.block.battery.discharge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower / 600)));
+		list.add(I18nUtil.resolveKey("tile.battery.stores_up_to_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower)));
+		list.add(I18nUtil.resolveKey("tile.battery.charge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower / 200)));
+		list.add(I18nUtil.resolveKey("tile.battery.discharge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.maxPower / 600)));
 	}
 
 }

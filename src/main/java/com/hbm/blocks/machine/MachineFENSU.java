@@ -74,6 +74,6 @@ public class MachineFENSU extends BlockDummyable implements ILookOverlay, IPersi
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("desc.block.fensu.he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(Long.MAX_VALUE)));
+		list.add(I18nUtil.resolveKey("tile.fensu.he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(Long.MAX_VALUE)));
 	}
 }

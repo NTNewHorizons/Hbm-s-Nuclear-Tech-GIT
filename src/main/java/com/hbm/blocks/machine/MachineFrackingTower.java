@@ -125,7 +125,7 @@ public class MachineFrackingTower extends BlockDummyable implements IPersistentI
 		for(int i = 0; i < 2; i++) {
 			FluidTank tank = new FluidTank(Fluids.NONE, 0);
 			tank.readFromNBT(persistentTag, "t" + i);
-			list.add(I18nUtil.resolveKey("desc.block.fracking_tower.mb", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
+			list.add(I18nUtil.resolveKey("tile.fracking_tower.mb", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
 		}
 	}
 }

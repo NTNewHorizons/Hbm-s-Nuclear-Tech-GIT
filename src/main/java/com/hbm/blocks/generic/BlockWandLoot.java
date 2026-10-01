@@ -126,11 +126,11 @@ public class BlockWandLoot extends BlockContainer implements ILookOverlay, ITool
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("desc.block.wand_loot.define_loot_crates_piles_nbt"));
-		list.add(I18nUtil.resolveKey("desc.block.wand_loot.line.04", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("desc.block.wand_loot.line.03", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("desc.block.defuser_cycle_loot_types", EnumChatFormatting.GOLD));
-		list.add(I18nUtil.resolveKey("desc.block.wand_loot.line.02", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tile.wand_loot.define_loot_crates_piles_nbt"));
+		list.add(I18nUtil.resolveKey("tile.wand_loot.line.04", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tile.wand_loot.line.03", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tile.defuser_cycle_loot_types", EnumChatFormatting.GOLD));
+		list.add(I18nUtil.resolveKey("tile.wand_loot.line.02", EnumChatFormatting.GOLD));
 	}
 
 	@Override

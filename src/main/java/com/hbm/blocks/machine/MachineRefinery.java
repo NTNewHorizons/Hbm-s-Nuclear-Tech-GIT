@@ -99,7 +99,7 @@ public class MachineRefinery extends BlockDummyable implements IPersistentInfoPr
 		for(int i = 0; i < 5; i++) {
 			FluidTank tank = new FluidTank(Fluids.NONE, 0);
 			tank.readFromNBT(persistentTag, "" + i);
-			list.add(I18nUtil.resolveKey("desc.block.refinery.mb", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
+			list.add(I18nUtil.resolveKey("tile.refinery.mb", EnumChatFormatting.YELLOW, tank.getFill(), tank.getMaxFill(), tank.getTankType().getLocalizedName()));
 		}
 	}
 
