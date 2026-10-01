@@ -585,11 +585,6 @@ cannery.schottky.7=Если какие-либо виртуальные част�
 cannery.schottky.8=Обратите внимание, что виртуальные частицы никогда не будут использовать один и тот же выход диода дважды. Бесконечные циклы будут неудачными, но повторный вход в диод в остальном будет нормальным
 cannery.schottky.9=Ваш диод Шоттки для частиц должен быть правильно заключен, со свободными путями для каждого выхода пересечения
 
-chat.pollution_detector.1=Выпадение: %s
-chat.pollution_detector.heavy_metal=Тяжёлые металлы: %s
-chat.pollution_detector.poison=Яд: %s
-chat.pollution_detector.soot=Сажа: %s
-
 chem.hydrogen=Водород
 chem.hydrogencoke=Водород из кокса
 chem.oxygen=Кислород
