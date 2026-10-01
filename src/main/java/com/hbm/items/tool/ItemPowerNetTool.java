@@ -87,9 +87,9 @@ public class ItemPowerNetTool extends Item {
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.right_click_cable_analyze_power"));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.links_cables_poles_etc_yellow"));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.subscribers_receiver_blue"));
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.4"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.power_net_tool.desc4"));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.displays_stats_link_subscriber"));
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.6"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.power_net_tool.desc6"));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.power_net_tool.particles_spawn_block_radius", radius));
 	}
 }

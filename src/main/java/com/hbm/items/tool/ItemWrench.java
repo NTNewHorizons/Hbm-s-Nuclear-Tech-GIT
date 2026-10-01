@@ -117,9 +117,9 @@ public class ItemWrench extends ItemSword {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.stackTagCompound != null) {
-			list.add(I18nUtil.resolveKey("desc.item.wrench.1", itemstack.stackTagCompound.getInteger("x")));
-			list.add(I18nUtil.resolveKey("desc.item.wrench.2", itemstack.stackTagCompound.getInteger("y")));
-			list.add(I18nUtil.resolveKey("desc.item.wrench.3", itemstack.stackTagCompound.getInteger("z")));
+			list.add(I18nUtil.resolveKey("item.wrench.desc1", itemstack.stackTagCompound.getInteger("x")));
+			list.add(I18nUtil.resolveKey("item.wrench.desc2", itemstack.stackTagCompound.getInteger("y")));
+			list.add(I18nUtil.resolveKey("item.wrench.desc3", itemstack.stackTagCompound.getInteger("z")));
 		} else {
 			list.add(I18nUtil.resolveKey("desc.item.wrench.right_click_anchor_connect"));
 		}

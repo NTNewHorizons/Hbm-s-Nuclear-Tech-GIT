@@ -42,14 +42,14 @@ public class ItemFluidIcon extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(stack.hasTagCompound()) {
 			if(getQuantity(stack) > 0) {
-				list.add(I18nUtil.resolveKey("desc.item.fluid_icon.1", getQuantity(stack)));
+				list.add(I18nUtil.resolveKey("item.fluid_icon.desc1", getQuantity(stack)));
 			} else if(getAtmospheres(stack) > 0) {
 				double pressure = BobMathUtil.roundDecimal(getAtmospheres(stack), 3);
-				list.add(I18nUtil.resolveKey("desc.item.fluid_icon.2", pressure));
+				list.add(I18nUtil.resolveKey("item.fluid_icon.desc2", pressure));
 			}
 
 			if(getPressure(stack) > 0) {
-				list.add(EnumChatFormatting.RED + "" + I18nUtil.resolveKey("desc.item.fluid_icon.3", getPressure(stack)));
+				list.add(EnumChatFormatting.RED + "" + I18nUtil.resolveKey("item.fluid_icon.desc3", getPressure(stack)));
 				list.add((BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_RED) + I18nUtil.resolveKey("desc.item.fluid_icon.pressurized_compressor"));
 			}
 		}

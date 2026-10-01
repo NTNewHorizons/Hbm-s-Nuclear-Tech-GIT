@@ -32,10 +32,10 @@ public class ItemTrain extends ItemEnumMulti {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		EnumTrainType train = EnumUtil.grabEnumSafely(this.theEnum, stack.getItemDamage());
 
-		if(train.engine != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.train.1", EnumChatFormatting.RESET, I18nUtil.resolveKey(train.engine)));
-		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.train.2", EnumChatFormatting.RESET, I18nUtil.resolveKey(train.gauge)));
+		if(train.engine != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.train.desc1", EnumChatFormatting.RESET, I18nUtil.resolveKey(train.engine)));
+		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.train.desc2", EnumChatFormatting.RESET, I18nUtil.resolveKey(train.gauge)));
 		if(train.maxSpeed != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.train.max_speed", EnumChatFormatting.RESET, I18nUtil.resolveKey(train.maxSpeed)));
-		if(train.acceleration != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.train.4", EnumChatFormatting.RESET, train.acceleration));
+		if(train.acceleration != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.train.desc4", EnumChatFormatting.RESET, train.acceleration));
 		if(train.brakeThreshold != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.train.engine_brake_threshold", EnumChatFormatting.RESET, train.brakeThreshold));
 		if(train.parkingBrake != null) list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.train.parking_brake", EnumChatFormatting.RESET, I18nUtil.resolveKey(train.parkingBrake)));
 	}

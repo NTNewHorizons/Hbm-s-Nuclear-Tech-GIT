@@ -25,7 +25,7 @@ public class ItemWand extends Item {
 		list.add(I18nUtil.resolveKey("desc.item.wand.block_shift_right_click"));
 
 		if(stack.stackTagCompound != null && !(stack.stackTagCompound.getInteger("x") == 0 && stack.stackTagCompound.getInteger("y") == 0 && stack.stackTagCompound.getInteger("z") == 0)) {
-			list.add(I18nUtil.resolveKey("desc.item.wand.5", stack.stackTagCompound.getInteger("x"), stack.stackTagCompound.getInteger("y"), stack.stackTagCompound.getInteger("z")));
+			list.add(I18nUtil.resolveKey("item.wand.desc5", stack.stackTagCompound.getInteger("x"), stack.stackTagCompound.getInteger("y"), stack.stackTagCompound.getInteger("z")));
 		} else {
 			list.add(I18nUtil.resolveKey("desc.item.wand.positions_not"));
 		}

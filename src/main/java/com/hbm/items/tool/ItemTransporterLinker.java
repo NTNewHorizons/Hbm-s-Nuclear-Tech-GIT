@@ -45,7 +45,7 @@ public class ItemTransporterLinker extends Item implements IGUIProvider {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		list.add(I18nUtil.resolveKey("desc.item.transporter_linker.sneak_click_save"));
-		list.add(I18nUtil.resolveKey("desc.item.transporter_linker.2"));
+		list.add(I18nUtil.resolveKey("item.transporter_linker.desc2"));
 	}
 
 	@Override

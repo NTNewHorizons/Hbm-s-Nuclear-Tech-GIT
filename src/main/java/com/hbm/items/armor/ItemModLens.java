@@ -43,7 +43,7 @@ public class ItemModLens extends ItemArmorMod implements ISatChip {
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.mod_lens.2", stack.getDisplayName(), getFreq(stack)));
+		list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.mod_lens.desc2", stack.getDisplayName(), getFreq(stack)));
 	}
 
 	@Override

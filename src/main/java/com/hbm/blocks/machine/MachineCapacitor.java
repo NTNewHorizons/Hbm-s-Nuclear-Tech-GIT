@@ -112,14 +112,14 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("desc.block.capacitor.he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(persistentTag.getLong("maxPower"))));
+		list.add(I18nUtil.resolveKey("tile.capacitor.he", EnumChatFormatting.YELLOW, BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(persistentTag.getLong("maxPower"))));
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(I18nUtil.resolveKey("desc.block.capacitor.stores_up_to_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power)));
-		list.add(I18nUtil.resolveKey("desc.block.capacitor.charge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power / 200)));
-		list.add(I18nUtil.resolveKey("desc.block.capacitor.discharge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power / 600)));
+		list.add(I18nUtil.resolveKey("tile.capacitor.stores_up_to_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power)));
+		list.add(I18nUtil.resolveKey("tile.capacitor.charge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power / 200)));
+		list.add(I18nUtil.resolveKey("tile.capacitor.discharge_speed_he", EnumChatFormatting.GOLD, BobMathUtil.getShortNumber(this.power / 600)));
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			for(String s : I18nUtil.resolveKeyArray("tile.capacitor.desc")) list.add(EnumChatFormatting.YELLOW + s);
@@ -129,10 +129,10 @@ public class MachineCapacitor extends BlockContainer implements ILookOverlay, IP
 					EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.misc.more_info_suffix"));
 		}
 		if(this == ModBlocks.capacitor_complex) {
-			list.add(I18nUtil.resolveKey("desc.block.capacitor.line.03"));
-			list.add(I18nUtil.resolveKey("desc.block.capacitor.line.01"));
-			list.add(I18nUtil.resolveKey("desc.block.capacitor.subjected_ferric_osmiridium_lutece"));
-			list.add(I18nUtil.resolveKey("desc.block.xt_aei_px_et"));
+			list.add(I18nUtil.resolveKey("tile.capacitor.line.03"));
+			list.add(I18nUtil.resolveKey("tile.capacitor.line.01"));
+			list.add(I18nUtil.resolveKey("tile.capacitor.subjected_ferric_osmiridium_lutece"));
+			list.add(I18nUtil.resolveKey("tile.xt_aei_px_et"));
 		}
 
 	}

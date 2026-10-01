@@ -46,7 +46,7 @@ public class ItemPACoil extends ItemEnumMulti {
 		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.pa_coil.dipole_operational_range", EnumChatFormatting.RESET, String.format(Locale.US, "%,d", type.diMin), String.format(Locale.US, "%,d", type.diMax)));
 		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.pa_coil.dipole_minimum_side_length", EnumChatFormatting.RESET, type.diDistMin));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.pa_coil.minimums_not_met_result_power"));
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.pa_coil.5"));
-		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.pa_coil.6"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.pa_coil.desc5"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.pa_coil.desc6"));
 	}
 }

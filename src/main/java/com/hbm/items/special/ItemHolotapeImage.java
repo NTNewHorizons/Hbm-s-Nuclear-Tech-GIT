@@ -33,7 +33,7 @@ public class ItemHolotapeImage extends ItemHoloTape implements IGUIProvider {
 
 		EnumHoloImage holo = EnumUtil.grabEnumSafely(EnumHoloImage.class, stack.getItemDamage());
 		list.add(I18nUtil.resolveKey("desc.item.holotape_image.band_color", holo.colorCode, I18nUtil.resolveKey(holo.colorName)));
-		list.add(I18nUtil.resolveKey("desc.item.holotape_image.2", holo.name));
+		list.add(I18nUtil.resolveKey("item.holotape_image.desc2", holo.name));
 	}
 
 	public static enum EnumHoloImage {

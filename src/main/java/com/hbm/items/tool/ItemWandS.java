@@ -27,7 +27,7 @@ public class ItemWandS extends Item {
 		list.add(I18nUtil.resolveKey("desc.item.wand.creative_item"));
 		list.add(I18nUtil.resolveKey("desc.item.wand_s.replication_breeds_decadence"));
 		list.add(I18nUtil.resolveKey("desc.item.wand_s.saves_area_defined_right_clicks"));
-		list.add(I18nUtil.resolveKey("desc.item.wand_s.3"));
+		list.add(I18nUtil.resolveKey("item.wand_s.desc3"));
 
 		if(stack.stackTagCompound != null) {
 			int px = stack.stackTagCompound.getInteger("x");
@@ -35,7 +35,7 @@ public class ItemWandS extends Item {
 			int pz = stack.stackTagCompound.getInteger("z");
 
 			if(px != 0 || py != 0 || pz != 0) {
-				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.wand_s.4", px, py, pz));
+				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("item.wand_s.desc4", px, py, pz));
 			} else {
 				list.add(EnumChatFormatting.AQUA + I18nUtil.resolveKey("desc.item.wand_s.no_start_position"));
 			}
@@ -43,7 +43,7 @@ public class ItemWandS extends Item {
 			Set<Pair<Block, Integer>> blocks = getBlocks(stack);
 
 			if(blocks.size() > 0) {
-				list.add(I18nUtil.resolveKey("desc.item.wand_s.6"));
+				list.add(I18nUtil.resolveKey("item.wand_s.desc6"));
 				for(Pair<Block, Integer> block : blocks) {
 					list.add(EnumChatFormatting.RED + "- " + block.key.getUnlocalizedName());
 				}

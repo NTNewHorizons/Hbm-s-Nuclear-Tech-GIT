@@ -131,7 +131,7 @@ public class ItemCigarette extends Item {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.asbestos_filter"));
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.high_tar"));
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.tobacco_contains_polonium"));
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.cigarette.4"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.cigarette.desc4"));
 		} else if (this == ModItems.crackpipe) {
 			String[] colors = new String[] {
 					EnumChatFormatting.RED + "",
@@ -147,7 +147,7 @@ public class ItemCigarette extends Item {
 			list.add(I18nUtil.resolveKey("gui.cigarette.t_good_me_but_i")
 					+ colors[(int) (System.currentTimeMillis() % len * colors.length / len)] + I18nUtil.resolveKey("gui.cigarette.great"));
 		} else if (this == ModItems.joint) {
-			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.cigarette.5"));
+			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.cigarette.desc5"));
 		}
 	}
 }

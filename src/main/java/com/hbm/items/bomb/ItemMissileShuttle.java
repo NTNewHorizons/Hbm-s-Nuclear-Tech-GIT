@@ -16,7 +16,7 @@ public class ItemMissileShuttle extends Item {
 		list.add(I18nUtil.resolveKey("desc.item.missile_shuttle.james_huffs_leaded_gasoline"));
 		list.add(I18nUtil.resolveKey("desc.item.missile_shuttle.goes_insane_richard_spends"));
 		list.add(I18nUtil.resolveKey("desc.item.missile_shuttle.entire_budget_broken_png"));
-		list.add(I18nUtil.resolveKey("desc.item.missile_shuttle.5"));
+		list.add(I18nUtil.resolveKey("item.missile_shuttle.desc5"));
 		list.add(I18nUtil.resolveKey("desc.item.missile_shuttle.water_tanks_rbmk_flow"));
 		list.add(I18nUtil.resolveKey("desc.item.missile_shuttle.blowing_entire_base"));
 	}

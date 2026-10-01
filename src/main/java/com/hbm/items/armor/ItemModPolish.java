@@ -26,7 +26,7 @@ public class ItemModPolish extends ItemArmorMod {
 
 	@Override
 	public void addDesc(List list, ItemStack stack, ItemStack armor) {
-		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("desc.item.mod_polish.2", stack.getDisplayName()));
+		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("item.mod_polish.desc2", stack.getDisplayName()));
 	}
 
 	@Override

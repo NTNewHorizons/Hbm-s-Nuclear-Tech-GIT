@@ -64,7 +64,7 @@ public class BlockVolcano extends BlockContainer implements ITooltipProvider, IB
 		int meta = stack.getItemDamage();
 
 		if(meta == META_SMOLDERING) {
-			list.add(I18nUtil.resolveKey("desc.block.volcano.shield_volcano", EnumChatFormatting.GOLD));
+			list.add(I18nUtil.resolveKey("tile.volcano.shield_volcano", EnumChatFormatting.GOLD));
 			return;
 		}
 

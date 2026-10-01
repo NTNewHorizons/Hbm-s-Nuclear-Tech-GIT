@@ -59,54 +59,54 @@ public class ItemMachineUpgrade extends Item {
 		}
 
 		if(this == ModItems.upgrade_radius) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.1"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.2"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.3"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.machine_upgrade.desc1"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc2"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc3"));
 		}
 
 		if(this == ModItems.upgrade_health) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.4"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.5"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.3"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.machine_upgrade.desc4"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc5"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc3"));
 		}
 
 		if(this == ModItems.upgrade_smelter) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.7"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.machine_upgrade.desc6"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc7"));
 		}
 
 		if(this == ModItems.upgrade_shredder) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.8"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.machine_upgrade.desc6"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc8"));
 		}
 
 		if(this == ModItems.upgrade_centrifuge) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.9"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.machine_upgrade.desc6"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc9"));
 		}
 
 		if(this == ModItems.upgrade_crystallizer) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.10"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.machine_upgrade.desc6"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc10"));
 		}
 
 		if(this == ModItems.upgrade_screm) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.11"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.12"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.13"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.machine_upgrade.desc6"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc11"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc12"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc13"));
 		}
 
 		if(this == ModItems.upgrade_nullifier) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.6"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.14"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.15"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.machine_upgrade.desc6"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc14"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc15"));
 		}
 
 		if(this == ModItems.upgrade_gc_speed) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.machine_upgrade.16"));
-			list.add(I18nUtil.resolveKey("desc.item.machine_upgrade.17"));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.machine_upgrade.18"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.machine_upgrade.desc16"));
+			list.add(I18nUtil.resolveKey("item.machine_upgrade.desc17"));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.machine_upgrade.desc18"));
 		}
 	}
 

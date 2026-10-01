@@ -26,7 +26,7 @@ public class ItemModCard extends ItemArmorMod {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.mod_card.guns_now_chance_not_consume"));
 		}
 		if(this == ModItems.card_qos) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.mod_card.3"));
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.mod_card.desc3"));
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.mod_card.adds_chance_tank_damage_no"));
 		}
 		list.add("");

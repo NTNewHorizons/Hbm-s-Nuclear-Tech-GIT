@@ -18,9 +18,9 @@ public class ItemPrototypeBlock extends ItemBlock {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool)
 	{
-		list.add(I18nUtil.resolveKey("desc.item.prototype_block.1"));
+		list.add(I18nUtil.resolveKey("item.prototype_block.desc1"));
 		list.add("");
-		list.add(I18nUtil.resolveKey("desc.item.prototype_block.2"));
+		list.add(I18nUtil.resolveKey("item.prototype_block.desc2"));
 
 		/*list.add(I18nUtil.resolveKey("desc.item.memory_euphemia"));
 		list.add("");

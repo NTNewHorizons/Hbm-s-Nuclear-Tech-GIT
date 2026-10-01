@@ -40,10 +40,10 @@ public class GunB92Cell extends Item {
 		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.draws_energy_b92_allowing"));
 		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.reload_additional_times"));
 		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.cell_permanently_hold_charge"));
-		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.4"));
+		list.add(I18nUtil.resolveKey("item.gun_b92_cell.desc4"));
 		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.b92_rather_bomb"));
 		list.add("");
-		list.add(I18nUtil.resolveKey("desc.item.gun_b92_cell.6", getPower(itemstack)));
+		list.add(I18nUtil.resolveKey("item.gun_b92_cell.desc6", getPower(itemstack)));
 	}
 
 	private static int getPower(ItemStack stack) {

@@ -18,7 +18,7 @@ public class ItemWandTime extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		list.add(I18nUtil.resolveKey("desc.item.wand.creative_item"));
 		list.add(EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.wand_time.wibbly_wobbly_timey_wimey_stuff"));
-		list.add(I18nUtil.resolveKey("desc.item.wand_time.2"));
+		list.add(I18nUtil.resolveKey("item.wand_time.desc2"));
 	}
 
 	@Override

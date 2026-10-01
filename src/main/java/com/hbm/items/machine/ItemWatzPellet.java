@@ -139,7 +139,7 @@ public class ItemWatzPellet extends ItemEnumMulti {
 
 		EnumWatzType num = EnumUtil.grabEnumSafely(EnumWatzType.class, stack.getItemDamage());
 
-		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.pile_rod_mk2.2", String.format(Locale.US, "%.1f", getDurabilityForDisplay(stack) * 100D)));
+		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.pile_rod_mk2.desc2", String.format(Locale.US, "%.1f", getDurabilityForDisplay(stack) * 100D)));
 
 		String color = EnumChatFormatting.GOLD + "";
 		String reset = EnumChatFormatting.RESET + "";

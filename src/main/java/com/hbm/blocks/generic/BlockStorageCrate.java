@@ -328,23 +328,23 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IL
 
 			if(stack.stackTagCompound.getBoolean("spiders")) {
 				if(stack.stackTagCompound.hasKey("lock")) {
-					list.add(I18nUtil.resolveKey("desc.block.container_locked", EnumChatFormatting.RED));
+					list.add(I18nUtil.resolveKey("tile.container_locked", EnumChatFormatting.RED));
 				}
-				list.add(I18nUtil.resolveKey("desc.block.skittering_emanates_within", EnumChatFormatting.GRAY, EnumChatFormatting.ITALIC)); // lamo
+				list.add(I18nUtil.resolveKey("tile.skittering_emanates_within", EnumChatFormatting.GRAY, EnumChatFormatting.ITALIC)); // lamo
 				return;
 			}
 
 			if(stack.stackTagCompound.hasKey("lock")) {
-				list.add(I18nUtil.resolveKey("desc.block.container_locked", EnumChatFormatting.RED)); // Sorry people who want to see what's in it while it's locked...
+				list.add(I18nUtil.resolveKey("tile.container_locked", EnumChatFormatting.RED)); // Sorry people who want to see what's in it while it's locked...
 
 				for(int i = 0; i < 104; i++) {
 					ItemStack content = ItemStack.loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("slot" + i));
 					if(content != null) {
-						list.add(I18nUtil.resolveKey("desc.block.storage_crate.it_feels_heavy", EnumChatFormatting.YELLOW));
+						list.add(I18nUtil.resolveKey("tile.storage_crate.it_feels_heavy", EnumChatFormatting.YELLOW));
 						return;
 					}
 				}
-				list.add(I18nUtil.resolveKey("desc.block.storage_crate.it_feels_empty", EnumChatFormatting.YELLOW));
+				list.add(I18nUtil.resolveKey("tile.storage_crate.it_feels_empty", EnumChatFormatting.YELLOW));
 				return;
 			}
 
@@ -364,12 +364,12 @@ public class BlockStorageCrate extends BlockContainer implements IBlockMulti, IL
 			}
 
 			if(!contents.isEmpty()) {
-				list.add(I18nUtil.resolveKey("desc.block.storage_crate.contains", EnumChatFormatting.AQUA));
+				list.add(I18nUtil.resolveKey("tile.storage_crate.contains", EnumChatFormatting.AQUA));
 				list.addAll(contents);
 				amount -= contents.size();
 
 				if(amount > 0) {
-					list.add(I18nUtil.resolveKey("desc.block.storage_crate.and_more", EnumChatFormatting.AQUA, amount));
+					list.add(I18nUtil.resolveKey("tile.storage_crate.and_more", EnumChatFormatting.AQUA, amount));
 				}
 			}
 		}

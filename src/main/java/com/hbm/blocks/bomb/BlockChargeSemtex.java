@@ -46,10 +46,10 @@ public class BlockChargeSemtex extends BlockChargeBase {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		super.addInformation(stack, player, list, ext);
-		list.add(I18nUtil.resolveKey("desc.block.drop_blocks.drop_blocks", EnumChatFormatting.BLUE));
-		list.add(I18nUtil.resolveKey("desc.block.charge_semtex.does_not_do_damage", EnumChatFormatting.BLUE));
+		list.add(I18nUtil.resolveKey("tile.drop_blocks.drop_blocks", EnumChatFormatting.BLUE));
+		list.add(I18nUtil.resolveKey("tile.charge_semtex.does_not_do_damage", EnumChatFormatting.BLUE));
 		list.add(EnumChatFormatting.BLUE + "");
-		list.add(I18nUtil.resolveKey("desc.block.charge_semtex.fortune_iii", EnumChatFormatting.LIGHT_PURPLE));
+		list.add(I18nUtil.resolveKey("tile.charge_semtex.fortune_iii", EnumChatFormatting.LIGHT_PURPLE));
 	}
 
 }

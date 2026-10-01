@@ -66,8 +66,8 @@ public class ItemToolBox extends Item implements IGUIProvider {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(I18nUtil.resolveKey("desc.item.tool_box.1"));
-		list.add(I18nUtil.resolveKey("desc.item.tool_box.2"));
+		list.add(I18nUtil.resolveKey("item.tool_box.desc1"));
+		list.add(I18nUtil.resolveKey("item.tool_box.desc2"));
 	}
 
 	// Finds active rows in the toolbox (rows with items inside them).

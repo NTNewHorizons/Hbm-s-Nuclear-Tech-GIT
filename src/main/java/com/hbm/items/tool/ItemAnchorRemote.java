@@ -24,7 +24,7 @@ public class ItemAnchorRemote extends ItemBattery {
 		long charge = maxCharge;
 		if(stack.hasTagCompound()) charge = getCharge(stack);
 		list.add(I18nUtil.resolveKey("desc.item.battery.energy_stored_he", BobMathUtil.getShortNumber(charge), BobMathUtil.getShortNumber(maxCharge)));
-		list.add(I18nUtil.resolveKey("desc.item.battery.2", BobMathUtil.getShortNumber(chargeRate)));
+		list.add(I18nUtil.resolveKey("item.battery.desc2", BobMathUtil.getShortNumber(chargeRate)));
 	}
 
 	@Override
