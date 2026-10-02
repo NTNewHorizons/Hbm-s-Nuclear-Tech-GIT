@@ -17,6 +17,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
 
 import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
 
@@ -128,6 +129,10 @@ public class BedrockOreProcessingHandler extends TemplateRecipeHandler implement
 			Gui.drawRect(x - 3, 39, x + 3, 41, line);
 			Gui.drawRect(x - 2, 41, x + 2, 43, line);
 		}
+
+		// Gui.drawRect leaves the OpenGL color state set to the line color (0x606060), which tints
+		// subsequent textures. Reset color back to full white before drawing slot textures.
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		// Slot texture used by the other Nuclear Tech NEI handlers.
 		drawTexturedModalRect(73, 1, 5, 87, 18, 18);
