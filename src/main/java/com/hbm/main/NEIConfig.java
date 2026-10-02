@@ -7,6 +7,7 @@ import codechicken.nei.api.ItemInfo.Layout;
 import codechicken.nei.recipe.*;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockPlushie.TileEntityPlushie;
+import com.hbm.compat.neicustomdiagram.BedrockOreDiagramCompat;
 import com.hbm.config.ClientConfig;
 import com.hbm.config.CustomMachineConfigJSON;
 import com.hbm.handler.nei.AnvilOverlayHandler;
@@ -40,6 +41,7 @@ public class NEIConfig implements IConfigureNEI {
 		for (TemplateRecipeHandler handler: NEIRegistry.listAllHandlers()) {
 			registerHandler(handler);
 		}
+		BedrockOreDiagramCompat.init();
 		API.registerGuiOverlayHandler(GUIAnvil.class, new AnvilOverlayHandler(), "ntmAnvil");
 
 		for(CustomMachineConfigJSON.MachineConfiguration conf : CustomMachineConfigJSON.niceList) {

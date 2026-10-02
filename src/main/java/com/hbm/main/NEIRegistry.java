@@ -1,6 +1,7 @@
 package com.hbm.main;
 
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import cpw.mods.fml.common.Loader;
 import com.hbm.config.VersatileConfig;
 import com.hbm.handler.nei.*;
 
@@ -57,7 +58,9 @@ public class NEIRegistry {
 		handlers.add(new AtmosphericCompressorHandler());
 		handlers.add(new AtmosphereRecipeHandler());
 		handlers.add(new BedrockDrillHandler());
-		handlers.add(new BedrockOreProcessingHandler());
+		if(!Loader.isModLoaded("neicustomdiagram")) {
+			handlers.add(new BedrockOreProcessingHandler());
+		}
 		handlers.add(new WaterTableHandler());
 		handlers.add(new OilExtractionHandler());
 

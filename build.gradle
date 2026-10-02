@@ -137,6 +137,7 @@ dependencies {
 	compileOnly("inventorytweaks:InventoryTweaks:1.59-dev:deobf") { transitive = false }
 
 	compileOnly("com.github.MightyPirates:OpenComputers:1.7.10-forge~1.8.9:api") { transitive = false }
+	implementation("com.github.GTNewHorizons:nei-custom-diagram:1.8.36:dev") { transitive = false }
 
 	implementation("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-1045-GTNH:dev") { transitive = false }
 	implementation("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.105-gtnh:dev") { transitive = false }
