@@ -9067,6 +9067,7 @@ chat.tool_preset.tool_ability_deactivated=[Tool ability deactivated]
 nei.alloy_furnace.name=Blast Furnace
 nei.anvil.name=Anvil
 nei.book.name=Black Book
+nei.bedrock_ore_processing.name=Bedrock Ore Processing
 nei.crucible_alloying.name=Crucible Alloying
 nei.crucible_casting.name=Crucible Casting
 nei.crucible_smelting.name=Crucible Smelting

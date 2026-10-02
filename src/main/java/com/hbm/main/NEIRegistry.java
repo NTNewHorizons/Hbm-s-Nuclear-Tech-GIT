@@ -57,6 +57,7 @@ public class NEIRegistry {
 		handlers.add(new AtmosphericCompressorHandler());
 		handlers.add(new AtmosphereRecipeHandler());
 		handlers.add(new BedrockDrillHandler());
+		handlers.add(new BedrockOreProcessingHandler());
 		handlers.add(new WaterTableHandler());
 		handlers.add(new OilExtractionHandler());
 
