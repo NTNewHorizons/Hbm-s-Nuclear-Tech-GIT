@@ -224,7 +224,7 @@ public class BlockWandStructure extends BlockContainer implements IBlockMulti, I
 				return;
 			}
 
-			File structureDirectory = new File(Minecraft.getMinecraft().mcDataDir, "structures");
+			File structureDirectory = NBTStructure.getStructureDirectory();
 			structureDirectory.mkdir();
 
 			File structureFile = new File(structureDirectory, name + ".nbt");
