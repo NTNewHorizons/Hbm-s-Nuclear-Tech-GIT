@@ -12,6 +12,7 @@ public class AudioWrapper {
 
 	public void updateVolume(float volume) { }
 	public void updateRange(float range) { }
+	public void setAttenuation(boolean attenuate) { }
 	
 	public void updatePitch(float pitch) { }
 

@@ -50,6 +50,11 @@ public class AudioWrapperClient extends AudioWrapper {
 	}
 
 	@Override
+	public void setAttenuation(boolean attenuate) {
+		if(sound != null) sound.setAttenuation(attenuate);
+	}
+
+	@Override
 	public void updatePitch(float pitch) {
 		if(sound != null) sound.setPitch(pitch);
 	}

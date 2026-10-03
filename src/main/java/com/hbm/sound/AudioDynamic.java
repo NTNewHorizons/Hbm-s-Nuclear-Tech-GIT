@@ -84,6 +84,10 @@ public class AudioDynamic extends MovingSound {
 		this.range = range;
 	}
 
+	public void setAttenuation(boolean attenuate) {
+		this.field_147666_i = attenuate ? ISound.AttenuationType.LINEAR : ISound.AttenuationType.NONE;
+	}
+
 	public void setKeepAlive(int keepAlive) {
 		this.keepAlive = keepAlive;
 		this.shouldExpire = true;
