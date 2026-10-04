@@ -11,4 +11,8 @@ public interface ICompatNHNEI {
 	public ItemStack[] getMachinesForRecipe();
 	public String getRecipeID();
 
+	default int getHandlerHeight() { return 65; }
+	default int getHandlerWidth() { return 166; }
+	default int getMaxRecipesPerPage() { return 3; }
+	default boolean allowOverflowY() { return false; }
 }

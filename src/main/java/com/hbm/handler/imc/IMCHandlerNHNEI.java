@@ -19,7 +19,8 @@ public class IMCHandlerNHNEI {
 			if(handler instanceof ICompatNHNEI && ((ICompatNHNEI) handler).getMachinesForRecipe() != null) {
 				String blockName = "hbm:" + ((ICompatNHNEI) handler).getMachinesForRecipe()[0].getUnlocalizedName();
 				String hClass = handlerClass.getName();
-				sendHandler(hClass, ((ICompatNHNEI) handler).getRecipeID(), blockName);
+				ICompatNHNEI compat = (ICompatNHNEI) handler;
+				sendHandler(hClass, compat.getRecipeID(), blockName, compat.getMaxRecipesPerPage(), compat.getHandlerWidth(), compat.getHandlerHeight(), compat.allowOverflowY());
 				for(ItemStack stack : ((ICompatNHNEI) handler).getMachinesForRecipe()) {
 					sendCatalyst(hClass, "hbm:" + stack.getUnlocalizedName());
 				}
@@ -28,10 +29,10 @@ public class IMCHandlerNHNEI {
 	}
 
 	private static void sendHandler(String aName, String handlerID, String aBlock) {
-		sendHandler(aName, handlerID, aBlock, 3);
+		sendHandler(aName, handlerID, aBlock, 3, 166, 65, false);
 	}
 
-	private static void sendHandler(String aName, String handlerID, String aBlock, int maxRecipesPerPage) {
+	private static void sendHandler(String aName, String handlerID, String aBlock, int maxRecipesPerPage, int handlerWidth, int handlerHeight, boolean allowOverflowY) {
 		NBTTagCompound aNBT = new NBTTagCompound();
 		aNBT.setString("handler", aName);
 		aNBT.setString("handlerID", handlerID);
@@ -39,10 +40,14 @@ public class IMCHandlerNHNEI {
 		aNBT.setString("modId", RefStrings.MODID);
 		aNBT.setBoolean("modRequired", true);
 		aNBT.setString("itemName", aBlock);
-		aNBT.setInteger("handlerHeight", 65);
-		aNBT.setInteger("handlerWidth", 166);
+		aNBT.setInteger("handlerHeight", handlerHeight);
+		aNBT.setInteger("handlerWidth", handlerWidth);
 		aNBT.setInteger("maxRecipesPerPage", maxRecipesPerPage);
 		aNBT.setInteger("yShift", 6);
+		if(allowOverflowY) {
+			aNBT.setBoolean("allowOverflowY", true);
+			aNBT.setBoolean("multipleWidgetsAllowed", false);
+		}
 		FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", aNBT);
 	}
 

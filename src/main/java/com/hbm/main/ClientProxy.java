@@ -17,7 +17,6 @@ import com.hbm.blocks.machine.MachineFan.TileEntityFan;
 import com.hbm.blocks.machine.PistonInserter.TileEntityPistonInserter;
 import com.hbm.blocks.machine.WatzPump.TileEntityWatzPump;
 import com.hbm.blocks.network.FluidPump.TileEntityFluidPump;
-import com.hbm.compat.neicustomdiagram.BedrockOreDiagramCompat;
 import com.hbm.config.CustomMachineConfigJSON;
 import com.hbm.config.MachineSoundValidator;
 import com.hbm.config.GeneralConfig;
@@ -200,7 +199,8 @@ public class ClientProxy extends ServerProxy {
 	@Override
 	public void handleNHNEICompat(){
 		IMCHandlerNHNEI.IMCSender();
-		BedrockOreDiagramCompat.init();
+		com.hbm.handler.nei.BedrockOreProcessingHandler.injectHandlerInfo();
+		net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(new com.hbm.handler.nei.BedrockOreProcessingHandler.BedrockOreNEIListener());
 	}
 
 	@Override
