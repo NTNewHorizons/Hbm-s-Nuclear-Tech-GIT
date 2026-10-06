@@ -29,7 +29,6 @@ import com.hbm.world.gen.nbt.selector.BiomeBlockSelector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -38,6 +37,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -313,7 +313,7 @@ public class NBTStructure {
 		NBTTagCompound structure = saveArea(world, x1, y1, z1, x2, y2, z2, exclude);
 
 		try {
-			File structureDirectory = new File(Minecraft.getMinecraft().mcDataDir, "structures");
+			File structureDirectory = getStructureDirectory();
 			structureDirectory.mkdir();
 
 			File structureFile = new File(structureDirectory, filename);
@@ -326,6 +326,10 @@ public class NBTStructure {
 
 			return null;
 		}
+	}
+
+	public static File getStructureDirectory() {
+		return MinecraftServer.getServer().getFile("structures");
 	}
 
 	private void loadStructure(InputStream inputStream) {

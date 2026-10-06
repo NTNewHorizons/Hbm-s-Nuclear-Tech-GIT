@@ -5,6 +5,7 @@ import java.util.List;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.network.TileEntityPylonBase;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -13,9 +14,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class ItemWiring extends Item {
 
@@ -23,19 +24,19 @@ public class ItemWiring extends Item {
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
 
 		if(!player.isSneaking()) {
-			
+
 			Block b = world.getBlock(x, y, z);
-			
+
 			if(b instanceof BlockDummyable) {
 				int[] core = ((BlockDummyable)b).findCore(world, x, y, z);
-				
+
 				if(core != null) {
 					x = core[0];
 					y = core[1];
 					z = core[2];
 				}
 			}
-			
+
 			TileEntity te = world.getTileEntity(x, y, z);
 
 			if(te != null && te instanceof TileEntityPylonBase) {
@@ -48,7 +49,7 @@ public class ItemWiring extends Item {
 					stack.stackTagCompound.setInteger("z", z);
 
 					if(!world.isRemote) {
-						player.addChatMessage(new ChatComponentText("Wire start"));
+						player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_start"));
 					}
 				} else if(!world.isRemote) {
 
@@ -60,30 +61,30 @@ public class ItemWiring extends Item {
 
 						TileEntityPylonBase first = (TileEntityPylonBase) world.getTileEntity(x1, y1, z1);
 						TileEntityPylonBase second = ((TileEntityPylonBase) te);
-						
+
 						switch (TileEntityPylonBase.canConnect(first, second)) {
 							case 0:
 								first.addConnection(x, y, z);
 								second.addConnection(x1, y1, z1);
-								player.addChatMessage(new ChatComponentText("Wire end"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_end"));
 								break;
 							case 1:
-								player.addChatMessage(new ChatComponentText("Wire error - Pylons are not the same type"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_error_pylons_not_same"));
 								break;
 							case 2:
-								player.addChatMessage(new ChatComponentText("Wire error - Cannot connect to the same pylon"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_error_cannot_connect_same"));
 								break;
 							case 3:
-								player.addChatMessage(new ChatComponentText("Wire error - Pylon is too far away"));
+								player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_error_pylon_far_away"));
 								break;
 						}
-						
+
 						stack.stackTagCompound = null;
 
 					} else {
 
 						if(!world.isRemote) {
-							player.addChatMessage(new ChatComponentText("Wire error"));
+							player.addChatMessage(new ChatComponentTranslation("chat.wiring.wire_error"));
 						}
 						stack.stackTagCompound = null;
 					}
@@ -100,11 +101,11 @@ public class ItemWiring extends Item {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean bool) {
 		if(itemstack.stackTagCompound != null) {
-			list.add("Wire start x: " + itemstack.stackTagCompound.getInteger("x"));
-			list.add("Wire start y: " + itemstack.stackTagCompound.getInteger("y"));
-			list.add("Wire start z: " + itemstack.stackTagCompound.getInteger("z"));
+			list.add(I18nUtil.resolveKey("item.wiring.desc1", itemstack.stackTagCompound.getInteger("x")));
+			list.add(I18nUtil.resolveKey("item.wiring.desc2", itemstack.stackTagCompound.getInteger("y")));
+			list.add(I18nUtil.resolveKey("item.wiring.desc3", itemstack.stackTagCompound.getInteger("z")));
 		} else {
-			list.add("Right-click poles to connect");
+			list.add(I18nUtil.resolveKey("desc.item.wiring.right_click_poles_connect"));
 		}
 	}
 
@@ -117,7 +118,7 @@ public class ItemWiring extends Item {
 						entity.posX - stack.stackTagCompound.getInteger("x"),
 						entity.posY - stack.stackTagCompound.getInteger("y"),
 						entity.posZ - stack.stackTagCompound.getInteger("z"));
-				
+
 				MainRegistry.proxy.displayTooltip(stack.getDisplayName() + ": " + ((int) vec.lengthVector()) + "m", MainRegistry.proxy.ID_CABLE);
 			}
 		}

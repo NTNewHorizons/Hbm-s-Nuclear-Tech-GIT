@@ -62,6 +62,11 @@ public class StructureConfig {
 
 	public static int aircraftCarrierSpawnWeight = 3;
 
+	public static int campASpawnWeight = 10;
+	public static int campBSpawnWeight = 5;
+
+	public static int airplaneSpawnWeight = 2;
+
 	// --- Null weights
 	public static int plainsNullWeight = 4;
 	public static int oceanNullWeight = 15;
@@ -121,6 +126,9 @@ public class StructureConfig {
 		towerBaseSpawnWeight = CommonConfig.createConfigInt(config, CATEGORY_STRUCTURES, "5.41_towerBaseSpawnWeight", "Spawn weight for tower base.", 30);
 		waterPumpSpawnWeight = CommonConfig.createConfigInt(config, CATEGORY_STRUCTURES, "5.42_waterPumpSpawnWeight", "Spawn weight for water pump structure.", 15);
 		deadDishSmallSpawnWeight = CommonConfig.createConfigInt(config, CATEGORY_STRUCTURES, "5.43_deadDishSmallSpawnWeight", "Spawn weight for dead dish small structure.", 15);
+		campASpawnWeight = CommonConfig.createConfigInt(config, CATEGORY_STRUCTURES, "5.47_campASpawnWeight", "Spawn weight for camp A.", 10);
+		campBSpawnWeight = CommonConfig.createConfigInt(config, CATEGORY_STRUCTURES, "5.48_campBSpawnWeight", "Spawn weight for camp B.", 5);
+		airplaneSpawnWeight = CommonConfig.createConfigInt(config, CATEGORY_STRUCTURES, "5.50_airplaneSpawnWeight", "Spawn weight for airplane.", 2);
 
 
 		structureMinChunks = CommonConfig.setDef(structureMinChunks, 4);

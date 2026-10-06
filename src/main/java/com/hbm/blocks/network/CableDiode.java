@@ -80,7 +80,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.GOLD + "Limits throughput and restricts flow direction");
+		list.add((EnumChatFormatting.GOLD) + I18nUtil.resolveKey("tile.cable_diode.limits_throughput_restricts_flow"));
 	}
 
 	@Override
@@ -92,8 +92,8 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 		TileEntityDiode diode = (TileEntityDiode) te;
 
 		List<String> text = new ArrayList();
-		text.add("Max.: " + BobMathUtil.getShortNumber(diode.getMaxPower()) + "HE/t");
-		text.add("Priority: " + diode.priority.name());
+		text.add(I18nUtil.resolveKey("overlay.cable_diode.max_he_t", BobMathUtil.getShortNumber(diode.getMaxPower())));
+		text.add(I18nUtil.resolveKey("overlay.cable_diode.priority", diode.priority.name()));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

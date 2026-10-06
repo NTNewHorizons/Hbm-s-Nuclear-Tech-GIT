@@ -25,6 +25,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPropulsion, IFusionPowerReceiver, IBlockSealable {
 
@@ -37,7 +38,7 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 	public static long maxPower = 200_000_000L;
 
 	public static final int COOLANT_USE = 50;
-	
+
 	public float rotor;
 	public float prevRotor;
 	public float rotorSpeed;
@@ -128,7 +129,7 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 			this.networkPackNT(200);
 			this.plasmaEnergy = 0;
 		} else {
-			
+
 			if(power >= maxPower || isOn) this.rotorSpeed += 0.125F;
 			else this.rotorSpeed -= 0.125F;
 
@@ -154,7 +155,7 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 					audio.updateVolume(getVolume(1F));
 					audio.keepAlive();
 				}
-				
+
 				thrustAmount += 0.01D;
 				if(thrustAmount > 1) thrustAmount = 1;
 			} else {
@@ -162,7 +163,7 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 					audio.stopSound();
 					audio = null;
 				}
-				
+
 				thrustAmount -= 0.01D;
 				if(thrustAmount < 0) thrustAmount = 0;
 			}
@@ -239,15 +240,15 @@ public class TileEntityMachineHTRNeo extends TileEntityCooledBase implements IPr
 	@Override
 	public void addErrors(List<String> errors) {
 		if(plasmaEnergySync < fuelCost) {
-			errors.add(EnumChatFormatting.RED + "Insufficient plasma energy: needs " + BobMathUtil.getShortNumber(fuelCost) + " TU");
+			errors.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.htrneo.insufficient_plasma_energy_needs_tu", BobMathUtil.getShortNumber(fuelCost)));
 		}
 
 		if(power < maxPower) {
-			errors.add(EnumChatFormatting.RED + "Insufficient power");
+			errors.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.htrneo.insufficient_power"));
 		}
 
 		if(!isCool()) {
-			errors.add(EnumChatFormatting.RED + "Coolant loop not operational!");
+			errors.add((EnumChatFormatting.RED) + I18nUtil.resolveKey("overlay.htrneo.coolant_loop_not_operational"));
 		}
 	}
 

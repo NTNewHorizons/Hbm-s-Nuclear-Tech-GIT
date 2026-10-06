@@ -35,12 +35,12 @@ public class MachineFENSU extends BlockDummyable implements ILookOverlay, IPersi
 
 	@Override public int[] getDimensions() { return new int[] {4, 0, 1, 1, 2, 2}; }
 	@Override public int getOffset() { return 1; }
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 		return this.standardOpenBehavior(world, x, y, z, player, 0);
 	}
-	
+
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
 		return IPersistentNBT.getDrops(world, x, y, z, this);
@@ -49,31 +49,31 @@ public class MachineFENSU extends BlockDummyable implements ILookOverlay, IPersi
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		int[] pos = this.findCore(world, x, y, z);
-		
+
 		if(pos == null)
 			return;
-		
+
 		TileEntity te = world.getTileEntity(pos[0], pos[1], pos[2]);
-		
+
 		if(!(te instanceof TileEntityMachineBattery))
 			return;
-		
+
 		TileEntityMachineBattery battery = (TileEntityMachineBattery) te;
-		
+
 		List<String> text = new ArrayList();
-		text.add(BobMathUtil.getShortNumber(battery.getPower()) + " / " + BobMathUtil.getShortNumber(battery.getMaxPower()) + "HE");
-		
+		text.add(I18nUtil.resolveKey("overlay.common.energy", BobMathUtil.getShortNumber(battery.getPower()), BobMathUtil.getShortNumber(battery.getMaxPower())));
+
 		double percent = (double) battery.getPower() / (double) battery.getMaxPower();
 		int charge = (int) Math.floor(percent * 10_000D);
 		int color = ((int) (0xFF - 0xFF * percent)) << 16 | ((int)(0xFF * percent) << 8);
-		
+
 		text.add("&[" + color + "&]" + (charge / 100D) + "%");
-		
+
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, NBTTagCompound persistentTag, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.YELLOW + "" + BobMathUtil.getShortNumber(persistentTag.getLong("power")) + "/" + BobMathUtil.getShortNumber(Long.MAX_VALUE) + "HE");
+		list.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("tile.fensu.he", BobMathUtil.getShortNumber(persistentTag.getLong("power")), BobMathUtil.getShortNumber(Long.MAX_VALUE)));
 	}
 }

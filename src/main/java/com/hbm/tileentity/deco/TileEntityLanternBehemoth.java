@@ -50,7 +50,7 @@ public class TileEntityLanternBehemoth extends TileEntityLoadedBase implements I
 				shuttle.posX = xCoord + 0.5 + worldObj.rand.nextGaussian() * 10;
 				shuttle.posY = 300;
 				shuttle.posZ = zCoord + 0.5 + worldObj.rand.nextGaussian() * 10;
-				ItemStack payload = ItemKitCustom.create("Supplies", null, 0xffffff, 0x008000,
+				ItemStack payload = ItemKitCustom.create("item.kit_custom.supplies.name", null, 0xffffff, 0x008000,
 						DictFrame.fromOne(ModItems.circuit, EnumCircuitType.BASIC, 4 + worldObj.rand.nextInt(4)),
 						DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ADVANCED, 4 + worldObj.rand.nextInt(2)),
 						bonus ? new ItemStack(ModItems.gem_alexandrite) : new ItemStack(Items.diamond, 6 + worldObj.rand.nextInt(6)),

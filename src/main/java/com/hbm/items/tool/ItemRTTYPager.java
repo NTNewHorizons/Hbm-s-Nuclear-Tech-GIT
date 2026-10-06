@@ -19,6 +19,7 @@ import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.network.RTTYSystem;
 import com.hbm.tileentity.network.RTTYSystem.RTTYChannel;
 import com.hbm.util.BaublesCompat;
+import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,7 +33,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class ItemRTTYPager extends Item implements IItemControlReceiver, IGUIProvider, IBauble {
-	
+
 	public static final String KEY_CHANNEL = "chan";
 
 	@Override
@@ -43,14 +44,14 @@ public class ItemRTTYPager extends Item implements IItemControlReceiver, IGUIPro
 	private void tickPager(ItemStack stack, World world, Entity entity, int slot) {
 		if(!stack.hasTagCompound() || !stack.stackTagCompound.hasKey(KEY_CHANNEL)) return;
 		if(!(entity instanceof EntityPlayerMP) || world.isRemote) return;
-		
+
 		String channelFreq = stack.stackTagCompound.getString(KEY_CHANNEL);
 		RTTYChannel chan = RTTYSystem.listen(world, channelFreq);
-		
+
 		if(chan != null && chan.timeStamp >= world.getTotalWorldTime() - 1) {
 			int alive = entity.ticksExisted % 1000;
 			String message = EnumChatFormatting.GOLD + "[ " + channelFreq + " (" + alive + ") ] " + EnumChatFormatting.YELLOW + chan.signal;
-			
+
 			if("selfdestruct".equals(chan.signal + "")) {
 				ExplosionVNT vnt = new ExplosionVNT(world, entity.posX, entity.posY + entity.height / 2, entity.posZ, 5, null);
 				vnt.setEntityProcessor(new EntityProcessorCrossSmooth(1, 50).setupPiercing(5F, 0.5F));
@@ -60,7 +61,7 @@ public class ItemRTTYPager extends Item implements IItemControlReceiver, IGUIPro
 				stack.stackSize--;
 				return;
 			}
-			
+
 			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(message, ServerProxy.ID_PAGER_DYN + slot, 5_000), (EntityPlayerMP) entity);
 		}
 	}
@@ -91,13 +92,13 @@ public class ItemRTTYPager extends Item implements IItemControlReceiver, IGUIPro
 		if(world.isRemote) player.openGui(MainRegistry.instance, 0, world, 0, 0, 0);
 		return stack;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(!stack.hasTagCompound() || !stack.stackTagCompound.hasKey(KEY_CHANNEL) || stack.stackTagCompound.getString(KEY_CHANNEL).isEmpty()) {
-			list.add(EnumChatFormatting.RED + "No channel set!");
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.rtty_pager.no_channel"));
 		} else {
-			list.add(EnumChatFormatting.YELLOW + "Channel: " + stack.stackTagCompound.getString(KEY_CHANNEL));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.rtty_pager.desc2", stack.stackTagCompound.getString(KEY_CHANNEL)));
 		}
 	}
 

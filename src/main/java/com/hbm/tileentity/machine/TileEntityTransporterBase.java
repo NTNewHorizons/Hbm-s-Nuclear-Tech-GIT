@@ -33,7 +33,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileEntityTransporterBase extends TileEntityMachineBase implements IGUIProvider, IControlReceiver, IFluidStandardTransceiver {
 
-	private String name = "Transporter";
+	private String name = "container.transporter";
 
 	public FluidTank[] tanks;
 

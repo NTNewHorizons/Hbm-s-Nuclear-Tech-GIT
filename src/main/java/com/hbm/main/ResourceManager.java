@@ -155,10 +155,9 @@ public class ResourceManager {
 	public static final IModelCustom combustion_engine = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/combustion_engine.obj")).asVBO();
 
 	//Press
-	public static final IModelCustom press_body = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/press_body.obj"));
-	public static final IModelCustom press_head = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/press_head.obj"));
-	public static final IModelCustom epress_body = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/epress_body.obj"));
-	public static final IModelCustom epress_head = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/epress_head.obj"));
+	public static final IModelCustom press_body = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/press_body.obj"));
+	public static final IModelCustom press_head = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/press_head.obj"));
+	public static final IModelCustom electric_press = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/electric_press.obj"));
 	public static final IModelCustom conveyor_press = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/conveyor_press.obj"));
 	public static final IModelCustom ammo_press = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/ammo_press.obj")).asVBO();
 
@@ -664,10 +663,9 @@ public class ResourceManager {
 	public static final ResourceLocation combustion_engine_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/combustion_engine.png");
 
 	//Press
-	public static final ResourceLocation press_body_tex = new ResourceLocation(RefStrings.MODID, "textures/models/press_body.png");
-	public static final ResourceLocation press_head_tex = new ResourceLocation(RefStrings.MODID, "textures/models/press_head.png");
-	public static final ResourceLocation epress_body_tex = new ResourceLocation(RefStrings.MODID, "textures/models/epress_body.png");
-	public static final ResourceLocation epress_head_tex = new ResourceLocation(RefStrings.MODID, "textures/models/epress_head.png");
+	public static final ResourceLocation press_body_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/press_body.png");
+	public static final ResourceLocation press_head_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/press_head.png");
+	public static final ResourceLocation electric_press_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/electric_press.png");
 	public static final ResourceLocation conveyor_press_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/conveyor_press.png");
 	public static final ResourceLocation conveyor_press_belt_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/conveyor_press_belt.png");
 	public static final ResourceLocation ammo_press_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/ammo_press.png");
@@ -953,6 +951,14 @@ public class ResourceManager {
 	public static final ResourceLocation glyphid_blaster_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_blaster.png");
 	public static final ResourceLocation glyphid_scout_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_scout.png");
 	public static final ResourceLocation glyphid_nuclear_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_nuclear.png");
+	public static final ResourceLocation glyphid_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_tame.png");
+	public static final ResourceLocation glyphid_brawler_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_brawler_tame.png");
+	public static final ResourceLocation glyphid_behemoth_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_behemoth_tame.png");
+	public static final ResourceLocation glyphid_brenda_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_brenda_tame.png");
+	public static final ResourceLocation glyphid_bombardier_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_bombardier_tame.png");
+	public static final ResourceLocation glyphid_blaster_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_blaster_tame.png");
+	public static final ResourceLocation glyphid_scout_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_scout_tame.png");
+	public static final ResourceLocation glyphid_nuclear_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_nuclear_tame.png");
 	public static final ResourceLocation scutter_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/lob2.png");
 	public static final ResourceLocation tankbot_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/robtex.png");
 	public static final ResourceLocation liquidator_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/liqtex.png");
@@ -966,6 +972,7 @@ public class ResourceManager {
 	public static final ResourceLocation bfangel_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/bfa_body.png");
 
 	public static final ResourceLocation glyphid_digger_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_digger.png");
+	public static final ResourceLocation glyphid_digger_tame_tex = new ResourceLocation(RefStrings.MODID, "textures/entity/glyphid_digger_tame.png");
 	
 	//PILE
 	public static final ResourceLocation pile_loader_tex = new ResourceLocation(RefStrings.MODID, "textures/models/pile/pile_loader.png");

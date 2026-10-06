@@ -103,6 +103,7 @@ import com.hbm.util.BobMathUtil;
 import com.hbm.util.ColorUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.i18n.I18nClient;
+import com.hbm.util.i18n.I18nUtil;
 import com.hbm.util.i18n.ITranslate;
 import com.hbm.wiaj.cannery.Jars;
 
@@ -817,6 +818,7 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityGlyphidBombardier.class, new RenderGlyphid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGlyphidBlaster.class, new RenderGlyphid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGlyphidScout.class, new RenderGlyphid());
+		RenderingRegistry.registerEntityRenderingHandler(EntityGlyphidDigger.class, new RenderGlyphid());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGlyphidNuclear.class, new RenderGlyphidNuclear());
 		RenderingRegistry.registerEntityRenderingHandler(EntityParasiteMaggot.class, new RenderMaggot());
 		RenderingRegistry.registerEntityRenderingHandler(EntityFBIDrone.class, new RenderDrone());
@@ -2158,6 +2160,21 @@ public class ClientProxy extends ServerProxy {
 			String label = data.getString("label");
 			int expires = data.getInteger("expires");
 			double dist = data.getDouble("dist");
+
+			if(!label.isEmpty()) {
+				if(data.hasKey("labelArgs")) {
+					String[] raw = data.getString("labelArgs").split("\u0000", -1);
+					Object[] args = new Object[raw.length];
+					for(int i = 0; i < raw.length; i++) {
+						if(raw[i].startsWith("k:")) args[i] = I18nUtil.resolveKey(raw[i].substring(2));
+						else if(raw[i].startsWith("v:")) args[i] = raw[i].substring(2);
+						else args[i] = raw[i];
+					}
+					label = I18nUtil.resolveKey(label, args);
+				} else {
+					label = I18nUtil.resolveKey(label);
+				}
+			}
 
 			RenderOverhead.queuedMarkers.put(new BlockPos(x, y, z),  new Marker(color).setDist(dist).setExpire(expires > 0 ? System.currentTimeMillis() + expires : 0).withLabel(label.isEmpty() ? null : label));
 		}

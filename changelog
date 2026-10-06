@@ -4,3 +4,7 @@
 * Per-variant ore richness config (default 250 units), exact counts kept in world save
 * Rich ores rename as they deplete (Rich / Half-Depleted / Almost Depleted) in inventory and on the crosshair overlay
 * Large Mining Drill mines rich blobs: one chunk per 3s alone, or the whole blob at 3.1s per block with vein miner on, scaled by drillbit speed
+## Fixed
+* Fixed the pollution detector's localization being broken
+* Fixed an exploit achievable via packet manipulation
+* Fixed assembly factory and chemical factory RoR reader index offset

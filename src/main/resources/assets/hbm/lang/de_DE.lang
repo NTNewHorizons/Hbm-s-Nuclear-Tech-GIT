@@ -5118,8 +5118,6 @@ turret.arty.manual=Manueller Modus$Reichweite: 3.000m
 turret.machines=Maschinen anzielen: %s
 turret.mobs=Mobs anzielen: %s
 turret.none=Keine
-turret.off=AUS
-turret.on=AN
 turret.players=Spieler anzielen: %s
 
 upgrade.consumption=Verbrauch %s

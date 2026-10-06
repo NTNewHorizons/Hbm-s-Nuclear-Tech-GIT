@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.i18n.I18nUtil;
 
 public class MachineDiesel extends BlockMachineBase implements ITooltipProvider, IBlockSealable {
 
@@ -29,21 +30,21 @@ public class MachineDiesel extends BlockMachineBase implements ITooltipProvider,
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityMachineDiesel();
 	}
-	
+
 	@Override public int getRenderType(){ return -1; }
 	@Override public boolean isOpaqueCube() { return false; }
 	@Override public boolean renderAsNormalBlock() { return false; }
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 		TileEntity tile = world.getTileEntity(x, y, z);
-		
+
 		if(tile instanceof TileEntityMachineDiesel) {
 			TileEntityMachineDiesel diesel = (TileEntityMachineDiesel) tile;
-			
+
 			if(diesel.hasAcceptableFuel() && diesel.tank.getFill() > 0) {
-				
+
 				ForgeDirection dir = ForgeDirection.getOrientation(tile.getBlockMetadata());
 				ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
 				world.spawnParticle("smoke", x + 0.5 - dir.offsetX * 0.6 + rot.offsetX * 0.1875, y + 0.3125, z + 0.5 - dir.offsetZ * 0.6 + rot.offsetZ * 0.1875, 0, 0, 0);
@@ -53,11 +54,11 @@ public class MachineDiesel extends BlockMachineBase implements ITooltipProvider,
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		
-		list.add(EnumChatFormatting.YELLOW + "Fuel efficiency:");
+
+		list.add((EnumChatFormatting.YELLOW) + I18nUtil.resolveKey("tile.diesel.fuel_efficiency"));
 		for(FuelGrade grade : FuelGrade.values()) {
 			Double efficiency = TileEntityMachineDiesel.fuelEfficiency.get(grade);
-			
+
 			if(efficiency != null) {
 				int eff = (int)(efficiency * 100);
 				list.add(EnumChatFormatting.YELLOW + "-" + grade.getLocalizedName() + ": " + EnumChatFormatting.RED + "" + eff + "%");
