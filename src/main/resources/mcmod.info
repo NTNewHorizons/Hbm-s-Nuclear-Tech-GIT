@@ -7,7 +7,7 @@
   "mcversion": "${minecraftVersion}",
   "url": "",
   "updateUrl": "",
-  "credits": @CREDITS@,
+  "credits": "${credits}",
   "logoFile": "",
   "screenshots": [],
   "dependencies": [
