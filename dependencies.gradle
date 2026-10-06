@@ -21,6 +21,7 @@ dependencies {
     implementation('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-1081-GTNH:dev') {
         transitive = false
     }
+    compileOnly("it.unimi.dsi:fastutil:8.5.18") // Needed by new AE2 version
     implementation('com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.113-gtnh:dev') {
         transitive = false
     }
