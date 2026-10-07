@@ -60,13 +60,13 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.6.0
         with:
-          # Upload the built jar instead of the raw build/libs directory (which would get zipped)
+          # Upload the built jars instead of the raw build/libs directory (which would get zipped)
           path: ./build/libs/*.jar
 
-      # A release is only made when the mod was built from the space-travel-two-pointfive branch
+      # A release is only made when the mod was built from the space-travel-twopointfive branch
       - name: Calculate release tag
         id: release_tag
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/space-travel-two-pointfive'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/space-travel-twopointfive'
         run: |
           days=${{ steps.calculate_days.outputs.days }}
           base_tag="1.0.27_X${days}"
@@ -98,17 +98,27 @@ jobs:
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
       - name: Create Release
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/space-travel-two-pointfive'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/space-travel-twopointfive'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ steps.release_tag.outputs.tag }}"
-          jar=$(ls ./build/libs/HBM-NTM-*.jar | head -n 1)
+          jar=$(find ./build/libs -maxdepth 1 -type f \
+            -name 'HBM-NTM-*.jar' \
+            ! -name '*-sources.jar' \
+            ! -name '*-dev.jar' \
+            ! -name '*-predowngrade.jar' \
+            ! -name '*-api.jar' \
+            -print -quit)
+          if [ -z "$jar" ]; then
+            echo "Release jar not found"
+            exit 1
+          fi
 
           # gh interprets asset paths as glob patterns, so escape the [ ] in the jar name
           asset=$(printf '%s' "$jar" | sed 's/[][?*\\]/\\&/g')
 
           gh release create "$tag" "$asset" \
             --title "$tag" \
-            --notes "Automated release build for the space-travel-two-pointfive branch. Build number: ${{ steps.calculate_days.outputs.days }}" \
+            --notes "Automated release build for the space-travel-twopointfive branch. Build number: ${{ steps.calculate_days.outputs.days }}" \
             --latest
