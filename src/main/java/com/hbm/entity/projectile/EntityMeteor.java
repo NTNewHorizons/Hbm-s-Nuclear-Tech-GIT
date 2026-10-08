@@ -129,7 +129,7 @@ public class EntityMeteor extends Entity {
 				(new Meteorite()).generate(worldObj, rand, spawnPosX, spawnPosY, spawnPosZ, safe, true, true);
 				clearMeteorPath(worldObj, spawnPosX, spawnPosY, spawnPosZ);
 
-				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:entity.oldExplosion", 10000.0F, 0.5F + this.rand.nextFloat() * 0.1F);
+				this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "hbm:entity.oldExplosion", 10.0F, 0.5F + this.rand.nextFloat() * 0.1F);
 
 				this.setDead();
 			}
@@ -143,7 +143,10 @@ public class EntityMeteor extends Entity {
 
 			} else {
 
-				if(this.audioFly == null) this.audioFly = MainRegistry.proxy.getLoopedSound("hbm:entity.meteoriteFallingLoop", 0, 0, 0, 1F, 200F, 0.9F + this.rand.nextFloat() * 0.2F, 10);
+				if(this.audioFly == null) {
+					this.audioFly = MainRegistry.proxy.getLoopedSound("hbm:entity.meteoriteFallingLoop", 0, 0, 0, 1F, 200F, 0.9F + this.rand.nextFloat() * 0.2F, 10);
+					this.audioFly.setAttenuation(true);
+				}
 
 				if(this.audioFly.isPlaying()) {
 					// Update sound
