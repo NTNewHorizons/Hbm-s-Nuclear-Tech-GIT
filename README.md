@@ -81,7 +81,7 @@ dependencies {
 Tired of waiting until the next version comes out? Here is a tutorial on how to compile the very newest version yourself:
 Please note that these installation instructions are assuming you're running Microsoft Windows operating system. Linux users should know what to do by looking at the same guide.
 
- 1. Make sure you have JDK 25 installed. If not, download it from [adoptium.net](https://adoptium.net/temurin/releases?version=25). The build uses modern Java tooling but still produces Java 8-compatible mod classes.
+ 1. Make sure you have a JDK installed. JDK 25 is recommended and can be downloaded from [adoptium.net](https://adoptium.net/temurin/releases?version=25), but JDK 8 can also be used to build the mod. The build still produces Java 8-compatible mod classes.
  2. If you don't have git installed, download&install it from [here](https://git-scm.com/downloads).
  3. Open up "Git Bash":
     * Press Windows Button, type "Git Bash" and press ENTER
@@ -135,14 +135,14 @@ If you want to make some changes to the mod, follow this guide:
     ./gradlew eclipse
 ```
 6. Switch to the **eclipse** folder inside your directory as a workspace.
-7. If necessary, make sure that Eclipse is using JDK 25 to run Gradle and the Java 8 execution environment for Minecraft.
+7. If necessary, make sure that Eclipse is using your chosen JDK (JDK 25 is recommended; JDK 8 also works) and the Java 8 execution environment for Minecraft.
    * On Linux, enter Windows>Preferences>Java>Installed JREs.
-      * Click search to navigate to /usr/lib/jvm and add your JDK 25 installation.
+      * Click search to navigate to /usr/lib/jvm and add your chosen JDK installation.
       * Afterwards, enter Execution Environment and keep JavaSE-1.8 configured for the mod runtime.
    * On Windows, you may need to set your JAVA_HOME.
       * Search for Environment Variables and click Edit the System Environment Variables.
       * Click Environment Variables. Click new under System Variables.
-      * Enter **JAVA_HOME** under Variable Name and enter the path to your JDK 25 under Variable Value.
+      * Enter **JAVA_HOME** under Variable Name and enter the path to your chosen JDK under Variable Value.
       * In Eclipse, now enter Windows>Preferences>Java>Installed JREs.
       * Click **Add Standard VM**; in the JRE home, navigate to the directory where the JDK is installed, then click finish and select it.
 8. Code!
