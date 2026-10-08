@@ -7,58 +7,46 @@ import com.hbm.blocks.network.FluidRegulatorValve;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
-import com.hbm.tileentity.IFluidCopiable;
-import com.hbm.tileentity.IPersistentNBT;
-import com.hbm.tileentity.TileEntityLoadedBase;
-import com.hbm.tileentity.machine.storage.TileEntityBarrel;
-import com.hbm.tileentity.machine.storage.TileEntityMachineFluidTank;
 
 import api.hbm.energymk2.IEnergyReceiverMK2.ConnectionPriority;
 import api.hbm.fluidmk2.IFluidConnectorMK2;
 import api.hbm.fluidmk2.IFluidPipeMK2;
-import api.hbm.fluidmk2.IFluidProviderMK2;
 import api.hbm.fluidmk2.IFluidReceiverMK2;
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
 import api.hbm.fluidmk2.IFluidStandardSenderMK2;
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
-import api.ntm1of90.compat.fluid.registry.FluidMappingRegistry;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
-		implements IFluidReceiverMK2, IFluidStandardSenderMK2, IFluidConnectorMK2, IPersistentNBT, IFluidCopiable {
+public class TileEntityFluidRegulatorValve extends TileEntityPipeBaseNT
+		implements IFluidReceiverMK2, IFluidStandardSenderMK2 {
 
 	public static final int[] LEVELS = new int[] { 1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 99 };
 	public int levelIndex = 5; // default 50%
-	public FluidType filterType = Fluids.NONE;
-
-	public static final int MAX_RATE = 50_000;
 
 	// Client-side synced data for HUD overlay
-	public boolean clientHasTank = false;
-	public FluidType clientTankType = Fluids.NONE;
-	public int clientTankFill = 0;
 	public int clientTankMax = 0;
 
 	public int getTargetPercentage() {
 		return LEVELS[MathHelper.clamp_int(levelIndex, 0, LEVELS.length - 1)];
 	}
 
+	public long getTargetAmount(int capacity) {
+		return (long) capacity * getTargetPercentage() / 100L;
+	}
+
+	@Override
+	public boolean shouldCreateNode() {
+		return false;
+	}
+
 	public void cycleThreshold(boolean backwards) {
-		if (backwards) {
-			levelIndex = (levelIndex - 1 + LEVELS.length) % LEVELS.length;
-		} else {
-			levelIndex = (levelIndex + 1) % LEVELS.length;
-		}
+		int nextIndex = MathHelper.clamp_int(levelIndex + (backwards ? -1 : 1), 0, LEVELS.length - 1);
+		if (nextIndex == levelIndex) return;
+		levelIndex = nextIndex;
 		worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "hbm:item.screwdriver", 1.0F, 1.0F);
 		this.markDirty();
 		this.networkPackNT(25);
@@ -68,11 +56,6 @@ public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
 		public TileEntity tile;
 		public ForgeDirection dir;
 		public FluidTank tank;
-		public IFluidHandler forgeHandler;
-		public FluidType type = Fluids.NONE;
-		public int fill = 0;
-		public int maxFill = 0;
-		public int pressure = 0;
 	}
 
 	public List<TankRef> getConnectedTanks() {
@@ -84,60 +67,30 @@ public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
 			TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 			if (te == null || te == this)
 				continue;
-			if (te instanceof IFluidPipeMK2 || te instanceof TileEntityFluidRegulatorValve)
+			if (te instanceof IFluidPipeMK2)
 				continue;
 
-			// 1. Check for NTM FluidTank
-			FluidTank foundTank = null;
-			if (te instanceof TileEntityMachineFluidTank) {
-				foundTank = ((TileEntityMachineFluidTank) te).tank;
-			} else if (te instanceof TileEntityBarrel) {
-				foundTank = ((TileEntityBarrel) te).tank;
-			} else if (te instanceof IFluidStandardTransceiverMK2) {
-				foundTank = selectTank(((IFluidStandardTransceiverMK2) te).getAllTanks());
-			} else if (te instanceof IFluidStandardReceiverMK2) {
-				foundTank = selectTank(((IFluidStandardReceiverMK2) te).getReceivingTanks());
-			} else if (te instanceof IFluidStandardSenderMK2) {
-				foundTank = selectTank(((IFluidStandardSenderMK2) te).getSendingTanks());
-			}
-
-			if (foundTank != null) {
-				TankRef ref = new TankRef();
-				ref.tile = te;
-				ref.dir = dir;
-				ref.tank = foundTank;
-				ref.type = foundTank.getTankType();
-				ref.fill = foundTank.getFill();
-				ref.maxFill = foundTank.getMaxFill();
-				ref.pressure = foundTank.getPressure();
-				list.add(ref);
-				continue;
-			}
-
-			// 2. Check for Forge IFluidHandler
-			if (te instanceof IFluidHandler) {
-				IFluidHandler handler = (IFluidHandler) te;
-				FluidTankInfo[] infos = handler.getTankInfo(dir.getOpposite());
-				if (infos != null && infos.length > 0) {
-					FluidTankInfo info = infos[0];
-					if (info != null && info.capacity > 0) {
-						TankRef ref = new TankRef();
-						ref.tile = te;
-						ref.dir = dir;
-						ref.forgeHandler = handler;
-						if (info.fluid != null && info.fluid.getFluid() != null) {
-							ref.type = FluidMappingRegistry.getHbmFluidType(info.fluid.getFluid());
-							ref.fill = info.fluid.amount;
-						} else {
-							ref.type = this.filterType;
-							ref.fill = 0;
-						}
-						ref.maxFill = info.capacity;
-						ref.pressure = 0;
-						list.add(ref);
-					}
+			// Native tank discovery does not grant permission to fill or drain it.
+			boolean nativeMachine = te instanceof IFluidStandardReceiverMK2 || te instanceof IFluidStandardSenderMK2;
+			if (nativeMachine) {
+				FluidTank[] tanks;
+				if (te instanceof IFluidStandardTransceiverMK2) {
+					tanks = ((IFluidStandardTransceiverMK2) te).getAllTanks();
+				} else if (te instanceof IFluidStandardReceiverMK2) {
+					tanks = ((IFluidStandardReceiverMK2) te).getReceivingTanks();
+				} else {
+					tanks = ((IFluidStandardSenderMK2) te).getSendingTanks();
+				}
+				FluidTank tank = selectTank(tanks);
+				if (tank != null) {
+					TankRef ref = new TankRef();
+					ref.tile = te;
+					ref.dir = dir;
+					ref.tank = tank;
+					if (canAccess(ref, getRegulatedType(ref))) list.add(ref);
 				}
 			}
+
 		}
 
 		return list;
@@ -148,32 +101,47 @@ public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
 		return list.isEmpty() ? null : list.get(0);
 	}
 
+	private boolean isCompatible(FluidType type, int fill) {
+		return this.type != Fluids.NONE && (fill <= 0 || type == this.type);
+	}
+
 	private FluidTank selectTank(FluidTank[] tanks) {
-		if (tanks == null || tanks.length == 0)
-			return null;
-		if (this.filterType != Fluids.NONE) {
-			for (FluidTank t : tanks) {
-				if (t != null && t.getTankType() == this.filterType)
-					return t;
-			}
+		if (tanks == null) return null;
+		FluidTank empty = null;
+		for (FluidTank tank : tanks) {
+			if (tank == null || !isCompatible(tank.getTankType(), tank.getFill())) continue;
+			if (tank.getTankType() == this.type) return tank;
+			if (empty == null) empty = tank;
 		}
-		for (FluidTank t : tanks) {
-			if (t != null && t.getFill() > 0)
-				return t;
-		}
-		return tanks[0];
+		return empty;
 	}
 
 	public FluidType getRegulatedType(TankRef ref) {
-		if (this.filterType != Fluids.NONE)
-			return this.filterType;
-		if (ref != null && ref.type != Fluids.NONE)
-			return ref.type;
-		return Fluids.NONE;
+		if (ref == null || !isCompatible(ref.tank.getTankType(), ref.tank.getFill())) return Fluids.NONE;
+		return this.type;
+	}
+
+	private boolean canAccess(TankRef ref, FluidType type) {
+		return !(ref.tile instanceof IFluidConnectorMK2)
+				|| ((IFluidConnectorMK2) ref.tile).canConnect(type, ref.dir.getOpposite());
+	}
+
+	private boolean containsTank(FluidTank[] tanks, FluidTank target) {
+		if (tanks != null) for (FluidTank tank : tanks) if (tank == target) return true;
+		return false;
+	}
+
+	private boolean permitsTransfer(TankRef ref, FluidType type, int pressure, boolean receiving) {
+		if (ref == null || ref.tank.getMaxFill() <= 0 || type == Fluids.NONE || type != getRegulatedType(ref)
+				|| pressure != ref.tank.getPressure() || !canAccess(ref, type)) return false;
+		return receiving
+				? ref.tile instanceof IFluidStandardReceiverMK2 && containsTank(((IFluidStandardReceiverMK2) ref.tile).getReceivingTanks(), ref.tank)
+				: ref.tile instanceof IFluidStandardSenderMK2 && ref.tank.getTankType() == type && containsTank(((IFluidStandardSenderMK2) ref.tile).getSendingTanks(), ref.tank);
 	}
 
 	@Override
 	public void updateEntity() {
+		super.updateEntity();
 		if (!worldObj.isRemote) {
 			List<TankRef> tanks = getConnectedTanks();
 
@@ -185,13 +153,11 @@ public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
 
 			if (tanks.size() == 1) {
 				TankRef ref = tanks.get(0);
-				if (ref.maxFill > 0) {
+				if (ref.tank.getMaxFill() > 0) {
 					FluidType regType = getRegulatedType(ref);
 					if (regType != Fluids.NONE) {
-						long targetMb = (long) ref.maxFill * getTargetPercentage() / 100L;
-						long demand = Math.max(0, targetMb - ref.fill);
-						long available = Math.max(0, ref.fill - targetMb);
-						int pressure = ref.pressure;
+						long targetMb = getTargetAmount(ref.tank.getMaxFill());
+						int pressure = ref.tank.getPressure();
 
 						for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 							if (dir == ref.dir)
@@ -201,10 +167,10 @@ public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
 							int ny = yCoord + dir.offsetY;
 							int nz = zCoord + dir.offsetZ;
 
-							if (demand > 0) {
+							if (ref.tank.getFill() < targetMb && permitsTransfer(ref, regType, pressure, true)) {
 								this.trySubscribe(regType, worldObj, nx, ny, nz, dir);
 							}
-							if (available > 0) {
+							if (ref.tank.getFill() > targetMb && permitsTransfer(ref, regType, pressure, false)) {
 								this.tryProvide(regType, pressure, worldObj, nx, ny, nz, dir);
 							}
 						}
@@ -220,14 +186,13 @@ public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
 
 	@Override
 	public boolean canConnect(FluidType type, ForgeDirection dir) {
+		if (dir == ForgeDirection.UNKNOWN) return false;
 		TankRef ref = getTankRef();
 		if (ref != null && dir == ref.dir) {
 			return false; // Isolate the tank from direct pipe network bridging
 		}
 		FluidType regType = getRegulatedType(ref);
-		if (regType == Fluids.NONE)
-			return true;
-		return type == regType;
+		return regType != Fluids.NONE && type == regType;
 	}
 
 	// ===== IFluidReceiverMK2 (Inflow when tank < target) =====
@@ -235,57 +200,38 @@ public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
 	@Override
 	public long getDemand(FluidType type, int pressure) {
 		TankRef ref = getTankRef();
-		if (ref == null || ref.maxFill <= 0)
-			return 0;
-		FluidType regType = getRegulatedType(ref);
-		if (type != regType || pressure != ref.pressure)
+		if (!permitsTransfer(ref, type, pressure, true))
 			return 0;
 
-		long targetMb = (long) ref.maxFill * getTargetPercentage() / 100L;
-		long demand = Math.max(0, targetMb - ref.fill);
-		return Math.min(demand, MAX_RATE);
+		return Math.max(0, getTargetAmount(ref.tank.getMaxFill()) - ref.tank.getFill());
 	}
 
 	@Override
 	public long transferFluid(FluidType type, int pressure, long amount) {
 		TankRef ref = getTankRef();
-		if (ref == null || ref.maxFill <= 0)
-			return amount;
-		FluidType regType = getRegulatedType(ref);
-		if (type != regType || pressure != ref.pressure)
+		if (!permitsTransfer(ref, type, pressure, true))
 			return amount;
 
-		long targetMb = (long) ref.maxFill * getTargetPercentage() / 100L;
-		long needed = Math.max(0, targetMb - ref.fill);
+		long needed = Math.max(0, getTargetAmount(ref.tank.getMaxFill()) - ref.tank.getFill());
 		long toAccept = Math.min(amount, needed);
 		if (toAccept <= 0)
 			return amount;
 
-		if (ref.tank != null) {
-			if (ref.tank.getTankType() == Fluids.NONE) {
-				ref.tank.setTankType(regType);
-			}
-			int accepted = Math.min((int) toAccept, ref.tank.getMaxFill() - ref.tank.getFill());
-			ref.tank.setFill(ref.tank.getFill() + accepted);
-			ref.tile.markDirty();
-			return amount - accepted;
-		} else if (ref.forgeHandler != null) {
-			Fluid forgeFluid = FluidMappingRegistry.getForgeFluid(regType);
-			if (forgeFluid != null) {
-				int accepted = ref.forgeHandler.fill(ref.dir.getOpposite(), new FluidStack(forgeFluid, (int) toAccept),
-						true);
-				return amount - accepted;
-			}
+		if (ref.tank.getFill() == 0 && ref.tank.getTankType() != type) {
+			ref.tank.setTankType(type);
 		}
-
-		return amount;
+		int accepted = Math.min((int) toAccept, ref.tank.getMaxFill() - ref.tank.getFill());
+		ref.tank.setFill(ref.tank.getFill() + accepted);
+		ref.tile.markDirty();
+		return amount - accepted;
 	}
 
 	@Override
 	public int[] getReceivingPressureRange(FluidType type) {
 		TankRef ref = getTankRef();
 		if (ref != null) {
-			return new int[] { ref.pressure, ref.pressure };
+			int pressure = ref.tank.getPressure();
+			return new int[] { pressure, pressure };
 		}
 		return DEFAULT_PRESSURE_RANGE;
 	}
@@ -299,17 +245,12 @@ public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
 		return ConnectionPriority.NORMAL;
 	}
 
-	@Override
-	public long getReceiverSpeed(FluidType type, int pressure) {
-		return MAX_RATE;
-	}
-
 	// ===== IFluidProviderMK2 (Outflow when tank > target) =====
 
 	@Override
 	public FluidTank[] getAllTanks() {
 		TankRef ref = getTankRef();
-		if (ref != null && ref.tank != null) {
+		if (ref != null) {
 			return new FluidTank[] { ref.tank };
 		}
 		return new FluidTank[0];
@@ -323,44 +264,32 @@ public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
 	@Override
 	public long getFluidAvailable(FluidType type, int pressure) {
 		TankRef ref = getTankRef();
-		if (ref == null || ref.maxFill <= 0)
-			return 0;
-		FluidType regType = getRegulatedType(ref);
-		if (type != regType || pressure != ref.pressure)
+		if (!permitsTransfer(ref, type, pressure, false))
 			return 0;
 
-		long targetMb = (long) ref.maxFill * getTargetPercentage() / 100L;
-		long excess = Math.max(0, ref.fill - targetMb);
-		return Math.min(excess, MAX_RATE);
+		return Math.max(0, ref.tank.getFill() - getTargetAmount(ref.tank.getMaxFill()));
 	}
 
 	@Override
 	public void useUpFluid(FluidType type, int pressure, long amount) {
 		TankRef ref = getTankRef();
-		if (ref == null || amount <= 0)
-			return;
+		if (amount <= 0 || !permitsTransfer(ref, type, pressure, false)) return;
+		long available = Math.max(0, ref.tank.getFill() - getTargetAmount(ref.tank.getMaxFill()));
+		int toRemove = (int) Math.min(amount, available);
+		if (toRemove <= 0) return;
 
-		if (ref.tank != null) {
-			int toRemove = Math.min((int) amount, ref.tank.getFill());
-			ref.tank.setFill(Math.max(0, ref.tank.getFill() - toRemove));
-			ref.tile.markDirty();
-		} else if (ref.forgeHandler != null) {
-			ref.forgeHandler.drain(ref.dir.getOpposite(), (int) amount, true);
-		}
+		ref.tank.setFill(ref.tank.getFill() - toRemove);
+		ref.tile.markDirty();
 	}
 
 	@Override
 	public int[] getProvidingPressureRange(FluidType type) {
 		TankRef ref = getTankRef();
 		if (ref != null) {
-			return new int[] { ref.pressure, ref.pressure };
+			int pressure = ref.tank.getPressure();
+			return new int[] { pressure, pressure };
 		}
 		return DEFAULT_PRESSURE_RANGE;
-	}
-
-	@Override
-	public long getProviderSpeed(FluidType type, int pressure) {
-		return MAX_RATE;
 	}
 
 	// ===== Network Sync & NBT =====
@@ -369,83 +298,30 @@ public class TileEntityFluidRegulatorValve extends TileEntityLoadedBase
 	public void serialize(ByteBuf buf) {
 		super.serialize(buf);
 		buf.writeByte(this.levelIndex);
-		buf.writeInt(this.filterType.getID());
+		buf.writeInt(this.type.getID());
 
 		TankRef ref = getTankRef();
-		if (ref != null) {
-			buf.writeBoolean(true);
-			buf.writeInt(ref.type.getID());
-			buf.writeInt(ref.fill);
-			buf.writeInt(ref.maxFill);
-		} else {
-			buf.writeBoolean(false);
-		}
+		buf.writeInt(ref != null ? ref.tank.getMaxFill() : 0);
 	}
 
 	@Override
 	public void deserialize(ByteBuf buf) {
 		super.deserialize(buf);
 		this.levelIndex = buf.readByte();
-		this.filterType = Fluids.fromID(buf.readInt());
+		this.type = Fluids.fromID(buf.readInt());
 
-		boolean hasTank = buf.readBoolean();
-		if (hasTank) {
-			this.clientHasTank = true;
-			this.clientTankType = Fluids.fromID(buf.readInt());
-			this.clientTankFill = buf.readInt();
-			this.clientTankMax = buf.readInt();
-		} else {
-			this.clientHasTank = false;
-			this.clientTankType = Fluids.NONE;
-			this.clientTankFill = 0;
-			this.clientTankMax = 0;
-		}
+		this.clientTankMax = buf.readInt();
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		writeNBT(nbt);
+		nbt.setInteger("level", levelIndex);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		readNBT(nbt);
-	}
-
-	@Override
-	public void writeNBT(NBTTagCompound nbt) {
-		nbt.setInteger("level", levelIndex);
-		nbt.setInteger("type", filterType.getID());
-	}
-
-	@Override
-	public void readNBT(NBTTagCompound nbt) {
-		levelIndex = nbt.getInteger("level");
-		filterType = Fluids.fromID(nbt.getInteger("type"));
-	}
-
-	// ===== IFluidCopiable =====
-
-	@Override
-	public int[] getFluidIDToCopy() {
-		return new int[] { filterType.getID() };
-	}
-
-	@Override
-	public FluidTank getTankToPaste() {
-		return null;
-	}
-
-	@Override
-	public void pasteSettings(NBTTagCompound nbt, int index, World world, EntityPlayer player, int x, int y, int z) {
-		int[] ids = nbt.getIntArray("fluidID");
-		if (ids.length > 0) {
-			int id = index < ids.length ? ids[index] : 0;
-			this.filterType = Fluids.fromID(id);
-			this.markDirty();
-			this.networkPackNT(25);
-		}
+		if (nbt.hasKey("level")) levelIndex = MathHelper.clamp_int(nbt.getInteger("level"), 0, LEVELS.length - 1);
 	}
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
-import com.hbm.items.machine.IItemFluidIdentifier;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
@@ -18,16 +17,12 @@ import api.hbm.block.IToolable;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
@@ -67,7 +62,7 @@ public class FluidRegulatorValve extends FluidDuctBase implements ILookOverlay, 
 			new AuxParticlePacketNT(data, x + 0.5, y + 0.5, z + 0.5),
 			new TargetPoint(world.provider.dimensionId, x + 0.5, y + 0.5, z + 0.5, 100)
 		);
-	
+
 		world.func_147480_a(x, y, z, true);
 	}
 
@@ -87,29 +82,6 @@ public class FluidRegulatorValve extends FluidDuctBase implements ILookOverlay, 
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-		if(player.getHeldItem() != null && player.getHeldItem().getItem() instanceof IItemFluidIdentifier) {
-			if(!world.isRemote) {
-				TileEntity te = world.getTileEntity(x, y, z);
-				if(te instanceof TileEntityFluidRegulatorValve) {
-					TileEntityFluidRegulatorValve valve = (TileEntityFluidRegulatorValve) te;
-					FluidType type = ((IItemFluidIdentifier) player.getHeldItem().getItem()).getType(world, x, y, z, player.getHeldItem());
-					valve.filterType = type;
-					valve.markDirty();
-					valve.networkPackNT(25);
-					player.addChatComponentMessage(new ChatComponentTranslation("chat.common.changed_type")
-							.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW))
-							.appendSibling(new ChatComponentTranslation(type.getConditionalName()))
-							.appendSibling(new ChatComponentText("!")));
-				}
-			}
-			return true;
-		}
-
-		return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
-	}
-
-	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
 		TileEntity te = world.getTileEntity(x, y, z);
 
@@ -120,13 +92,14 @@ public class FluidRegulatorValve extends FluidDuctBase implements ILookOverlay, 
 
 		List<String> text = new ArrayList<>();
 		int percent = valve.getTargetPercentage();
+		FluidType type = valve.getType();
+		text.add("&[" + type.getColor() + "&]" + type.getLocalizedName());
 
-		if(valve.clientHasTank && valve.clientTankMax > 0) {
-			long targetMb = (long) valve.clientTankMax * percent / 100L;
+		if(type == Fluids.NONE) {
+			text.add(I18nUtil.resolveKey("overlay.fluid_regulator_valve.unconfigured", percent));
+		} else if(valve.clientTankMax > 0) {
+			long targetMb = valve.getTargetAmount(valve.clientTankMax);
 			text.add(I18nUtil.resolveKey("overlay.fluid_regulator_valve.target", percent, BobMathUtil.format(targetMb), BobMathUtil.format(valve.clientTankMax)));
-			if(valve.clientTankType != Fluids.NONE) {
-				text.add("&[" + valve.clientTankType.getColor() + "&]" + valve.clientTankType.getLocalizedName() + ": " + BobMathUtil.format(valve.clientTankFill) + "mB");
-			}
 		} else {
 			text.add(I18nUtil.resolveKey("overlay.fluid_regulator_valve.no_tank", percent));
 		}
