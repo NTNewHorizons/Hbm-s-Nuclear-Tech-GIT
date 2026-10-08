@@ -403,12 +403,34 @@ public abstract class TileEntityTransporterBase extends TileEntityMachineBase im
 	}
 
 	private void fetchLinkedTransporter() {
-		if(linkedTransporter == null && linkedTransporterInfo != null) {
-			World transporterWorld = DimensionManager.getWorld(linkedTransporterInfo.dimensionId);
-			TileEntity te = transporterWorld.getTileEntity(linkedTransporterInfo.x, linkedTransporterInfo.y, linkedTransporterInfo.z);
-			if(te != null && te instanceof TileEntityTransporterBase) {
-				linkedTransporter = (TileEntityTransporterBase) te;
+		if(linkedTransporter != null) {
+			if(linkedTransporter.isInvalid()) {
+				linkedTransporter = null;
+			} else {
+				return;
 			}
+		}
+		if(linkedTransporterInfo == null) return;
+
+		// Linked dimension may be unloaded
+		World transporterWorld = DimensionManager.getWorld(linkedTransporterInfo.dimensionId);
+		if(transporterWorld == null) return;
+
+		int lx = linkedTransporterInfo.x;
+		int ly = linkedTransporterInfo.y;
+		int lz = linkedTransporterInfo.z;
+
+		// Don't link into unloaded chunks
+		if(!transporterWorld.blockExists(lx, ly, lz)) return;
+
+		TileEntity te = transporterWorld.getTileEntity(lx, ly, lz);
+		if(te instanceof TileEntityTransporterBase && !te.isInvalid()) {
+			linkedTransporter = (TileEntityTransporterBase) te;
+		} else {
+			// Partner gone, drop stale link
+			linkedTransporter = null;
+			linkedTransporterInfo = null;
+			this.markDirty();
 		}
 	}
 
