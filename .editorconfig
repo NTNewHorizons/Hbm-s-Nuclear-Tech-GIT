@@ -12,5 +12,5 @@ max_line_length = off
 [{*.info,*.json,*.mcmeta,*.md,*.cfg,*.yml,*.toml}]
 tab_width = 2
 
-[{*.info,*.mcmeta,*.cfg}]
+[{*.info,*.mcmeta,*.cfg,*.sh,gradlew}]
 end_of_line = lf
