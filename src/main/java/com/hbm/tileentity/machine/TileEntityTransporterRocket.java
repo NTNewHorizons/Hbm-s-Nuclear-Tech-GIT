@@ -69,6 +69,8 @@ public class TileEntityTransporterRocket extends TileEntityTransporterBase {
 	// Check that we have enough fuel to send to our destination
 	@Override
 	protected boolean canSend(TileEntityTransporterBase linkedTransporter) {
+		if(!(linkedTransporter instanceof TileEntityTransporterRocket)) return false;
+		if(linkedTransporter.getWorldObj() == null) return false;
 		if(launchTicks > -20) return false;
 		if(((TileEntityTransporterRocket)linkedTransporter).launchTicks < 100) return false;
 		if(!hasRocket) return false;
@@ -91,17 +93,22 @@ public class TileEntityTransporterRocket extends TileEntityTransporterBase {
 
 	@Override
 	protected void hasSent(TileEntityTransporterBase linkedTransporter, int quantitySent) {
+		if(!(linkedTransporter instanceof TileEntityTransporterRocket)) return;
+		if(linkedTransporter.getWorldObj() == null) return;
+
 		// Recalculate send cost from what was actually successfully sent
 		FT_Rocket fuelStats = tanks[8].getTankType().getTrait(FT_Rocket.class);
 		if(fuelStats == null) fuelStats = tanks[9].getTankType().getTrait(FT_Rocket.class);
 
-		Target from = CelestialBody.getTarget(worldObj, xCoord, zCoord);
-		Target to = CelestialBody.getTarget(linkedTransporter.getWorldObj(), linkedTransporter.xCoord, linkedTransporter.zCoord);
+		if(fuelStats != null) {
+			Target from = CelestialBody.getTarget(worldObj, xCoord, zCoord);
+			Target to = CelestialBody.getTarget(linkedTransporter.getWorldObj(), linkedTransporter.xCoord, linkedTransporter.zCoord);
 
-		int sendCost = Math.min(64_000, SolarSystem.getCostBetween(from.body, to.body, quantitySent * MASS_MULT, (int)fuelStats.getThrust(), fuelStats.getISP(), from.inOrbit, to.inOrbit));
+			int sendCost = Math.min(64_000, SolarSystem.getCostBetween(from.body, to.body, quantitySent * MASS_MULT, (int)fuelStats.getThrust(), fuelStats.getISP(), from.inOrbit, to.inOrbit));
 
-		tanks[8].setFill(tanks[8].getFill() - sendCost);
-		tanks[9].setFill(tanks[9].getFill() - sendCost);
+			tanks[8].setFill(tanks[8].getFill() - sendCost);
+			tanks[9].setFill(tanks[9].getFill() - sendCost);
+		}
 
 		hasRocket = false;
 		((TileEntityTransporterRocket)linkedTransporter).hasRocket = true;
@@ -109,6 +116,7 @@ public class TileEntityTransporterRocket extends TileEntityTransporterBase {
 
 	@Override
 	protected void hasConnected(TileEntityTransporterBase linkedTransporter) {
+		if(!(linkedTransporter instanceof TileEntityTransporterRocket)) return;
 		hasRocket = true;
 		((TileEntityTransporterRocket)linkedTransporter).hasRocket = false;
 	}

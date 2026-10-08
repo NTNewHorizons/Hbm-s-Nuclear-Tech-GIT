@@ -48,6 +48,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -1592,16 +1593,21 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		// NTNH RECIPES
 
 		if(Loader.isModLoaded("adventurebackpack")) {
-		this.register(new GenericRecipe("ass.adv.jetpack").setup(200, 100)
-			.outputItems(new ItemStack(GameRegistry.findItem("adventurebackpack", "coalJetpack"), 1))
-			.inputItems(
-				new OreDictStack(CU.plateWelded(), 2),
-				new OreDictStack(CU.pipe(), 2),
-				new OreDictStack(STEEL.ingot(), 2),
-				new ComparableStack(ModItems.coil_tungsten),
-				new ComparableStack(ModItems.circuit, 1, 8),
-				new ComparableStack(GameRegistry.findItem("adventurebackpack", "backpackComponent"), 1, 2)
-			));
+			// coalJetpack needs {wearableData:{}} or its GUI NPEs (#129), like vanilla crafting.
+			ItemStack jetpack = new ItemStack(GameRegistry.findItem("adventurebackpack", "coalJetpack"), 1);
+			NBTTagCompound jetpackNBT = new NBTTagCompound();
+			jetpackNBT.setTag("wearableData", new NBTTagCompound());
+			jetpack.stackTagCompound = jetpackNBT;
+			this.register(new GenericRecipe("ass.adv.jetpack").setup(200, 100)
+				.outputItems(jetpack)
+				.inputItems(
+					new OreDictStack(CU.plateWelded(), 2),
+					new OreDictStack(CU.pipe(), 2),
+					new OreDictStack(STEEL.ingot(), 2),
+					new ComparableStack(ModItems.coil_tungsten),
+					new ComparableStack(ModItems.circuit, 1, 8),
+					new ComparableStack(GameRegistry.findItem("adventurebackpack", "backpackComponent"), 1, 2)
+				));
 		}
 
 		if(Loader.isModLoaded("OpenComputers")) {
