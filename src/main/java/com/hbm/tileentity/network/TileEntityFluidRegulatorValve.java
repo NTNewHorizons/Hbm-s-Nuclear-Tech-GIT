@@ -14,7 +14,7 @@ import api.hbm.fluidmk2.IFluidPipeMK2;
 import api.hbm.fluidmk2.IFluidReceiverMK2;
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
 import api.hbm.fluidmk2.IFluidStandardSenderMK2;
-import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
+import api.hbm.fluidmk2.IFluidUserMK2;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -60,7 +60,7 @@ public class TileEntityFluidRegulatorValve extends TileEntityPipeBaseNT
 
 	public List<TankRef> getConnectedTanks() {
 		List<TankRef> list = new ArrayList<>();
-		if (worldObj == null)
+		if (worldObj == null || this.type == Fluids.NONE)
 			return list;
 
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -70,24 +70,17 @@ public class TileEntityFluidRegulatorValve extends TileEntityPipeBaseNT
 			if (te instanceof IFluidPipeMK2)
 				continue;
 
-			// Native tank discovery does not grant permission to fill or drain it.
-			boolean nativeMachine = te instanceof IFluidStandardReceiverMK2 || te instanceof IFluidStandardSenderMK2;
-			if (nativeMachine) {
-				FluidTank[] tanks;
-				if (te instanceof IFluidStandardTransceiverMK2) {
-					tanks = ((IFluidStandardTransceiverMK2) te).getAllTanks();
-				} else if (te instanceof IFluidStandardReceiverMK2) {
-					tanks = ((IFluidStandardReceiverMK2) te).getReceivingTanks();
-				} else {
-					tanks = ((IFluidStandardSenderMK2) te).getSendingTanks();
-				}
-				FluidTank tank = selectTank(tanks);
-				if (tank != null) {
+			if (te instanceof IFluidStandardReceiverMK2 || te instanceof IFluidStandardSenderMK2) {
+				FluidTank[] tanks = ((IFluidUserMK2) te).getAllTanks();
+				if (tanks == null) continue;
+				for (FluidTank tank : tanks) {
+					if (tank == null || tank.getTankType() != this.type) continue;
 					TankRef ref = new TankRef();
 					ref.tile = te;
 					ref.dir = dir;
 					ref.tank = tank;
-					if (canAccess(ref, getRegulatedType(ref))) list.add(ref);
+					if (canAccess(ref, this.type)) list.add(ref);
+					break;
 				}
 			}
 
@@ -101,23 +94,8 @@ public class TileEntityFluidRegulatorValve extends TileEntityPipeBaseNT
 		return list.isEmpty() ? null : list.get(0);
 	}
 
-	private boolean isCompatible(FluidType type, int fill) {
-		return this.type != Fluids.NONE && (fill <= 0 || type == this.type);
-	}
-
-	private FluidTank selectTank(FluidTank[] tanks) {
-		if (tanks == null) return null;
-		FluidTank empty = null;
-		for (FluidTank tank : tanks) {
-			if (tank == null || !isCompatible(tank.getTankType(), tank.getFill())) continue;
-			if (tank.getTankType() == this.type) return tank;
-			if (empty == null) empty = tank;
-		}
-		return empty;
-	}
-
 	public FluidType getRegulatedType(TankRef ref) {
-		if (ref == null || !isCompatible(ref.tank.getTankType(), ref.tank.getFill())) return Fluids.NONE;
+		if (ref == null || ref.tank.getTankType() != this.type) return Fluids.NONE;
 		return this.type;
 	}
 
@@ -217,9 +195,6 @@ public class TileEntityFluidRegulatorValve extends TileEntityPipeBaseNT
 		if (toAccept <= 0)
 			return amount;
 
-		if (ref.tank.getFill() == 0 && ref.tank.getTankType() != type) {
-			ref.tank.setTankType(type);
-		}
 		int accepted = Math.min((int) toAccept, ref.tank.getMaxFill() - ref.tank.getFill());
 		ref.tank.setFill(ref.tank.getFill() + accepted);
 		ref.tile.markDirty();
