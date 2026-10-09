@@ -17,19 +17,24 @@ import java.io.IOException;
 public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEnergyProviderMK2, IEnergyHandler, IConfigurableMachine {
 
 	public long power;
-	public final long maxPower = 5_000_000;
+	private static final long[] POWER_LIMITS = {5_000_000, 4_000_000, 3_000_000, 2_000_000, 1_000_000, 100_000};
+	private int maxPowerIndex = 0;
 	public static long rfInput = 2;
 	public static long heOutput = 5;
 	public static double inputDecay = 0.0;
 
-	public EnergyStorage storage = new EnergyStorage(1_000_000, 1_000_000, 1_000_000);
+	public EnergyStorage storage = new ConverterEnergyStorage(1_000_000);
+
+	public TileEntityConverterRfHe() {
+		updateRfLimits();
+	}
 
 	@Override
 	public void updateEntity() {
 		
 		if(!worldObj.isRemote) {
 			
-			long rfCreated = Math.min(storage.getEnergyStored(), (maxPower - power) * rfInput / heOutput);
+			long rfCreated = Math.min(storage.getEnergyStored(), Math.max(0, getMaxPower() - power) * rfInput / heOutput);
 			storage.setEnergyStored((int) (storage.getEnergyStored() - rfCreated));
 			power += rfCreated * heOutput / rfInput;
 			if(storage.getEnergyStored() > 0) storage.extractEnergy((int) Math.ceil(storage.getEnergyStored() * inputDecay), false);
@@ -51,13 +56,38 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 
 	@Override public long getPower() { return power; }
 	@Override public void setPower(long power) { this.power = power; }
-	@Override public long getMaxPower() { return maxPower; }
+	@Override public long getMaxPower() { return POWER_LIMITS[maxPowerIndex]; }
 	
+	public void adjustMaxPower(boolean decrease) {
+		maxPowerIndex = Math.max(0, Math.min(POWER_LIMITS.length - 1, maxPowerIndex + (decrease ? 1 : -1)));
+		updateRfLimits();
+		markDirty();
+		networkPackNT(15);
+	}
+
+	private void updateRfLimits() {
+		int maxRf = (int) (getMaxPower() * rfInput / heOutput);
+		storage.setCapacity(maxRf);
+		storage.setMaxTransfer(maxRf);
+	}
+
+	private void setMaxPower(long limit) {
+		maxPowerIndex = POWER_LIMITS.length - 1;
+		for(int i = 0; i < POWER_LIMITS.length; i++) {
+			if(POWER_LIMITS[i] <= limit) {
+				maxPowerIndex = i;
+				break;
+			}
+		}
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		
+		setMaxPower(nbt.hasKey("maxPower") ? nbt.getLong("maxPower") : POWER_LIMITS[0]);
 		this.power = nbt.getLong("power");
+		updateRfLimits();
 		storage.readFromNBT(nbt);
 	}
 	
@@ -66,6 +96,7 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 		super.writeToNBT(nbt);
 		
 		nbt.setLong("power", power);
+		nbt.setLong("maxPower", getMaxPower());
 		storage.writeToNBT(nbt);
 	}
 
@@ -74,6 +105,7 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 		super.serialize(buf);
 
 		buf.writeLong(power);
+		buf.writeLong(getMaxPower());
 		buf.writeInt(storage.getEnergyStored());
 	}
 
@@ -82,6 +114,8 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 		super.deserialize(buf);
 
 		power = buf.readLong();
+		setMaxPower(buf.readLong());
+		updateRfLimits();
 		storage.setEnergyStored(buf.readInt());
 	}
 
@@ -95,6 +129,7 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 		rfInput = IConfigurableMachine.grab(obj, "L:RF_Used2", rfInput);
 		heOutput = IConfigurableMachine.grab(obj, "L:HE_Created2", heOutput);
 		inputDecay = IConfigurableMachine.grab(obj, "D:inputDecay2", inputDecay);
+		updateRfLimits();
 	}
 
 	@Override
