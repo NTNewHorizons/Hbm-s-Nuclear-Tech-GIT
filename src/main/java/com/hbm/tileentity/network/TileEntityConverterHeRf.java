@@ -19,36 +19,41 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.io.IOException;
 
 public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEnergyReceiverMK2, IEnergyHandler, IConfigurableMachine {
-	
+
 	//Thanks to the great people of Fusion Warfare for helping me with the original implementation of the RF energy API
-	
+
 	public long power;
-	public final long maxPower = 5_000_000;
+	private static final long[] POWER_LIMITS = {5_000_000, 4_000_000, 3_000_000, 2_000_000, 1_000_000, 100_000};
+	private int maxPowerIndex = 0;
 	public static long heInput = 5;
 	public static long rfOutput = 1;
 	public static double inputDecay = 0.0;
-	public EnergyStorage storage = new EnergyStorage(1_000_000, 1_000_000, 1_000_000);
+	public EnergyStorage storage = new ConverterEnergyStorage(1_000_000);
+
+	public TileEntityConverterHeRf() {
+		updateRfLimits();
+	}
 
 	@Override
 	public void updateEntity() {
-		
+
 		if(!worldObj.isRemote) {
-			
-			long rfCreated = Math.min(storage.getMaxEnergyStored() - storage.getEnergyStored(), power / heInput * rfOutput);
+
+			long rfCreated = Math.min(Math.max(0, storage.getMaxEnergyStored() - storage.getEnergyStored()), power / heInput * rfOutput);
 			this.power -= rfCreated * heInput / rfOutput;
 			this.storage.setEnergyStored((int) (storage.getEnergyStored() + rfCreated));
 			if(power > 0) this.power *= (1D - inputDecay);
 			if(rfCreated > 0) this.worldObj.markTileEntityChunkModified(this.xCoord, this.yCoord, this.zCoord, this);
-			
+
 			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 				this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
-				
+
 				BlockPos loc = new BlockPos(xCoord, yCoord, zCoord).offset(dir);
 				TileEntity entity = Compat.getTileStandard(worldObj, loc.getX(), loc.getY(), loc.getZ());
-			
+
 				if(entity != null && entity instanceof IEnergyReceiver) {
 					IEnergyReceiver receiver = (IEnergyReceiver) entity;
-					
+
 					int maxExtract = storage.getMaxExtract();
 					int maxAvailable = storage.extractEnergy(maxExtract, true);
 					int energyTransferred = receiver.receiveEnergy(dir.getOpposite(), maxAvailable, false);
@@ -69,22 +74,54 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 
 	@Override public void setPower(long i) { power = i; }
 	@Override public long getPower() { return power; }
-	@Override public long getMaxPower() { return maxPower; }
+	@Override public long getMaxPower() { return POWER_LIMITS[maxPowerIndex]; }
 	@Override public ConnectionPriority getPriority() { return ConnectionPriority.LOW; }
-	
+
+	@Override
+	public long transferPower(long incoming) {
+		if(power >= getMaxPower()) return incoming;
+		return IEnergyReceiverMK2.super.transferPower(incoming);
+	}
+
+	public void adjustMaxPower(boolean decrease) {
+		maxPowerIndex = Math.max(0, Math.min(POWER_LIMITS.length - 1, maxPowerIndex + (decrease ? 1 : -1)));
+		updateRfLimits();
+		markDirty();
+		networkPackNT(15);
+	}
+
+	private void updateRfLimits() {
+		int maxRf = (int) (getMaxPower() * rfOutput / heInput);
+		storage.setCapacity(maxRf);
+		storage.setMaxTransfer(maxRf);
+	}
+
+	private void setMaxPower(long limit) {
+		maxPowerIndex = POWER_LIMITS.length - 1;
+		for(int i = 0; i < POWER_LIMITS.length; i++) {
+			if(POWER_LIMITS[i] <= limit) {
+				maxPowerIndex = i;
+				break;
+			}
+		}
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		
+
+		setMaxPower(nbt.hasKey("maxPower") ? nbt.getLong("maxPower") : POWER_LIMITS[0]);
 		this.power = nbt.getLong("power");
+		updateRfLimits();
 		storage.readFromNBT(nbt);
 	}
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		
+
 		nbt.setLong("power", power);
+		nbt.setLong("maxPower", getMaxPower());
 		storage.writeToNBT(nbt);
 	}
 
@@ -93,6 +130,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 		super.serialize(buf);
 
 		buf.writeLong(power);
+		buf.writeLong(getMaxPower());
 		buf.writeInt(storage.getEnergyStored());
 	}
 
@@ -101,6 +139,8 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 		super.deserialize(buf);
 
 		power = buf.readLong();
+		setMaxPower(buf.readLong());
+		updateRfLimits();
 		storage.setEnergyStored(buf.readInt());
 	}
 
@@ -114,6 +154,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 		heInput = IConfigurableMachine.grab(obj, "L:HE_Used", heInput);
 		rfOutput = IConfigurableMachine.grab(obj, "L:RF_Created", rfOutput);
 		inputDecay = IConfigurableMachine.grab(obj, "D:inputDecay2", inputDecay);
+		updateRfLimits();
 	}
 
 	@Override
