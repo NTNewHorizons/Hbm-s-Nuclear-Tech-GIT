@@ -9154,6 +9154,7 @@ overlay.common.tank=%s%s: %s/%smB
 overlay.common.tank_input=%s: %s/%smB
 overlay.common.tank_output=%s: %s/%smB
 overlay.condenser_powered.he_he=%sHE / %sHE
+overlay.converter.max_buffer=Max buffer: %sHE (use a screwdriver to change)
 overlay.converter_he_rf.he=%sHE
 overlay.converter_he_rf.rf=%sRF
 overlay.converter_rf_he.he=%sHE
