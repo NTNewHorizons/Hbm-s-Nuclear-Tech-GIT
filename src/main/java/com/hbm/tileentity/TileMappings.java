@@ -390,6 +390,7 @@ public class TileMappings {
 		put(TileEntityMachineLargeTurbine.class, "tileentity_industrial_turbine");
 		put(TileEntityMachineIndustrialTurbine.class, "tileentity_ind_turbine");
 		put(TileEntityChungus.class, "tileentity_chungus");
+		put(TileEntityChungusSolar.class, "tileentity_chungus_solar");
 
 		put(TileEntityMachineCombustionEngine.class, "tileentity_combustion_engine");
 

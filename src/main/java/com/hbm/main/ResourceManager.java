@@ -129,6 +129,7 @@ public class ResourceManager {
 	public static final IModelCustom industrial_turbine =	new HFRWavefrontObject("models/machines/industrial_turbine.obj").asVBO();
 	public static final IModelCustom chungus =				new HFRWavefrontObject("models/machines/chungus.obj").asVBO();
 	public static final IModelCustom chungus_destroyed =	new HFRWavefrontObject("models/machines/chungus_destroyed.obj").asVBO();
+	public static final IModelCustom chungus_solar =		new HFRWavefrontObject("models/machines/chungus_solar.obj").asVBO();
 
 	//Cooling Tower
 	public static final IModelCustom tower_small = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/tower_small.obj")).asVBO();
@@ -654,6 +655,7 @@ public class ResourceManager {
 	public static final ResourceLocation industrial_turbine_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/industrial_turbine.png");
 	public static final ResourceLocation chungus_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/chungus.png");
 	public static final ResourceLocation chungus_destroyed_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/chungus_destroyed.png");
+	public static final ResourceLocation chungus_solar_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/chungus_solar.png");
 
 	//Cooling Tower
 	public static final ResourceLocation tower_small_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/tower_small.png");

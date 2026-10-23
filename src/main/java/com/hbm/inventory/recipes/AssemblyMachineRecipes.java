@@ -1384,6 +1384,15 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 						new OreDictStack(ANY_PLASTIC.ingot(), 2),
 						new OreDictStack(MINGRADE.wireFine(), 8)));
 
+		this.register(new GenericRecipe("ass.chungussolar").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_chungus_solar, 1))
+				.inputItems(
+						new OreDictStack(GOLD.plate(), 32),
+						new OreDictStack(STAINLESS.plate(), 4),
+						new ComparableStack(ModItems.photo_panel, 25),
+						new OreDictStack(STEEL.plate(), 12),
+						new OreDictStack(ANY_PLASTIC.ingot(), 4),
+						new OreDictStack(MINGRADE.wireFine(), 16)));
+
 		this.register(new GenericRecipe("ass.launchpadrocket").setup(400, 100).outputItems(new ItemStack(ModBlocks.launch_pad_rocket, 1))
 				.inputItems(
 						new OreDictStack(STEEL.plateWelded(), 12),
