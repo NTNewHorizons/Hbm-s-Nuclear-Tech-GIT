@@ -1,6 +1,7 @@
 package com.hbm.tileentity.machine;
 
 import com.hbm.blocks.BlockDummyable;
+import com.hbm.blocks.machine.MachineChungusSolar;
 import com.hbm.dim.WorldProviderCelestial;
 import com.hbm.module.portmanager.ModulePortManPower;
 import com.hbm.tileentity.TileEntityLoadedBase;
@@ -24,6 +25,8 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 
 	private long power;
 	private long maxpwr = MAX_POWER;
+	public int panelRotation;
+	private boolean footprintUpdated;
 
 	protected ModulePortManPower modulePowerPorts;
 
@@ -47,6 +50,7 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 	public void updateEntity() {
 
 		if(!worldObj.isRemote) {
+			if(!footprintUpdated) footprintUpdated = ((MachineChungusSolar) getBlockType()).updateLegacyFootprint(this);
 			modulePowerPorts.update(getPorts());
 
 			// Sun power ranges from 1-4
@@ -92,11 +96,13 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 	@Override
 	public void serialize(ByteBuf buf) {
 		buf.writeLong(power);
+		buf.writeByte(panelRotation);
 	}
 
 	@Override
 	public void deserialize(ByteBuf buf) {
 		this.power = buf.readLong();
+		this.panelRotation = buf.readUnsignedByte() % 8;
 	}
 
 	@Override
@@ -104,6 +110,7 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 		super.readFromNBT(nbt);
 
 		this.power = nbt.getLong("power");
+		this.panelRotation = (nbt.getByte("panelRotation") & 7);
 		if(nbt.hasKey("maxpwr")) this.maxpwr = nbt.getLong("maxpwr");
 	}
 
@@ -112,6 +119,7 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 		super.writeToNBT(nbt);
 
 		nbt.setLong("power", power);
+		nbt.setByte("panelRotation", (byte) panelRotation);
 		nbt.setLong("maxpwr", maxpwr);
 	}
 
