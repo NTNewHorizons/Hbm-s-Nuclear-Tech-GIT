@@ -1,0 +1,2 @@
+Temporary fixture for testing the automatic EOL fix workflow.
+This file intentionally has CRLF line endings stored in Git.
