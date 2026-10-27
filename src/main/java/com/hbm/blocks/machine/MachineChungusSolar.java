@@ -63,6 +63,13 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 		return blocks;
 	}
 
+	/** Only the 15 rows of solar cells; exclude the port and support-arm rows. */
+	public List<BlockPos> getSolarCellBlocks(TileEntityChungusSolar solar) {
+		List<BlockPos> blocks = panelBlocks(solar.xCoord, solar.yCoord, solar.zCoord,
+				ForgeDirection.getOrientation(solar.getBlockMetadata() - offset), solar.panelRotation);
+		return blocks.subList(3, blocks.size());
+	}
+
 	@Override
 	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
 		if(!world.getBlock(x, y, z).isReplaceable(world, x, y, z)) return false;

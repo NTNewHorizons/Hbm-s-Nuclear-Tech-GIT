@@ -1,11 +1,14 @@
 package com.hbm.tileentity.machine;
 
+import java.util.List;
+
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.machine.MachineChungusSolar;
 import com.hbm.dim.WorldProviderCelestial;
 import com.hbm.module.portmanager.ModulePortManPower;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.fauxpointtwelve.BlockPos;
 
 import api.hbm.energymk2.IEnergyProviderMK2;
 import io.netty.buffer.ByteBuf;
@@ -53,18 +56,26 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 			if(!footprintUpdated) footprintUpdated = ((MachineChungusSolar) getBlockType()).updateLegacyFootprint(this);
 			modulePowerPorts.update(getPorts());
 
-			// Sun power ranges from 1-4
-			int sun = worldObj.getSavedLightValue(EnumSkyBlock.Sky, xCoord, yCoord, zCoord) - worldObj.skylightSubtracted - 11;
-
-			if(sun > 0 && worldObj.canBlockSeeTheSky(xCoord, yCoord + 1, zCoord)) {
-				power += getOutput(sun);
-
-				if(power > getMaxPower())
-					power = getMaxPower();
-			}
+			power = Math.min(getMaxPower(), power + getExposedOutput());
 
 			networkPackNT(50);
 		}
+	}
+
+	private long getExposedOutput() {
+		List<BlockPos> cells = ((MachineChungusSolar) getBlockType()).getSolarCellBlocks(this);
+		long output = 0;
+		for(BlockPos cell : cells) {
+			int x = cell.getX(), y = cell.getY() + 1, z = cell.getZ();
+			// Do not load neighboring chunks to generate power.
+			if(!worldObj.blockExists(x, cell.getY(), z)) continue;
+			// A vertical array shares columns with itself; ignore its own cells above this one.
+			while(cells.contains(new BlockPos(x, y, z))) y++;
+			if(!worldObj.canBlockSeeTheSky(x, y, z)) continue;
+			int sun = worldObj.getSavedLightValue(EnumSkyBlock.Sky, x, y, z) - worldObj.skylightSubtracted - 11;
+			if(sun > 0) output += getOutput(sun);
+		}
+		return output / cells.size();
 	}
 
 	// Balanced around 750HE/t on Earth, i.e. 7.5 times one regular solar panel (100HE/t): 5 sections at +50% efficiency
