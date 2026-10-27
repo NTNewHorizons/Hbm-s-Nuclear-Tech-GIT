@@ -35,7 +35,6 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 		return null;
 	}
 
-	/** Seventeen blocks long including the port, with a three-block-wide panel. */
 	@Override
 	public int[] getDimensions() {
 		return new int[] { 0, 0, 16, 0, 1, 1 };
@@ -63,7 +62,6 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 		return blocks;
 	}
 
-	/** Only the 15 rows of solar cells; exclude the port and support-arm rows. */
 	public List<BlockPos> getSolarCellBlocks(TileEntityChungusSolar solar) {
 		List<BlockPos> blocks = panelBlocks(solar.xCoord, solar.yCoord, solar.zCoord,
 				ForgeDirection.getOrientation(solar.getBlockMetadata() - offset), solar.panelRotation);
@@ -79,7 +77,6 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 		return true;
 	}
 
-	/** Replace the old rectangular dummy layout once, without touching neighboring arrays. */
 	public boolean updateLegacyFootprint(TileEntityChungusSolar solar) {
 		World world = solar.getWorldObj();
 		int x = solar.xCoord, y = solar.yCoord, z = solar.zCoord;

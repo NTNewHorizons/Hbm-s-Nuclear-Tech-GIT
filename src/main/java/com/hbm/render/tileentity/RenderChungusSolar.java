@@ -38,7 +38,6 @@ public class RenderChungusSolar extends TileEntitySpecialRenderer implements IIt
 		bindTexture(ResourceManager.chungus_solar_tex);
 		ResourceManager.chungus_solar.renderOnly("PortHousing", "Port");
 		GL11.glPushMatrix();
-		// Roll the array around its lengthwise shaft; the port stays fixed.
 		GL11.glTranslated(0, 0.5D, 0);
 		GL11.glRotatef(((TileEntityChungusSolar) te).panelRotation * 45F, 1F, 0F, 0F);
 		GL11.glTranslated(0, -0.5D, 0);

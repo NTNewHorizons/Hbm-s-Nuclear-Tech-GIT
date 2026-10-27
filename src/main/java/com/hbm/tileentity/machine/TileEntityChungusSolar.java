@@ -19,11 +19,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEnergyProviderMK2 {
 
-	/** How many regular solar panel sections the array represents; the model spans 5 sections over 18 blocks */
-	public static final int ACCUMULATED_PANELS = 5;
-	/** The array's cells are gold laminated, so they are +50% more efficient than a regular panel */
+	public static final int ACCUMULATED_PANELS = 9;
 	public static final double PANEL_BONUS_EFFICIENCY = 1.5D;
-	/** A regular panel buffers 1,000 HE, this machine buffers 5 times that */
 	public static final long MAX_POWER = 5_000;
 
 	private long power;
@@ -78,7 +75,7 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 		return output / cells.size();
 	}
 
-	// Balanced around 750HE/t on Earth, i.e. 7.5 times one regular solar panel (100HE/t): 5 sections at +50% efficiency
+	// 1,350 HE/t on Earth: nine regular panels (9 x 100 HE/t) at +50% efficiency
 	public long getOutput(int sun) {
 		return MathHelper.ceiling_float_int((float) (sun * 25 * ACCUMULATED_PANELS * PANEL_BONUS_EFFICIENCY * WorldProviderCelestial.getSunPower(worldObj.provider, xCoord, zCoord)));
 	}
