@@ -3,6 +3,7 @@ package com.hbm.tileentity.machine.storage;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.machine.TileEntityLockableBase;
 
+import api.hbm.redstoneoverradio.IRORValueProvider;
 import net.minecraft.entity.monster.EntityCaveSpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public abstract class TileEntityCrateBase extends TileEntityLockableBase implements ISidedInventory, IGUIProvider {
+public abstract class TileEntityCrateBase extends TileEntityLockableBase implements ISidedInventory, IGUIProvider, IRORValueProvider {
 
 	protected ItemStack[] slots;
 	public String customName;
@@ -35,6 +36,18 @@ public abstract class TileEntityCrateBase extends TileEntityLockableBase impleme
 	@Override
 	public ItemStack getStackInSlot(int i) {
 		return slots[i];
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] { PREFIX_VALUE + "type" };
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if(!(PREFIX_VALUE + "type").equals(name)) return null;
+		ItemStack stack = getSizeInventory() > 0 ? getStackInSlot(0) : null;
+		return stack == null ? "None" : stack.getDisplayName();
 	}
 
 	@Override

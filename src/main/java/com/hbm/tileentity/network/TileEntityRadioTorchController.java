@@ -10,7 +10,6 @@ import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.network.RTTYSystem.RTTYChannel;
 import com.hbm.util.BufferUtil;
 import com.hbm.util.Compat;
-import com.hbm.util.RORFluidControls;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.RORFunctionException;
@@ -45,8 +44,8 @@ public class TileEntityRadioTorchController extends TileEntityLoadedBase impleme
 
 				TileEntity tile = Compat.getTileStandard(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 
-				IRORInteractive ror = RORFluidControls.getController(tile);
-				if(ror != null) {
+				if(tile instanceof IRORInteractive) {
+					IRORInteractive ror = (IRORInteractive) tile;
 
 					RTTYChannel chan = RTTYSystem.listen(worldObj, channel);
 					if(chan != null) {

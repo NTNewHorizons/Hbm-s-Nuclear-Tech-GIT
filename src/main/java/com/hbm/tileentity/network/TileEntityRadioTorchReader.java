@@ -7,7 +7,6 @@ import com.hbm.interfaces.IControlReceiver;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.util.BufferUtil;
 import com.hbm.util.Compat;
-import com.hbm.util.RORValueProviders;
 
 import api.hbm.redstoneoverradio.IRORValueProvider;
 import cpw.mods.fml.common.Optional;
@@ -45,8 +44,8 @@ public class TileEntityRadioTorchReader extends TileEntityLoadedBase implements 
 
 			TileEntity tile = Compat.getTileStandard(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
 
-			IRORValueProvider prov = RORValueProviders.getProvider(tile);
-			if(prov != null) {
+			if(tile instanceof IRORValueProvider) {
+				IRORValueProvider prov = (IRORValueProvider) tile;
 
 				for(int i = 0; i < 8; i++) {
 					String channel = channels[i];

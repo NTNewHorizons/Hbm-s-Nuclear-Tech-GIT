@@ -12,7 +12,6 @@ import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toserver.NBTControlPacket;
 import com.hbm.tileentity.network.TileEntityRadioTorchController;
 import com.hbm.util.Compat;
-import com.hbm.util.RORFluidControls;
 import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.redstoneoverradio.IRORInfo;
@@ -85,8 +84,8 @@ public class GUIScreenRadioTorchController extends GuiScreen {
 		if(guiLeft + 137 <= x && guiLeft + 137 + 18 > x && guiTop + 17 < y && guiTop + 17 + 18 >= y) {
 			ForgeDirection dir = ForgeDirection.getOrientation(rtty.getBlockMetadata()).getOpposite();
 			TileEntity tile = Compat.getTileStandard(rtty.getWorldObj(), rtty.xCoord + dir.offsetX, rtty.yCoord + dir.offsetY, rtty.zCoord + dir.offsetZ);
-			IRORInfo prov = RORFluidControls.getController(tile);
-			if(prov != null) {
+			if(tile instanceof IRORInfo) {
+				IRORInfo prov = (IRORInfo) tile;
 				String[] info = prov.getFunctionInfo();
 				List<String> lines = new ArrayList();
 				lines.add(I18nUtil.resolveKey("gui.radio_torch_controller.usable_functions"));
