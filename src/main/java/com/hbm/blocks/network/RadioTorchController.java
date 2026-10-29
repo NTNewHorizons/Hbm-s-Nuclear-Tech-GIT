@@ -7,9 +7,9 @@ import com.hbm.blocks.ILookOverlay;
 import com.hbm.inventory.gui.GUIScreenRadioTorchController;
 import com.hbm.tileentity.network.TileEntityRadioTorchController;
 import com.hbm.util.Compat;
+import com.hbm.util.RORFluidControls;
 import com.hbm.util.i18n.I18nUtil;
 
-import api.hbm.redstoneoverradio.IRORInteractive;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -34,7 +34,7 @@ public class RadioTorchController extends RadioTorchBase {
 	@Override
 	public boolean canBlockStay(World world, int x, int y, int z, ForgeDirection dir, Block b) {
 		TileEntity tile = Compat.getTileStandard(world, x - dir.offsetX, y - dir.offsetY, z - dir.offsetZ);
-		return tile instanceof IRORInteractive;
+		return RORFluidControls.getController(tile) != null;
 	}
 
 	@Override
