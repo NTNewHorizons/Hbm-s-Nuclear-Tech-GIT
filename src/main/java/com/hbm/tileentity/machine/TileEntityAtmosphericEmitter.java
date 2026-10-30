@@ -1,5 +1,8 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.fluid.trait.FluidTrait;
@@ -21,7 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityAtmosphericEmitter extends TileEntityLoadedBase implements IEnergyReceiverMK2, IFluidStandardReceiverMK2 {
+public class TileEntityAtmosphericEmitter extends TileEntityLoadedBase implements IEnergyReceiverMK2, IFluidStandardReceiverMK2, IRORValueProvider, IRORInteractive {
 
 	public FluidTank tank;
 	public long power;
@@ -212,4 +215,34 @@ public class TileEntityAtmosphericEmitter extends TileEntityLoadedBase implement
 		return 65536.0D;
 	}
 	
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "type",
+				PREFIX_VALUE + "fill",
+				PREFIX_VALUE + "fillpercent",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "type").equals(name)) return tank.getTankType().getName();
+		if((PREFIX_VALUE + "fill").equals(name)) return "" + tank.getFill();
+		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tank.getFill() * 100 / tank.getMaxFill());
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tank, params)) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
+	}
 }

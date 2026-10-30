@@ -32,7 +32,10 @@ dependencies {
     devOnlyNonPublishable('com.github.GTNewHorizons:StorageDrawers:2.2.31-GTNH:dev') {
         transitive = false
     }
-    implementation('io.github.legacymoddingmc:unimixins:0.3.1:dev') {
+    compileOnly('io.github.legacymoddingmc:unimixins:0.3.1:dev') {
+        transitive = false
+    }
+    devOnlyNonPublishable('io.github.legacymoddingmc:unimixins:0.3.1:dev') {
         transitive = false
     }
     implementation('com.github.GTNewHorizons:Backhand:1.8.16:dev') {

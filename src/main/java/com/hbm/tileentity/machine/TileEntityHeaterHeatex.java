@@ -29,7 +29,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHeatSource, IFluidStandardTransceiverMK2, IGUIProvider, IControlReceiver, IFluidCopiable, IRORValueProvider {
+public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHeatSource, IFluidStandardTransceiverMK2, IGUIProvider, IControlReceiver, IFluidCopiable, IRORValueProvider, IRORInteractive {
 
 	public FluidTank[] tanks;
 	public int amountToCool = 24_000;
@@ -270,7 +270,8 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 		return new String[] {
 				PREFIX_VALUE + "hotfluid",
 				PREFIX_VALUE + "coldfluid",
-				PREFIX_VALUE + "heat"
+				PREFIX_VALUE + "heat",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO
 		};
 	}
 
@@ -279,6 +280,18 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 		if((PREFIX_VALUE + "hotfluid").equals(name))	return "" + tanks[0].getFill();
 		if((PREFIX_VALUE + "coldfluid").equals(name))	return "" + tanks[1].getFill();
 		if((PREFIX_VALUE + "heat").equals(name))		return "" + heatEnergy;
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params)) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
 		return null;
 	}
 }

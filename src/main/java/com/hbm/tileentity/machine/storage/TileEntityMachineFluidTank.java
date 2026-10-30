@@ -300,6 +300,7 @@ public class TileEntityMachineFluidTank extends TileEntityBarrel implements IFlu
 				PREFIX_VALUE + "fillpercent",
 				PREFIX_FUNCTION + "setmode" + NAME_SEPARATOR + "mode (0-3)",
 				PREFIX_FUNCTION + "setmode" + NAME_SEPARATOR + "mode" + PARAM_SEPARATOR + "fallback (0-3)",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -313,6 +314,7 @@ public class TileEntityMachineFluidTank extends TileEntityBarrel implements IFlu
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) return super.runRORFunction(name, params);
 		
 		if((PREFIX_FUNCTION + "setmode").equals(name) && params.length > 0) {
 			int mode = IRORInteractive.parseInt(params[0], 0, 3);

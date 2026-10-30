@@ -38,7 +38,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPacketReceiver, IFluidStandardTransceiverMK2, IConfigurableMachine, IFluidCopiable, IRORValueProvider {
+public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPacketReceiver, IFluidStandardTransceiverMK2, IConfigurableMachine, IFluidCopiable, IRORValueProvider, IRORInteractive {
 
 	public int heat;
 	public FluidTank[] tanks;
@@ -353,7 +353,8 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 	public String[] getFunctionInfo() {
 		return new String[] {
 				PREFIX_VALUE + "input",
-				PREFIX_VALUE + "output"
+				PREFIX_VALUE + "output",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO
 		};
 	}
 
@@ -366,6 +367,18 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 		}
 		if ((PREFIX_VALUE + "input").equals(name))		return "" + tanks[0].getFill();
 		if ((PREFIX_VALUE + "output").equals(name))		return "" + tanks[1].getFill();
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params)) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
 		return null;
 	}
 }

@@ -1,5 +1,8 @@
 package com.hbm.tileentity.network.pneumatic;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+
 import com.hbm.inventory.container.ContainerPneumoTube;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
@@ -38,7 +41,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityPneumoTube extends TileEntityMachineBase implements IGUIProvider, IFluidStandardReceiverMK2, IControlReceiverFilter {
+public class TileEntityPneumoTube extends TileEntityMachineBase implements IGUIProvider, IFluidStandardReceiverMK2, IControlReceiverFilter, IRORValueProvider, IRORInteractive {
 
 	public ModulePatternMatcher pattern = new ModulePatternMatcher(15);
 	public ForgeDirection insertionDir = ForgeDirection.UNKNOWN;
@@ -310,5 +313,35 @@ public class TileEntityPneumoTube extends TileEntityMachineBase implements IGUIP
 		public PneumaticNode(BlockPos... positions) {
 			super(PneumaticNetworkProvider.THE_PROVIDER, positions);
 		}
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "type",
+				PREFIX_VALUE + "fill",
+				PREFIX_VALUE + "fillpercent",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "type").equals(name)) return compair.getTankType().getName();
+		if((PREFIX_VALUE + "fill").equals(name)) return "" + compair.getFill();
+		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (compair.getFill() * 100 / compair.getMaxFill());
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(compair, params)) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
 	}
 }
