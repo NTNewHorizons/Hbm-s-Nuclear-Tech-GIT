@@ -6,12 +6,16 @@ import appeng.api.implementations.items.IAEItemPowerStorage;
 import com.hbm.tileentity.network.TileEntityConverterHeRf;
 import com.hbm.tileentity.network.TileEntityConverterRfHe;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
 import net.minecraft.item.ItemStack;
 
 /**
- * Integration for AE2's item power storage API.
+ * Optional integration for AE2's item power storage API.
  */
 public final class AE2Compat {
+
+	public static final String MOD_ID = "appliedenergistics2";
 
 	private static final double ITEM_CHARGE_RATE_AE = 12_000D;
 
@@ -21,14 +25,39 @@ public final class AE2Compat {
 	 * Returns whether the stack uses AE2's item power storage API.
 	 */
 	public static boolean isEnergyStorage(ItemStack stack) {
-		return stack != null && stack.getItem() instanceof IAEItemPowerStorage;
+		if(stack == null || !Loader.isModLoaded(MOD_ID)) return false;
+		return _isEnergyStorage(stack);
+	}
+
+	@Optional.Method(modid = MOD_ID)
+	private static boolean _isEnergyStorage(ItemStack stack) {
+		return stack.getItem() instanceof IAEItemPowerStorage;
+	}
+
+	/**
+	 * Returns the fixed AE2 item charge rate of 12,000 AE/t in HE/t.
+	 */
+	public static long getChargeRate() {
+		if(!Loader.isModLoaded(MOD_ID)) return 0;
+		return _getChargeRate();
+	}
+
+	@Optional.Method(modid = MOD_ID)
+	private static long _getChargeRate() {
+		return ceilToLong(aeToHeLossless(ITEM_CHARGE_RATE_AE));
 	}
 
 	/**
 	 * Returns the amount of HE needed to fill an AE2 item, or zero when the item cannot accept power.
 	 */
 	public static long getChargeDemand(ItemStack stack) {
-		if(!isEnergyStorage(stack)) return 0;
+		if(stack == null || !Loader.isModLoaded(MOD_ID)) return 0;
+		return _getChargeDemand(stack);
+	}
+
+	@Optional.Method(modid = MOD_ID)
+	private static long _getChargeDemand(ItemStack stack) {
+		if(!(stack.getItem() instanceof IAEItemPowerStorage)) return 0;
 
 		IAEItemPowerStorage storage = (IAEItemPowerStorage) stack.getItem();
 		if(!storage.getPowerFlow(stack).hasPermission(AccessRestriction.WRITE)) return 0;
@@ -38,17 +67,16 @@ public final class AE2Compat {
 	}
 
 	/**
-	 * Returns the fixed AE2 item charge rate of 12,000 AE/t in HE/t.
-	 */
-	public static long getChargeRate() {
-		return ceilToLong(aeToHeLossless(ITEM_CHARGE_RATE_AE));
-	}
-
-	/**
 	 * Offers HE to an AE2 item and returns the amount that was not consumed.
 	 */
 	public static long charge(ItemStack stack, long power) {
-		if(power <= 0 || !isEnergyStorage(stack)) return power;
+		if(stack == null || power <= 0 || !Loader.isModLoaded(MOD_ID)) return power;
+		return _charge(stack, power);
+	}
+
+	@Optional.Method(modid = MOD_ID)
+	private static long _charge(ItemStack stack, long power) {
+		if(!(stack.getItem() instanceof IAEItemPowerStorage)) return power;
 
 		IAEItemPowerStorage storage = (IAEItemPowerStorage) stack.getItem();
 		if(!storage.getPowerFlow(stack).hasPermission(AccessRestriction.WRITE)) return power;
@@ -65,6 +93,7 @@ public final class AE2Compat {
 	/**
 	 * Uses the rate from {@link TileEntityConverterHeRf}.
 	 */
+	@Optional.Method(modid = MOD_ID)
 	private static double heToAe(long power) {
 		if(TileEntityConverterHeRf.heInput <= 0 || TileEntityConverterHeRf.rfOutput <= 0) return 0;
 
@@ -76,6 +105,7 @@ public final class AE2Compat {
 	 * Uses the rate from {@link TileEntityConverterHeRf} instead of {@link TileEntityConverterRfHe} so it's lossless and in turn the opposite of {@link #heToAe(long)}.
 	 * Uses ceil to prevent energy creation
 	 */
+	@Optional.Method(modid = MOD_ID)
 	private static double aeToHeLossless(double power) {
 		if(TileEntityConverterHeRf.heInput <= 0 || TileEntityConverterHeRf.rfOutput <= 0) return 0;
 
