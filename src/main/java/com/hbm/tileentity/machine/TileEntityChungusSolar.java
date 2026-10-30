@@ -1,6 +1,9 @@
 package com.hbm.tileentity.machine;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.machine.MachineChungusSolar;
@@ -27,6 +30,9 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 	private long maxpwr = MAX_POWER;
 	public int panelRotation;
 	private boolean footprintUpdated;
+	private List<BlockPos> exposurePositions;
+	private int cachedPanelRotation = -1;
+	private int cachedFacingMetadata = -1;
 
 	protected ModulePortManPower modulePowerPorts;
 
@@ -53,26 +59,42 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 			if(!footprintUpdated) footprintUpdated = ((MachineChungusSolar) getBlockType()).updateLegacyFootprint(this);
 			modulePowerPorts.update(getPorts());
 
-			power = Math.min(getMaxPower(), power + getExposedOutput());
+			setPower(Math.min(getMaxPower(), power + getExposedOutput()));
 
 			networkPackNT(50);
 		}
 	}
 
 	private long getExposedOutput() {
-		List<BlockPos> cells = ((MachineChungusSolar) getBlockType()).getSolarCellBlocks(this);
+		List<BlockPos> positions = getExposurePositions();
 		long output = 0;
-		for(BlockPos cell : cells) {
-			int x = cell.getX(), y = cell.getY() + 1, z = cell.getZ();
+		for(BlockPos pos : positions) {
+			int x = pos.getX(), y = pos.getY(), z = pos.getZ();
 			// Do not load neighboring chunks to generate power.
-			if(!worldObj.blockExists(x, cell.getY(), z)) continue;
-			// A vertical array shares columns with itself; ignore its own cells above this one.
-			while(cells.contains(new BlockPos(x, y, z))) y++;
+			if(!worldObj.blockExists(x, y - 1, z)) continue;
 			if(!worldObj.canBlockSeeTheSky(x, y, z)) continue;
 			int sun = worldObj.getSavedLightValue(EnumSkyBlock.Sky, x, y, z) - worldObj.skylightSubtracted - 11;
 			if(sun > 0) output += getOutput(sun);
 		}
-		return output / cells.size();
+		return output / positions.size();
+	}
+
+	private List<BlockPos> getExposurePositions() {
+		int facingMetadata = getBlockMetadata();
+		if(exposurePositions == null || cachedPanelRotation != panelRotation || cachedFacingMetadata != facingMetadata) {
+			List<BlockPos> cells = ((MachineChungusSolar) getBlockType()).getSolarCellBlocks(this);
+			Set<BlockPos> cellSet = new HashSet<>(cells);
+			exposurePositions = new ArrayList<>(cells.size());
+			for(BlockPos cell : cells) {
+				int x = cell.getX(), y = cell.getY() + 1, z = cell.getZ();
+				// A vertical array shares columns with itself; ignore its own cells above this one.
+				while(cellSet.contains(new BlockPos(x, y, z))) y++;
+				exposurePositions.add(new BlockPos(x, y, z));
+			}
+			cachedPanelRotation = panelRotation;
+			cachedFacingMetadata = facingMetadata;
+		}
+		return exposurePositions;
 	}
 
 	// 1,350 HE/t on Earth: nine regular panels (9 x 100 HE/t) at +50% efficiency
@@ -87,7 +109,10 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 
 	@Override
 	public void setPower(long power) {
-		this.power = power;
+		if(this.power != power) {
+			this.power = power;
+			if(worldObj != null && !worldObj.isRemote) markChanged();
+		}
 	}
 
 	@Override
