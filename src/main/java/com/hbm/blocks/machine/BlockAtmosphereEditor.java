@@ -18,6 +18,8 @@ import com.hbm.tileentity.IBufPacketReceiver;
 import com.hbm.util.AstronomyUtil;
 import com.hbm.util.i18n.I18nUtil;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
 import api.hbm.block.IToolable;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import io.netty.buffer.ByteBuf;
@@ -131,7 +133,7 @@ public class BlockAtmosphereEditor extends BlockContainer implements IToolable, 
 		return false;
 	}
 
-	public static class TileEntityAtmosphereEditor extends TileEntity implements IBufPacketReceiver {
+	public static class TileEntityAtmosphereEditor extends TileEntity implements IBufPacketReceiver, IRORValueProvider, IRORInteractive {
 
 		private boolean isOn = false;
 		private int throughputFactor = 10;
@@ -187,6 +189,34 @@ public class BlockAtmosphereEditor extends BlockContainer implements IToolable, 
 			isEmitting = buf.readBoolean();
 		}
 
-	}
 
+
+		@Override
+		public String[] getFunctionInfo() {
+			return new String[] {
+					PREFIX_VALUE + "type",
+					com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+			};
+		}
+
+		@Override
+		public String provideRORValue(String name) {
+			if((PREFIX_VALUE + "type").equals(name)) return fluid.getName();
+			return null;
+		}
+
+		@Override
+		public String runRORFunction(String name, String[] params) {
+			if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+				FluidType type = com.hbm.util.RORFluidUtil.parseFluid(params);
+				if(fluid != type) {
+					fluid = type;
+					this.markDirty();
+					if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				}
+				return null;
+			}
+			return null;
+		}
+	}
 }

@@ -26,6 +26,11 @@ public final class RORFluidUtil {
 		return true;
 	}
 
+	public static FluidType parseFluid(String[] params) {
+		if(params.length != 1) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
+		return parseFluid(params[0]);
+	}
+
 	private static FluidType parseFluid(String value) {
 		String fluid = value.trim().toUpperCase(Locale.US);
 		FluidType type;

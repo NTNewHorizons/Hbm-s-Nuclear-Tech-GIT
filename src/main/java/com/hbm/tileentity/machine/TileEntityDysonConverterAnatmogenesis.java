@@ -4,6 +4,7 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.trait.FT_Gaseous;
+import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Gaseous_ART;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.IDysonConverter;
 import com.hbm.tileentity.TileEntityMachineBase;
@@ -11,11 +12,13 @@ import com.hbm.tileentity.TileEntityMachineBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityDysonConverterAnatmogenesis extends TileEntityMachineBase implements IDysonConverter {
+public class TileEntityDysonConverterAnatmogenesis extends TileEntityMachineBase implements IDysonConverter, IRORValueProvider, IRORInteractive {
 
 	// what the FUCK is anatmogenesis you ask?
 	// I made it the fuck up
@@ -164,4 +167,33 @@ public class TileEntityDysonConverterAnatmogenesis extends TileEntityMachineBase
 		return 65536.0D;
 	}
 
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "type",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "type").equals(name)) return fluid.getName();
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			FluidType type = com.hbm.util.RORFluidUtil.parseFluid(params);
+			if(!type.hasTrait(FT_Gaseous.class) && !type.hasTrait(FT_Gaseous_ART.class)) throw new api.hbm.redstoneoverradio.RORFunctionException("Exception: Gas Required");
+			if(fluid != type) {
+				fluid = type;
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
+	}
 }

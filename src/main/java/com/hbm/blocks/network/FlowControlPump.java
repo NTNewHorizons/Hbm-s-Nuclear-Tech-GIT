@@ -22,6 +22,8 @@ import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.energymk2.IEnergyReceiverMK2.ConnectionPriority;
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -118,7 +120,7 @@ public class FlowControlPump extends BlockDummyable implements ILookOverlay, IGU
 	@Override public Object provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) { return new GUIPump((TileEntityFlowControlPump) world.getTileEntity(x, y, z)); }
 	@Override public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) { return null; }
 
-	public static class TileEntityFlowControlPump extends TileEntityLoadedBase implements IFluidStandardTransceiverMK2, IControlReceiver {
+	public static class TileEntityFlowControlPump extends TileEntityLoadedBase implements IFluidStandardTransceiverMK2, IControlReceiver, IRORValueProvider, IRORInteractive {
 
 		public int bufferSize = 100;
 		public FluidTank[] tank;
@@ -137,6 +139,36 @@ public class FlowControlPump extends BlockDummyable implements ILookOverlay, IGU
 		public TileEntityFlowControlPump() {
 			this.tank = new FluidTank[1];
 			this.tank[0] = new FluidTank(Fluids.NONE, bufferSize);
+		}
+
+		@Override
+		public String[] getFunctionInfo() {
+			return new String[] {
+					PREFIX_VALUE + "type",
+					PREFIX_VALUE + "fill",
+					PREFIX_VALUE + "fillpercent",
+					com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+			};
+		}
+
+		@Override
+		public String provideRORValue(String name) {
+			if((PREFIX_VALUE + "type").equals(name)) return tank[0].getTankType().getName();
+			if((PREFIX_VALUE + "fill").equals(name)) return "" + tank[0].getFill();
+			if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tank[0].getFill() * 100 / tank[0].getMaxFill());
+			return null;
+		}
+
+		@Override
+		public String runRORFunction(String name, String[] params) {
+			if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+				if(com.hbm.util.RORFluidUtil.setFluid(tank[0], params)) {
+					this.markDirty();
+					if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				}
+				return null;
+			}
+			return null;
 		}
 
 		protected PortDef cachedOutPort;
