@@ -9,10 +9,11 @@ import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.BackhandCompat;
+import com.hbm.util.BaublesCompat;
 import com.hbm.util.BobMathUtil;
 
 import api.hbm.fluidmk2.IFillableItem;
-import baubles.api.BaublesApi;
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
-import xonin.backhand.api.core.BackhandUtils;
 
 public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidStandardReceiverMK2 {
 
@@ -71,9 +71,9 @@ public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidSt
 					fillEquipment(player.getEquipmentInSlot(i));
 				}
 
-				fillEquipment(BackhandUtils.getOffhandItem(player));
+				fillEquipment(BackhandCompat.getOffhandItem(player));
 
-				IInventory baubles = BaublesApi.getBaubles(player);
+				IInventory baubles = BaublesCompat.getBaubles(player);
 				if(baubles != null) {
 					for(int i = 0; i < baubles.getSizeInventory(); i++) {
 						fillEquipment(baubles.getStackInSlot(i));

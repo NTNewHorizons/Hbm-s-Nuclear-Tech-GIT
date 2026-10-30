@@ -10,11 +10,6 @@
   "credits": "${credits}",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": [
-    "backhand",
-    "appliedenergistics2",
-    "Baubles",
-    "Baubles|Expanded"
-  ]
+  "dependencies": []
 }
 ]
