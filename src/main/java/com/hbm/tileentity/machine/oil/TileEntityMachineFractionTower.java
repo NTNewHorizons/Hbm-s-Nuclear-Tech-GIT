@@ -2,6 +2,7 @@ package com.hbm.tileentity.machine.oil;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 
 import com.hbm.inventory.FluidStack;
 import com.hbm.inventory.fluid.Fluids;
@@ -199,7 +200,12 @@ public class TileEntityMachineFractionTower extends TileEntityLoadedBase impleme
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+				Pair<FluidStack, FluidStack> quart = FractionRecipes.getFractions(type);
+				if(quart == null) throw new RORFunctionException("Exception: Invalid Fractionation Input");
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], quart.getKey().type);
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[2], quart.getValue().type);
+			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}

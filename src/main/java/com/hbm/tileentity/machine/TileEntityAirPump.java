@@ -388,7 +388,7 @@ public class TileEntityAirPump extends TileEntityMachineBase implements IFluidSt
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tank, params, com.hbm.util.RORFluidUtil::requireGas)) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}

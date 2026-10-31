@@ -2,11 +2,14 @@ package com.hbm.tileentity.network.pneumatic;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 
 import com.hbm.inventory.container.ContainerPneumoTube;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
+import com.hbm.inventory.fluid.trait.FT_Corrosive;
+import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Amat;
 import com.hbm.inventory.gui.GUIPneumoTube;
 import com.hbm.lib.Library;
 import com.hbm.module.ModulePatternMatcher;
@@ -336,7 +339,10 @@ public class TileEntityPneumoTube extends TileEntityMachineBase implements IGUIP
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(compair, params)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(compair, params, type -> {
+				if(type.hasTrait(FT_Amat.class) || type.hasTrait(FT_Corrosive.class)) throw new RORFunctionException("Exception: Invalid Pneumatic Gas");
+				com.hbm.util.RORFluidUtil.requireGas(type);
+			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}

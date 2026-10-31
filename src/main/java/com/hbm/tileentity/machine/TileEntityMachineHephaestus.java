@@ -2,6 +2,7 @@ package com.hbm.tileentity.machine;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.fluid.FluidType;
@@ -304,7 +305,12 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(input, params)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(input, params, type -> {
+				if(!type.hasTrait(FT_Heatable.class)) throw new RORFunctionException("Exception: Invalid Hephaestus Input");
+				FT_Heatable trait = type.getTrait(FT_Heatable.class);
+				if(trait.getEfficiency(HeatingType.HEATEXCHANGER) <= 0) throw new RORFunctionException("Exception: Invalid Hephaestus Input");
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(output, trait.getFirstStep().typeProduced);
+			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}

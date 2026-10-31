@@ -29,6 +29,7 @@ import com.hbm.util.Compat;
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -630,7 +631,9 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IB
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tank, params, type -> {
+				if(!acceptedFuels.contains(type)) throw new RORFunctionException("Exception: Fuel Not Accepted");
+			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}

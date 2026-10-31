@@ -2,6 +2,7 @@ package com.hbm.tileentity.machine;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 
 import java.util.List;
 
@@ -247,7 +248,8 @@ public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPro
 	@Override
 	public boolean canPerformBurn(int shipMass, double deltaV) {
 		FT_Rocket trait = tanks[0].getTankType().getTrait(FT_Rocket.class);
-		int isp = trait != null ? trait.getISP() : 300;
+		if(trait == null) return false;
+		int isp = trait.getISP();
 
 		fuelCost = SolarSystem.getFuelCost(deltaV, shipMass, isp);
 
@@ -323,7 +325,9 @@ public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPro
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+				if(!type.hasTrait(FT_Rocket.class)) throw new RORFunctionException("Exception: Rocket Fuel Required");
+			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}

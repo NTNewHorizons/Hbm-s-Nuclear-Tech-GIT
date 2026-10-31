@@ -17,6 +17,7 @@ import com.hbm.tileentity.TilePort.PortDef;
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
 import api.hbm.redstoneoverradio.IRORValueProvider;
 import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.RORFunctionException;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -287,7 +288,12 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+				if(!type.hasTrait(FT_Coolable.class)) throw new RORFunctionException("Exception: Invalid Coolant");
+				FT_Coolable trait = type.getTrait(FT_Coolable.class);
+				if(trait.getEfficiency(CoolingType.HEATEXCHANGER) <= 0) throw new RORFunctionException("Exception: Invalid Coolant");
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], trait.coolsTo);
+			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}

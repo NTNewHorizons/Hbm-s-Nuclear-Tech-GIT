@@ -2,6 +2,7 @@ package com.hbm.tileentity.machine.oil;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.inventory.FluidStack;
@@ -216,7 +217,13 @@ public class TileEntityMachineAlkylation extends TileEntityMachineBase implement
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+				Triplet<FluidStack, FluidStack, FluidStack> out = AlkylationRecipes.getOutput(type);
+				if(out == null) throw new RORFunctionException("Exception: Invalid Alkylation Input");
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], out.getX().type);
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[2], out.getY().type);
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[3], out.getZ().type);
+			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
