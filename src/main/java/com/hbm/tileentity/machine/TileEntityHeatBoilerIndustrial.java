@@ -22,6 +22,8 @@ import com.hbm.tileentity.TilePort.PortDef;
 
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.RORFunctionException;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,7 +34,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
 
-public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase implements IBufPacketReceiver, IFluidStandardTransceiverMK2, IConfigurableMachine, IFluidCopiable, IRORValueProvider {
+public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase implements IBufPacketReceiver, IFluidStandardTransceiverMK2, IConfigurableMachine, IFluidCopiable, IRORValueProvider, IRORInteractive {
 
 	public int heat;
 	public FluidTank[] tanks;
@@ -315,7 +317,8 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 	public String[] getFunctionInfo() {
 		return new String[] {
 				PREFIX_VALUE + "input",
-				PREFIX_VALUE + "output"
+				PREFIX_VALUE + "output",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO
 		};
 	}
 
@@ -323,6 +326,25 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 	public String provideRORValue(String name) {
 		if ((PREFIX_VALUE + "input").equals(name))		return "" + tanks[0].getFill();
 		if ((PREFIX_VALUE + "output").equals(name))		return "" + tanks[1].getFill();
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+				if(!type.hasTrait(FT_Heatable.class)) throw new RORFunctionException("Exception: Invalid Boiler Input");
+				FT_Heatable trait = type.getTrait(FT_Heatable.class);
+				if(trait.getEfficiency(HeatingType.BOILER) <= 0) throw new RORFunctionException("Exception: Invalid Boiler Input");
+				HeatingStep entry = trait.getFirstStep();
+				int outputCapacity = tanks[0].getMaxFill() * entry.amountProduced / entry.amountReq;
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], entry.typeProduced, outputCapacity);
+			})) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
 		return null;
 	}
 }

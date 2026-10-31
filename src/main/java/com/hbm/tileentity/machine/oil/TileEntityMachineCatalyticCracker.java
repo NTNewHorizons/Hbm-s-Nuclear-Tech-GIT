@@ -1,5 +1,9 @@
 package com.hbm.tileentity.machine.oil;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
+
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.inventory.FluidStack;
 import com.hbm.inventory.fluid.Fluids;
@@ -19,7 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMachineCatalyticCracker extends TileEntityLoadedBase implements IBufPacketReceiver, IFluidStandardTransceiverMK2, IFluidCopiable {
+public class TileEntityMachineCatalyticCracker extends TileEntityLoadedBase implements IBufPacketReceiver, IFluidStandardTransceiverMK2, IFluidCopiable, IRORValueProvider, IRORInteractive {
 
 	public FluidTank[] tanks;
 
@@ -181,5 +185,42 @@ public class TileEntityMachineCatalyticCracker extends TileEntityLoadedBase impl
 	@Override
 	public FluidTank getTankToPaste() {
 		return tanks[0];
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "type",
+				PREFIX_VALUE + "fill",
+				PREFIX_VALUE + "fillpercent",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "type").equals(name)) return tanks[0].getTankType().getName();
+		if((PREFIX_VALUE + "fill").equals(name)) return "" + tanks[0].getFill();
+		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tanks[0].getFill() * 100 / tanks[0].getMaxFill());
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+				Pair<FluidStack, FluidStack> quart = CrackingRecipes.getCracking(type);
+				if(quart == null) throw new RORFunctionException("Exception: Invalid Cracking Input");
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], Fluids.STEAM);
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[2], quart.getKey().type);
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[3], quart.getValue().type);
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[4], Fluids.SPENTSTEAM);
+			})) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
 	}
 }

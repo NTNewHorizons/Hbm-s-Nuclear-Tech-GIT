@@ -16,6 +16,8 @@ import com.hbm.tileentity.TilePort.PortDef;
 
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.RORFunctionException;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,7 +31,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHeatSource, IFluidStandardTransceiverMK2, IGUIProvider, IControlReceiver, IFluidCopiable, IRORValueProvider {
+public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHeatSource, IFluidStandardTransceiverMK2, IGUIProvider, IControlReceiver, IFluidCopiable, IRORValueProvider, IRORInteractive {
 
 	public FluidTank[] tanks;
 	public int amountToCool = 24_000;
@@ -270,7 +272,8 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 		return new String[] {
 				PREFIX_VALUE + "hotfluid",
 				PREFIX_VALUE + "coldfluid",
-				PREFIX_VALUE + "heat"
+				PREFIX_VALUE + "heat",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO
 		};
 	}
 
@@ -279,6 +282,23 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 		if((PREFIX_VALUE + "hotfluid").equals(name))	return "" + tanks[0].getFill();
 		if((PREFIX_VALUE + "coldfluid").equals(name))	return "" + tanks[1].getFill();
 		if((PREFIX_VALUE + "heat").equals(name))		return "" + heatEnergy;
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+				if(!type.hasTrait(FT_Coolable.class)) throw new RORFunctionException("Exception: Invalid Coolant");
+				FT_Coolable trait = type.getTrait(FT_Coolable.class);
+				if(trait.getEfficiency(CoolingType.HEATEXCHANGER) <= 0) throw new RORFunctionException("Exception: Invalid Coolant");
+				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], trait.coolsTo);
+			})) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
 		return null;
 	}
 }

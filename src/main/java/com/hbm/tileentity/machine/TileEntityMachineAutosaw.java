@@ -27,6 +27,9 @@ import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.util.Compat;
 
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -46,7 +49,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IBufPacketReceiver, IFluidStandardReceiverMK2, IFluidCopiable {
+public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IBufPacketReceiver, IFluidStandardReceiverMK2, IFluidCopiable, IRORValueProvider, IRORInteractive {
 
 	private static final int MIN_DIST = 2;
 	private static final int MAX_DIST = 9;
@@ -605,5 +608,37 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IB
 	@Override
 	public FluidTank getTankToPaste() {
 		return tank;
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "type",
+				PREFIX_VALUE + "fill",
+				PREFIX_VALUE + "fillpercent",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "type").equals(name)) return tank.getTankType().getName();
+		if((PREFIX_VALUE + "fill").equals(name)) return "" + tank.getFill();
+		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tank.getFill() * 100 / tank.getMaxFill());
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tank, params, type -> {
+				if(!acceptedFuels.contains(type)) throw new RORFunctionException("Exception: Fuel Not Accepted");
+			})) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
 	}
 }

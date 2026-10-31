@@ -1,5 +1,8 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
@@ -31,7 +34,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMachineDrain extends TileEntityLoadedBase implements IFluidStandardReceiverMK2, IBufPacketReceiver, IFluidCopiable {
+public class TileEntityMachineDrain extends TileEntityLoadedBase implements IFluidStandardReceiverMK2, IBufPacketReceiver, IFluidCopiable, IRORValueProvider, IRORInteractive {
 
 	public FluidTank tank;
 
@@ -178,5 +181,35 @@ public class TileEntityMachineDrain extends TileEntityLoadedBase implements IFlu
 	@Override
 	public FluidTank getTankToPaste() {
 		return tank;
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "type",
+				PREFIX_VALUE + "fill",
+				PREFIX_VALUE + "fillpercent",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "type").equals(name)) return tank.getTankType().getName();
+		if((PREFIX_VALUE + "fill").equals(name)) return "" + tank.getFill();
+		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tank.getFill() * 100 / tank.getMaxFill());
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tank, params)) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
 	}
 }

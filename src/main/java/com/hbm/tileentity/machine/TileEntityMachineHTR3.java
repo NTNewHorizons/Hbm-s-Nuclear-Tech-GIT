@@ -1,5 +1,9 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
+
 import java.util.List;
 
 import com.hbm.blocks.BlockDummyable;
@@ -27,7 +31,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import com.hbm.util.i18n.I18nUtil;
 
-public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPropulsion, IFluidStandardReceiverMK2 {
+public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPropulsion, IFluidStandardReceiverMK2, IRORValueProvider, IRORInteractive {
 
 	public FluidTank[] tanks;
 
@@ -244,7 +248,8 @@ public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPro
 	@Override
 	public boolean canPerformBurn(int shipMass, double deltaV) {
 		FT_Rocket trait = tanks[0].getTankType().getTrait(FT_Rocket.class);
-		int isp = trait != null ? trait.getISP() : 300;
+		if(trait == null) return false;
+		int isp = trait.getISP();
 
 		fuelCost = SolarSystem.getFuelCost(deltaV, shipMass, isp);
 
@@ -297,5 +302,37 @@ public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPro
 	@Override
 	public FluidTank[] getReceivingTanks() {
 		return tanks;
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "type",
+				PREFIX_VALUE + "fill",
+				PREFIX_VALUE + "fillpercent",
+				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "type").equals(name)) return tanks[0].getTankType().getName();
+		if((PREFIX_VALUE + "fill").equals(name)) return "" + tanks[0].getFill();
+		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tanks[0].getFill() * 100 / tanks[0].getMaxFill());
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+				if(!type.hasTrait(FT_Rocket.class)) throw new RORFunctionException("Exception: Rocket Fuel Required");
+			})) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
 	}
 }

@@ -1,0 +1,7 @@
+{
+  "required": false,
+  "minVersion": "0.8.5",
+  "package": "com.hbm.mixin.late",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": []
+}
