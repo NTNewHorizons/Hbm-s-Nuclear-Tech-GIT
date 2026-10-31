@@ -2,6 +2,7 @@ package com.hbm.blocks.machine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ILookOverlay;
@@ -25,8 +26,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class MachineChungusSolar extends BlockDummyable implements ITooltipProvider, ILookOverlay, IToolable {
 
+	public static final int PANEL_LENGTH = 16;
+	public static final int PANEL_WIDTH = 3;
+	public static final int PANEL_ROTATIONS = 8;
+	// Rounded (across, up) offsets for an outer row at 0, 45, 90 and 135 degrees.
+	// Multiplying by width -1, 0 or 1 mirrors that row around the panel's axis.
+	private static final int[] HORIZONTAL_OFFSETS = { 1, 1, 0, -1 };
+	private static final int[] VERTICAL_OFFSETS = { 0, -1, -1, -1 };
+
 	public MachineChungusSolar(Material mat) {
 		super(mat);
+		setTickRandomly(true);
 	}
 
 	@Override
@@ -37,7 +47,16 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 
 	@Override
 	public int[] getDimensions() {
-		return new int[] { 0, 0, 16, 0, 1, 1 };
+		return new int[] { 0, 0, PANEL_LENGTH, 0, 1, 1 };
+	}
+
+	@Override
+	public int[][] getAllDimensions() {
+		// Separate the cap so the placement preview does not reserve blocks beside it.
+		return new int[][] {
+			{ 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, PANEL_LENGTH - 1, 0, 1, 1, -1, 0, 0 }
+		};
 	}
 
 	@Override
@@ -46,84 +65,65 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 	}
 
 	private List<BlockPos> panelBlocks(int x, int y, int z, ForgeDirection facing, int rotation) {
-		List<BlockPos> blocks = new ArrayList<>();
+		List<BlockPos> blocks = new ArrayList<>(PANEL_LENGTH * PANEL_WIDTH);
 		// Local model X points toward the port; local Z spans the panel's width.
 		int acrossX = -facing.offsetZ;
 		int acrossZ = facing.offsetX;
-		int[] horizontal = { 1, 1, 0, -1 };
-		int[] vertical = { 0, -1, -1, -1 };
+		// A 180-degree turn swaps the outer rows without changing the occupied blocks.
+		// The low two bits map the eight 45-degree poses onto four footprint shapes.
 		int shape = rotation & 3;
-		for(int length = 1; length <= 16; length++) {
+		for(int length = 1; length <= PANEL_LENGTH; length++) {
 			for(int width = -1; width <= 1; width++) {
-				blocks.add(new BlockPos(x - facing.offsetX * length + acrossX * width * horizontal[shape],
-						y + width * vertical[shape], z - facing.offsetZ * length + acrossZ * width * horizontal[shape]));
+				blocks.add(new BlockPos(x - facing.offsetX * length + acrossX * width * HORIZONTAL_OFFSETS[shape],
+						y + width * VERTICAL_OFFSETS[shape], z - facing.offsetZ * length + acrossZ * width * HORIZONTAL_OFFSETS[shape]));
 			}
 		}
 		return blocks;
 	}
 
+	private boolean isPanelBlock(TileEntityChungusSolar solar, ForgeDirection facing, int x, int y, int z) {
+		int dx = x - solar.xCoord, dy = y - solar.yCoord, dz = z - solar.zCoord;
+		int length = -dx * facing.offsetX - dz * facing.offsetZ;
+		if(length < 1 || length > PANEL_LENGTH) return false;
+		int across = -dx * facing.offsetZ + dz * facing.offsetX;
+		// Use the same half-turn symmetry as panelBlocks when checking ownership.
+		int shape = solar.panelRotation & 3;
+		for(int width = -1; width <= 1; width++) {
+			if(across == width * HORIZONTAL_OFFSETS[shape] && dy == width * VERTICAL_OFFSETS[shape]) return true;
+		}
+		return false;
+	}
+
 	public List<BlockPos> getSolarCellBlocks(TileEntityChungusSolar solar) {
 		List<BlockPos> blocks = panelBlocks(solar.xCoord, solar.yCoord, solar.zCoord,
 				ForgeDirection.getOrientation(solar.getBlockMetadata() - offset), solar.panelRotation);
-		return blocks.subList(3, blocks.size());
+		// The row nearest the cap is the support arm, leaving fifteen rows of solar cells.
+		return blocks.subList(PANEL_WIDTH, blocks.size());
 	}
 
 	@Override
 	protected boolean checkRequirement(World world, int x, int y, int z, ForgeDirection dir, int o) {
+		if(!world.blockExists(x, y, z)) return false;
 		if(!world.getBlock(x, y, z).isReplaceable(world, x, y, z)) return false;
 		for(BlockPos pos : panelBlocks(x, y, z, dir, 0)) {
+			if(!world.blockExists(pos.getX(), pos.getY(), pos.getZ())) return false;
 			if(!world.getBlock(pos.getX(), pos.getY(), pos.getZ()).isReplaceable(world, pos.getX(), pos.getY(), pos.getZ())) return false;
 		}
 		return true;
 	}
 
-	public boolean updateLegacyFootprint(TileEntityChungusSolar solar) {
+	public void validateStructure(TileEntityChungusSolar solar) {
 		World world = solar.getWorldObj();
-		int x = solar.xCoord, y = solar.yCoord, z = solar.zCoord;
 		ForgeDirection facing = ForgeDirection.getOrientation(solar.getBlockMetadata() - offset);
-		List<BlockPos> legacy = new ArrayList<>();
-		for(int length = 0; length <= 17; length++) {
-			for(int width = -1; width <= 1; width++) {
-				int bx = x - facing.offsetX * length - facing.offsetZ * width;
-				int bz = z - facing.offsetZ * length + facing.offsetX * width;
-				if(!world.blockExists(bx, y, bz)) return false;
-				if(world.getBlock(bx, y, bz) != this || world.getBlockMetadata(bx, y, bz) >= extra) continue;
-				int[] core = findCore(world, bx, y, bz);
-				if(core != null && core[0] == x && core[1] == y && core[2] == z) legacy.add(new BlockPos(bx, y, bz));
+		for(BlockPos pos : panelBlocks(solar.xCoord, solar.yCoord, solar.zCoord, facing, solar.panelRotation)) {
+			// An unloaded cell is unknown, not missing; check it when its chunk is loaded again.
+			if(!world.blockExists(pos.getX(), pos.getY(), pos.getZ())) continue;
+			if(world.getBlock(pos.getX(), pos.getY(), pos.getZ()) != this
+					|| world.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ()) != facing.getOpposite().ordinal() + extra) {
+				world.setBlockToAir(solar.xCoord, solar.yCoord, solar.zCoord);
+				return;
 			}
 		}
-		if(legacy.isEmpty()) return true;
-		List<BlockPos> target = panelBlocks(x, y, z, facing, solar.panelRotation);
-		boolean blocked = false;
-		for(BlockPos pos : target) {
-			if(pos.getY() < 0 || pos.getY() >= world.getHeight()) {
-				blocked = true;
-				break;
-			}
-			if(!world.blockExists(pos.getX(), pos.getY(), pos.getZ())) return false;
-			if(!legacy.contains(pos) && !world.getBlock(pos.getX(), pos.getY(), pos.getZ()).isReplaceable(world, pos.getX(), pos.getY(), pos.getZ())) {
-				blocked = true;
-				break;
-			}
-		}
-		if(blocked) {
-			// Old rotated arrays still occupied a flat rectangle. Keep them flat if the new pose is blocked.
-			target = panelBlocks(x, y, z, facing, 0);
-			for(BlockPos pos : target) {
-				if(!legacy.contains(pos) && !world.getBlock(pos.getX(), pos.getY(), pos.getZ()).isReplaceable(world, pos.getX(), pos.getY(), pos.getZ())) return false;
-			}
-			solar.panelRotation = 0;
-		}
-		boolean previous = safeRem;
-		safeRem = true;
-		try {
-			for(BlockPos pos : legacy) world.setBlockToAir(pos.getX(), pos.getY(), pos.getZ());
-			for(BlockPos pos : target) world.setBlock(pos.getX(), pos.getY(), pos.getZ(), this, facing.getOpposite().ordinal() + extra, 2);
-		} finally {
-			safeRem = previous;
-		}
-		solar.markChanged();
-		return true;
 	}
 
 	@Override
@@ -141,23 +141,23 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 
 	@Override
 	public int[] findCoreRec(IBlockAccess world, int x, int y, int z) {
+		if(world instanceof World && !((World) world).blockExists(x, y, z)) return null;
+		if(world.getBlock(x, y, z) != this) return null;
 		int meta = world.getBlockMetadata(x, y, z);
-		if(meta < extra || meta >= 12) return super.findCoreRec(world, x, y, z);
+		if(meta >= 12) return new int[] { x, y, z };
+		if(meta < extra) return null;
 		return findPanelCore(world, x, y, z, meta);
 	}
 
 	private int[] findPanelCore(IBlockAccess world, int x, int y, int z, int meta) {
 		ForgeDirection facing = ForgeDirection.getOrientation(meta - extra).getOpposite();
-		for(int length = 1; length <= 16; length++) {
+		for(int length = 1; length <= PANEL_LENGTH; length++) {
 			for(int dy = -1; dy <= 1; dy++) {
 				for(int width = -1; width <= 1; width++) {
 					int cx = x + facing.offsetX * length - facing.offsetZ * width;
 					int cy = y + dy;
 					int cz = z + facing.offsetZ * length + facing.offsetX * width;
-					if(world.getBlock(cx, cy, cz) != this || world.getBlockMetadata(cx, cy, cz) != facing.ordinal() + offset) continue;
-					TileEntity te = world.getTileEntity(cx, cy, cz);
-					if(te instanceof TileEntityChungusSolar && panelBlocks(cx, cy, cz, facing,
-							((TileEntityChungusSolar) te).panelRotation).contains(new BlockPos(x, y, z))) {
+					if(isPanelCore(world, cx, cy, cz, facing, x, y, z)) {
 						return new int[] { cx, cy, cz };
 					}
 				}
@@ -166,17 +166,61 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 		return null;
 	}
 
+	private boolean isPanelCore(IBlockAccess world, int cx, int cy, int cz, ForgeDirection facing, int x, int y, int z) {
+		if(world instanceof World && !((World) world).blockExists(cx, cy, cz)) return false;
+		if(world.getBlock(cx, cy, cz) != this || world.getBlockMetadata(cx, cy, cz) != facing.ordinal() + offset) return false;
+		TileEntity te = world.getTileEntity(cx, cy, cz);
+		return te instanceof TileEntityChungusSolar && !te.isInvalid() && isPanelBlock((TileEntityChungusSolar) te, facing, x, y, z);
+	}
+
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		if(safeRem || world.isRemote) return;
-		if(world.getBlockMetadata(x, y, z) >= extra && world.getBlockMetadata(x, y, z) < 12) {
-			// Diagonal panel blocks are not face-connected to their core.
-			if(world.checkChunksExist(x - 18, y - 1, z - 18, x + 18, y + 1, z + 18) && findCore(world, x, y, z) == null) {
+		removeOrphan(world, x, y, z);
+	}
+
+	@Override
+	public void updateTick(World world, int x, int y, int z, Random rand) {
+		super.updateTick(world, x, y, z, rand);
+		if(!safeRem && !world.isRemote) removeOrphan(world, x, y, z);
+	}
+
+	private void removeOrphan(World world, int x, int y, int z) {
+		int meta = world.getBlockMetadata(x, y, z);
+		if(meta < extra || meta >= 12) return;
+		if(findCore(world, x, y, z) != null) return;
+		ForgeDirection towardCore = ForgeDirection.getOrientation(meta - extra).getOpposite();
+		// Each panel row is continuous along its length, even in the diagonal poses.
+		// Stop at the first gap: chunks beyond that gap cannot contain this row's core.
+		for(int length = 1; length <= PANEL_LENGTH; length++) {
+			int bx = x + towardCore.offsetX * length;
+			int by = y + towardCore.offsetY * length;
+			int bz = z + towardCore.offsetZ * length;
+			if(!world.blockExists(bx, by, bz)) return;
+			if(world.getBlock(bx, by, bz) == this && world.getBlockMetadata(bx, by, bz) == meta) continue;
+			boolean unloaded = false;
+			for(int dy = -1; dy <= 1; dy++) {
+				if(by + dy < 0 || by + dy >= world.getHeight()) continue;
+				for(int width = -1; width <= 1; width++) {
+					int cx = bx - towardCore.offsetZ * width, cz = bz + towardCore.offsetX * width;
+					if(!world.blockExists(cx, by + dy, cz)) {
+						unloaded = true;
+						continue;
+					}
+					if(isPanelCore(world, cx, by + dy, cz, towardCore, x, y, z)) return;
+				}
+			}
+			if(unloaded) return;
+			// Never let orphan cleanup break a different array through breakBlock's core lookup.
+			boolean previous = safeRem;
+			safeRem = true;
+			try {
 				world.setBlockToAir(x, y, z);
+			} finally {
+				safeRem = previous;
 			}
 			return;
 		}
-		super.onNeighborBlockChange(world, x, y, z, block);
 	}
 
 	@Override
@@ -184,7 +228,7 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 		if(!safeRem && !world.isRemote) {
 			// The removed block may already be air when this callback runs, so use its supplied metadata.
 			int[] core = meta >= 12 ? new int[] { x, y, z }
-					: meta >= extra ? findPanelCore(world, x, y, z, meta) : super.findCoreRec(world, x, y, z);
+					: meta >= extra ? findPanelCore(world, x, y, z, meta) : null;
 			if(core != null) {
 				ForgeDirection facing = ForgeDirection.getOrientation((meta >= 12 ? meta : world.getBlockMetadata(core[0], core[1], core[2])) - offset);
 				TileEntity te = world.getTileEntity(core[0], core[1], core[2]);
@@ -193,7 +237,11 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 					safeRem = true;
 					try {
 						for(BlockPos pos : panelBlocks(core[0], core[1], core[2], facing, ((TileEntityChungusSolar) te).panelRotation)) {
-							if(world.getBlock(pos.getX(), pos.getY(), pos.getZ()) == this) world.setBlockToAir(pos.getX(), pos.getY(), pos.getZ());
+							if(world.blockExists(pos.getX(), pos.getY(), pos.getZ()) && world.getBlock(pos.getX(), pos.getY(), pos.getZ()) == this
+									&& world.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ()) == facing.getOpposite().ordinal() + extra) {
+								int[] owner = findPanelCore(world, pos.getX(), pos.getY(), pos.getZ(), facing.getOpposite().ordinal() + extra);
+								if(owner == null || owner[0] == core[0] && owner[1] == core[1] && owner[2] == core[2]) world.setBlockToAir(pos.getX(), pos.getY(), pos.getZ());
+							}
 						}
 						if(meta < 12) world.setBlockToAir(core[0], core[1], core[2]);
 					} finally {
@@ -202,7 +250,7 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 				}
 			}
 		}
-		// Removal above already handles the entire array, including diagonal blocks.
+		// Suppress the base class's face-connected teardown; it cannot follow diagonal rows.
 		boolean previous = safeRem;
 		safeRem = true;
 		try {
@@ -220,6 +268,22 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 	}
 
 	@Override
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+		// Missing or unloaded cores must not let surviving dummies each drop another array.
+		int[] core = findCore(world, x, y, z);
+		if(core == null) return new ArrayList<>();
+		TileEntity te = world.getTileEntity(core[0], core[1], core[2]);
+		if(!(te instanceof TileEntityChungusSolar) || te.isInvalid()) return new ArrayList<>();
+		return super.getDrops(world, x, y, z, metadata, fortune);
+	}
+
+	@Override
+	protected ItemStack createStackedBlock(int metadata) {
+		// Automated silk-touch harvesting must not bypass the dummy ownership check in getDrops.
+		return metadata >= 12 ? super.createStackedBlock(metadata) : null;
+	}
+
+	@Override
 	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, int side, float fX, float fY, float fZ, ToolType tool) {
 		if(tool != ToolType.SCREWDRIVER) return false;
 		if(world.isRemote) return true;
@@ -230,8 +294,10 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 		if(!(te instanceof TileEntityChungusSolar)) return false;
 
 		TileEntityChungusSolar solar = (TileEntityChungusSolar) te;
+		validateStructure(solar);
+		if(solar.isInvalid()) return false;
 		ForgeDirection facing = ForgeDirection.getOrientation(solar.getBlockMetadata() - offset);
-		int nextRotation = (solar.panelRotation + 1) % 8;
+		int nextRotation = (solar.panelRotation + 1) % PANEL_ROTATIONS;
 		List<BlockPos> oldBlocks = panelBlocks(pos[0], pos[1], pos[2], facing, solar.panelRotation);
 		List<BlockPos> newBlocks = panelBlocks(pos[0], pos[1], pos[2], facing, nextRotation);
 		for(BlockPos target : newBlocks) {
@@ -259,6 +325,7 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 			safeRem = previous;
 		}
 		solar.markChanged();
+		world.markBlockForUpdate(pos[0], pos[1], pos[2]);
 		solar.networkPackNT(50);
 		world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "hbm:item.upgradePlug", 1.0F, 1.0F);
 		return true;
