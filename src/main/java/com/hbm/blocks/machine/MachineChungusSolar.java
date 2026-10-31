@@ -1,8 +1,10 @@
 package com.hbm.blocks.machine;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
+import java.util.Set;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ILookOverlay;
@@ -36,7 +38,6 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 
 	public MachineChungusSolar(Material mat) {
 		super(mat);
-		setTickRandomly(true);
 	}
 
 	@Override
@@ -150,6 +151,10 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 	}
 
 	private int[] findPanelCore(IBlockAccess world, int x, int y, int z, int meta) {
+		return findPanelCore(world, x, y, z, meta, false);
+	}
+
+	private int[] findPanelCore(IBlockAccess world, int x, int y, int z, int meta, boolean loadChunks) {
 		ForgeDirection facing = ForgeDirection.getOrientation(meta - extra).getOpposite();
 		for(int length = 1; length <= PANEL_LENGTH; length++) {
 			for(int dy = -1; dy <= 1; dy++) {
@@ -157,6 +162,9 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 					int cx = x + facing.offsetX * length - facing.offsetZ * width;
 					int cy = y + dy;
 					int cz = z + facing.offsetZ * length + facing.offsetX * width;
+					if(cy < 0 || cy >= 256) continue;
+					// Cleanup must resolve ownership even when the cap's chunk is unloaded.
+					if(loadChunks && world instanceof World) ((World) world).getChunkFromBlockCoords(cx, cz);
 					if(isPanelCore(world, cx, cy, cz, facing, x, y, z)) {
 						return new int[] { cx, cy, cz };
 					}
@@ -179,47 +187,41 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 		removeOrphan(world, x, y, z);
 	}
 
-	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand) {
-		super.updateTick(world, x, y, z, rand);
-		if(!safeRem && !world.isRemote) removeOrphan(world, x, y, z);
-	}
-
 	private void removeOrphan(World world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
 		if(meta < extra || meta >= 12) return;
-		if(findCore(world, x, y, z) != null) return;
-		ForgeDirection towardCore = ForgeDirection.getOrientation(meta - extra).getOpposite();
-		// Each panel row is continuous along its length, even in the diagonal poses.
-		// Stop at the first gap: chunks beyond that gap cannot contain this row's core.
-		for(int length = 1; length <= PANEL_LENGTH; length++) {
-			int bx = x + towardCore.offsetX * length;
-			int by = y + towardCore.offsetY * length;
-			int bz = z + towardCore.offsetZ * length;
-			if(!world.blockExists(bx, by, bz)) return;
-			if(world.getBlock(bx, by, bz) == this && world.getBlockMetadata(bx, by, bz) == meta) continue;
-			boolean unloaded = false;
-			for(int dy = -1; dy <= 1; dy++) {
-				if(by + dy < 0 || by + dy >= world.getHeight()) continue;
-				for(int width = -1; width <= 1; width++) {
-					int cx = bx - towardCore.offsetZ * width, cz = bz + towardCore.offsetX * width;
-					if(!world.blockExists(cx, by + dy, cz)) {
-						unloaded = true;
-						continue;
+		if(findPanelCore(world, x, y, z, meta, true) != null) return;
+		removeConnectedOrphans(world, x, y, z, meta);
+	}
+
+	private void removeConnectedOrphans(World world, int x, int y, int z, int meta) {
+		// Without a cap there is no saved pose. Follow adjacent remnants, including diagonal rows,
+		// but leave every block that still belongs to a live array alone.
+		ArrayDeque<BlockPos> pending = new ArrayDeque<>();
+		Set<BlockPos> visited = new HashSet<>();
+		pending.add(new BlockPos(x, y, z));
+		boolean previous = safeRem;
+		safeRem = true;
+		try {
+			while(!pending.isEmpty()) {
+				BlockPos pos = pending.removeFirst();
+				if(!visited.add(pos)) continue;
+				int px = pos.getX(), py = pos.getY(), pz = pos.getZ();
+				if(py < 0 || py >= world.getHeight()) continue;
+				world.getChunkFromBlockCoords(px, pz);
+				if(world.getBlock(px, py, pz) != this || world.getBlockMetadata(px, py, pz) != meta) continue;
+				if(findPanelCore(world, px, py, pz, meta, true) != null) continue;
+				world.setBlockToAir(px, py, pz);
+				for(int dx = -1; dx <= 1; dx++) {
+					for(int dy = -1; dy <= 1; dy++) {
+						for(int dz = -1; dz <= 1; dz++) {
+							if(dx != 0 || dy != 0 || dz != 0) pending.addLast(new BlockPos(px + dx, py + dy, pz + dz));
+						}
 					}
-					if(isPanelCore(world, cx, by + dy, cz, towardCore, x, y, z)) return;
 				}
 			}
-			if(unloaded) return;
-			// Never let orphan cleanup break a different array through breakBlock's core lookup.
-			boolean previous = safeRem;
-			safeRem = true;
-			try {
-				world.setBlockToAir(x, y, z);
-			} finally {
-				safeRem = previous;
-			}
-			return;
+		} finally {
+			safeRem = previous;
 		}
 	}
 
@@ -228,7 +230,17 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 		if(!safeRem && !world.isRemote) {
 			// The removed block may already be air when this callback runs, so use its supplied metadata.
 			int[] core = meta >= 12 ? new int[] { x, y, z }
-					: meta >= extra ? findPanelCore(world, x, y, z, meta) : null;
+					: meta >= extra ? findPanelCore(world, x, y, z, meta, true) : null;
+			if(core == null && meta >= extra && meta < 12) {
+				// The broken dummy is already gone; start cleanup from all adjacent remnants.
+				for(int dx = -1; dx <= 1; dx++) {
+					for(int dy = -1; dy <= 1; dy++) {
+						for(int dz = -1; dz <= 1; dz++) {
+							removeConnectedOrphans(world, x + dx, y + dy, z + dz, meta);
+						}
+					}
+				}
+			}
 			if(core != null) {
 				ForgeDirection facing = ForgeDirection.getOrientation((meta >= 12 ? meta : world.getBlockMetadata(core[0], core[1], core[2])) - offset);
 				TileEntity te = world.getTileEntity(core[0], core[1], core[2]);
@@ -236,8 +248,11 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 					boolean previous = safeRem;
 					safeRem = true;
 					try {
-						for(BlockPos pos : panelBlocks(core[0], core[1], core[2], facing, ((TileEntityChungusSolar) te).panelRotation)) {
-							if(world.blockExists(pos.getX(), pos.getY(), pos.getZ()) && world.getBlock(pos.getX(), pos.getY(), pos.getZ()) == this
+						List<BlockPos> blocks = panelBlocks(core[0], core[1], core[2], facing, ((TileEntityChungusSolar) te).panelRotation);
+						// Load the complete footprint before removing anything or checking ownership.
+						for(BlockPos pos : blocks) world.getChunkFromBlockCoords(pos.getX(), pos.getZ());
+						for(BlockPos pos : blocks) {
+							if(world.getBlock(pos.getX(), pos.getY(), pos.getZ()) == this
 									&& world.getBlockMetadata(pos.getX(), pos.getY(), pos.getZ()) == facing.getOpposite().ordinal() + extra) {
 								int[] owner = findPanelCore(world, pos.getX(), pos.getY(), pos.getZ(), facing.getOpposite().ordinal() + extra);
 								if(owner == null || owner[0] == core[0] && owner[1] == core[1] && owner[2] == core[2]) world.setBlockToAir(pos.getX(), pos.getY(), pos.getZ());
@@ -269,8 +284,10 @@ public class MachineChungusSolar extends BlockDummyable implements ITooltipProvi
 
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-		// Missing or unloaded cores must not let surviving dummies each drop another array.
-		int[] core = findCore(world, x, y, z);
+		// Harvesting a dummy must find an unloaded cap before deciding whether to drop an array.
+		// True orphans have no drop, so cleaning their remnants cannot duplicate the item.
+		int[] core = metadata >= 12 ? findCore(world, x, y, z)
+				: metadata >= extra ? findPanelCore(world, x, y, z, metadata, !world.isRemote) : null;
 		if(core == null) return new ArrayList<>();
 		TileEntity te = world.getTileEntity(core[0], core[1], core[2]);
 		if(!(te instanceof TileEntityChungusSolar) || te.isInvalid()) return new ArrayList<>();
