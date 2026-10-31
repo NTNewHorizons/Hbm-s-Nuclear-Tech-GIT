@@ -3,13 +3,10 @@ package com.hbm.tileentity.machine.pile;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.pile.BlockPile;
 import com.hbm.handler.CompatHandler;
-import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemPileRodMK2;
-import com.hbm.items.machine.ItemPileRodMK2.EnumPileRod;
 import com.hbm.main.NTMSounds;
 import com.hbm.tileentity.machine.pile.TileEntityPileCore.PileChannel;
 import com.hbm.util.Compat;
-import com.hbm.util.EnumUtil;
 
 import api.hbm.redstoneoverradio.IRORValueProvider;
 import cpw.mods.fml.common.Optional;
@@ -205,7 +202,7 @@ public class TileEntityPileLoader extends TileEntityPileDeviceBase implements IS
 	}
 	
 	public static boolean isItemLoadable(ItemStack stack) {
-		return stack.getItem() == ModItems.pile_rod;
+		return ItemPileRodMK2.isLoadable(stack);
 	}
 
 	@Override
@@ -266,8 +263,7 @@ public class TileEntityPileLoader extends TileEntityPileDeviceBase implements IS
 		}
 		if(name.equals(PREFIX_VALUE + "lifetime")) {
 			if(this.channelStack == null) return "0";
-			EnumPileRod rod = EnumUtil.grabEnumSafely(EnumPileRod.class, this.channelStack.getItemDamage());
-			return "" + (int) Math.round(rod.life);
+			return "" + (int) Math.round(ItemPileRodMK2.getLife(this.channelStack));
 		}
 		if(name.equals(PREFIX_VALUE + "temp")) {
 			return "" + (int) Math.round(this.channelTemp);
@@ -300,8 +296,7 @@ public class TileEntityPileLoader extends TileEntityPileDeviceBase implements IS
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getLifetime(Context context, Arguments args) {
 		if (this.channelStack == null) return new Object[] {0};
-		EnumPileRod rod = EnumUtil.grabEnumSafely(EnumPileRod.class, this.channelStack.getItemDamage());
-		return new Object[] {rod.life};
+		return new Object[] {ItemPileRodMK2.getLife(this.channelStack)};
 	}
 
 	@Callback(direct = true, doc = "function():number -- Returns fuel type")

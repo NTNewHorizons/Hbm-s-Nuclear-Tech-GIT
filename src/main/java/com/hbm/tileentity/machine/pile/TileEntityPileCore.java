@@ -279,7 +279,7 @@ public class TileEntityPileCore extends TileEntityTickingBase {
 
 			for(int i = 0; i < chan.rods.length; i++) {
 				ItemStack stack = chan.rods[i];
-				if(stack != null && stack.getItem() instanceof ItemPileRodMK2) {
+				if(ItemPileRodMK2.isLoadable(stack)) {
 					double neut = ItemPileRodMK2.getReactivity(stack, chan.incomingNeutrons / chan.length);
 					producedNeutrons += neut;
 					chan.heat += neut * ItemPileRodMK2.getHeatPerNeutron(stack);
