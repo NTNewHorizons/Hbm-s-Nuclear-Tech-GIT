@@ -62,16 +62,9 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 			// Extractors will not work indoors (or in space oops)
 			CBT_Atmosphere atmosphere = getAvailableAtmosphere();
 
-			if(atmosphere != null && atmosphere.getPressure() > 0.0D) {
-				// If the atmosphere doesn't contain the fluid we're sucking up, pick a new one
-				if(!atmosphere.hasFluid(tank.getTankType())) {
-					tank.setTankType(atmosphere.getMainFluid());
-				}
-			} else {
-				tank.setTankType(Fluids.NONE);
-			}
+			boolean canCollect = updateTankForAtmosphere(atmosphere);
 
-			if(hasPower() && tank.getTankType() != Fluids.NONE && tank.getFill() + 200 <= tank.getMaxFill()) {
+			if(canCollect && hasPower() && tank.getFill() + 200 <= tank.getMaxFill()) {
 				tank.setFill(tank.getFill() + 200);
 				power -= this.getMaxPower() / 50;
 
@@ -104,11 +97,10 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 	}
 
 	public void cycleGas() {
-		CBT_Atmosphere atmosphere = !ChunkAtmosphereManager.proxy.hasAtmosphere(worldObj, xCoord, yCoord, zCoord)
-			? CelestialBody.getTrait(worldObj, CBT_Atmosphere.class)
-			: null;
+		if(tank.getFill() != 0) return;
+		CBT_Atmosphere atmosphere = getAvailableAtmosphere();
 
-		if(atmosphere == null) return;
+		if(atmosphere == null || atmosphere.getPressure() <= 0.0D) return;
 
 		atmosphere.sortDescending();
 
@@ -120,7 +112,7 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 				if(targetIndex >= atmosphere.fluids.size()) targetIndex = 0;
 				if(atmosphere.fluids.get(targetIndex).pressure <= 0.0001) targetIndex = 0;
 
-				tank.setTankType(atmosphere.fluids.get(targetIndex).fluid);
+				switchGas(atmosphere.fluids.get(targetIndex).fluid);
 				break;
 			}
 		}
@@ -128,9 +120,33 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 
 	public boolean switchGas(FluidType targetFluid) {
 		if(targetFluid == tank.getTankType()) return false;
-		if(!canSelectFluid(targetFluid)) return false;
-		tank.setTankType(targetFluid);
-		return true;
+		if(tank.getFill() != 0) return false;
+
+		CBT_Atmosphere atmosphere = !ChunkAtmosphereManager.proxy.hasAtmosphere(worldObj, xCoord, yCoord, zCoord)
+			? CelestialBody.getTrait(worldObj, CBT_Atmosphere.class)
+			: null;
+		if(atmosphere == null) return false;
+
+		for(CBT_Atmosphere.FluidEntry entry : atmosphere.fluids) {
+			if(entry.fluid == targetFluid) {
+				tank.setTankType(targetFluid);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** Preserves stored gas and returns whether the current atmosphere can supply more of it. */
+	protected boolean updateTankForAtmosphere(CBT_Atmosphere atmosphere) {
+		boolean available = atmosphere != null && atmosphere.getPressure() > 0.0D;
+		if(tank.getFill() == 0) {
+			if(!available) {
+				tank.setTankType(Fluids.NONE);
+			} else if(!atmosphere.hasFluid(tank.getTankType())) {
+				tank.setTankType(atmosphere.getMainFluid());
+			}
+		}
+		return available && tank.getTankType() != Fluids.NONE && atmosphere.hasFluid(tank.getTankType());
 	}
 
 	protected CBT_Atmosphere getAvailableAtmosphere() {
