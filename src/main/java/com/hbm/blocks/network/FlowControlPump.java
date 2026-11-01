@@ -155,7 +155,7 @@ public class FlowControlPump extends BlockDummyable implements ILookOverlay, IGU
 		public String provideRORValue(String name) {
 			if((PREFIX_VALUE + "type").equals(name)) return tank[0].getTankType().getName();
 			if((PREFIX_VALUE + "fill").equals(name)) return "" + tank[0].getFill();
-			if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tank[0].getFill() * 100 / tank[0].getMaxFill());
+			if((PREFIX_VALUE + "fillpercent").equals(name)) return tank[0].getMaxFill() == 0 ? "0" : "" + (tank[0].getFill() * 100 / tank[0].getMaxFill());
 			return null;
 		}
 
