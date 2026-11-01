@@ -218,6 +218,9 @@ public class TileEntityMachineFractionTower extends TileEntityLoadedBase impleme
 	private void setStackFluid(FluidType type) {
 		Pair<FluidStack, FluidStack> fractions = FractionRecipes.getFractions(type);
 		if(fractions == null) throw new RORFunctionException("Exception: Invalid Fractionation Input");
+		// Repeated polling commands for the current recipe do not need to inspect the stack.
+		if(tanks[0].getTankType() == type && tanks[1].getTankType() == fractions.getKey().type
+				&& tanks[2].getTankType() == fractions.getValue().type) return;
 
 		// The bottom tower controls the stack. Validate every tank before changing any of them.
 		TileEntityMachineFractionTower bottom = this;
