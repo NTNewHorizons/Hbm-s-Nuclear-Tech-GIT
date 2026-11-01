@@ -2,6 +2,7 @@ package com.hbm.tileentity.machine;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -388,7 +389,12 @@ public class TileEntityAirPump extends TileEntityMachineBase implements IFluidSt
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params, com.hbm.util.RORFluidUtil::requireGas)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tank, params, type -> {
+				com.hbm.util.RORFluidUtil.requireGas(type);
+				// Atmosphere and recycling amounts share the tank's fluid type.
+				if(airFill > 0 || bonusFill > 0 || wasteFill > 0)
+					throw new RORFunctionException("Exception: Atmosphere And Recycling Must Be Empty");
+			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
