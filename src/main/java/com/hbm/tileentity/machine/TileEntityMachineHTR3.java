@@ -2,6 +2,7 @@ package com.hbm.tileentity.machine;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 
 import java.util.List;
 
@@ -326,7 +327,9 @@ public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPro
 	public String runRORFunction(String name, String[] params) {
 		if(RORFluidUtil.SET_FLUID.equals(name)) {
 			// The default fuel and other supported reactor fuels are hidden from player selection.
-			if(RORFluidUtil.setFluid(tanks[0], params, true)) {
+			if(RORFluidUtil.setFluid(tanks[0], params, type -> {
+				if(!type.hasTrait(FT_Rocket.class)) throw new RORFunctionException("Exception: Rocket Fuel Required");
+			}, true)) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
