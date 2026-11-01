@@ -2,12 +2,12 @@ package com.hbm.tileentity.machine;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.dim.CelestialBody;
 import com.hbm.dim.orbit.WorldProviderOrbit;
 import com.hbm.dim.trait.CBT_Atmosphere;
-import com.hbm.dim.trait.CBT_Atmosphere.FluidEntry;
 import com.hbm.handler.atmosphere.ChunkAtmosphereManager;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
@@ -60,9 +60,7 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 			modulePowerPorts.update(getPorts());
 
 			// Extractors will not work indoors (or in space oops)
-			CBT_Atmosphere atmosphere = !(worldObj.provider instanceof WorldProviderOrbit) && !ChunkAtmosphereManager.proxy.hasAtmosphere(worldObj, xCoord, yCoord, zCoord)
-				? CelestialBody.getTrait(worldObj, CBT_Atmosphere.class)
-				: null;
+			CBT_Atmosphere atmosphere = getAvailableAtmosphere();
 
 			if(atmosphere != null && atmosphere.getPressure() > 0.0D) {
 				// If the atmosphere doesn't contain the fluid we're sucking up, pick a new one
@@ -130,21 +128,20 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 
 	public boolean switchGas(FluidType targetFluid) {
 		if(targetFluid == tank.getTankType()) return false;
+		if(!canSelectFluid(targetFluid)) return false;
+		tank.setTankType(targetFluid);
+		return true;
+	}
 
-		CBT_Atmosphere atmosphere = !ChunkAtmosphereManager.proxy.hasAtmosphere(worldObj, xCoord, yCoord, zCoord)
+	protected CBT_Atmosphere getAvailableAtmosphere() {
+		return worldObj != null && !(worldObj.provider instanceof WorldProviderOrbit) && !ChunkAtmosphereManager.proxy.hasAtmosphere(worldObj, xCoord, yCoord, zCoord)
 			? CelestialBody.getTrait(worldObj, CBT_Atmosphere.class)
 			: null;
+	}
 
-		if(atmosphere == null) return false;
-		
-		for(FluidEntry entry : atmosphere.fluids) {
-			if(entry.fluid == targetFluid) {
-				tank.setTankType(targetFluid);
-				return true;
-			}
-		}
-
-		return false;
+	private boolean canSelectFluid(FluidType type) {
+		CBT_Atmosphere atmosphere = getAvailableAtmosphere();
+		return atmosphere != null && atmosphere.getPressure() > 0.0D && atmosphere.hasFluid(type);
 	}
 
 	@Override
@@ -277,7 +274,9 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params)) {
+			if(com.hbm.util.RORFluidUtil.setFluid(tank, params, type -> {
+				if(!canSelectFluid(type)) throw new RORFunctionException("Exception: Fluid Not Present In Atmosphere");
+			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
