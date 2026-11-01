@@ -324,7 +324,8 @@ public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPro
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params)) {
+			// The default fuel and other supported reactor fuels are hidden from player selection.
+			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, true)) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
