@@ -23,6 +23,7 @@ import com.hbm.module.portmanager.ModulePortManPower;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.tileentity.TilePortShapes;
+import com.hbm.util.RORFluidUtil;
 
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
 import cpw.mods.fml.common.Optional;
@@ -374,7 +375,7 @@ public class TileEntityAirPump extends TileEntityMachineBase implements IFluidSt
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -388,9 +389,9 @@ public class TileEntityAirPump extends TileEntityMachineBase implements IFluidSt
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params, type -> {
-				com.hbm.util.RORFluidUtil.requireGas(type);
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tank, params, type -> {
+				RORFluidUtil.requireGas(type);
 				// Atmosphere and recycling amounts share the tank's fluid type.
 				if(airFill > 0 || bonusFill > 0 || wasteFill > 0)
 					throw new RORFunctionException("Exception: Atmosphere And Recycling Must Be Empty");

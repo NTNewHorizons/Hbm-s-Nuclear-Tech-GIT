@@ -23,6 +23,7 @@ import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.util.Compat;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.TrackerUtil;
 
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
@@ -479,7 +480,7 @@ public class TileEntityMachineThresher extends TileEntityLoadedBase implements I
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -493,8 +494,8 @@ public class TileEntityMachineThresher extends TileEntityLoadedBase implements I
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tank, params, type -> {
 				if(!TileEntityMachineAutosaw.acceptedFuels.contains(type)) throw new RORFunctionException("Exception: Fuel Not Accepted");
 			})) {
 				this.markDirty();

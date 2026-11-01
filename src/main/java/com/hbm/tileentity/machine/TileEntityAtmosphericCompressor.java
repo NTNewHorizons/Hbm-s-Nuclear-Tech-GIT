@@ -17,6 +17,7 @@ import com.hbm.module.portmanager.ModulePortManFluidAdaptive;
 import com.hbm.module.portmanager.ModulePortManPower;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 
 import api.hbm.energymk2.IEnergyReceiverMK2;
 import api.hbm.fluidmk2.IFluidStandardSenderMK2;
@@ -275,7 +276,7 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -289,8 +290,8 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tank, params, type -> {
 				if(!canSelectFluid(type)) throw new RORFunctionException("Exception: Fluid Not Present In Atmosphere");
 			})) {
 				this.markDirty();

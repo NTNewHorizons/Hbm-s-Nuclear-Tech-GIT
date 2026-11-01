@@ -17,6 +17,7 @@ import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePortShapes;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.Tuple.Pair;
 
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
@@ -189,7 +190,7 @@ public class TileEntityMachineFractionTower extends TileEntityLoadedBase impleme
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -203,8 +204,8 @@ public class TileEntityMachineFractionTower extends TileEntityLoadedBase impleme
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			setStackFluid(com.hbm.util.RORFluidUtil.parseFluid(params));
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			setStackFluid(RORFluidUtil.parseFluid(params));
 		}
 		return null;
 	}
@@ -230,9 +231,9 @@ public class TileEntityMachineFractionTower extends TileEntityLoadedBase impleme
 		List<TileEntityMachineFractionTower> stack = new ArrayList<>();
 		for(TileEntityMachineFractionTower tower = bottom; tower != null; tower = tower.getConnectedTower(3)) {
 			if(tower.tanks[0].getTankType() != type && tower.tanks[0].getFill() != 0)
-				throw new RORFunctionException(com.hbm.util.RORFluidUtil.EX_TANK_EMPTY);
-			com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tower.tanks[1], fractions.getKey().type);
-			com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tower.tanks[2], fractions.getValue().type);
+				throw new RORFunctionException(RORFluidUtil.EX_TANK_EMPTY);
+			RORFluidUtil.requireEmptyForTypeChange(tower.tanks[1], fractions.getKey().type);
+			RORFluidUtil.requireEmptyForTypeChange(tower.tanks[2], fractions.getValue().type);
 			stack.add(tower);
 		}
 

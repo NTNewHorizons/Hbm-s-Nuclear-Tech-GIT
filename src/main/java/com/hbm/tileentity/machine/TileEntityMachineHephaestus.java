@@ -19,6 +19,7 @@ import com.hbm.tileentity.IBufPacketReceiver;
 import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
 import cpw.mods.fml.relauncher.Side;
@@ -290,7 +291,7 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -304,12 +305,12 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(input, params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(input, params, type -> {
 				if(!type.hasTrait(FT_Heatable.class)) throw new RORFunctionException("Exception: Invalid Hephaestus Input");
 				FT_Heatable trait = type.getTrait(FT_Heatable.class);
 				if(trait.getEfficiency(HeatingType.HEATEXCHANGER) <= 0) throw new RORFunctionException("Exception: Invalid Hephaestus Input");
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(output, trait.getFirstStep().typeProduced);
+				RORFluidUtil.requireEmptyForTypeChange(output, trait.getFirstStep().typeProduced);
 			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

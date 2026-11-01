@@ -18,6 +18,7 @@ import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.EnumUtil;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.energymk2.IEnergyReceiverMK2.ConnectionPriority;
@@ -147,7 +148,7 @@ public class FlowControlPump extends BlockDummyable implements ILookOverlay, IGU
 					PREFIX_VALUE + "type",
 					PREFIX_VALUE + "fill",
 					PREFIX_VALUE + "fillpercent",
-					com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+					RORFluidUtil.SET_FLUID_INFO,
 			};
 		}
 
@@ -161,8 +162,8 @@ public class FlowControlPump extends BlockDummyable implements ILookOverlay, IGU
 
 		@Override
 		public String runRORFunction(String name, String[] params) {
-			if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-				if(com.hbm.util.RORFluidUtil.setFluid(tank[0], params)) {
+			if(RORFluidUtil.SET_FLUID.equals(name)) {
+				if(RORFluidUtil.setFluid(tank[0], params)) {
 					this.markDirty();
 					if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}

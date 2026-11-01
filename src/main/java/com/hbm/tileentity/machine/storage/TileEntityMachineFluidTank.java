@@ -19,6 +19,7 @@ import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
 import com.hbm.util.ParticleUtil;
 import com.hbm.util.FluidDebug;
+import com.hbm.util.RORFluidUtil;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
@@ -300,7 +301,7 @@ public class TileEntityMachineFluidTank extends TileEntityBarrel implements IFlu
 				PREFIX_VALUE + "fillpercent",
 				PREFIX_FUNCTION + "setmode" + NAME_SEPARATOR + "mode (0-3)",
 				PREFIX_FUNCTION + "setmode" + NAME_SEPARATOR + "mode" + PARAM_SEPARATOR + "fallback (0-3)",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -314,7 +315,7 @@ public class TileEntityMachineFluidTank extends TileEntityBarrel implements IFlu
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) return super.runRORFunction(name, params);
+		if(RORFluidUtil.SET_FLUID.equals(name)) return super.runRORFunction(name, params);
 		
 		if((PREFIX_FUNCTION + "setmode").equals(name) && params.length > 0) {
 			int mode = IRORInteractive.parseInt(params[0], 0, 3);
