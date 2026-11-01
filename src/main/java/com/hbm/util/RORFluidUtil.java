@@ -63,13 +63,13 @@ public final class RORFluidUtil {
 			throw new RORFunctionException("Exception: Gas Required");
 	}
 
-	/** Resolves a registered fluid. Machine-specific eligibility belongs in the caller's validator. */
+	/** Resolves a player-selectable fluid. Machine-specific eligibility belongs in the caller's validator. */
 	public static FluidType parseFluid(String[] params) {
 		if(params.length != 1) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
 		return parseFluid(params[0]);
 	}
 
-	/** Resolves a registered fluid. Machine-specific eligibility belongs in the caller's validator. */
+	/** Resolves a player-selectable fluid. Machine-specific eligibility belongs in the caller's validator. */
 	public static FluidType parseFluid(String value) {
 		String name = value.trim();
 		FluidType type;
@@ -90,6 +90,7 @@ public final class RORFluidUtil {
 				if(type == null) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
 			}
 		}
+		if(type.hasNoID()) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
 		return type;
 	}
 
