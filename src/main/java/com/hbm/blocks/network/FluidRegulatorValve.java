@@ -28,7 +28,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 public class FluidRegulatorValve extends FluidDuctBase implements ILookOverlay, IToolable, ITooltipProvider {
 
 	@SideOnly(Side.CLIENT) private IIcon[] levelIcons;
-	@SideOnly(Side.CLIENT) private static final int[] levelIconsMap = { 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5 };
+	private static final int[] levelIconsMap = { 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5 };
 
 	public FluidRegulatorValve(Material mat) {
 		super(mat);
