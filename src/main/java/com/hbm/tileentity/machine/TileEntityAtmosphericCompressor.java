@@ -2,12 +2,12 @@ package com.hbm.tileentity.machine;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.dim.CelestialBody;
 import com.hbm.dim.orbit.WorldProviderOrbit;
 import com.hbm.dim.trait.CBT_Atmosphere;
-import com.hbm.dim.trait.CBT_Atmosphere.FluidEntry;
 import com.hbm.handler.atmosphere.ChunkAtmosphereManager;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
@@ -17,6 +17,7 @@ import com.hbm.module.portmanager.ModulePortManFluidAdaptive;
 import com.hbm.module.portmanager.ModulePortManPower;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 
 import api.hbm.energymk2.IEnergyReceiverMK2;
 import api.hbm.fluidmk2.IFluidStandardSenderMK2;
@@ -60,20 +61,11 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 			modulePowerPorts.update(getPorts());
 
 			// Extractors will not work indoors (or in space oops)
-			CBT_Atmosphere atmosphere = !(worldObj.provider instanceof WorldProviderOrbit) && !ChunkAtmosphereManager.proxy.hasAtmosphere(worldObj, xCoord, yCoord, zCoord)
-				? CelestialBody.getTrait(worldObj, CBT_Atmosphere.class)
-				: null;
+			CBT_Atmosphere atmosphere = getAvailableAtmosphere();
 
-			if(atmosphere != null && atmosphere.getPressure() > 0.0D) {
-				// If the atmosphere doesn't contain the fluid we're sucking up, pick a new one
-				if(!atmosphere.hasFluid(tank.getTankType())) {
-					tank.setTankType(atmosphere.getMainFluid());
-				}
-			} else {
-				tank.setTankType(Fluids.NONE);
-			}
+			boolean canCollect = updateTankForAtmosphere(atmosphere);
 
-			if(hasPower() && tank.getTankType() != Fluids.NONE && tank.getFill() + 200 <= tank.getMaxFill()) {
+			if(canCollect && hasPower() && tank.getFill() + 200 <= tank.getMaxFill()) {
 				tank.setFill(tank.getFill() + 200);
 				power -= this.getMaxPower() / 50;
 
@@ -106,11 +98,10 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 	}
 
 	public void cycleGas() {
-		CBT_Atmosphere atmosphere = !ChunkAtmosphereManager.proxy.hasAtmosphere(worldObj, xCoord, yCoord, zCoord)
-			? CelestialBody.getTrait(worldObj, CBT_Atmosphere.class)
-			: null;
+		if(tank.getFill() != 0) return;
+		CBT_Atmosphere atmosphere = getAvailableAtmosphere();
 
-		if(atmosphere == null) return;
+		if(atmosphere == null || atmosphere.getPressure() <= 0.0D) return;
 
 		atmosphere.sortDescending();
 
@@ -122,7 +113,7 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 				if(targetIndex >= atmosphere.fluids.size()) targetIndex = 0;
 				if(atmosphere.fluids.get(targetIndex).pressure <= 0.0001) targetIndex = 0;
 
-				tank.setTankType(atmosphere.fluids.get(targetIndex).fluid);
+				switchGas(atmosphere.fluids.get(targetIndex).fluid);
 				break;
 			}
 		}
@@ -130,21 +121,44 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 
 	public boolean switchGas(FluidType targetFluid) {
 		if(targetFluid == tank.getTankType()) return false;
+		if(tank.getFill() != 0) return false;
 
 		CBT_Atmosphere atmosphere = !ChunkAtmosphereManager.proxy.hasAtmosphere(worldObj, xCoord, yCoord, zCoord)
 			? CelestialBody.getTrait(worldObj, CBT_Atmosphere.class)
 			: null;
-
 		if(atmosphere == null) return false;
-		
-		for(FluidEntry entry : atmosphere.fluids) {
+
+		for(CBT_Atmosphere.FluidEntry entry : atmosphere.fluids) {
 			if(entry.fluid == targetFluid) {
 				tank.setTankType(targetFluid);
 				return true;
 			}
 		}
-
 		return false;
+	}
+
+	/** Preserves stored gas and returns whether the current atmosphere can supply more of it. */
+	protected boolean updateTankForAtmosphere(CBT_Atmosphere atmosphere) {
+		boolean available = atmosphere != null && atmosphere.getPressure() > 0.0D;
+		if(tank.getFill() == 0) {
+			if(!available) {
+				tank.setTankType(Fluids.NONE);
+			} else if(!atmosphere.hasFluid(tank.getTankType())) {
+				tank.setTankType(atmosphere.getMainFluid());
+			}
+		}
+		return available && tank.getTankType() != Fluids.NONE && atmosphere.hasFluid(tank.getTankType());
+	}
+
+	protected CBT_Atmosphere getAvailableAtmosphere() {
+		return worldObj != null && !(worldObj.provider instanceof WorldProviderOrbit) && !ChunkAtmosphereManager.proxy.hasAtmosphere(worldObj, xCoord, yCoord, zCoord)
+			? CelestialBody.getTrait(worldObj, CBT_Atmosphere.class)
+			: null;
+	}
+
+	private boolean canSelectFluid(FluidType type) {
+		CBT_Atmosphere atmosphere = getAvailableAtmosphere();
+		return atmosphere != null && atmosphere.getPressure() > 0.0D && atmosphere.hasFluid(type);
 	}
 
 	@Override
@@ -262,7 +276,7 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -276,8 +290,10 @@ public class TileEntityAtmosphericCompressor extends TileEntityMachineBase imple
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params)) {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tank, params, type -> {
+				if(!canSelectFluid(type)) throw new RORFunctionException("Exception: Fluid Not Present In Atmosphere");
+			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}

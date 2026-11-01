@@ -15,6 +15,7 @@ import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.util.BackhandCompat;
 import com.hbm.util.BaublesCompat;
 import com.hbm.util.BobMathUtil;
+import com.hbm.util.RORFluidUtil;
 
 import api.hbm.fluidmk2.IFillableItem;
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
@@ -192,7 +193,7 @@ public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidSt
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -206,8 +207,8 @@ public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidSt
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params)) {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tank, params)) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}

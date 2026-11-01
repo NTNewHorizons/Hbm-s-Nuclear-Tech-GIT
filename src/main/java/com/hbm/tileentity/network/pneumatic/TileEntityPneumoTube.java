@@ -24,6 +24,7 @@ import com.hbm.uninos.networkproviders.PneumaticNetwork;
 import com.hbm.uninos.networkproviders.PneumaticNetworkProvider;
 import com.hbm.util.Compat;
 import com.hbm.util.EnumUtil;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
@@ -324,7 +325,7 @@ public class TileEntityPneumoTube extends TileEntityMachineBase implements IGUIP
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -338,10 +339,10 @@ public class TileEntityPneumoTube extends TileEntityMachineBase implements IGUIP
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(compair, params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(compair, params, type -> {
 				if(type.hasTrait(FT_Amat.class) || type.hasTrait(FT_Corrosive.class)) throw new RORFunctionException("Exception: Invalid Pneumatic Gas");
-				com.hbm.util.RORFluidUtil.requireGas(type);
+				RORFluidUtil.requireGas(type);
 			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

@@ -13,6 +13,7 @@ import com.hbm.tileentity.IBufPacketReceiver;
 import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.Tuple.Pair;
 
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
@@ -193,7 +194,7 @@ public class TileEntityMachineCatalyticCracker extends TileEntityLoadedBase impl
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -207,14 +208,14 @@ public class TileEntityMachineCatalyticCracker extends TileEntityLoadedBase impl
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tanks[0], params, type -> {
 				Pair<FluidStack, FluidStack> quart = CrackingRecipes.getCracking(type);
 				if(quart == null) throw new RORFunctionException("Exception: Invalid Cracking Input");
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], Fluids.STEAM);
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[2], quart.getKey().type);
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[3], quart.getValue().type);
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[4], Fluids.SPENTSTEAM);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[1], Fluids.STEAM);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[2], quart.getKey().type);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[3], quart.getValue().type);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[4], Fluids.SPENTSTEAM);
 			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

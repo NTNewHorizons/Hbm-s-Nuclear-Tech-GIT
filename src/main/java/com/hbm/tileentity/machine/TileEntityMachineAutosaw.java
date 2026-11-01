@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.blocks.generic.BlockTallPlant.EnumTallFlower;
 import com.hbm.handler.threading.PacketThreading;
@@ -616,7 +617,7 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IB
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -630,8 +631,8 @@ public class TileEntityMachineAutosaw extends TileEntityLoadedBase implements IB
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tank, params, type -> {
 				if(!acceptedFuels.contains(type)) throw new RORFunctionException("Exception: Fuel Not Accepted");
 			})) {
 				this.markDirty();

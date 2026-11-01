@@ -1,10 +1,14 @@
 package com.hbm.tileentity.machine.oil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
 import api.hbm.redstoneoverradio.RORFunctionException;
 
 import com.hbm.inventory.FluidStack;
+import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.recipes.FractionRecipes;
@@ -13,6 +17,7 @@ import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePortShapes;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.Tuple.Pair;
 
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
@@ -185,7 +190,7 @@ public class TileEntityMachineFractionTower extends TileEntityLoadedBase impleme
 				PREFIX_VALUE + "type",
 				PREFIX_VALUE + "fill",
 				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -199,18 +204,48 @@ public class TileEntityMachineFractionTower extends TileEntityLoadedBase impleme
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
-				Pair<FluidStack, FluidStack> quart = FractionRecipes.getFractions(type);
-				if(quart == null) throw new RORFunctionException("Exception: Invalid Fractionation Input");
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], quart.getKey().type);
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[2], quart.getValue().type);
-			})) {
-				this.markDirty();
-				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			}
-			return null;
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			setStackFluid(RORFluidUtil.parseFluid(params));
 		}
 		return null;
+	}
+
+	protected TileEntityMachineFractionTower getConnectedTower(int yOffset) {
+		if(worldObj == null) return null;
+		TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + yOffset, zCoord);
+		return tile instanceof TileEntityMachineFractionTower ? (TileEntityMachineFractionTower) tile : null;
+	}
+
+	private void setStackFluid(FluidType type) {
+		Pair<FluidStack, FluidStack> fractions = FractionRecipes.getFractions(type);
+		if(fractions == null) throw new RORFunctionException("Exception: Invalid Fractionation Input");
+		// Repeated polling commands for the current recipe do not need to inspect the stack.
+		if(tanks[0].getTankType() == type && tanks[1].getTankType() == fractions.getKey().type
+				&& tanks[2].getTankType() == fractions.getValue().type) return;
+
+		// The bottom tower controls the stack. Validate every tank before changing any of them.
+		TileEntityMachineFractionTower bottom = this;
+		TileEntityMachineFractionTower below;
+		while((below = bottom.getConnectedTower(-3)) != null) bottom = below;
+
+		List<TileEntityMachineFractionTower> stack = new ArrayList<>();
+		for(TileEntityMachineFractionTower tower = bottom; tower != null; tower = tower.getConnectedTower(3)) {
+			if(tower.tanks[0].getTankType() != type && tower.tanks[0].getFill() != 0)
+				throw new RORFunctionException(RORFluidUtil.EX_TANK_EMPTY);
+			RORFluidUtil.requireEmptyForTypeChange(tower.tanks[1], fractions.getKey().type);
+			RORFluidUtil.requireEmptyForTypeChange(tower.tanks[2], fractions.getValue().type);
+			stack.add(tower);
+		}
+
+		// Update outputs as well, so the next tick cannot propagate stale output types upward.
+		for(TileEntityMachineFractionTower tower : stack) {
+			if(tower.tanks[0].getTankType() == type && tower.tanks[1].getTankType() == fractions.getKey().type
+					&& tower.tanks[2].getTankType() == fractions.getValue().type) continue;
+			tower.tanks[0].setTankType(type);
+			tower.tanks[1].setTankType(fractions.getKey().type);
+			tower.tanks[2].setTankType(fractions.getValue().type);
+			tower.markDirty();
+			if(tower.worldObj != null) tower.worldObj.markBlockForUpdate(tower.xCoord, tower.yCoord, tower.zCoord);
+		}
 	}
 }

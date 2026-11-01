@@ -29,8 +29,17 @@ public final class RORFluidUtil {
 	 * but before its type is changed, and may reject fluids the machine cannot process.
 	 */
 	public static boolean setFluid(FluidTank tank, String[] params, FluidValidator validator) {
-		if(params.length != 1) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
-		return setFluid(tank, parseFluid(params[0]), validator);
+		return setFluid(tank, params, validator, false);
+	}
+
+	/** Allows a caller to explicitly opt into selecting registered FT_NoID fluids. */
+	public static boolean setFluid(FluidTank tank, String[] params, boolean allowNoID) {
+		return setFluid(tank, params, null, allowNoID);
+	}
+
+	/** The opt-in only bypasses FT_NoID; the empty-tank check and validator still apply. */
+	public static boolean setFluid(FluidTank tank, String[] params, FluidValidator validator, boolean allowNoID) {
+		return setFluid(tank, parseFluid(params, allowNoID), validator);
 	}
 
 	/** Returns whether the tank type changed. The machine handles saving and syncing the change. */
@@ -63,12 +72,24 @@ public final class RORFluidUtil {
 			throw new RORFunctionException("Exception: Gas Required");
 	}
 
+	/** Resolves a player-selectable fluid. Machine-specific eligibility belongs in the caller's validator. */
 	public static FluidType parseFluid(String[] params) {
-		if(params.length != 1) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
-		return parseFluid(params[0]);
+		return parseFluid(params, false);
 	}
 
-	private static FluidType parseFluid(String value) {
+	/** Resolves a registered fluid, optionally allowing fluids hidden from player selection. */
+	public static FluidType parseFluid(String[] params, boolean allowNoID) {
+		if(params.length != 1) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
+		return parseFluid(params[0], allowNoID);
+	}
+
+	/** Resolves a player-selectable fluid. Machine-specific eligibility belongs in the caller's validator. */
+	public static FluidType parseFluid(String value) {
+		return parseFluid(value, false);
+	}
+
+	/** Resolves a registered fluid, optionally allowing fluids hidden from player selection. */
+	public static FluidType parseFluid(String value, boolean allowNoID) {
 		String name = value.trim();
 		FluidType type;
 		try {
@@ -88,7 +109,7 @@ public final class RORFluidUtil {
 				if(type == null) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
 			}
 		}
-		if(type.hasNoID()) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
+		if(!allowNoID && type.hasNoID()) throw new RORFunctionException(IRORInteractive.EX_FORMAT);
 		return type;
 	}
 
