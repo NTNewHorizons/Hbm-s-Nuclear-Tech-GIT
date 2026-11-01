@@ -16,6 +16,10 @@ import com.hbm.util.fauxpointtwelve.BlockPos;
 import api.hbm.energymk2.IEnergyProviderMK2;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,14 +29,18 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 	public static final int ACCUMULATED_PANELS = 9;
 	public static final double PANEL_BONUS_EFFICIENCY = 1.5D;
 	public static final long MAX_POWER = 5_000;
+	public static final int EXPOSURE_UPDATE_INTERVAL_TICKS = 10;
 
 	private long power;
 	private long maxpwr = MAX_POWER;
 	public int panelRotation;
-	private boolean footprintUpdated;
 	private List<BlockPos> exposurePositions;
 	private int cachedPanelRotation = -1;
 	private int cachedFacingMetadata = -1;
+	private long cachedExposedOutput;
+	private long lastExposureUpdate = -1;
+	private AxisAlignedBB renderBounds;
+	private int renderBoundsMetadata = -1;
 
 	protected ModulePortManPower modulePowerPorts;
 
@@ -44,7 +52,6 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 
 	public PortDef[] getPorts() {
 		if(cachedPorts == null) {
-			// single port at the cap end, connecting only through the port face
 			cachedPorts = new PortDef[] {
 					PortDef.make(xCoord, yCoord, zCoord, ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset))
 			};
@@ -56,13 +63,28 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 	public void updateEntity() {
 
 		if(!worldObj.isRemote) {
-			if(!footprintUpdated) footprintUpdated = ((MachineChungusSolar) getBlockType()).updateLegacyFootprint(this);
+			if(worldObj.getTotalWorldTime() % 20 == 0) {
+				((MachineChungusSolar) getBlockType()).validateStructure(this);
+				if(isInvalid()) return;
+			}
 			modulePowerPorts.update(getPorts());
 
-			setPower(Math.min(getMaxPower(), power + getExposedOutput()));
+			setPower(Math.min(getMaxPower(), power + getCachedExposedOutput()));
 
 			networkPackNT(50);
 		}
+	}
+
+	private long getCachedExposedOutput() {
+		long time = worldObj.getTotalWorldTime();
+		// Amortize the cell lighting queries; a pose change must not reuse the old exposure.
+		if(lastExposureUpdate < 0 || time < lastExposureUpdate
+				|| time - lastExposureUpdate >= EXPOSURE_UPDATE_INTERVAL_TICKS
+				|| cachedPanelRotation != panelRotation || cachedFacingMetadata != getBlockMetadata()) {
+			cachedExposedOutput = getExposedOutput();
+			lastExposureUpdate = time;
+		}
+		return cachedExposedOutput;
 	}
 
 	private long getExposedOutput() {
@@ -122,7 +144,6 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 
 	@Override
 	public boolean canConnect(ForgeDirection dir) {
-		// the port is the only connection point, all other faces of the array are inaccessible
 		return dir == ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 	}
 
@@ -135,7 +156,20 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 	@Override
 	public void deserialize(ByteBuf buf) {
 		this.power = buf.readLong();
-		this.panelRotation = buf.readUnsignedByte() % 8;
+		this.panelRotation = buf.readUnsignedByte() % MachineChungusSolar.PANEL_ROTATIONS;
+	}
+
+	@Override
+	public Packet getDescriptionPacket() {
+		// Rotation must reach every chunk watcher, including clients beyond the power update radius.
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setByte("panelRotation", (byte) panelRotation);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+		this.panelRotation = packet.func_148857_g().getByte("panelRotation") & (MachineChungusSolar.PANEL_ROTATIONS - 1);
 	}
 
 	@Override
@@ -143,7 +177,7 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 		super.readFromNBT(nbt);
 
 		this.power = nbt.getLong("power");
-		this.panelRotation = (nbt.getByte("panelRotation") & 7);
+		this.panelRotation = nbt.getByte("panelRotation") & (MachineChungusSolar.PANEL_ROTATIONS - 1);
 		if(nbt.hasKey("maxpwr")) this.maxpwr = nbt.getLong("maxpwr");
 	}
 
@@ -171,8 +205,20 @@ public class TileEntityChungusSolar extends TileEntityLoadedBase implements IEne
 	}
 
 	@Override
-	public net.minecraft.util.AxisAlignedBB getRenderBoundingBox() {
-		return net.minecraft.tileentity.TileEntity.INFINITE_EXTENT_AABB;
+	public AxisAlignedBB getRenderBoundingBox() {
+		// The panel rotates about y + 0.5 with radius < 1.6. Include every facing and pose.
+		int metadata = getBlockMetadata();
+		ForgeDirection facing = ForgeDirection.getOrientation(metadata - BlockDummyable.offset);
+		int endX = xCoord - facing.offsetX * MachineChungusSolar.PANEL_LENGTH;
+		int endZ = zCoord - facing.offsetZ * MachineChungusSolar.PANEL_LENGTH;
+		int minX = Math.min(xCoord, endX) - 2, minZ = Math.min(zCoord, endZ) - 2;
+		if(renderBounds == null || renderBoundsMetadata != metadata || renderBounds.minY != yCoord - 2
+				|| renderBounds.minX != minX || renderBounds.minZ != minZ) {
+			renderBounds = AxisAlignedBB.getBoundingBox(minX, yCoord - 2, minZ, Math.max(xCoord, endX) + 3,
+					yCoord + 3, Math.max(zCoord, endZ) + 3);
+			renderBoundsMetadata = metadata;
+		}
+		return renderBounds;
 	}
 
 	@Override
