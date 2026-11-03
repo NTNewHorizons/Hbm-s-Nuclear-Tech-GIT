@@ -29,12 +29,15 @@
 - Full I18n-ization
 - RBMK and PWR fuel rods graph functions
 - Conveyor combinator
+- Server smoke test in CI
 
 Hi, i am memeing things into existence, dont mind me! im just the bent fork at the end of the table -JamesH_2
 
 And I turn the memes into reality, see you in orbit! -Mellow
 
 And I am some random guy IDK -Bufka2011
+
+And I am some other random guy IDK -THOMASS47
 
 [NTM: Space on Modrinth](https://modrinth.com/mod/ntmspace)
 
