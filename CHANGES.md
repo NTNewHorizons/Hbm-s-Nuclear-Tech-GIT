@@ -29,7 +29,6 @@
 - Improved machine upgrade handling with slot validation and detailed upgrade effect information.
 - Extended the Fluid Siphon to support partially filled fluid barrels.
 - Expanded custom-machine configuration with molten-material processing, custom OBJ models, and operation sounds.
-- Optimized machine redstone handling to avoid unnecessary polling.
 
 **Mod Compatibility**
 - Added Forge Fluids integration, allowing NTM fluid systems to interact with other mods, including Applied Energistics 2.
@@ -48,9 +47,12 @@
 - Remodeled and retextured the Electric Press.
 - Expanded internationalization, replacing hardcoded text with translation keys and improving localization support.
 
-**Performance and Development**
+**Performance**
 - Optimized entity and machine chunkloading to reduce unnecessary chunk operations.
+- Optimized machine redstone handling to avoid unnecessary polling.
+
+**Development**
 - Migrated to GTNH Gradle with JDK 25 and JVM Downgrader, while maintaining Java 8 runtime compatibility.
 - Improved GitHub Actions builds and release artifact publishing.
-Added automated line-ending normalization and validation.
-Added multiblock machine documentation.
+- Added automated line-ending normalization and validation.
+- Added multiblock machine documentation.
