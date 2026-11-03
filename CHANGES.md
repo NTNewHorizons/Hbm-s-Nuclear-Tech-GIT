@@ -38,7 +38,6 @@
 - Expanded OpenComputers compatibility with additional recipes and component support.
 - Expanded Redstone over Radio with crate and Storage Drawers reading, custom item-name signals, and programmable fluid identification.
 - Added Special Mobs compatibility for creeper transformations.
-- Made external mod integration dependencies optional.
 
 **Gameplay and Quality of Life**
 - Enabled Nether heat and burning mechanics, with improved armor protection information.
