@@ -61,7 +61,8 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 			if(this.isOn) {
 
 				int emergencyBrake = 100;
-				for(int i = 0; i < this.ctx.clockSpeed && emergencyBrake > 0; i++) {
+				this.ctx.clockProgress += this.ctx.clockSpeed;
+				while(this.ctx.clockProgress >= 1 - 1e-9 && emergencyBrake > 0) {
 					emergencyBrake--;
 
 					if(this.ctx.current == this.script.length) { this.stop("gui.autocal.error.terminated"); break; }
@@ -71,10 +72,17 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 						int index = this.ctx.current;
 						this.ctx.current ++;
 						String line = this.script[index];
+						double previousClockSpeed = ctx.clockSpeed;
 						EnumStatementReturn ret = msesv1ext.eval(ctx, line);
-						if(ret != EnumStatementReturn.SKIP) pushMsg(index + ": " + line);
+						if(ret == EnumStatementReturn.SKIP) {
+							// Apply clockspeed change immediately
+							ctx.clockProgress = Math.max(0, ctx.clockProgress + (ctx.clockSpeed - previousClockSpeed));
+						} else {
+							ctx.clockProgress = Math.max(0, ctx.clockProgress - 1);
+							pushMsg(index + ": " + line);
+						}
 						this.history[0] = "Buffer: " + ctx.readBuffer();
-						if(ret == EnumStatementReturn.END_TICK) break;
+						if(ret == EnumStatementReturn.END_TICK) { ctx.clockProgress = 0; break; }
 						if(ret == EnumStatementReturn.SHUTDOWN) this.stop("gui.autocal.error.shutdown_requested");
 						if(!this.ignoreError) {
 							if(ret == EnumStatementReturn.UNRECOGNIZED_COMMAND) this.stop("gui.autocal.error.unrecognized_command");
@@ -91,11 +99,11 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 								this.ctx.variables.setString("last_error", ret.name().toLowerCase(Locale.US));
 							}
 						}
-						if(ret == EnumStatementReturn.SKIP) i--;
 					} catch(Exception ex) {
 						this.stop("gui.autocal.error.evaluation_unsuccessful");
 					}
 				}
+				this.ctx.clockProgress %= 1;
 			}
 
 			this.networkPackNT(15);

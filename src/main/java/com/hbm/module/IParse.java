@@ -21,7 +21,8 @@ public interface IParse {
 		private String[] stack = new String[ServerConfig.MAX_STACK_SIZE.get()];
 		private int stackSize = 0;
 		public String splitString = ";";
-		public int clockSpeed = 1;
+		public double clockSpeed = 1;
+		public double clockProgress = 0;
 		public int current = 0;
 		
 		public ParseContext(World world) {
@@ -71,6 +72,7 @@ public interface IParse {
 		
 		public void turnOff() {
 			this.clockSpeed = 1;
+			this.clockProgress = 0;
 			this.current = 0;
 			this.buffer = "";
 			if(!this.variables.hasNoTags()) this.variables = new NBTTagCompound();
@@ -79,7 +81,10 @@ public interface IParse {
 		// NBT R/W is now in control of the CTX, meaning additions to the AUTOCAL runtime should be a lot easier
 		public void readFromNBT(NBTTagCompound nbt, String[] script, IParse parser) {
 			current = nbt.getInteger("current");
-			clockSpeed = nbt.getInteger("clockSpeed");
+			clockSpeed = nbt.getDouble("clockSpeed");
+			if(!Double.isFinite(clockSpeed) || clockSpeed <= 0) clockSpeed = 1;
+			clockProgress = nbt.getDouble("clockProgress");
+			if(!Double.isFinite(clockProgress) || clockProgress < 0 || clockProgress >= 1) clockProgress = 0;
 			buffer = nbt.getString("buffer");
 			splitString = nbt.getString("splitString");
 			variables = nbt.getCompoundTag("variables");
@@ -91,7 +96,8 @@ public interface IParse {
 		
 		public void writeToNBT(NBTTagCompound nbt) {
 			nbt.setInteger("current", current);
-			nbt.setInteger("clockSpeed", clockSpeed);
+			nbt.setDouble("clockSpeed", clockSpeed);
+			nbt.setDouble("clockProgress", clockProgress);
 			nbt.setString("buffer", buffer);
 			nbt.setString("splitString", splitString);
 			nbt.setTag("variables", variables);
