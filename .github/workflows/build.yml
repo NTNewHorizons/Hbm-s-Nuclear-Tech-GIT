@@ -26,10 +26,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Set up JDK 25
+      - name: Set up build and server JDKs
         uses: actions/setup-java@v6
         with:
-          java-version: "25"
+          java-version: |
+            8
+            25
           distribution: "temurin" # Temurin because it's default :P
 
       # Calculate days since 10/10/10
@@ -57,6 +59,21 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
+      - name: Server smoke test
+        timeout-minutes: 7
+        run: bash .github/scripts/server-smoke-test.sh
+
+      - name: Upload server smoke test logs
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: server-smoke-logs
+          path: |
+            build/server-smoke/**/server.log
+            build/server-smoke/**/logs/
+            build/server-smoke/**/crash-reports/
+          if-no-files-found: ignore
+
       - name: Upload release JAR
         uses: actions/upload-artifact@v7
         with:
@@ -75,7 +92,6 @@ jobs:
           path: ./build/libs/HBM-NTM-*-dev.jar
           archive: false
           if-no-files-found: error
-
       # A release is only made when the mod was built from the space-travel-twopointfive branch
       - name: Calculate release tag
         id: release_tag
