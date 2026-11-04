@@ -27,8 +27,8 @@ public class ParseMSES1 implements IParse {
 		if(lower.startsWith("clockspeed ")) {
 			if(line.length() <= 11) return EnumStatementReturn.PARAMETER_MISSING;
 			try {
-				int speed = Integer.parseInt(line.substring(11));
-				if(speed < 1 || speed > ServerConfig.AUTOCAL_MAX_CLOCK.get()) return EnumStatementReturn.PARAMETER_OOB;
+				double speed = Double.parseDouble(line.substring(11));
+				if(!Double.isFinite(speed) || speed <= 0 || speed > ServerConfig.AUTOCAL_MAX_CLOCK.get()) return EnumStatementReturn.PARAMETER_OOB;
 				ctx.clockSpeed = speed;
 			} catch(Throwable ex) { return EnumStatementReturn.PARAMETER_PARSE_ERROR; }
 			return EnumStatementReturn.SKIP;
