@@ -13,7 +13,10 @@ fi
 mkdir -p build/server-smoke
 # A fresh directory prevents old worlds, configs or crash reports affecting the result.
 run_dir=$(mktemp -d build/server-smoke/run.XXXXXX)
-server_log="$run_dir/server.log"
+if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+    printf 'run_dir=%s\n' "$run_dir" >> "$GITHUB_OUTPUT"
+fi
+server_log="$run_dir/run.log"
 printf 'eula=true\n' > "$run_dir/eula.txt"
 printf 'level-seed=-6202107849386030209\nonline-mode=true\nserver-ip=127.0.0.1\nserver-port=0\n' > "$run_dir/server.properties"
 printf 'stop\n' > "$run_dir/stop.txt"

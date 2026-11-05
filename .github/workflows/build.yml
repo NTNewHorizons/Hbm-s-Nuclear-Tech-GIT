@@ -60,18 +60,20 @@ jobs:
         run: ./gradlew build
 
       - name: Server smoke test
+        id: server_smoke_test
         timeout-minutes: 7
         run: bash .github/scripts/server-smoke-test.sh
 
       - name: Upload server smoke test logs
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.server_smoke_test.outputs.run_dir != '' }}
         uses: actions/upload-artifact@v7
         with:
-          name: server-smoke-logs
+          name: server-logs
           path: |
-            build/server-smoke/**/server.log
-            build/server-smoke/**/logs/
-            build/server-smoke/**/crash-reports/
+            ${{ steps.server_smoke_test.outputs.run_dir }}/run.log
+            ${{ steps.server_smoke_test.outputs.run_dir }}/logs/
+            ${{ steps.server_smoke_test.outputs.run_dir }}/crash-reports/
+          archive: true
           if-no-files-found: ignore
 
       - name: Upload release JAR

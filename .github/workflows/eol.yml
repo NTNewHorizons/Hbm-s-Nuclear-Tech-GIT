@@ -1,7 +1,7 @@
 name: Check line endings
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened]
 
 permissions:
@@ -16,19 +16,119 @@ jobs:
     name: Check committed line endings
     if: ${{ !startsWith(github.event.pull_request.head.ref, 'eol-fixes/') }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - name: Checkout trusted tooling
+      - name: Checkout PR contents for normalization
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.base.sha }}
-          persist-credentials: false
-
-      - name: Checkout PR contents for inspection
-        uses: actions/checkout@v7
-        with:
+          # PR files are used only for Git's attribute-based normalization.
+          # Never run scripts, actions, builds, or tests from this checkout.
+          allow-unsafe-pr-checkout: true
           ref: ${{ github.event.pull_request.head.sha }}
           path: pr
           persist-credentials: false
 
-      - name: Check raw Git blobs
-        run: python3 .github/scripts/normalize_eol.py --root pr --check
+      - name: Renormalize and check committed line endings
+        id: check
+        continue-on-error: true
+        run: |
+          git -C pr -c core.safecrlf=false add --renormalize .
+          git -C pr diff --cached --exit-code --stat
+
+      - name: Update fork PR line-ending guidance
+        if: >-
+          github.event.pull_request.head.repo.full_name != github.repository &&
+          (steps.check.outcome == 'success' || steps.check.outcome == 'failure')
+        uses: actions/github-script@v9
+        env:
+          EOL_CHECK_OUTCOME: ${{ steps.check.outcome }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const pull_number = context.payload.pull_request.number;
+            const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number });
+            if (pr.state !== 'open' || pr.head.sha !== context.payload.pull_request.head.sha) {
+              core.info('PR was updated or closed, skipping the comment for this revision.');
+              return;
+            }
+
+            const marker = '<!-- eol-fork-guidance -->';
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number: pull_number, per_page: 100
+            });
+            const existing = comments.find(comment =>
+              comment.user?.login === 'github-actions[bot]' &&
+              comment.user?.type === 'Bot' &&
+              comment.body?.includes(marker)
+            );
+            const failed = process.env.EOL_CHECK_OUTCOME === 'failure';
+            if (!failed && !existing) return;
+
+            const body = failed ? [
+              marker,
+              'Fix line endings by running these from your repository root on the PR branch (with no uncommitted changes):',
+              '',
+              '```sh',
+              'git -c core.safecrlf=false add --renormalize .',
+              'git commit -m "Normalize line endings"',
+              'git push',
+              '```'
+            ].join('\n') : [
+              marker,
+              'Line endings fixed.'
+            ].join('\n');
+
+            if (existing) {
+              if (existing.body !== body) {
+                await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+              }
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number: pull_number, body });
+            }
+
+      - name: Verify the PR still points to this revision
+        id: revision
+        if: >-
+          steps.check.outcome == 'failure' &&
+          github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          current_head=$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
+            --json headRefOid,state --jq 'select(.state == "OPEN") | .headRefOid')
+          if [[ "$current_head" == "$EXPECTED_HEAD" ]]; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "PR was updated or closed, skipping fixes for this revision."
+          fi
+
+      - name: Create or update stacked fix PR
+        if: steps.revision.outputs.current == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          path: pr
+          base: ${{ github.event.pull_request.head.ref }}
+          branch: eol-fixes/pr-${{ github.event.pull_request.number }}
+          delete-branch: true
+          commit-message: Normalize line endings
+          title: 'Normalize line endings for #${{ github.event.pull_request.number }}'
+          body: |
+            Automatic line-ending fixes for #${{ github.event.pull_request.number }}.
+
+            Merge this PR to apply the fixes.
+
+      - name: Require normalized line endings in the original PR
+        if: ${{ !cancelled() && steps.check.outcome == 'failure' }}
+        env:
+          SAME_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        run: |
+          if [[ "$SAME_REPOSITORY" == "true" ]]; then
+            echo "::error::Line-ending check failed. Merge the stacked fix PR, if created, into the original PR branch."
+          else
+            echo "::error::Line-ending check failed. Normalize the files in your fork and push the fixes."
+          fi
+          exit 1
