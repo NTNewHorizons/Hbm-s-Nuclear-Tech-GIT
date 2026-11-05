@@ -108,18 +108,36 @@ jobs:
 
       - name: Create or update stacked fix PR
         if: steps.revision.outputs.current == 'true'
-        uses: peter-evans/create-pull-request@v8
-        with:
-          path: pr
-          base: ${{ github.event.pull_request.head.ref }}
-          branch: eol-fixes/pr-${{ github.event.pull_request.number }}
-          delete-branch: true
-          commit-message: Normalize line endings
-          title: 'Normalize line endings for #${{ github.event.pull_request.number }}'
-          body: |
-            Automatic line-ending fixes for #${{ github.event.pull_request.number }}.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          FIX_BRANCH: eol-fixes/pr-${{ github.event.pull_request.number }}
+        run: |
+          # Commit the staged normalization directly; switching to the original
+          # unnormalized tree makes Git report local changes and reject a cherry-pick.
+          git -C pr -c user.name='github-actions[bot]' \
+            -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m 'Normalize line endings'
 
-            Merge this PR to apply the fixes.
+          remote_head=$(git -C pr -c credential.helper= \
+            -c 'credential.helper=!gh auth git-credential' \
+            ls-remote origin "refs/heads/$FIX_BRANCH" | cut -f1)
+          git -C pr -c credential.helper= \
+            -c 'credential.helper=!gh auth git-credential' \
+            push --force-with-lease="refs/heads/$FIX_BRANCH:$remote_head" \
+            origin "HEAD:refs/heads/$FIX_BRANCH"
+
+          existing_pr=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open \
+            --head "$FIX_BRANCH" --base "$PR_BRANCH" --json number --jq '.[0].number // empty')
+          if [[ -z "$existing_pr" ]]; then
+            body_file="$RUNNER_TEMP/eol-fix-pr-body.md"
+            printf 'Automatic line-ending fixes for #%s.\n\nMerge this PR to apply the fixes.\n' \
+              "$PR_NUMBER" > "$body_file"
+            gh pr create --repo "$GITHUB_REPOSITORY" --base "$PR_BRANCH" \
+              --head "$FIX_BRANCH" --title "Normalize line endings for #$PR_NUMBER" \
+              --body-file "$body_file"
+          fi
 
       - name: Require normalized line endings in the original PR
         if: ${{ !cancelled() && steps.check.outcome == 'failure' }}
@@ -132,3 +150,4 @@ jobs:
             echo "::error::Line-ending check failed. Normalize the files in your fork and push the fixes."
           fi
           exit 1
+
