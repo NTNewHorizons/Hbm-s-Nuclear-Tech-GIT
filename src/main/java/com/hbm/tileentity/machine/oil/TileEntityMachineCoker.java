@@ -1,5 +1,10 @@
 package com.hbm.tileentity.machine.oil;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
+
+import com.hbm.util.RORFluidUtil;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionHandler.PollutionType;
 import com.hbm.handler.CompatHandler.OCComponent;
@@ -36,7 +41,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "opencomputers")})
-public class TileEntityMachineCoker extends TileEntityMachineBase implements SimpleComponent, OCComponent, IFluidStandardTransceiverMK2, IGUIProvider, IFluidCopiable {
+public class TileEntityMachineCoker extends TileEntityMachineBase implements SimpleComponent, OCComponent, IFluidStandardTransceiverMK2, IGUIProvider, IFluidCopiable, IRORValueProvider, IRORInteractive {
 
 	public boolean wasOn;
 	public int progress;
@@ -337,5 +342,39 @@ public class TileEntityMachineCoker extends TileEntityMachineBase implements Sim
 				return getInfo(context, args);
 		}
 		throw new NoSuchMethodException();
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "type",
+				PREFIX_VALUE + "fill",
+				PREFIX_VALUE + "fillpercent",
+				RORFluidUtil.SET_FLUID_INFO,
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "type").equals(name)) return tanks[0].getTankType().getName();
+		if((PREFIX_VALUE + "fill").equals(name)) return "" + tanks[0].getFill();
+		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tanks[0].getFill() * 100 / tanks[0].getMaxFill());
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tanks[0], params, type -> {
+				Triplet<Integer, ItemStack, FluidStack> recipe = CokerRecipes.getOutput(type);
+				if(recipe == null) throw new RORFunctionException("Exception: Invalid Coker Input");
+				if(recipe.getZ() != null) RORFluidUtil.requireEmptyForTypeChange(tanks[1], recipe.getZ().type);
+			})) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
 	}
 }

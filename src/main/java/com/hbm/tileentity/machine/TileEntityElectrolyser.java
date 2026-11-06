@@ -1,9 +1,14 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.hbm.util.RORFluidUtil;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.threading.PacketThreading;
@@ -51,7 +56,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityElectrolyser extends TileEntityMachineBase implements IEnergyReceiverMK2, IFluidStandardTransceiverMK2, IControlReceiver, IGUIProvider, IUpgradeInfoProvider, IFluidCopiable, IMetalCopiable {
+public class TileEntityElectrolyser extends TileEntityMachineBase implements IEnergyReceiverMK2, IFluidStandardTransceiverMK2, IControlReceiver, IGUIProvider, IUpgradeInfoProvider, IFluidCopiable, IMetalCopiable, IRORValueProvider, IRORInteractive {
 
 	public long power;
 	public static final long maxPower = 20000000;
@@ -625,5 +630,40 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 		if(leftStack != null)	types.add(leftStack.material.id);
 		if(rightStack != null)	types.add(rightStack.material.id);
 		return BobMathUtil.intCollectionToArray(types);
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "type",
+				PREFIX_VALUE + "fill",
+				PREFIX_VALUE + "fillpercent",
+				RORFluidUtil.SET_FLUID_INFO,
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "type").equals(name)) return tanks[0].getTankType().getName();
+		if((PREFIX_VALUE + "fill").equals(name)) return "" + tanks[0].getFill();
+		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tanks[0].getFill() * 100 / tanks[0].getMaxFill());
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tanks[0], params, type -> {
+				ElectrolysisRecipe recipe = ElectrolyserFluidRecipes.getRecipe(type);
+				if(recipe == null) throw new RORFunctionException("Exception: Invalid Electrolysis Input");
+				RORFluidUtil.requireEmptyForTypeChange(tanks[1], recipe.output1.type);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[2], recipe.output2.type);
+			})) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
 	}
 }
