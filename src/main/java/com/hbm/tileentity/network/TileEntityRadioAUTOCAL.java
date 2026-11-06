@@ -202,8 +202,12 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 	@Override
 	public void receiveControl(EntityPlayer player, NBTTagCompound data) {
 		if(data.hasKey("on")) {
-			if(this.isOn && !this.isPaused) stop("gui.autocal.error.user_shutdown");
+			if(this.isOn) stop("gui.autocal.error.user_shutdown");
 			else this.isOn = true;
+			this.isPaused = false;
+			this.pendingSteps = 0;
+		}
+		if(data.hasKey("resume")) {
 			this.isPaused = false;
 			this.pendingSteps = 0;
 		}
