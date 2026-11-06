@@ -301,7 +301,11 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 			isOn = true;
 			isPaused = false;
 			pendingSteps = 0;
-		} else stop("User requested shutdown");
+		} else {
+			isPaused = false;
+			pendingSteps = 0;
+			stop("User requested shutdown");
+		}
 		return new Object[] {};
 	}
 
