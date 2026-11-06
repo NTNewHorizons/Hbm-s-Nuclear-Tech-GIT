@@ -185,7 +185,8 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		if(autocal.isOn) drawTexturedModalRect(guiLeft + 8, guiTop + 36, xSize, 0, 18, 18);
+		if(autocal.isPaused) drawTexturedModalRect(guiLeft + 8, guiTop + 36, xSize + 18, 0, 18, 18);
+		else if(autocal.isOn) drawTexturedModalRect(guiLeft + 8, guiTop + 36, xSize, 0, 18, 18);
 		if(!autocal.ignoreError) drawTexturedModalRect(guiLeft + 28, guiTop + 36, xSize, 18, 18, 18);
 		if(!autocal.autoReboot) drawTexturedModalRect(guiLeft + 48, guiTop + 36, xSize, 36, 18, 18);
 	}
