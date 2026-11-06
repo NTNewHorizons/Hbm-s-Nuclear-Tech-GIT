@@ -151,6 +151,17 @@ public final class RORFluidUtil {
 		return result.toArray(new String[0]);
 	}
 
+	/** Fixed-fluid tanks use descriptive names and expose amounts without a redundant type value. */
+	public static String[] addFixedTankInfo(String[] info, String... tankNames) {
+		List<String> result = new ArrayList<>(Arrays.asList(info));
+		for(String tankName : tankNames) addFillInfo(result, IRORInfo.PREFIX_VALUE + tankName);
+		return result.toArray(new String[0]);
+	}
+
+	public static String getFixedTankValue(String name, String tankName, FluidTank tank) {
+		return getFillValue(name, IRORInfo.PREFIX_VALUE + tankName, tank == null ? 0 : tank.getFill(), tank == null ? 0 : tank.getMaxFill());
+	}
+
 	private static void addFillInfo(List<String> info, String prefix) {
 		info.add(prefix + "fill");
 		info.add(prefix + "capacity");

@@ -591,16 +591,17 @@ public class TileEntityFusionTorus extends TileEntityCooledBase implements IGUIP
 				PREFIX_VALUE + "temp",
 				PREFIX_FUNCTION + "setrecipe" + NAME_SEPARATOR + "name",
 		};
-		info = RORFluidUtil.addTankInfo(info, "input", 4);
-		info = RORFluidUtil.addTankInfo(info, "output", 2);
+		info = RORFluidUtil.addTankInfo(info, "input", 3);
+		info = RORFluidUtil.addTankInfo(info, "output", 1);
+		info = RORFluidUtil.addFixedTankInfo(info, "coldcoolant", "warmcoolant");
 		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0], tanks[1], tanks[2], coolantTanks[0]);
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0], tanks[1], tanks[2]);
 		if(fluidValue != null) return fluidValue;
-		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[3], coolantTanks[1]);
+		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[3]);
 		if(fluidValue != null) return fluidValue;
 
 		if((PREFIX_VALUE + "plasma").equals(name))		return "" + this.plasmaEnergy;
@@ -609,6 +610,11 @@ public class TileEntityFusionTorus extends TileEntityCooledBase implements IGUIP
 		if((PREFIX_VALUE + "recipe").equals(name))		return this.fusionModule.getRecipeName();
 		if((PREFIX_VALUE + "active").equals(name))		return "" + (this.didProcess ? 1 : 0);
 		if((PREFIX_VALUE + "temp").equals(name))		return "" + (int) this.temperature;
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "coldcoolant", coolantTanks[0]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "warmcoolant", coolantTanks[1]);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 

@@ -325,16 +325,15 @@ public class TileEntityFusionMHDT extends TileEntityLoadedBase implements IEnerg
 		String[] info = new String[] {
 				PREFIX_VALUE + "output"
 		};
-		info = RORFluidUtil.addTankInfo(info, "input", 1);
-		info = RORFluidUtil.addTankInfo(info, "output", 1);
+		info = RORFluidUtil.addFixedTankInfo(info, "coldcoolant", "warmcoolant");
 		return info;
 	}
 	
 	@Override
 	public String provideRORValue(String name) {
-		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0]);
+		String fluidValue = RORFluidUtil.getFixedTankValue(name, "coldcoolant", tanks[0]);
 		if(fluidValue != null) return fluidValue;
-		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[1]);
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "warmcoolant", tanks[1]);
 		if(fluidValue != null) return fluidValue;
 
 		if((PREFIX_VALUE + "output").equals(name)) return "" + this.power;

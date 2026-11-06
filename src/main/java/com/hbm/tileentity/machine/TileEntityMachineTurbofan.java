@@ -543,12 +543,16 @@ public class TileEntityMachineTurbofan extends TileEntityMachinePolluting implem
 				PREFIX_VALUE + "blood",
 				PREFIX_VALUE + "afterburner",
 		};
-		return RORFluidUtil.addTankInfo(info, "output", 3);
+		return RORFluidUtil.addFixedTankInfo(info, "smoke", "leadedsmoke", "poisonoussmoke");
 	}
 	
 	@Override
 	public String provideRORValue(String name) {
-		String fluidValue = RORFluidUtil.getTankValue(name, "output", smoke, smoke_leaded, smoke_poison);
+		String fluidValue = RORFluidUtil.getFixedTankValue(name, "smoke", smoke);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "leadedsmoke", smoke_leaded);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "poisonoussmoke", smoke_poison);
 		if(fluidValue != null) return fluidValue;
 
 		if((PREFIX_VALUE + "state").equals(name))	return	wasOn ? "1" : "0";

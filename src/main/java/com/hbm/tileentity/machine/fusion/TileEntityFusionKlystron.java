@@ -413,13 +413,13 @@ public class TileEntityFusionKlystron extends TileEntityMachineBase implements I
 				PREFIX_VALUE + "target",
 				PREFIX_FUNCTION + "settarget" + NAME_SEPARATOR + "target",
 		};
-		info = RORFluidUtil.addSingleTankInfo(info);
+		info = RORFluidUtil.addFixedTankInfo(info, "compressedair");
 		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		String fluidValue = RORFluidUtil.getSingleTankValue(name, compair);
+		String fluidValue = RORFluidUtil.getFixedTankValue(name, "compressedair", compair);
 		if(fluidValue != null) return fluidValue;
 
 		if((PREFIX_VALUE + "output").equals(name))  return "" + this.output;

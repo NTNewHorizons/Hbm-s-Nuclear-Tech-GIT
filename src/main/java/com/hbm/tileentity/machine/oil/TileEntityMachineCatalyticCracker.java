@@ -193,16 +193,22 @@ public class TileEntityMachineCatalyticCracker extends TileEntityLoadedBase impl
 		String[] info = new String[] {
 				RORFluidUtil.SET_FLUID_INFO,
 		};
-		info = RORFluidUtil.addTankInfo(info, "input", 2);
-		info = RORFluidUtil.addTankInfo(info, "output", 3);
+		info = RORFluidUtil.addTankInfo(info, "input", 1);
+		info = RORFluidUtil.addTankInfo(info, "output", 2);
+		info = RORFluidUtil.addFixedTankInfo(info, "steam", "spentsteam");
 		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0], tanks[1]);
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0]);
 		if(fluidValue != null) return fluidValue;
-		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[2], tanks[3], tanks[4]);
+		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[2], tanks[3]);
+		if(fluidValue != null) return fluidValue;
+
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "steam", tanks[1]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "spentsteam", tanks[4]);
 		if(fluidValue != null) return fluidValue;
 
 		return null;
