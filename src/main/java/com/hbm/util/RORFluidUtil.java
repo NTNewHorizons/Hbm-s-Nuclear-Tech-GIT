@@ -154,7 +154,14 @@ public final class RORFluidUtil {
 	/** Fixed-fluid tanks use descriptive names and expose amounts without a redundant type value. */
 	public static String[] addFixedTankInfo(String[] info, String... tankNames) {
 		List<String> result = new ArrayList<>(Arrays.asList(info));
-		for(String tankName : tankNames) addFillInfo(result, IRORInfo.PREFIX_VALUE + tankName);
+		for(String tankName : tankNames) {
+			String prefix = IRORInfo.PREFIX_VALUE + tankName;
+			List<String> readings = new ArrayList<>();
+			addFillInfo(readings, prefix);
+			// Group the new readings immediately after their legacy alias, if present.
+			int aliasIndex = result.indexOf(prefix);
+			result.addAll(aliasIndex < 0 ? result.size() : aliasIndex + 1, readings);
+		}
 		return result.toArray(new String[0]);
 	}
 

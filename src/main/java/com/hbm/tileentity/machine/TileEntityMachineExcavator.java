@@ -30,6 +30,7 @@ import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.IUpgradeInfoProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.Compat;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.InventoryUtil;
@@ -1024,16 +1025,20 @@ public class TileEntityMachineExcavator extends TileEntityMachineBase implements
 	
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "power",
 				PREFIX_VALUE + "fluid",
 				PREFIX_VALUE + "state",
 				PREFIX_FUNCTION + "setstate" + NAME_SEPARATOR + "state",
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "fluid");
 	}
 	
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "fluid", tank);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "power").equals(name))	return	"" + this.power;
 		if((PREFIX_VALUE + "fluid").equals(name))	return	"" + this.tank.getFill();
 		if((PREFIX_VALUE + "state").equals(name))	return	this.operational ? "1" : "0";

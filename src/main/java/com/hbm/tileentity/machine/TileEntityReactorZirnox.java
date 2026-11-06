@@ -28,6 +28,7 @@ import com.hbm.saveddata.satellites.SatelliteRayScan.RayEvent;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.CompatEnergyControl;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
@@ -627,7 +628,7 @@ public class TileEntityReactorZirnox extends TileEntityMachineBase implements IC
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 			PREFIX_VALUE + "heat",
 			PREFIX_VALUE + "pressure",
 			PREFIX_VALUE + "water",
@@ -641,10 +642,18 @@ public class TileEntityReactorZirnox extends TileEntityMachineBase implements IC
 			PREFIX_FUNCTION + "setstate" + NAME_SEPARATOR + "active (0 or 1)",
 			PREFIX_FUNCTION + "ventco2"
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "water", "steam", "co2");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "water", water);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "steam", steam);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "co2", carbonDioxide);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "heat").equals(name))			return	"" + (int) Math.round(heat * 1.0E-5D * 780.0D + 20.0D);
 		if((PREFIX_VALUE + "pressure").equals(name))		return	"" + (int) Math.round(pressure * 1.0E-5D * 30.0D);
 		if((PREFIX_VALUE + "water").equals(name))			return	"" + water.getFill();

@@ -354,15 +354,21 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "input",
 				PREFIX_VALUE + "output",
 				RORFluidUtil.SET_FLUID_INFO
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "input", "output");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "input", hasExploded ? null : tanks[0]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "output", hasExploded ? null : tanks[1]);
+		if(tankValue != null) return tankValue;
+
 		if (hasExploded) {
 			if ((PREFIX_VALUE + "input").equals(name))		return "0";
 			if ((PREFIX_VALUE + "output").equals(name))		return "0";

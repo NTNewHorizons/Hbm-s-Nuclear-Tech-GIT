@@ -492,11 +492,15 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 				PREFIX_FUNCTION + "setstate" + NAME_SEPARATOR + "state",
 				PREFIX_FUNCTION + "setthrottle" + NAME_SEPARATOR + "throttle"
 		};
-		return RORFluidUtil.addFixedTankInfo(info, "smoke", "leadedsmoke", "poisonoussmoke");
+		info = RORFluidUtil.addFixedTankInfo(info, "smoke", "leadedsmoke", "poisonoussmoke");
+		return RORFluidUtil.addFixedTankInfo(info, "fuel");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "fuel", tank);
+		if(tankValue != null) return tankValue;
+
 		String fluidValue = RORFluidUtil.getFixedTankValue(name, "smoke", smoke);
 		if(fluidValue != null) return fluidValue;
 		fluidValue = RORFluidUtil.getFixedTankValue(name, "leadedsmoke", smoke_leaded);
