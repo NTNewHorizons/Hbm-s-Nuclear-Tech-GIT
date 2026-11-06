@@ -28,6 +28,7 @@ import com.hbm.sound.AudioWrapper;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 
@@ -655,7 +656,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 	@Override public FluidTank[] getSendingTanks() { return new FluidTank[] { tanks[1] }; }
 	@Override public FluidTank[] getReceivingTanks() { return new FluidTank[] { tanks[0] }; }
 	
-	public static final String[] ROR = new String[] { // not to be confused with RUR
+	public static final String[] ROR = RORFluidUtil.addFixedTankInfo(new String[] { // not to be confused with RUR
 		PREFIX_VALUE + "rods",
 		PREFIX_VALUE + "coreheat",
 		PREFIX_VALUE + "hullheat",
@@ -665,7 +666,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 		PREFIX_VALUE + "depletion",
 		PREFIX_FUNCTION + "setrods" + NAME_SEPARATOR + "percent",
 		PREFIX_FUNCTION + "jettison",
-	};
+	}, "coldbuf", "hotbuf");
 
 	@Override
 	public String[] getFunctionInfo() {
@@ -674,6 +675,11 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "coldbuf", tanks[0]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "hotbuf", tanks[1]);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "rods").equals(name))		return "" + (int) (100 - this.rodLevel); // why the fuck did i invert this again?
 		if((PREFIX_VALUE + "coreheat").equals(name))	return "" + this.coreHeat;
 		if((PREFIX_VALUE + "hullheat").equals(name))	return "" + this.hullHeat;

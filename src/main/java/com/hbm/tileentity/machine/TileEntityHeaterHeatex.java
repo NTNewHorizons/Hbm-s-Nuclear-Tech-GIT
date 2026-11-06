@@ -270,16 +270,22 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "hotfluid",
 				PREFIX_VALUE + "coldfluid",
 				PREFIX_VALUE + "heat",
 				RORFluidUtil.SET_FLUID_INFO
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "hotfluid", "coldfluid");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "hotfluid", tanks[0]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "coldfluid", tanks[1]);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "hotfluid").equals(name))	return "" + tanks[0].getFill();
 		if((PREFIX_VALUE + "coldfluid").equals(name))	return "" + tanks[1].getFill();
 		if((PREFIX_VALUE + "heat").equals(name))		return "" + heatEnergy;

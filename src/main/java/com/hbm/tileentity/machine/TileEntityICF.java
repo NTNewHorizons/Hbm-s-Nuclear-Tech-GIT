@@ -20,6 +20,7 @@ import com.hbm.saveddata.satellites.SatelliteRayScan.RayEvent;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.CompatEnergyControl;
 
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
@@ -302,17 +303,25 @@ public class TileEntityICF extends TileEntityMachineBase implements IGUIProvider
 	
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "laser",
 				PREFIX_VALUE + "heat",
 				PREFIX_VALUE + "coldfluid",
 				PREFIX_VALUE + "hotfluid",
 				PREFIX_VALUE + "stellarflux"
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "coldfluid", "hotfluid", "stellarflux");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "coldfluid", tanks[0]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "hotfluid", tanks[1]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "stellarflux", tanks[2]);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "laser").equals(name))		return "" + this.laser;
 		if((PREFIX_VALUE + "heat").equals(name))		return "" + this.heat;
 		if((PREFIX_VALUE + "coldfluid").equals(name))	return "" + tanks[0].getFill();

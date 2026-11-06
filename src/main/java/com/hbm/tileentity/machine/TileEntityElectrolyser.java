@@ -1,9 +1,14 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.RORFunctionException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.hbm.util.RORFluidUtil;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.handler.threading.PacketThreading;
@@ -51,7 +56,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityElectrolyser extends TileEntityMachineBase implements IEnergyReceiverMK2, IFluidStandardTransceiverMK2, IControlReceiver, IGUIProvider, IUpgradeInfoProvider, IFluidCopiable, IMetalCopiable {
+public class TileEntityElectrolyser extends TileEntityMachineBase implements IEnergyReceiverMK2, IFluidStandardTransceiverMK2, IControlReceiver, IGUIProvider, IUpgradeInfoProvider, IFluidCopiable, IMetalCopiable, IRORValueProvider, IRORInteractive {
 
 	public long power;
 	public static final long maxPower = 20000000;
@@ -625,5 +630,52 @@ public class TileEntityElectrolyser extends TileEntityMachineBase implements IEn
 		if(leftStack != null)	types.add(leftStack.material.id);
 		if(rightStack != null)	types.add(rightStack.material.id);
 		return BobMathUtil.intCollectionToArray(types);
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		String[] info = new String[] {
+				RORFluidUtil.SET_FLUID_INFO,
+		};
+		info = RORFluidUtil.addTankInfo(info, "input", 1);
+		info = RORFluidUtil.addTankInfo(info, "output", 2);
+		info = RORFluidUtil.addBufferInfo(info, "leftbuffer");
+		info = RORFluidUtil.addBufferInfo(info, "rightbuffer");
+		info = RORFluidUtil.addFixedTankInfo(info, "nitricacid");
+		return info;
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[1], tanks[2]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getBufferValue(name, "leftbuffer", leftStack == null ? 0 : leftStack.amount, maxMaterial);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getBufferValue(name, "rightbuffer", rightStack == null ? 0 : rightStack.amount, maxMaterial);
+		if(fluidValue != null) return fluidValue;
+
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "nitricacid", tanks[3]);
+		if(fluidValue != null) return fluidValue;
+
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tanks[0], params, type -> {
+				ElectrolysisRecipe recipe = ElectrolyserFluidRecipes.getRecipe(type);
+				if(recipe == null) throw new RORFunctionException("Exception: Invalid Electrolysis Input");
+				RORFluidUtil.requireEmptyForTypeChange(tanks[1], recipe.output1.type);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[2], recipe.output2.type);
+			})) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
 	}
 }

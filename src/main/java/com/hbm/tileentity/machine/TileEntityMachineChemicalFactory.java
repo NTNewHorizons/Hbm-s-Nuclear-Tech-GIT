@@ -26,6 +26,7 @@ import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort;
 import com.hbm.tileentity.TileEntityProxyDyn.IProxyDelegateProvider;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.fauxpointtwelve.DirPos;
 import com.hbm.util.i18n.I18nUtil;
@@ -531,7 +532,7 @@ public class TileEntityMachineChemicalFactory extends TileEntityMachineBase impl
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "progress1",
 				PREFIX_VALUE + "progress2",
 				PREFIX_VALUE + "progress3",
@@ -546,16 +547,30 @@ public class TileEntityMachineChemicalFactory extends TileEntityMachineBase impl
 				PREFIX_VALUE + "active3",
 				PREFIX_VALUE + "active4",
 		};
+		info = RORFluidUtil.addTankInfo(info, "input", 12);
+		info = RORFluidUtil.addTankInfo(info, "output", 12);
+		info = RORFluidUtil.addFixedTankInfo(info, "water", "spentsteam");
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", inputTanks[0], inputTanks[1], inputTanks[2], inputTanks[3], inputTanks[4], inputTanks[5], inputTanks[6], inputTanks[7], inputTanks[8], inputTanks[9], inputTanks[10], inputTanks[11]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getTankValue(name, "output", outputTanks[0], outputTanks[1], outputTanks[2], outputTanks[3], outputTanks[4], outputTanks[5], outputTanks[6], outputTanks[7], outputTanks[8], outputTanks[9], outputTanks[10], outputTanks[11]);
+		if(fluidValue != null) return fluidValue;
+
 		if((PREFIX_VALUE + "anyactive").equals(name))			return "" + ((this.didProcess[0] || this.didProcess[1] || this.didProcess[2] || this.didProcess[3]) ? 1 : 0);
 		for(int i = 0; i < 4; i++) {
 			if((PREFIX_VALUE + "progress" + (i + 1)).equals(name))	return "" + (int) Math.round(this.chemplantModule[i].progress * 100);
 			if((PREFIX_VALUE + "recipe" + (i + 1)).equals(name))		return this.chemplantModule[i].getRecipeName();
 			if((PREFIX_VALUE + "active" + (i + 1)).equals(name))		return "" + (this.didProcess[i] ? 1 : 0);
 		}
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "water", water);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "spentsteam", lps);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 }

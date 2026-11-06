@@ -1,11 +1,16 @@
 package com.hbm.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.fluid.trait.FT_Gaseous;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Gaseous_ART;
 
+import api.hbm.redstoneoverradio.IRORInfo;
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.RORFunctionException;
 
@@ -116,5 +121,85 @@ public final class RORFluidUtil {
 	@FunctionalInterface
 	public interface FluidValidator {
 		void validate(FluidType type);
+	}
+
+	/** Preserve the unqualified names used by blocks with one tank. */
+	public static String[] addSingleTankInfo(String[] info) {
+		List<String> result = new ArrayList<>(Arrays.asList(info));
+		result.add(IRORInfo.PREFIX_VALUE + "type");
+		addFillInfo(result, IRORInfo.PREFIX_VALUE);
+		return result.toArray(new String[0]);
+	}
+
+	public static String getSingleTankValue(String name, FluidTank tank) {
+		return getTankProperties(name, IRORInfo.PREFIX_VALUE, tank);
+	}
+
+	public static String[] addTankInfo(String[] info, String role, int count) {
+		List<String> result = new ArrayList<>(Arrays.asList(info));
+		for(int i = 1; i <= count; i++) {
+			String prefix = IRORInfo.PREFIX_VALUE + role + i;
+			result.add(prefix + "type");
+			addFillInfo(result, prefix);
+		}
+		return result.toArray(new String[0]);
+	}
+
+	public static String[] addBufferInfo(String[] info, String buffer) {
+		List<String> result = new ArrayList<>(Arrays.asList(info));
+		addFillInfo(result, IRORInfo.PREFIX_VALUE + buffer);
+		return result.toArray(new String[0]);
+	}
+
+	/** Fixed-fluid tanks use descriptive names and expose amounts without a redundant type value. */
+	public static String[] addFixedTankInfo(String[] info, String... tankNames) {
+		List<String> result = new ArrayList<>(Arrays.asList(info));
+		for(String tankName : tankNames) {
+			String prefix = IRORInfo.PREFIX_VALUE + tankName;
+			List<String> readings = new ArrayList<>();
+			addFillInfo(readings, prefix);
+			// Group the new readings immediately after their legacy alias, if present.
+			int aliasIndex = result.indexOf(prefix);
+			result.addAll(aliasIndex < 0 ? result.size() : aliasIndex + 1, readings);
+		}
+		return result.toArray(new String[0]);
+	}
+
+	public static String getFixedTankValue(String name, String tankName, FluidTank tank) {
+		return getFillValue(name, IRORInfo.PREFIX_VALUE + tankName, tank == null ? 0 : tank.getFill(), tank == null ? 0 : tank.getMaxFill());
+	}
+
+	private static void addFillInfo(List<String> info, String prefix) {
+		info.add(prefix + "fill");
+		info.add(prefix + "capacity");
+		info.add(prefix + "fillpercent");
+	}
+
+	/** Returns null for unknown properties or indices. A null tank represents a disabled, zero-capacity tank. */
+	public static String getTankValue(String name, String role, FluidTank... tanks) {
+		for(int i = 0; i < tanks.length; i++) {
+			String prefix = IRORInfo.PREFIX_VALUE + role + (i + 1);
+			String value = getTankProperties(name, prefix, tanks[i]);
+			if(value != null) return value;
+		}
+		return null;
+	}
+
+	private static String getTankProperties(String name, String prefix, FluidTank tank) {
+		if((prefix + "type").equals(name)) return tank == null ? "NONE" : tank.getTankType().getName();
+		return getFillValue(name, prefix, tank == null ? 0 : tank.getFill(), tank == null ? 0 : tank.getMaxFill());
+	}
+
+	/** Buffer amounts and capacities use the machine's native units, which need not be millibuckets. */
+	public static String getBufferValue(String name, String buffer, int fill, int capacity) {
+		return getFillValue(name, IRORInfo.PREFIX_VALUE + buffer, fill, capacity);
+	}
+
+	private static String getFillValue(String name, String prefix, int fill, int capacity) {
+		if((prefix + "fill").equals(name)) return Integer.toString(fill);
+		if((prefix + "capacity").equals(name)) return Integer.toString(capacity);
+		// Use long arithmetic: some steam tanks overflow an int when their fill is multiplied by 100.
+		if((prefix + "fillpercent").equals(name)) return Long.toString(capacity <= 0 ? 0 : (long) fill * 100 / capacity);
+		return null;
 	}
 }

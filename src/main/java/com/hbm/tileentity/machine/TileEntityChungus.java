@@ -27,6 +27,7 @@ import com.hbm.tileentity.IPersistentNBT;
 import com.hbm.tileentity.IRepairable;
 import com.hbm.tileentity.IConfigurableMachine;
 import com.hbm.tileentity.TileEntityLoadedBase;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.CompatEnergyControl;
 import com.hbm.util.fauxpointtwelve.DirPos;
 import com.hbm.tileentity.TilePort.PortDef;
@@ -471,13 +472,21 @@ public class TileEntityChungus extends TileEntityLoadedBase implements IEnergyPr
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "output"
 		};
+		info = RORFluidUtil.addTankInfo(info, "input", 1);
+		info = RORFluidUtil.addTankInfo(info, "output", 1);
+		return info;
 	}
 	
 	@Override
 	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[1]);
+		if(fluidValue != null) return fluidValue;
+
 		if((PREFIX_VALUE + "output").equals(name)) return "" + (int) this.powerBuffer;
 		return null;
 	}

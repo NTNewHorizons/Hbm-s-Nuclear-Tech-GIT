@@ -21,9 +21,9 @@ import com.hbm.sound.AudioWrapper;
 import com.hbm.tileentity.IBufPacketReceiver;
 import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.TileEntityLoadedBase;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.Compat;
 import com.hbm.tileentity.TilePort.PortDef;
-import com.hbm.util.RORFluidUtil;
 import com.hbm.util.TrackerUtil;
 
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
@@ -476,19 +476,18 @@ public class TileEntityMachineThresher extends TileEntityLoadedBase implements I
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
-				PREFIX_VALUE + "type",
-				PREFIX_VALUE + "fill",
-				PREFIX_VALUE + "fillpercent",
+		String[] info = new String[] {
 				RORFluidUtil.SET_FLUID_INFO,
 		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		if((PREFIX_VALUE + "type").equals(name)) return tank.getTankType().getName();
-		if((PREFIX_VALUE + "fill").equals(name)) return "" + tank.getFill();
-		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tank.getFill() * 100 / tank.getMaxFill());
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, tank);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 

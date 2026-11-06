@@ -3,6 +3,7 @@ package com.hbm.tileentity.machine.rbmk;
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
 import api.hbm.redstoneoverradio.IRORValueProvider;
 
+import com.hbm.util.RORFluidUtil;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.entity.projectile.EntityRBMKDebris.DebrisType;
 import com.hbm.handler.CompatHandler;
@@ -240,14 +241,20 @@ public class TileEntityRBMKHeater extends TileEntityRBMKSlottedBase implements I
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "in",
 				PREFIX_VALUE + "out"
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "in", "out");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "in", feed);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "out", steam);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "in").equals(name))		return "" + this.feed.getFill();
 		if((PREFIX_VALUE + "out").equals(name))		return "" + this.steam.getFill();
 		return null;

@@ -20,6 +20,7 @@ import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachinePolluting;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.EnumUtil;
 
 import api.hbm.energymk2.IEnergyProviderMK2;
@@ -482,7 +483,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "state",
 				PREFIX_VALUE + "throttle",
 				PREFIX_VALUE + "power",
@@ -491,10 +492,22 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 				PREFIX_FUNCTION + "setstate" + NAME_SEPARATOR + "state",
 				PREFIX_FUNCTION + "setthrottle" + NAME_SEPARATOR + "throttle"
 		};
+		info = RORFluidUtil.addFixedTankInfo(info, "smoke", "leadedsmoke", "poisonoussmoke");
+		return RORFluidUtil.addFixedTankInfo(info, "fuel");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "fuel", tank);
+		if(tankValue != null) return tankValue;
+
+		String fluidValue = RORFluidUtil.getFixedTankValue(name, "smoke", smoke);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "leadedsmoke", smoke_leaded);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "poisonoussmoke", smoke_poison);
+		if(fluidValue != null) return fluidValue;
+
 		if ((PREFIX_VALUE + "state").equals(name))			return "" + (isOn ? 1 : 0);
 		if ((PREFIX_VALUE + "throttle").equals(name))		return "" + setting;
 		if ((PREFIX_VALUE + "power").equals(name))			return "" + power;

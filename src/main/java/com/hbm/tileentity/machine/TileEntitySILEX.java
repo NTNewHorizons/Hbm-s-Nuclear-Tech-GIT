@@ -1,7 +1,11 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+
 import java.util.HashMap;
 
+import com.hbm.util.RORFluidUtil;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.container.ContainerSILEX;
 import com.hbm.inventory.fluid.FluidType;
@@ -34,7 +38,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntitySILEX extends TileEntityMachineBase implements IFluidStandardReceiverMK2, IGUIProvider, IInfoProviderEC {
+public class TileEntitySILEX extends TileEntityMachineBase implements IFluidStandardReceiverMK2, IGUIProvider, IInfoProviderEC, IRORValueProvider, IRORInteractive {
 
 	public EnumWavelengths mode = EnumWavelengths.NULL;
 	public boolean hasLaser;
@@ -381,5 +385,37 @@ public class TileEntitySILEX extends TileEntityMachineBase implements IFluidStan
 			data.setString("tank2", "N/A");
 		else
 			data.setString("tank2", String.format("%s: %s mB", current.toStack().getDisplayName(), currentFill));
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		String[] info = new String[] {
+				RORFluidUtil.SET_FLUID_INFO,
+		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		info = RORFluidUtil.addBufferInfo(info, "buffer");
+		return info;
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, tank);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getBufferValue(name, "buffer", currentFill, maxFill);
+		if(fluidValue != null) return fluidValue;
+
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tank, params)) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
 	}
 }

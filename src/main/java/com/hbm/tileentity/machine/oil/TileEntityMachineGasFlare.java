@@ -25,6 +25,7 @@ import com.hbm.tileentity.IUpgradeInfoProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePortShapes;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.CompatEnergyControl;
 import com.hbm.util.ParticleUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
@@ -380,7 +381,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 	
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "flowstate",
 				PREFIX_VALUE + "ignitionstate",
 				PREFIX_VALUE + "output",
@@ -389,10 +390,14 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 				PREFIX_FUNCTION + "setflowstate" + NAME_SEPARATOR + "state",
 				PREFIX_FUNCTION + "setignitionstate" + NAME_SEPARATOR + "state",
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "fluid");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "fluid", tank);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "flowstate").equals(name))		return this.isOn ? "1" : "0";
 		if((PREFIX_VALUE + "ignitionstate").equals(name))	return this.doesBurn ? "1" : "0";
 		if((PREFIX_VALUE + "output").equals(name))			return "" + this.output;

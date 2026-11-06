@@ -190,19 +190,27 @@ public class TileEntityMachineCatalyticCracker extends TileEntityLoadedBase impl
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
-				PREFIX_VALUE + "type",
-				PREFIX_VALUE + "fill",
-				PREFIX_VALUE + "fillpercent",
+		String[] info = new String[] {
 				RORFluidUtil.SET_FLUID_INFO,
 		};
+		info = RORFluidUtil.addTankInfo(info, "input", 1);
+		info = RORFluidUtil.addTankInfo(info, "output", 2);
+		info = RORFluidUtil.addFixedTankInfo(info, "steam", "spentsteam");
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		if((PREFIX_VALUE + "type").equals(name)) return tanks[0].getTankType().getName();
-		if((PREFIX_VALUE + "fill").equals(name)) return "" + tanks[0].getFill();
-		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tanks[0].getFill() * 100 / tanks[0].getMaxFill());
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[2], tanks[3]);
+		if(fluidValue != null) return fluidValue;
+
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "steam", tanks[1]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "spentsteam", tanks[4]);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 

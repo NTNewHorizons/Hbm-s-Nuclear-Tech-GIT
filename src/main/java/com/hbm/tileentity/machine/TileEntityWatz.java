@@ -26,6 +26,7 @@ import com.hbm.packet.toclient.AuxParticlePacketNT;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.Compat;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.function.Function;
@@ -649,13 +650,13 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 		throw new NoSuchMethodException();
 	}
 
-	public static final String[] ROR = new String[] { // not to be confused with RUR
+	public static final String[] ROR = RORFluidUtil.addFixedTankInfo(new String[] { // not to be confused with RUR
 		PREFIX_VALUE + "heat",
 		PREFIX_VALUE + "flux",
 		PREFIX_VALUE + "mud",
 		PREFIX_VALUE + "coolant_hot",
 		PREFIX_VALUE + "coolant_cold",
-	};
+	}, "mud", "coolant_hot", "coolant_cold");
 
 	@Override
 	public String[] getFunctionInfo() {
@@ -664,6 +665,13 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "mud", tanks[2]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "coolant_hot", tanks[1]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "coolant_cold", tanks[0]);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "heat").equals(name))			return "" + this.heat;
 		if((PREFIX_VALUE + "flux").equals(name))			return "" + (int) (this.fluxLastBase + this.fluxLastReaction);
 		if((PREFIX_VALUE + "mud").equals(name))				return "" + this.tanks[2].getFill();

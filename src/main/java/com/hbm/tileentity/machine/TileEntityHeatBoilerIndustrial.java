@@ -316,15 +316,21 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "input",
 				PREFIX_VALUE + "output",
 				RORFluidUtil.SET_FLUID_INFO
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "input", "output");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "input", tanks[0]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "output", tanks[1]);
+		if(tankValue != null) return tankValue;
+
 		if ((PREFIX_VALUE + "input").equals(name))		return "" + tanks[0].getFill();
 		if ((PREFIX_VALUE + "output").equals(name))		return "" + tanks[1].getFill();
 		return null;

@@ -13,6 +13,7 @@ import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.tileentity.machine.albion.TileEntityPASource.PAState;
 import com.hbm.tileentity.machine.albion.TileEntityPASource.Particle;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 
@@ -405,16 +406,22 @@ public class TileEntityPADipole extends TileEntityCooledBase implements IGUIProv
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 			PREFIX_VALUE + "temperature",
 			PREFIX_VALUE + "pfmcold",
 			PREFIX_VALUE + "pfm",
 			PREFIX_FUNCTION + "setthreshold" + NAME_SEPARATOR + "threshold"
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "pfmcold", "pfm");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "pfmcold", coolantTanks[0]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "pfm", coolantTanks[1]);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "temperature").equals(name))	return "" + (int) this.temperature;
 		if((PREFIX_VALUE + "pfmcold").equals(name))		return "" + coolantTanks[0].getFill();
 		if((PREFIX_VALUE + "pfm").equals(name))			return "" + coolantTanks[1].getFill();

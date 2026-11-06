@@ -1,5 +1,6 @@
 package com.hbm.tileentity.machine;
 
+import com.hbm.util.RORFluidUtil;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.inventory.container.ContainerOilburner;
 import com.hbm.inventory.fluid.Fluids;
@@ -232,7 +233,7 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "heat",
 				PREFIX_VALUE + "fuel",
 				PREFIX_VALUE + "burnRate",
@@ -240,10 +241,14 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 				PREFIX_FUNCTION + "setstate" + NAME_SEPARATOR + "active",
 				PREFIX_FUNCTION + "setburnrate" + NAME_SEPARATOR + "rate"
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "fuel");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "fuel", tank);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "heat").equals(name))		return "" + heatEnergy;
 		if((PREFIX_VALUE + "fuel").equals(name))		return "" + tank.getFill();
 		if((PREFIX_VALUE + "burnrate").equals(name))	return "" + setting;
