@@ -25,6 +25,7 @@ import com.hbm.uninos.INetworkProvider;
 import com.hbm.uninos.UniNodespace;
 import com.hbm.uninos.networkproviders.KlystronNetworkProvider;
 import com.hbm.uninos.networkproviders.PlasmaNetworkProvider;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
@@ -581,7 +582,7 @@ public class TileEntityFusionTorus extends TileEntityCooledBase implements IGUIP
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "plasma",
 				PREFIX_VALUE + "consumption",
 				PREFIX_VALUE + "progress",
@@ -590,10 +591,18 @@ public class TileEntityFusionTorus extends TileEntityCooledBase implements IGUIP
 				PREFIX_VALUE + "temp",
 				PREFIX_FUNCTION + "setrecipe" + NAME_SEPARATOR + "name",
 		};
+		info = RORFluidUtil.addTankInfo(info, "input", 4);
+		info = RORFluidUtil.addTankInfo(info, "output", 2);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0], tanks[1], tanks[2], coolantTanks[0]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[3], coolantTanks[1]);
+		if(fluidValue != null) return fluidValue;
+
 		if((PREFIX_VALUE + "plasma").equals(name))		return "" + this.plasmaEnergy;
 		if((PREFIX_VALUE + "consumption").equals(name))	return "" + (int) (this.fuelConsumption * 100);
 		if((PREFIX_VALUE + "progress").equals(name))	return "" + (int) Math.round(this.fusionModule.progress * 100);

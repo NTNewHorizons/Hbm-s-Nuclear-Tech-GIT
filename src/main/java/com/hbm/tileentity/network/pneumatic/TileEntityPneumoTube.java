@@ -22,9 +22,9 @@ import com.hbm.uninos.GenNode;
 import com.hbm.uninos.UniNodespace;
 import com.hbm.uninos.networkproviders.PneumaticNetwork;
 import com.hbm.uninos.networkproviders.PneumaticNetworkProvider;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.Compat;
 import com.hbm.util.EnumUtil;
-import com.hbm.util.RORFluidUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
@@ -321,19 +321,18 @@ public class TileEntityPneumoTube extends TileEntityMachineBase implements IGUIP
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
-				PREFIX_VALUE + "type",
-				PREFIX_VALUE + "fill",
-				PREFIX_VALUE + "fillpercent",
+		String[] info = new String[] {
 				RORFluidUtil.SET_FLUID_INFO,
 		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		if((PREFIX_VALUE + "type").equals(name)) return compair.getTankType().getName();
-		if((PREFIX_VALUE + "fill").equals(name)) return "" + compair.getFill();
-		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (compair.getFill() * 100 / compair.getMaxFill());
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, compair);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 

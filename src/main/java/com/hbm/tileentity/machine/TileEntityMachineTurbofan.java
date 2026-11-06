@@ -28,6 +28,7 @@ import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.IUpgradeInfoProvider;
 import com.hbm.tileentity.TileEntityMachinePolluting;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.Compat;
 import com.hbm.util.CompatEnergyControl;
 import com.hbm.util.fauxpointtwelve.BlockPos;
@@ -534,7 +535,7 @@ public class TileEntityMachineTurbofan extends TileEntityMachinePolluting implem
 	
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "state",
 				PREFIX_VALUE + "output",
 				PREFIX_VALUE + "power",
@@ -542,10 +543,14 @@ public class TileEntityMachineTurbofan extends TileEntityMachinePolluting implem
 				PREFIX_VALUE + "blood",
 				PREFIX_VALUE + "afterburner",
 		};
+		return RORFluidUtil.addTankInfo(info, "output", 3);
 	}
 	
 	@Override
 	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getTankValue(name, "output", smoke, smoke_leaded, smoke_poison);
+		if(fluidValue != null) return fluidValue;
+
 		if((PREFIX_VALUE + "state").equals(name))	return	wasOn ? "1" : "0";
 		if((PREFIX_VALUE + "output").equals(name))	return	"" + output;
 		if((PREFIX_VALUE + "power").equals(name))	return	"" + power;

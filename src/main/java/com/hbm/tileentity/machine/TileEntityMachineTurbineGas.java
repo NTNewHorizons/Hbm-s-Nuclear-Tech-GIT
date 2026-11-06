@@ -20,6 +20,7 @@ import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachinePolluting;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.CompatEnergyControl;
 
@@ -764,7 +765,7 @@ public class TileEntityMachineTurbineGas extends TileEntityMachinePolluting impl
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "turbinepercent",
 				PREFIX_VALUE + "turbinespeed",
 				PREFIX_VALUE + "output",
@@ -780,10 +781,14 @@ public class TileEntityMachineTurbineGas extends TileEntityMachinePolluting impl
 				PREFIX_FUNCTION + "setthrottle" + NAME_SEPARATOR + "percent",
 				PREFIX_FUNCTION + "setstate" + NAME_SEPARATOR + "state"
 		};
+		return RORFluidUtil.addTankInfo(info, "output", 3);
 	}
 	
 	@Override
 	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getTankValue(name, "output", smoke, smoke_leaded, smoke_poison);
+		if(fluidValue != null) return fluidValue;
+
 		if((PREFIX_VALUE + "turbinepercent").equals(name))	return	"" + (int) (this.powerSliderPos * 100D / 60D);
 		if((PREFIX_VALUE + "turbinespeed").equals(name))	return	"" + this.rpm;
 		if((PREFIX_VALUE + "output").equals(name))			return	"" + (int) (this.instantPowerOutput * 20);

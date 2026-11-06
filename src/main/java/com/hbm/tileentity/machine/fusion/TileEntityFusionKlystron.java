@@ -17,6 +17,7 @@ import com.hbm.uninos.GenNode;
 import com.hbm.uninos.UniNodespace;
 import com.hbm.uninos.networkproviders.KlystronNetwork;
 import com.hbm.uninos.networkproviders.KlystronNetworkProvider;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
@@ -407,15 +408,20 @@ public class TileEntityFusionKlystron extends TileEntityMachineBase implements I
 	
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "output",
 				PREFIX_VALUE + "target",
 				PREFIX_FUNCTION + "settarget" + NAME_SEPARATOR + "target",
 		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, compair);
+		if(fluidValue != null) return fluidValue;
+
 		if((PREFIX_VALUE + "output").equals(name))  return "" + this.output;
 		if((PREFIX_VALUE + "target").equals(name))	return "" + this.outputTarget;
 		return null;

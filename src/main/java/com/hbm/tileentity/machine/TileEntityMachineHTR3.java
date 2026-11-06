@@ -307,19 +307,18 @@ public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPro
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
-				PREFIX_VALUE + "type",
-				PREFIX_VALUE + "fill",
-				PREFIX_VALUE + "fillpercent",
+		String[] info = new String[] {
 				RORFluidUtil.SET_FLUID_INFO,
 		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		if((PREFIX_VALUE + "type").equals(name)) return tanks[0].getTankType().getName();
-		if((PREFIX_VALUE + "fill").equals(name)) return "" + tanks[0].getFill();
-		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tanks[0].getFill() * 100 / tanks[0].getMaxFill());
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, tanks[0]);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 

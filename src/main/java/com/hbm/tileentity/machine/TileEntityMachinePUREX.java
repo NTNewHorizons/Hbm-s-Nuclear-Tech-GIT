@@ -24,6 +24,7 @@ import com.hbm.tileentity.IUpgradeInfoProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePortShapes;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.i18n.I18nUtil;
 
@@ -308,15 +309,23 @@ public class TileEntityMachinePUREX extends TileEntityMachineBase implements IEn
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "progress",
 				PREFIX_VALUE + "recipe",
 				PREFIX_VALUE + "active",
 		};
+		info = RORFluidUtil.addTankInfo(info, "input", 3);
+		info = RORFluidUtil.addTankInfo(info, "output", 1);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", inputTanks[0], inputTanks[1], inputTanks[2]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getTankValue(name, "output", outputTanks[0]);
+		if(fluidValue != null) return fluidValue;
+
 		if((PREFIX_VALUE + "progress").equals(name))	return "" + (int) Math.round(this.purexModule.progress * 100);
 		if((PREFIX_VALUE + "recipe").equals(name))		return this.purexModule.getRecipeName();
 		if((PREFIX_VALUE + "active").equals(name))		return "" + (this.didProcess ? 1 : 0);

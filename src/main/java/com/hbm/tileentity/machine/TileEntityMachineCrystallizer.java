@@ -438,19 +438,18 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
-				PREFIX_VALUE + "type",
-				PREFIX_VALUE + "fill",
-				PREFIX_VALUE + "fillpercent",
+		String[] info = new String[] {
 				RORFluidUtil.SET_FLUID_INFO,
 		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		if((PREFIX_VALUE + "type").equals(name)) return tank.getTankType().getName();
-		if((PREFIX_VALUE + "fill").equals(name)) return "" + tank.getFill();
-		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tank.getFill() * 100 / tank.getMaxFill());
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, tank);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 
