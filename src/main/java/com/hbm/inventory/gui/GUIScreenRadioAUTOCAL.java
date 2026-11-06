@@ -88,6 +88,8 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 		if(checkClick(x, y, 28, 36, 18, 18)) { data = new NBTTagCompound(); data.setBoolean("ignore", true); }
 		if(checkClick(x, y, 48, 36, 18, 18)) { data = new NBTTagCompound(); data.setBoolean("auto", true); }
 
+		if(checkClick(x, y, 68, 36, 14, 18)) { data = new NBTTagCompound(); data.setBoolean("step", true); }
+
 		// open folder and generate new script file
 		if(checkClick(x, y, 104, 36, 18, 18)) {
 			try {
@@ -166,9 +168,11 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 			this.fontRendererObj.drawString(line, guiLeft + 7, guiTop + 73 + i * 10, 0x00ff00);
 		}
 
-		if(checkClick(x, y, 8, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.RED + I18nUtil.resolveKey("gui.autocal.power")}), x, y);
+		if(checkClick(x, y, 8, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.RED + I18nUtil.resolveKey(autocal.isOn && autocal.isPaused ? "gui.autocal.resume" : "gui.autocal.power")}), x, y);
 		if(checkClick(x, y, 28, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.RED + I18nUtil.resolveKey("gui.autocal.ignore_errors"), I18nUtil.resolveKey("gui.autocal.doc.line.004"), I18nUtil.resolveKey("gui.autocal.doc.line.002"), I18nUtil.resolveKey("gui.autocal.doc.line.003"), I18nUtil.resolveKey("gui.autocal.doc.line.001")}), x, y);
 		if(checkClick(x, y, 48, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.RED + I18nUtil.resolveKey("gui.autocal.auto_reboot"), I18nUtil.resolveKey("gui.autocal.doc.line.006"), I18nUtil.resolveKey("gui.autocal.doc.line.007"), I18nUtil.resolveKey("gui.autocal.doc.line.005")}), x, y);
+
+		if(checkClick(x, y, 68, 36, 14, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.autocal.step"), I18nUtil.resolveKey("gui.autocal.step_info")}), x, y);
 
 		if(checkClick(x, y, 84, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.autocal.upload")}), x, y);
 		if(checkClick(x, y, 104, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.autocal.open_file")}), x, y);
