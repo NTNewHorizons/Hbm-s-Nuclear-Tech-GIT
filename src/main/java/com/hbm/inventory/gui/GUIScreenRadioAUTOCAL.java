@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.net.URI;
 import java.util.Arrays;
 
 import org.lwjgl.Sys;
@@ -41,17 +40,19 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 		this.autocal = autocal;
 	}
 
-	private void browse(URI uri) throws IOException {
+	private void openFile(File file) throws IOException {
 		// workaround for Java not supporting all platforms, mostly for Linux
-		if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-			Desktop.getDesktop().browse(uri);
+		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+			Desktop.getDesktop().open(file);
+		} else if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			Desktop.getDesktop().browse(file.toURI());
 		} else {
 			if (Sys.getVersion().charAt(0) == '3') {
 				// probably a LWJGL3ify user, open the folder instead since that somehow seems to work
 				File uploadFolder = new File(MainRegistry.configDir.getParentFile(), "hbmComputerUpload");
 				if (uploadFolder.exists()) Sys.openURL(uploadFolder.toString());
 			} else {
-				Sys.openURL(uri.toString());
+				Sys.openURL(file.toURI().toString());
 			}
 		}
 	}
@@ -96,7 +97,7 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 				if(!uploadFolder.exists()) uploadFolder.mkdir();
 				if(!script.exists()) script.createNewFile();
 				script.setExecutable(false);
-				browse(script.toURI());
+				openFile(script);
 			} catch(Throwable ex) { MainRegistry.logger.error("Couldn't open link", ex); }
 		}
 
@@ -114,7 +115,7 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 						printer.close();
 					} catch(Throwable e) { }
 				}
-				browse(doc.toURI());
+				openFile(doc);
 			} catch(Throwable ex) { MainRegistry.logger.error("Couldn't open link", ex); }
 		}
 
