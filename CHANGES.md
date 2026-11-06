@@ -25,6 +25,7 @@
 
 **Machines and Automation**
 - Added decimal AUTOCAL clockspeeds, allowing scripts to run slower than one line per tick.
+- Added AUTOCAL stepping, allowing to debug a script line by line.
 - Improved conveyors with lane preservation, balanced splitting, better routing, and safer overflow handling.
 - Added configurable energy buffers to HE/RF converters.
 - Improved machine upgrade handling with slot validation and detailed upgrade effect information.
