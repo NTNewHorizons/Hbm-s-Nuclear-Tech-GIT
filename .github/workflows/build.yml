@@ -128,6 +128,19 @@ jobs:
 
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
+      - name: Publish to NTNH Maven
+        if: github.event_name != 'pull_request' && github.repository == 'NTNewHorizons/Hbm-s-Nuclear-Tech-GIT' && github.ref == 'refs/heads/space-travel-twopointfive'
+        env:
+          MAVEN_USER: ${{ secrets.MAVEN_USER }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          RELEASE_VERSION: ${{ steps.release_tag.outputs.tag }}_NTNH
+        run: |
+          if [[ -z "$MAVEN_USER" || -z "$MAVEN_PASSWORD" ]]; then
+            echo "::error::Set the MAVEN_USER and MAVEN_PASSWORD repository secrets to the Reposilite token name and secret."
+            exit 1
+          fi
+          ./gradlew publishMavenPublicationToMainRepository
+
       - name: Create Release
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/space-travel-twopointfive'
         env:

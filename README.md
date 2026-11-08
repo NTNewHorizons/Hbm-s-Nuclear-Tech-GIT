@@ -45,15 +45,12 @@ To include the mod as a dependency in a project of your own, you can adjust your
 repositories {
 		maven {
 				name "NTM Releases"
-				url "https://maven.ntmr.dev/releases"
+				url "https://maven.ntnewhorizons.com/releases/"
 		}
 }
 
 dependencies {
-		def ntmBuildNumber = "5687" // Change this value according to the release you wish to use
-
-		implementation "com.hbm:HBM-NTM:1.0.27_X${ntmBuildNumber}:dev"
-		compileOnly "com.hbm:HBM-NTM:1.0.27_X${ntmBuildNumber}:src"
+		implementation "com.hbm:HBM-NTM:1.0.27_X5872_NTNH:dev"
 }
 ```
 
