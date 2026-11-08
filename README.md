@@ -50,7 +50,7 @@ repositories {
 }
 
 dependencies {
-		implementation "com.hbm:HBM-NTM:1.0.27_X5872_NTNH:dev"
+		implementation "com.hbm:HBM-NTM:1.0.27_X5873_NTNH:dev"
 }
 ```
 
