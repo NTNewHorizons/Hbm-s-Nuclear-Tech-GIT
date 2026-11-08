@@ -11,6 +11,13 @@ if (!mod_build_number.isEmpty()) {
 
 ext.modVersion = version_name
 
+// Keep dependency coordinates stable regardless of the checkout directory name.
+afterEvaluate {
+    publishing.publications.named('maven', MavenPublication) {
+        artifactId = System.getenv('ARTIFACT_ID') ?: 'HBM-NTM'
+    }
+}
+
 def capturedVersion = project.version
 tasks.register('version') {
     doFirst {
