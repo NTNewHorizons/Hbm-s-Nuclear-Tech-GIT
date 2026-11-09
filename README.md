@@ -43,14 +43,14 @@ To include the mod as a dependency in a project of your own, you can adjust your
 
 ```groovy
 repositories {
-		maven {
-				name "NTM Releases"
-				url "https://maven.ntnewhorizons.com/releases/"
-		}
+	maven {
+		name "NTM Releases"
+		url "https://maven.ntnewhorizons.com/releases/"
+	}
 }
 
 dependencies {
-		implementation "com.hbm:HBM-NTM:1.0.27_X5873_NTNH:dev"
+	implementation "com.hbm:HBM-NTM:1.0.27_X5873_NTNH:dev"
 }
 ```
 
