@@ -1,0 +1,15 @@
+name: Manual Maven Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    uses: ./.github/workflows/build.yml
+    with:
+      maven_publish_url: https://maven.ntnewhorizons.com/releases/
+      maven_release_only: true
+    secrets: inherit
