@@ -19,6 +19,7 @@ import com.hbm.inventory.recipes.loader.SerializableRecipe;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFluidIcon;
 
+import cpw.mods.fml.common.Loader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
@@ -68,7 +69,7 @@ public class LiquefactionRecipes extends SerializableRecipe {
 		recipes.put(new ComparableStack(ModBlocks.plant_flower, 1, 4),	new FluidStack(Fluids.ETHANOL, 50));
 		recipes.put(new ComparableStack(ModItems.biomass),				new FluidStack(Fluids.BIOGAS, 125));
 		recipes.put(new ComparableStack(ModItems.glyphid_gland_empty),	new FluidStack(Fluids.BIOGAS, 2000));
-		recipes.put(new ComparableStack(Items.fish, 1, wildcard),		new FluidStack(Fluids.FISHOIL, 100));
+		recipes.put(Loader.isModLoaded("harvestcraft") ? "listAllfishraw" : new ComparableStack(Items.fish, 1, wildcard), new FluidStack(Fluids.FISHOIL, 100));
 		recipes.put(new ComparableStack(Blocks.double_plant, 1, 0),		new FluidStack(Fluids.SUNFLOWEROIL, 100));
 
 		// plant gunk
@@ -80,6 +81,25 @@ public class LiquefactionRecipes extends SerializableRecipe {
 		// Space
 		recipes.put(new ComparableStack(ModItems.flesh),			new FluidStack(Fluids.BLOOD, 100));
 		recipes.put(new ComparableStack(ModItems.ingot_osmiridium),	new FluidStack(Fluids.ETHANOL, 24000));
+	}
+
+	@Override
+	public void registerPost() {
+
+		/* Pam's HarvestCraft compat */
+		if(!Loader.isModLoaded("harvestcraft")) return;
+
+		putIfAbsent("listAllfishraw", new FluidStack(Fluids.FISHOIL, 100));
+		putIfAbsent("listAllfruit", new FluidStack(Fluids.ETHANOL, 100));
+
+		/* oily crops can be liquefied into seed oil */
+		for(String crop : new String[] { "cropOlive", "cropSunflower", "cropPeanut", "cropWalnut", "cropAlmond", "cropSoybean", "cropMustard" }) {
+			putIfAbsent(crop, new FluidStack(Fluids.SUNFLOWEROIL, 100));
+		}
+	}
+
+	private static void putIfAbsent(String dict, FluidStack out) {
+		if(!recipes.containsKey(dict)) recipes.put(dict, out);
 	}
 
 	public static FluidStack getOutput(ItemStack stack) {

@@ -94,6 +94,19 @@ public class ShredderRecipes extends SerializableRecipe {
 				}
 			}
 		}
+
+		/* Pam's HarvestCraft compat: any grain can be ground into flour */
+		if(Loader.isModLoaded("harvestcraft")) {
+			registerOredictRecipe("listAllgrain", new ItemStack(ModItems.flour));
+			registerOredictRecipe("cropRice", new ItemStack(ModItems.flour));
+			registerOredictRecipe("cropCorn", new ItemStack(ModItems.flour));
+		}
+	}
+
+	private static void registerOredictRecipe(String dict, ItemStack out) {
+		for(ItemStack stack : OreDictionary.getOres(dict)) {
+			putIfValid(stack, out, dict);
+		}
 	}
 
 	@Untested

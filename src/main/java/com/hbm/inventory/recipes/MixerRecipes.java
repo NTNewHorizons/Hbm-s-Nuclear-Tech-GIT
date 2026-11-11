@@ -54,7 +54,7 @@ public class MixerRecipes extends SerializableRecipe {
 		register(Fluids.MUSTARDGAS, new MixerRecipe(1000, 20).setStack1(new FluidStack(Fluids.REFORMGAS, 750)).setStack2(new FluidStack(Fluids.CHLORINE, 250)).setSolid(new OreDictStack(S.dust())));
 		register(Fluids.IONGEL, new MixerRecipe(1_000, 50).setStack1(new FluidStack(Fluids.WATER, 1000)).setStack2(new FluidStack(Fluids.HYDROGEN, 200)).setSolid(new ComparableStack(ModItems.pellet_charged)));
 		register(Fluids.EGG, new MixerRecipe(1_000, 50).setStack1(new FluidStack(Fluids.RADIOSOLVENT, 500)).setSolid(new ComparableStack(Items.egg)));
-		register(Fluids.FISHOIL, new MixerRecipe(100, 50).setSolid(new ComparableStack(Items.fish, 1, OreDictionary.WILDCARD_VALUE)));
+		register(Fluids.FISHOIL, new MixerRecipe(100, 50).setSolid(Loader.isModLoaded("harvestcraft") ? new OreDictStack("listAllfishraw") : new ComparableStack(Items.fish, 1, OreDictionary.WILDCARD_VALUE)));
 		register(Fluids.SUNFLOWEROIL, new MixerRecipe(100, 50).setSolid(new ComparableStack(Blocks.double_plant, 1, 0)));
 		register(Fluids.FULLERENE, new MixerRecipe(250, 50).setStack1(new FluidStack(Fluids.RADIOSOLVENT, 500)).setSolid(new ComparableStack(DictFrame.fromOne(ModItems.powder_ash, EnumAshType.SOOT))));
 
@@ -136,6 +136,50 @@ public class MixerRecipes extends SerializableRecipe {
 		register(Fluids.LITHYDRO, new MixerRecipe(1000, 100).setStack1(new FluidStack(Fluids.BRINE, 125)).setSolid(new ComparableStack(ModItems.powder_lithium, 3)));
 
 		register(Fluids.BITUMEN, new MixerRecipe(50, 20).setSolid(new OreDictStack(ANY_TAR.any())));
+	}
+
+	@Override
+	public void registerPost() {
+
+		/* Pam's HarvestCraft compat */
+		if(!Loader.isModLoaded("harvestcraft")) return;
+
+		if(!hasSolid(Fluids.FISHOIL, "listAllfishraw")) {
+			append(Fluids.FISHOIL, new MixerRecipe(100, 50).setSolid(new OreDictStack("listAllfishraw")));
+		}
+
+		/* oily crops can be pressed into seed oil */
+		for(String crop : new String[] { "cropOlive", "cropSunflower", "cropPeanut", "cropWalnut", "cropAlmond", "cropSoybean", "cropMustard" }) {
+			if(!hasSolid(Fluids.SUNFLOWEROIL, crop)) {
+				append(Fluids.SUNFLOWEROIL, new MixerRecipe(100, 50).setSolid(new OreDictStack(crop)));
+			}
+		}
+	}
+
+	private static boolean hasSolid(FluidType type, String dict) {
+		MixerRecipe[] existing = recipes.get(type);
+
+		if(existing == null) return false;
+
+		for(MixerRecipe rec : existing) {
+			if(rec.solidInput instanceof OreDictStack && ((OreDictStack) rec.solidInput).name.equals(dict)) return true;
+		}
+
+		return false;
+	}
+
+	private static void append(FluidType type, MixerRecipe... recs) {
+		MixerRecipe[] existing = recipes.get(type);
+
+		if(existing == null || existing.length == 0) {
+			recipes.put(type, recs);
+			return;
+		}
+
+		MixerRecipe[] combined = new MixerRecipe[existing.length + recs.length];
+		System.arraycopy(existing, 0, combined, 0, existing.length);
+		System.arraycopy(recs, 0, combined, existing.length, recs.length);
+		recipes.put(type, combined);
 	}
 
 	public static void register(FluidType type, MixerRecipe... rec) {

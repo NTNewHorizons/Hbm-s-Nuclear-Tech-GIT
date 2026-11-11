@@ -31,6 +31,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
 import net.minecraft.entity.EntityLivingBase;
@@ -380,7 +381,8 @@ public class TileEntityMachineThresher extends TileEntityLoadedBase implements I
 
 			// Apparently, until 1.14 full-grown wheat could sometimes drop no seeds at all
 			// This is a quick and dirty workaround for that.
-			if (b == Blocks.wheat && !replanted) {
+			// Any BlockCrops (including modded ones like Pam's) can be replanted at age 0.
+			if (b instanceof BlockCrops && !replanted) {
 				replacementBlock = b;
 				replacementMeta = 0;
 				replanted = true;
