@@ -49,3 +49,14 @@ gradle.taskGraph.whenReady { graph ->
 tasks.withType(JavaCompile).configureEach {
     options.forkOptions.memoryMaximumSize = '3g'
 }
+
+afterEvaluate {
+    tasks.withType(JavaCompile).configureEach {
+        if (javaCompiler.get().metadata.languageVersion.asInt() != 8) {
+            sourceCompatibility = '8'
+            targetCompatibility = '8'
+            options.release.set(8)
+            options.fork = false
+        }
+    }
+}
