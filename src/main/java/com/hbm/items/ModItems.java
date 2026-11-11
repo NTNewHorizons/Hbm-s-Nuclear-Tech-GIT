@@ -1821,6 +1821,7 @@ public class ModItems {
 
 	public static Item upgrade_template;
 	public static Item upgrade_speed_1;
+	public static Item upgrade_export;
 	public static Item upgrade_speed_2;
 	public static Item upgrade_speed_3;
 	public static Item upgrade_effect_1;
@@ -4278,6 +4279,7 @@ public class ModItems {
 		upgrade_5g = new ItemMachineUpgrade().setUnlocalizedName("upgrade_5g").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":upgrade_5g");
 		upgrade_stack = new ItemMetaUpgrade(3).setUnlocalizedName("upgrade_stack").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":upgrade_stack");
 		upgrade_ejector = new ItemMetaUpgrade(3).setUnlocalizedName("upgrade_ejector").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":upgrade_ejector");
+		upgrade_export = new ItemMachineUpgrade(UpgradeType.EXPORT, 1).setUnlocalizedName("upgrade_export").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":upgrade_export");
 
 		rebar_placer = new ItemRebarPlacer().setUnlocalizedName("rebar_placer").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":rebar_placer");
 		wand = new ItemWand().setUnlocalizedName("wand_k").setMaxStackSize(1).setCreativeTab(MainRegistry.consumableTab).setFull3D().setTextureName(RefStrings.MODID + ":wand");
@@ -5892,6 +5894,7 @@ public class ModItems {
 		GameRegistry.registerItem(upgrade_5g, upgrade_5g.getUnlocalizedName());
 		GameRegistry.registerItem(upgrade_stack, upgrade_stack.getUnlocalizedName());
 		GameRegistry.registerItem(upgrade_ejector, upgrade_ejector.getUnlocalizedName());
+		GameRegistry.registerItem(upgrade_export, upgrade_export.getUnlocalizedName());
 
 		//Machine Templates
 		GameRegistry.registerItem(siren_track, siren_track.getUnlocalizedName());
