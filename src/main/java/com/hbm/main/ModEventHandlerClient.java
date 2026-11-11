@@ -734,14 +734,34 @@ public class ModEventHandlerClient {
 			return;
 		}
 
-		// Replace the sound if we're not on Earth
 		WorldProvider provider = Minecraft.getMinecraft().theWorld.provider;
-		if(provider instanceof WorldProviderOrbit && provider.dimensionId != 0) {
+		ResourceLocation planetTrack = getPlanetTrack(provider.dimensionId);
+		boolean playPlanetTrack = planetTrack != null && provider.worldObj.rand.nextInt(PLANET_TRACK_CHANCE) == 0;
+
+		if(provider.dimensionId == 0) {
+			// Kerbin (Overworld): vanilla music, sometimes replaced by the Kerbin track
+			if(playPlanetTrack) event.result = currentSong = PositionedSoundRecord.func_147673_a(planetTrack);
+		} else if(provider instanceof WorldProviderOrbit) {
 			ResourceLocation track = provider.worldObj.rand.nextInt(16) == 0 ? MUSIC_LOCATION_ORBIT : MUSIC_LOCATION;
 			event.result = currentSong = PositionedSoundRecord.func_147673_a(track);
-		} else if(provider instanceof WorldProviderCelestial && provider.dimensionId != 0) {
-			event.result = currentSong = PositionedSoundRecord.func_147673_a(MUSIC_LOCATION);
+		} else if(provider instanceof WorldProviderCelestial) {
+			ResourceLocation track = playPlanetTrack ? planetTrack : MUSIC_LOCATION;
+			event.result = currentSong = PositionedSoundRecord.func_147673_a(track);
 		}
+	}
+
+	// 1 in N chance that a planet-exclusive track plays instead of the generic pool
+	private static final int PLANET_TRACK_CHANCE = 4;
+
+	private static ResourceLocation getPlanetTrack(int dim) {
+		if(dim == 0) return new ResourceLocation("hbm:music.game.kerbin");
+		if(dim == SpaceConfig.laytheDimension) return new ResourceLocation("hbm:music.game.laythe");
+		if(dim == SpaceConfig.eveDimension) return new ResourceLocation("hbm:music.game.eve");
+		if(dim == SpaceConfig.dunaDimension) return new ResourceLocation("hbm:music.game.duna");
+		if(dim == SpaceConfig.dresDimension) return new ResourceLocation("hbm:music.game.dres");
+		if(dim == SpaceConfig.mohoDimension) return new ResourceLocation("hbm:music.game.moho");
+		if(dim == SpaceConfig.minmusDimension) return new ResourceLocation("hbm:music.game.minmus");
+		return null;
 	}
 
 	@Spaghetti("please get this shit out of my face")
