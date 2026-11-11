@@ -9,7 +9,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: ["**"]
+    branches: ["space-travel-twopointfive"]
   pull_request:
     branches: ["space-travel-twopointfive"]
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: release-${{ github.ref }}
-      cancel-in-progress: false
+      cancel-in-progress: ${{ github.event_name == 'pull_request' }}
     permissions:
       contents: write
     env:
