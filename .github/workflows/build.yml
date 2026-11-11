@@ -22,6 +22,9 @@ jobs:
       cancel-in-progress: false
     permissions:
       contents: write
+    env:
+      # Force using the compressed jar for CI
+      ORG_GRADLE_PROJECT_compressedJar: "true"
 
     steps:
       - uses: actions/checkout@v7
