@@ -46,10 +46,6 @@ gradle.taskGraph.whenReady { graph ->
         : org.gradle.api.tasks.bundling.ZipEntryCompression.STORED
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.forkOptions.memoryMaximumSize = '3g'
-}
-
 afterEvaluate {
     tasks.withType(JavaCompile).configureEach {
         if (javaCompiler.get().metadata.languageVersion.asInt() != 8) {
