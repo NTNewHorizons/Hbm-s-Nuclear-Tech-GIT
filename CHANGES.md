@@ -41,6 +41,7 @@
 - Added Special Mobs compatibility for creeper transformations.
 
 **Gameplay and Quality of Life**
+- Added a tool modifier to add a configurable mining delay to instamine tools.
 - Enabled Nether heat and burning mechanics, with improved armor protection information.
 - Adjusted Reacher radiation to use inverse-square distance attenuation.
 - Removed misleading cosmetic burning effects.
