@@ -105,13 +105,10 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 		if(!hasPermission(player)) return;
 		int step = data.getInteger("bufferStep");
 		if(step == -1 || step == 1) adjustMaxPower(step < 0);
-		if(data.hasKey("priority")) {
-			int ordinal = data.getInteger("priority");
-			if(ordinal >= 0 && ordinal < ConnectionPriority.values().length) {
-				setPriority(ordinal);
-				markDirty();
-				networkPackNT(15);
-			}
+		if(data.getInteger("priorityStep") == 1) {
+			setPriority((priority.ordinal() + 1) % ConnectionPriority.values().length);
+			markDirty();
+			networkPackNT(15);
 		}
 	}
 

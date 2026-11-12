@@ -3,7 +3,6 @@ package com.hbm.inventory.gui;
 import java.util.Locale;
 
 import api.hbm.energymk2.IEnergyHandlerMK2;
-import api.hbm.energymk2.IEnergyReceiverMK2.ConnectionPriority;
 import cofh.api.energy.EnergyStorage;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -84,7 +83,7 @@ public class GUIEnergyConverter extends GuiScreen {
 		NBTTagCompound data = new NBTTagCompound();
 		if(button.id == 0 || button.id == 1) data.setInteger("bufferStep", button.id == 0 ? -1 : 1);
 		else if(heToRf && button.id == 2) {
-			data.setInteger("priority", (((TileEntityConverterHeRf) tile).getPriority().ordinal() + 1) % ConnectionPriority.values().length);
+			data.setInteger("priorityStep", 1);
 		} else return;
 		PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, tile.xCoord, tile.yCoord, tile.zCoord));
 	}
