@@ -2,7 +2,6 @@ package com.hbm.packet.toserver;
 
 import java.io.IOException;
 
-import com.gtnewhorizon.gtnhlib.util.ServerThreadUtil;
 import com.hbm.interfaces.IControlReceiver;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -14,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -72,29 +70,24 @@ public class NBTControlPacket implements IMessage {
 		public IMessage onMessage(NBTControlPacket m, MessageContext ctx) {
 
 			EntityPlayer p = ctx.getServerHandler().playerEntity;
-			World world = p.worldObj;
+			if(p.worldObj == null) return null;
+
+			TileEntity te = p.worldObj.getTileEntity(m.x, m.y, m.z);
 
 			try {
 
 				NBTTagCompound nbt = m.buffer.readNBTTagCompoundFromBuffer();
 
-				if(nbt != null && world != null) {
-					int x = m.x;
-					int y = m.y;
-					int z = m.z;
-					ServerThreadUtil.addScheduledTask(() -> {
-						if(p.isDead || p.worldObj != world || !world.blockExists(x, y, z)) return;
-						TileEntity te = world.getTileEntity(x, y, z);
-						if(!(te instanceof IControlReceiver) || te.isInvalid()) return;
-						IControlReceiver tile = (IControlReceiver) te;
-						if(!tile.hasPermission(p)) return;
+				if(nbt != null) {
+					if(te instanceof IControlReceiver) {
 
-						PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(p, Action.RIGHT_CLICK_BLOCK, x, y, z, 1, world);
-						if(!event.isCanceled() && p.worldObj == world && !te.isInvalid()
-								&& world.getTileEntity(x, y, z) == te && tile.hasPermission(p)) {
-							tile.receiveControl(p, nbt);
+						IControlReceiver tile = (IControlReceiver)te;
+
+						if(tile.hasPermission(p)) {
+							PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(p, Action.RIGHT_CLICK_BLOCK, m.x, m.y, m.z, 1, p.worldObj);
+							if(!event.isCanceled()) tile.receiveControl(p, nbt);
 						}
-					});
+					}
 				}
 
 			} catch (IOException e) {
