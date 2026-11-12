@@ -27,7 +27,7 @@
 - Added decimal AUTOCAL clockspeeds, allowing scripts to run slower than one line per tick.
 - Added AUTOCAL stepping, allowing to debug a script line by line.
 - Improved conveyors with lane preservation, balanced splitting, better routing, and safer overflow handling.
-- Added configurable energy buffers to HE/RF converters.
+- Added GUIs for HE/RF converters with configurable energy buffers and HE input priority.
 - Improved machine upgrade handling with slot validation and detailed upgrade effect information.
 - Extended the Fluid Siphon to support partially filled fluid barrels.
 - Expanded custom-machine configuration with molten-material processing, custom OBJ models, and operation sounds.
