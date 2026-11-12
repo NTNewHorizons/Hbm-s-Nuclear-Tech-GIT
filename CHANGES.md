@@ -29,7 +29,7 @@
 - Added AUTOCAL stepping for line-by-line debugging, with a pause indicator and Shift-click to resume execution.
 - Fixed AUTOCAL script opening on some computers.
 - Improved conveyors with lane preservation, balanced splitting, better routing, and safer overflow handling.
-- Added configurable energy buffers to HE/RF converters.
+- Added GUIs for HE/RF converters with configurable energy buffers and HE input priority.
 - Improved machine upgrade handling with slot validation and detailed upgrade effect information.
 - Extended the Fluid Siphon to support partially filled fluid barrels.
 - Expanded custom-machine configuration with molten-material processing, custom OBJ models, and operation sounds.
