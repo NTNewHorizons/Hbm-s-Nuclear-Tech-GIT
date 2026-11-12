@@ -301,10 +301,10 @@ public class GUIScreenToolAbility extends GuiScreen {
 				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:item.techBoop"), 2F));
 			} else if(button == 1) {
 				activePreset.delayAbility = Math.max(0, activePreset.delayAbility - 1);
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:item.techBoop"), 0.5F));
+				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:item.techBoop"), 1F));
 			} else if(button == 2) {
 				activePreset.delayAbility = 0;
-				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:item.techBoop"), 1F));
+				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:item.techBoop"), 0.5F));
 			}
 		}
 
