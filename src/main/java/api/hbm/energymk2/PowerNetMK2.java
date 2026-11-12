@@ -73,14 +73,16 @@ public class PowerNetMK2 extends NodeNet<IEnergyReceiverMK2, IEnergyProviderMK2,
 		for(int i = ConnectionPriority.values().length - 1; i >= 0; i--) {
 			List<Pair<IEnergyReceiverMK2, Long>> list = receivers[i];
 			long priorityDemand = demand[i];
+			long priorityUsed = 0;
 			
 			for(Pair<IEnergyReceiverMK2, Long> entry : list) {
 				double weight = (double) entry.getValue() / (double) (priorityDemand);
 				long toSend = (long) Math.min(Math.max(toTransfer * weight, 0D), entry.getValue());
-				energyUsed += (toSend - entry.getKey().transferPower(toSend)); //leftovers are subtracted from the intended amount to use up
+				priorityUsed += (toSend - entry.getKey().transferPower(toSend)); //leftovers are subtracted from the intended amount to use up
 			}
 			
-			toTransfer -= energyUsed;
+			toTransfer -= priorityUsed;
+			energyUsed += priorityUsed;
 		}
 		
 		long leftover = energyUsed;
