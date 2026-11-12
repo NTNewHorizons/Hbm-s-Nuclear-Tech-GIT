@@ -11,6 +11,7 @@ public class ToolPreset {
 	public int areaAbilityLevel = 0;
 	public IToolHarvestAbility harvestAbility = IToolHarvestAbility.NONE;
 	public int harvestAbilityLevel = 0;
+	public int delayAbility = 0;
 
 	public ToolPreset() {
 	}
@@ -51,11 +52,19 @@ public class ToolPreset {
 			builder.next(harvestAbility.getExtension(harvestAbilityLevel));
 		}
 
+		if(delayAbility != 0) {
+			if(hasArea || hasHarvest) {
+				builder.next(" + ");
+			}
+			builder.nextTranslation("tool.ability.delay");
+			builder.next(" (" + delayAbility + ")");
+		}
+
 		return builder.colorAll(EnumChatFormatting.YELLOW).flush();
 	}
 
 	public boolean isNone() {
-		return areaAbility == IToolAreaAbility.NONE && harvestAbility == IToolHarvestAbility.NONE;
+		return areaAbility == IToolAreaAbility.NONE && harvestAbility == IToolHarvestAbility.NONE && delayAbility <= 0;
 	}
 
 	public void writeToNBT(NBTTagCompound nbt) {
@@ -63,6 +72,7 @@ public class ToolPreset {
 		nbt.setInteger("areaLevel", areaAbilityLevel);
 		nbt.setString("harvest", harvestAbility.getName());
 		nbt.setInteger("harvestLevel", harvestAbilityLevel);
+		nbt.setInteger("delay", delayAbility);
 	}
 
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -70,6 +80,7 @@ public class ToolPreset {
 		areaAbilityLevel = nbt.getInteger("areaLevel");
 		harvestAbility = IToolHarvestAbility.getByName(nbt.getString("harvest"));
 		harvestAbilityLevel = nbt.getInteger("harvestLevel");
+		delayAbility = nbt.getInteger("delay");
 
 		areaAbilityLevel = Math.min(areaAbilityLevel, areaAbility.levels() - 1);
 		harvestAbilityLevel = Math.min(harvestAbilityLevel, harvestAbility.levels() - 1);

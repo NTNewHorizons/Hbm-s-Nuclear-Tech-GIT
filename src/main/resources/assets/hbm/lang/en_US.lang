@@ -8436,6 +8436,7 @@ trait.tile.depth=Can only be destroyed by explosions
 
 tool.ability.centrifuge=Auto-Centrifuge
 tool.ability.crystallizer=Auto-Crystallizer
+tool.ability.delay=Mining Delay
 tool.ability.explosion=Explosion
 tool.ability.hammer=AoE
 tool.ability.hammer_flat=Flat AoE

@@ -47,6 +47,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -180,6 +181,20 @@ public class ItemToolAbility extends ItemTool implements IDepthRockTool, IGUIPro
 
 		World world = player.worldObj;
 		Block block = world.getBlock(x, y, z);
+
+		if(world.isRemote) {
+			Configuration config = getConfiguration(stack);
+			ToolPreset preset = config.getActivePreset();
+
+			if(preset.delayAbility > 0) {
+				ReflectionHelper.setPrivateValue(
+    				PlayerControllerMP.class, 
+    				Minecraft.getMinecraft().playerController, 
+    				preset.delayAbility, 
+    				"blockHitDelay", "field_78781_i"
+				);
+			}
+		}
 
 		/*
 		 * The original implementation of this always returned FALSE which uses the vanilla block break code.
