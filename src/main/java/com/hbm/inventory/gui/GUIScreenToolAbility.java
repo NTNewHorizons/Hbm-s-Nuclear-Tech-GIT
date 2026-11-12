@@ -83,7 +83,7 @@ public class GUIScreenToolAbility extends GuiScreen {
 		this.xSize = 186; // Note: increased dynamically
 		this.ySize = 76;
 
-		this.insetWidth = 20 * Math.max(abilitiesArea.size() - 4, abilitiesHarvest.size() - 8);
+		this.insetWidth = 20 * Math.max(abilitiesArea.size() - 4, abilitiesHarvest.size() + 1 - 8);
 		this.xSize += insetWidth;
 	}
 
@@ -115,6 +115,19 @@ public class GUIScreenToolAbility extends GuiScreen {
 		ToolPreset activePreset = config.getActivePreset();
 		hoverIdxArea = drawSwitches(abilitiesArea, activePreset.areaAbility, activePreset.areaAbilityLevel, guiLeft + 15, guiTop + 25, mouseX, mouseY);
 		hoverIdxHarvest = drawSwitches(abilitiesHarvest, activePreset.harvestAbility, activePreset.harvestAbilityLevel, guiLeft + 15, guiTop + 45, mouseX, mouseY);
+
+		// Draw delay switch
+		AbilityInfo lastAbility = abilitiesHarvest.get(abilitiesHarvest.size() - 1);
+		int delayX = guiLeft + 15 + abilitiesHarvest.size() * 20;
+		int delayY = guiTop + 45;
+		int delayU = lastAbility.textureU + 16;
+		int delayV = lastAbility.textureV + 16;
+		drawTexturedModalRect(delayX, delayY, delayU, delayV, 16, 16);
+		boolean hoverDelay = isInAABB(mouseX, mouseY, delayX, delayY, 16, 16);
+		// Draw delay switch border
+		if(activePreset.delayAbility > 0 || hoverDelay) {
+			drawTexturedModalRect(delayX - 1, delayY - 1, activePreset.delayAbility > 0 ? 220 : 238, 9, 18, 18);
+		}
 
 		// Draw preset indicator
 		drawNumber(config.currentPreset + 1, guiLeft + insetWidth + 115, guiTop + 25);
@@ -156,6 +169,8 @@ public class GUIScreenToolAbility extends GuiScreen {
 			case 5: tooltipValue = I18nUtil.resolveKey("gui.tool_ability.previous_preset"); break;
 			case 6: tooltipValue = I18nUtil.resolveKey("gui.tool_ability.close"); break;
 			}
+		} else if(hoverDelay) {
+			tooltipValue = I18nUtil.resolveKey("tool.ability.delay") + " (" + activePreset.delayAbility + ")";
 		}
 
 		if(!tooltipValue.isEmpty()) {
@@ -279,6 +294,19 @@ public class GUIScreenToolAbility extends GuiScreen {
 		clickResult = handleSwitchesClicked(abilitiesHarvest, activePreset.harvestAbility, activePreset.harvestAbilityLevel, hoverIdxHarvest, mouseX, mouseY);
 		activePreset.harvestAbility = (IToolHarvestAbility) clickResult.key;
 		activePreset.harvestAbilityLevel = clickResult.value;
+
+		if(isInAABB(mouseX, mouseY, guiLeft + 15 + abilitiesHarvest.size() * 20, guiTop + 45, 16, 16)) {
+			if(button == 0) {
+				activePreset.delayAbility = Math.min(10, activePreset.delayAbility + 1);
+				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:item.techBoop"), 2F));
+			} else if(button == 1) {
+				activePreset.delayAbility = Math.max(0, activePreset.delayAbility - 1);
+				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:item.techBoop"), 0.5F));
+			} else if(button == 2) {
+				activePreset.delayAbility = 0;
+				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("hbm:item.techBoop"), 1F));
+			}
+		}
 
 		if(!activePreset.areaAbility.allowsHarvest(activePreset.areaAbilityLevel)) {
 			activePreset.harvestAbility = IToolHarvestAbility.NONE;
