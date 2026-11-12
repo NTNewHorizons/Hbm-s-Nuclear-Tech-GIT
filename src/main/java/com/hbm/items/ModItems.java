@@ -2294,6 +2294,9 @@ public class ModItems {
 	public static Item record_glass;
 	public static Item record_bf;
 	public static Item record_box;
+	public static Item record_city;
+	public static Item record_revenge;
+	public static Item record_tarnished;
 
 	public static Item book_guide;
 	public static Item book_lore;
@@ -4862,6 +4865,9 @@ public class ModItems {
 		record_glass = new ItemModRecord("glass").setUnlocalizedName("record_glass").setCreativeTab(null).setTextureName(RefStrings.MODID + ":record_glass");
 		record_bf = new ItemModRecord("bf").setUnlocalizedName("record_bf").setCreativeTab(CreativeTabs.tabMisc).setTextureName(RefStrings.MODID + ":record_bf");
 		record_box = new ItemModRecord("box").setUnlocalizedName("record_box").setCreativeTab(CreativeTabs.tabMisc).setTextureName(RefStrings.MODID + ":record_box");
+		record_city = new ItemModRecord("city").setUnlocalizedName("record_city").setCreativeTab(CreativeTabs.tabMisc).setTextureName(RefStrings.MODID + ":record_city");
+		record_revenge = new ItemModRecord("revenge").setUnlocalizedName("record_revenge").setCreativeTab(CreativeTabs.tabMisc).setTextureName(RefStrings.MODID + ":record_revenge");
+		record_tarnished = new ItemModRecord("tarnished").setUnlocalizedName("record_tarnished").setCreativeTab(CreativeTabs.tabMisc).setTextureName(RefStrings.MODID + ":record_tarnished");
 
 		book_guide = new ItemGuideBook().setUnlocalizedName("book_guide").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":book_guide");
 		book_lore = new ItemBookLore().setUnlocalizedName("book_lore").setCreativeTab(null).setTextureName(RefStrings.MODID + ":book_pages");
@@ -7188,6 +7194,9 @@ public class ModItems {
 		GameRegistry.registerItem(record_glass, record_glass.getUnlocalizedName());
 		GameRegistry.registerItem(record_bf, record_bf.getUnlocalizedName());
 		GameRegistry.registerItem(record_box, record_box.getUnlocalizedName());
+		GameRegistry.registerItem(record_city, record_city.getUnlocalizedName());
+		GameRegistry.registerItem(record_revenge, record_revenge.getUnlocalizedName());
+		GameRegistry.registerItem(record_tarnished, record_tarnished.getUnlocalizedName());
 
 		//wow we're far down the item registry, is this the cellar?
 		GameRegistry.registerItem(book_guide, book_guide.getUnlocalizedName());
