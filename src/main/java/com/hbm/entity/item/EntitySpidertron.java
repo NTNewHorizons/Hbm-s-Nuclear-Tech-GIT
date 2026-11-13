@@ -1,5 +1,7 @@
 package com.hbm.entity.item;
 
+import com.hbm.util.Vec3NT;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,73 +17,68 @@ public class EntitySpidertron extends Entity {
 
 	private static final double ACCELERATION = 0.1D;
 	private static final double MAX_SPEED = 0.75D;
-	private static final double HOVER_HEIGHT = 4.0D;
-	private static final double GROUND_SEARCH_DISTANCE = 128.0D;
+	private static final double HEIGHT = 4.0D;
+	private static final double KNEE_HEIGHT = 6.0D;
+	private static final double FOOT_REST_OFFSET_MULTIPLIER = 4.0D;
+	private static final double KNEE_REST_FRACTION = 0.35D;
 
 	public static class Leg {
-		private static final double KNEE_HEIGHT = 1.5D;
-		private static final double KNEE_OUTWARD_FRACTION = 0.65D;
+		public final Vec3NT hipOffset;
+		public final Vec3NT kneeRestOffset;
+		public final Vec3NT footRestOffset;
+		public Vec3NT hip;
+		public Vec3NT knee;
+		public Vec3NT foot;
 
-		public static class Segment {
-			public final Vec3 start;
-			public final Vec3 end;
-			// Rest length for the IK solver; moving a joint does not change it.
-			public final double length;
+		public Leg(Vec3NT hipOffset) {
+			this.hipOffset = hipOffset;
+			this.hip = new Vec3NT(this.hipOffset);
+			
+			this.footRestOffset = new Vec3NT(this.hipOffset).multiply(FOOT_REST_OFFSET_MULTIPLIER);
+			this.foot = new Vec3NT(this.footRestOffset);
 
-			public Segment(Vec3 start, Vec3 end) {
-				this.start = start;
-				this.end = end;
-				this.length = start.distanceTo(end);
-			}
+
+			this.kneeRestOffset = new Vec3NT(this.footRestOffset).multiply(KNEE_REST_FRACTION);
+			this.kneeRestOffset.yCoord = KNEE_HEIGHT;
+			this.knee = new Vec3NT(this.kneeRestOffset);
 		}
 
-		// Chassis-local offsets in blocks, with positive Y pointing up.
-		public final Vec3 hip;
-		public final Vec3 footRest;
-		public final Vec3 knee;
-		public final Vec3 foot;
-		public final Segment upper;
-		public final Segment lower;
-		public double yaw;
-		public double pitch;
+		/**
+		 * Solve the IK for the leg
+		 */
+		public void solve(Vec3NT position, double yaw) {
+			this.hip = new Vec3NT(position).add(new Vec3NT(this.hipOffset).rotateAroundYDeg(-yaw));
+			this.foot = new Vec3NT(position).add(new Vec3NT(this.footRestOffset).rotateAroundYDeg(-yaw));
+			this.knee = new Vec3NT(position).add(new Vec3NT(this.kneeRestOffset).rotateAroundYDeg(-yaw));
+			/* Vec3NT footTarget = new Vec3NT(position).add(this.footRestOffset);
 
-		public Leg(double x, double y, double z, double yaw, double pitch, double footX, double footZ) {
-			this.hip = Vec3.createVectorHelper(x, y, z);
-			this.footRest = Vec3.createVectorHelper(footX, -HOVER_HEIGHT, footZ);
-			this.knee = Vec3.createVectorHelper(
-					x + (footX - x) * KNEE_OUTWARD_FRACTION,
-					y + KNEE_HEIGHT,
-					z + (footZ - z) * KNEE_OUTWARD_FRACTION);
-			this.foot = Vec3.createVectorHelper(this.footRest.xCoord, this.footRest.yCoord, this.footRest.zCoord);
-			// Shared joint vectors keep both segments connected as IK updates them.
-			this.upper = new Segment(this.hip, this.knee);
-			this.lower = new Segment(this.knee, this.foot);
-			this.yaw = yaw;
-			this.pitch = pitch;
+			// Solve for knee position
+			Vec3NT hipToFoot = new Vec3NT(footTarget).add(new Vec3NT(this.hip).multiply(-1D));
+			double hipToFootLength = hipToFoot.distanceTo(0, 0, 0);
+			double kneeHeight = KNEE_HEIGHT;
+			if (hipToFootLength < 1.0E-4D) {
+				this.knee = new Vec3NT(this.hip);
+				this.knee.yCoord += kneeHeight;
+				this.foot = new Vec3NT(this.hip);
+				return;
+			}
+			Vec3NT hipToFootDir = new Vec3NT(hipToFoot).multiply(1D / hipToFootLength);
+			Vec3NT kneeOffset = new Vec3NT(-hipToFootDir.zCoord, 0, hipToFootDir.xCoord).normalizeSelf().multiply(kneeHeight);
+			this.knee = new Vec3NT(this.hip).add(new Vec3NT(hipToFoot).multiply(0.5D)).add(kneeOffset);
+			this.foot = footTarget; */
 		}
 	}
 
 	public final Leg[] legs = new Leg[] {
-			new Leg(0.75, 0, 1.0, 90, -35, 2.5, 3.0),
-			new Leg(1.3, 0, 0.4, 90, -10, 3.5, 1.0),
-			new Leg(1.3, 0, -0.4, 90, -10, 3.5, -1.0),
-			new Leg(0.75, 0, -1.0, 90, -10, 2.5, -3.0),
-			new Leg(-0.75, 0, 1.0, 90, -35, -2.5, 3.0),
-			new Leg(-1.3, 0, 0.4, 90, -10, -3.5, 1.0),
-			new Leg(-1.3, 0, -0.4, 90, -10, -3.5, -1.0),
-			new Leg(-0.75, 0, -1.0, 90, -10, -2.5, -3.0),
+			new Leg(new Vec3NT( 0.75D, 0.0D,  1.0D)),
+			new Leg(new Vec3NT( 1.3D , 0.0D,  0.4D)),
+			new Leg(new Vec3NT( 1.3D , 0.0D, -0.4D)),
+			new Leg(new Vec3NT( 0.75D, 0.0D, -1.0D)),
+			new Leg(new Vec3NT(-0.75D, 0.0D,  1.0D)),
+			new Leg(new Vec3NT(-1.3D , 0.0D,  0.4D)),
+			new Leg(new Vec3NT(-1.3D , 0.0D, -0.4D)),
+			new Leg(new Vec3NT(-0.75D, 0.0D, -1.0D)),
 	};
-
-	public static void solveTwoBone(
-			Vec3 hip,
-			Vec3 target,
-			Vec3 poleTarget,
-			double upperLength,
-			double lowerLength,
-			Vec3 kneeOut,
-			Vec3 footOut) {
-
-	}
 
 	private int interpolationTicks;
 	private double targetX;
@@ -199,14 +196,18 @@ public class EntitySpidertron extends Entity {
 		this.motionX *= 0.9D;
 		this.motionZ *= 0.9D;
 		this.setRotation(this.rotationYaw, 0.0F);
+
+		for (EntitySpidertron.Leg leg : this.legs) {
+			leg.solve(new Vec3NT(this.posX, this.posY, this.posZ), this.rotationYaw);
+		}
 	}
 
 	private void snapToGround() {
 		Vec3 start = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-		Vec3 end = Vec3.createVectorHelper(this.posX, this.posY - GROUND_SEARCH_DISTANCE, this.posZ);
+		Vec3 end = Vec3.createVectorHelper(this.posX, this.posY - 128, this.posZ);
 		MovingObjectPosition hit = this.worldObj.func_147447_a(start, end, false, true, false);
 		if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-			this.setPosition(this.posX, hit.hitVec.yCoord + HOVER_HEIGHT, this.posZ);
+			this.setPosition(this.posX, hit.hitVec.yCoord + HEIGHT, this.posZ);
 		}
 	}
 

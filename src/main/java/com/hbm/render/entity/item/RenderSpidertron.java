@@ -3,6 +3,7 @@ package com.hbm.render.entity.item;
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.entity.item.EntitySpidertron;
+import com.hbm.util.Vec3NT;
 
 import net.minecraft.client.model.ModelBoat;
 import net.minecraft.client.model.ModelBase;
@@ -15,9 +16,7 @@ import net.minecraft.util.Vec3;
 public class RenderSpidertron extends Render {
 
 	private static final float LEG_WIDTH = 0.3F;
-	
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation("hbm", "textures/entity/boat_rubber.png");
 	private final ModelBoat body = new ModelBoat();
 	private final ModelRenderer cube;
 
@@ -31,41 +30,54 @@ public class RenderSpidertron extends Render {
 	public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTicks) {
 		EntitySpidertron spidertron = (EntitySpidertron) entity;
 
-		GL11.glPushMatrix();
-		GL11.glTranslated(x, y, z);
-		this.bindEntityTexture(entity);
+		// Set color
 		GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_CURRENT_BIT);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_NORMALIZE);
-		GL11.glColor4f(1F, 1F, 1F, 1F);
-		// The boat model uses a different coordinate system from the leg offsets.
-		GL11.glPushMatrix();
-		GL11.glRotatef(180.0F - yaw, 0.0F, 1.0F, 0.0F);
-		GL11.glScalef(-1.0F, -1.0F, 1.0F);
-		this.body.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		GL11.glPopMatrix();
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glEnable(GL11.GL_NORMALIZE);
+			GL11.glColor4f(1F, 1F, 1F, 1F);
 
-		// Chassis-local legs use positive Y up and positive Z forward at yaw zero.
-		GL11.glRotatef(-yaw, 0.0F, 1.0F, 0.0F);
-		for (EntitySpidertron.Leg leg : spidertron.legs) {
-			renderLeg(leg);
-		}
+			GL11.glPushMatrix();
+				GL11.glTranslated(x, y, z);
 
+				// The boat model uses a different coordinate system from the leg offsets.
+				GL11.glPushMatrix();
+					GL11.glRotatef(180.0F - yaw, 0.0F, 1.0F, 0.0F);
+					GL11.glScalef(-1.0F, -1.0F, 1.0F);
+					this.body.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+				GL11.glPopMatrix();
+			GL11.glPopMatrix();
+
+			GL11.glPushMatrix();
+				GL11.glTranslated(x - spidertron.posX, y - spidertron.posY, z - spidertron.posZ);
+				for (EntitySpidertron.Leg leg : spidertron.legs) {
+					renderLeg(leg);
+				}
+			GL11.glPopMatrix();
 		GL11.glPopAttrib();
-		GL11.glPopMatrix();
+	}
+
+	private void renderLeg(EntitySpidertron.Leg leg) {
+		renderSegment(new Vec3NT(leg.hip), leg.knee);
+		renderSegment(new Vec3NT(leg.knee), leg.foot);
+	}
+
+	private void renderSegment(Vec3NT start, Vec3NT end) {
+		/* GL11.glPushMatrix();
+			GL11.glTranslated(start.xCoord, start.yCoord, start.zCoord);
+		GL11.glPopMatrix(); */
+		GL11.glBegin(GL11.GL_LINES);
+    		GL11.glColor4d(1.0D, 1.0D, 1.0D, 1.0D);
+    		GL11.glVertex3d(start.xCoord, start.yCoord, start.zCoord);
+    		GL11.glVertex3d(end.xCoord, end.yCoord, end.zCoord);
+		GL11.glEnd();
 	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return TEXTURE;
+		return new ResourceLocation("hbm:textures/entity/spidertron.png");
 	}
 
-	private void renderLeg(EntitySpidertron.Leg leg) {
-		renderSegment(leg.upper);
-		renderSegment(leg.lower);
-	}
-
-	private void renderSegment(EntitySpidertron.Leg.Segment segment) {
+	/* private void renderSegment(EntitySpidertron.Leg.Segment segment) {
 		Vec3 start = segment.start;
 		Vec3 end = segment.end;
 		double dx = end.xCoord - start.xCoord;
@@ -89,5 +101,5 @@ public class RenderSpidertron extends Render {
 		this.cube.render(1);
 
 		GL11.glPopMatrix();
-	}
+	} */
 }

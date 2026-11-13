@@ -8,6 +8,7 @@ import com.hbm.blocks.ICustomBlockHighlight;
 import com.hbm.config.ClientConfig;
 import com.hbm.config.RadiationConfig;
 import com.hbm.dim.WorldProviderCelestial;
+import com.hbm.entity.item.EntitySpidertron;
 import com.hbm.entity.missile.EntityRideableRocket;
 import com.hbm.extprop.HbmLivingProps;
 import com.hbm.handler.pollution.PollutionHandler.PollutionType;
@@ -90,13 +91,13 @@ public class ModEventHandlerRenderer {
 		EntityPlayer player = mc.thePlayer;
 
 		if(event.phase == Phase.START) {
-			// Zoom out third person view when inside a rocket
-			if(player != null && player.ridingEntity != null && player.ridingEntity instanceof EntityRideableRocket) {
+			// Zoom out third person view when riding a rocket or Spidertron
+			if(player != null && (player.ridingEntity instanceof EntityRideableRocket || player.ridingEntity instanceof EntitySpidertron)) {
 				if(previousZoomActive == false) {
 					previousZoom = mc.entityRenderer.thirdPersonDistance;
 					previousZoomActive = true;
 				}
-				mc.entityRenderer.thirdPersonDistance = 12.0F;
+				mc.entityRenderer.thirdPersonDistance = player.ridingEntity instanceof EntitySpidertron ? 8.0F : 12.0F;
 			} else {
 				if(previousZoomActive == true) {
 					previousZoomActive = false;
