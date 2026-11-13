@@ -28,8 +28,8 @@ public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEnt
 
 	private static final double ACCELERATION = 0.1D;
 	private static final double MAX_SPEED = 0.75D;
-	private static final double HEIGHT = 4.0D;
-	private static final double KNEE_HEIGHT = 6.0D;
+	private static final double HEIGHT = 3.0D;
+	private static final double KNEE_HEIGHT = 3.0D;
 	private static final double KNEE_REST_FRACTION = 0.35D;
 	private static final double FOOT_REST_OFFSET_MULTIPLIER = 4.0D;
 	private static final double FOOT_STEP = 2.0D;
@@ -106,6 +106,9 @@ public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEnt
 		super.onUpdate();
 
 		if (this.worldObj.isRemote) {
+			for (Leg leg : this.legs) {
+				leg.savePreviousPose();
+			}
 			applyPendingPose();
 			return;
 		}
@@ -220,6 +223,9 @@ public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEnt
 	@Override
 	public void readSpawnData(ByteBuf buf) {
 		applyPose(PoseSnapshot.readFromBuf(buf, this.legs.length));
+		for (Leg leg : this.legs) {
+			leg.savePreviousPose();
+		}
 		this.lastTickPosX = this.prevPosX = this.posX;
 		this.lastTickPosY = this.prevPosY = this.posY;
 		this.lastTickPosZ = this.prevPosZ = this.posZ;
@@ -248,6 +254,9 @@ public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEnt
 		public Vec3NT hip;
 		public Vec3NT knee;
 		public Vec3NT foot;
+		public Vec3NT prevHip;
+		public Vec3NT prevKnee;
+		public Vec3NT prevFoot;
 
 		public Leg(Vec3NT hipOffset) {
 			this.hipOffset = hipOffset;
@@ -259,6 +268,13 @@ public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEnt
 			this.kneeRestOffset = new Vec3NT(this.footRestOffset).multiply(KNEE_REST_FRACTION);
 			this.kneeRestOffset.yCoord = KNEE_HEIGHT;
 			this.knee = new Vec3NT(this.kneeRestOffset);
+			savePreviousPose();
+		}
+
+		private void savePreviousPose() {
+			this.prevHip = new Vec3NT(this.hip);
+			this.prevKnee = new Vec3NT(this.knee);
+			this.prevFoot = new Vec3NT(this.foot);
 		}
 
 		/**

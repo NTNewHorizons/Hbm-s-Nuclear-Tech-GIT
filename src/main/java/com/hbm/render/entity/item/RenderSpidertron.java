@@ -51,15 +51,25 @@ public class RenderSpidertron extends Render {
 			GL11.glPushMatrix();
 				GL11.glTranslated(-RenderManager.renderPosX, -RenderManager.renderPosY, -RenderManager.renderPosZ);
 				for (EntitySpidertron.Leg leg : spidertron.legs) {
-					renderLeg(leg);
+					renderLeg(leg, partialTicks);
 				}
 			GL11.glPopMatrix();
 		GL11.glPopAttrib();
 	}
 
-	private void renderLeg(EntitySpidertron.Leg leg) {
-		renderSegment(leg.hip, leg.knee);
-		renderSegment(leg.knee, leg.foot);
+	private void renderLeg(EntitySpidertron.Leg leg, float partialTicks) {
+		Vec3NT hip = interpolate(leg.prevHip, leg.hip, partialTicks);
+		Vec3NT knee = interpolate(leg.prevKnee, leg.knee, partialTicks);
+		Vec3NT foot = interpolate(leg.prevFoot, leg.foot, partialTicks);
+		renderSegment(hip, knee);
+		renderSegment(knee, foot);
+	}
+
+	private Vec3NT interpolate(Vec3NT previous, Vec3NT current, float partialTicks) {
+		return new Vec3NT(
+				previous.xCoord + (current.xCoord - previous.xCoord) * partialTicks,
+				previous.yCoord + (current.yCoord - previous.yCoord) * partialTicks,
+				previous.zCoord + (current.zCoord - previous.zCoord) * partialTicks);
 	}
 
 	private void renderSegment(Vec3NT start, Vec3NT end) {
