@@ -428,8 +428,14 @@ public class TileEntityMachineAssemblyFactory extends TileEntityMachineBase impl
 	}
 
 	@Override
+	public PortDef[] getItemOutputPorts() {
+		return new PortDef[] { new PortDef().withCon(getIOPos()) };
+	}
+
+	@Override
 	public HashMap<UpgradeType, Integer> getValidUpgrades() {
 		HashMap<UpgradeType, Integer> upgrades = new HashMap<>();
+		upgrades.put(UpgradeType.EXPORT, 1);
 		upgrades.put(UpgradeType.SPEED, 3);
 		upgrades.put(UpgradeType.POWER, 3);
 		upgrades.put(UpgradeType.OVERDRIVE, 3);

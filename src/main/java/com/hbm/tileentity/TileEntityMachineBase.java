@@ -11,6 +11,7 @@ import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.FluidContainerRegistry;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.items.ModItems;
+import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
 import api.hbm.energymk2.IBatteryItem;
@@ -27,6 +28,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 public abstract class TileEntityMachineBase extends TileEntityLoadedBase implements ISidedInventory {
 
 	public ItemStack slots[];
+
+	public PortDef[] getItemOutputPorts() {
+		return TilePortShapes.around(xCoord, yCoord, zCoord);
+	}
 
 	private String customName;
 

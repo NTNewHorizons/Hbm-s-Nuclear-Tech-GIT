@@ -158,9 +158,9 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 
 			boolean shouldRun = this.isOn && !this.redstonePowered;
 
-			if(shouldRun) {
+			upgradeManager.checkSlots(this, slots, 1, 8);
 
-				upgradeManager.checkSlots(this, slots, 1, 8);
+			if(shouldRun) {
 				int cycles = 1 + upgradeManager.getLevel(UpgradeType.OVERDRIVE);
 				int speed = 1 + upgradeManager.getLevel(UpgradeType.SPEED);
 				int range = 1 + upgradeManager.getLevel(UpgradeType.EFFECT) * 2;
@@ -713,8 +713,14 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 	}
 
 	@Override
+	public PortDef[] getItemOutputPorts() {
+		return new PortDef[] { new PortDef().withCon(getConPos()) };
+	}
+
+	@Override
 	public HashMap<UpgradeType, Integer> getValidUpgrades() {
 		HashMap<UpgradeType, Integer> upgrades = new HashMap<>();
+		upgrades.put(UpgradeType.EXPORT, 1);
 		upgrades.put(UpgradeType.SPEED, 12);
 		upgrades.put(UpgradeType.POWER, 12);
 		upgrades.put(UpgradeType.EFFECT, 12);

@@ -3,6 +3,7 @@ package com.hbm.inventory;
 import com.hbm.items.machine.ItemMachineUpgrade;
 import com.hbm.items.machine.ItemMachineUpgrade.UpgradeType;
 import com.hbm.tileentity.IUpgradeInfoProvider;
+import com.hbm.tileentity.TileEntityMachineBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
@@ -32,8 +33,15 @@ public class UpgradeManagerNT {
 	public UpgradeManagerNT(TileEntity te) { this.owner = te; }
 	@Deprecated public UpgradeManagerNT() { }
 	
-	public void checkSlots(ItemStack[] slots, int start, int end) { checkSlotsInternal(owner, slots, start, end); }
-	@Deprecated public void checkSlots(TileEntity te, ItemStack[] slots, int start, int end) { checkSlotsInternal(te, slots, start, end); }
+	public void checkSlots(ItemStack[] slots, int start, int end) { checkSlots(owner, slots, start, end); }
+	@Deprecated public void checkSlots(TileEntity te, ItemStack[] slots, int start, int end) {
+		checkSlotsInternal(te, slots, start, end);
+		if(getLevel(UpgradeType.EXPORT) > 0 && te instanceof TileEntityMachineBase
+		&& te.getWorldObj() != null && !te.getWorldObj().isRemote
+		&& te.getWorldObj().getTotalWorldTime() % 8 == 0) {
+			MachineExport.export((TileEntityMachineBase) te);
+		}
+	}
 
 	private void checkSlotsInternal(TileEntity te, ItemStack[] slots, int start, int end) {
 
