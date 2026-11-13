@@ -9,6 +9,7 @@ import net.minecraft.client.model.ModelBoat;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
@@ -48,7 +49,7 @@ public class RenderSpidertron extends Render {
 			GL11.glPopMatrix();
 
 			GL11.glPushMatrix();
-				GL11.glTranslated(x - spidertron.posX, y - spidertron.posY, z - spidertron.posZ);
+				GL11.glTranslated(-RenderManager.renderPosX, -RenderManager.renderPosY, -RenderManager.renderPosZ);
 				for (EntitySpidertron.Leg leg : spidertron.legs) {
 					renderLeg(leg);
 				}
@@ -57,8 +58,8 @@ public class RenderSpidertron extends Render {
 	}
 
 	private void renderLeg(EntitySpidertron.Leg leg) {
-		renderSegment(new Vec3NT(leg.hip), leg.knee);
-		renderSegment(new Vec3NT(leg.knee), leg.foot);
+		renderSegment(leg.hip, leg.knee);
+		renderSegment(leg.knee, leg.foot);
 	}
 
 	private void renderSegment(Vec3NT start, Vec3NT end) {
@@ -66,9 +67,9 @@ public class RenderSpidertron extends Render {
 			GL11.glTranslated(start.xCoord, start.yCoord, start.zCoord);
 		GL11.glPopMatrix(); */
 		GL11.glBegin(GL11.GL_LINES);
-    		GL11.glColor4d(1.0D, 1.0D, 1.0D, 1.0D);
-    		GL11.glVertex3d(start.xCoord, start.yCoord, start.zCoord);
-    		GL11.glVertex3d(end.xCoord, end.yCoord, end.zCoord);
+			GL11.glColor4d(1.0D, 1.0D, 1.0D, 1.0D);
+			GL11.glVertex3d(start.xCoord, start.yCoord, start.zCoord);
+			GL11.glVertex3d(end.xCoord, end.yCoord, end.zCoord);
 		GL11.glEnd();
 	}
 

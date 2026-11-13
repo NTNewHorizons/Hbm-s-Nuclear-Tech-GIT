@@ -1,10 +1,20 @@
 package com.hbm.entity.item;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+import com.hbm.util.BufferUtil;
 import com.hbm.util.Vec3NT;
+import com.hbm.packet.PacketDispatcher;
+import com.hbm.packet.toclient.EntityBufPacket;
+import com.hbm.tileentity.IBufPacketReceiver;
+
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -12,8 +22,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
-public class EntitySpidertron extends Entity {
+public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEntityAdditionalSpawnData {
 
 	private static final double ACCELERATION = 0.1D;
 	private static final double MAX_SPEED = 0.75D;
@@ -33,7 +44,7 @@ public class EntitySpidertron extends Entity {
 		public Leg(Vec3NT hipOffset) {
 			this.hipOffset = hipOffset;
 			this.hip = new Vec3NT(this.hipOffset);
-			
+
 			this.footRestOffset = new Vec3NT(this.hipOffset).multiply(FOOT_REST_OFFSET_MULTIPLIER);
 			this.foot = new Vec3NT(this.footRestOffset);
 
@@ -41,6 +52,13 @@ public class EntitySpidertron extends Entity {
 			this.kneeRestOffset = new Vec3NT(this.footRestOffset).multiply(KNEE_REST_FRACTION);
 			this.kneeRestOffset.yCoord = KNEE_HEIGHT;
 			this.knee = new Vec3NT(this.kneeRestOffset);
+		}
+
+		public Leg(Leg other) {
+			this(new Vec3NT(other.hipOffset));
+			this.hip = new Vec3NT(other.hip);
+			this.knee = new Vec3NT(other.knee);
+			this.foot = new Vec3NT(other.foot);
 		}
 
 		/**
@@ -67,6 +85,20 @@ public class EntitySpidertron extends Entity {
 			this.knee = new Vec3NT(this.hip).add(new Vec3NT(hipToFoot).multiply(0.5D)).add(kneeOffset);
 			this.foot = footTarget; */
 		}
+
+		public void writeToBuf(ByteBuf buf) {
+			BufferUtil.writeVec3(buf, this.hip);
+			BufferUtil.writeVec3(buf, this.knee);
+			BufferUtil.writeVec3(buf, this.foot);
+		}
+
+		public static Leg readFromBuf(ByteBuf buf, Vec3NT hipOffset) {
+			Leg leg = new Leg(new Vec3NT(hipOffset));
+			leg.hip = new Vec3NT(BufferUtil.readVec3(buf));
+			leg.knee = new Vec3NT(BufferUtil.readVec3(buf));
+			leg.foot = new Vec3NT(BufferUtil.readVec3(buf));
+			return leg;
+		}
 	}
 
 	public final Leg[] legs = new Leg[] {
@@ -80,12 +112,42 @@ public class EntitySpidertron extends Entity {
 			new Leg(new Vec3NT(-0.75D, 0.0D, -1.0D)),
 	};
 
-	private int interpolationTicks;
-	private double targetX;
-	private double targetY;
-	private double targetZ;
-	private float targetYaw;
-	private float targetPitch;
+	private static class Pose {
+		final Vec3 position;
+		final double yaw;
+		final double pitch;
+		final Leg[] legs;
+
+		Pose(Vec3 position, double yaw, double pitch, Leg[] legs) {
+			this.position = position;
+			this.yaw = yaw;
+			this.pitch = pitch;
+			this.legs = legs;
+		}
+
+		void writeToBuf(ByteBuf buf) {
+			BufferUtil.writeVec3(buf, this.position);
+			buf.writeDouble(this.yaw);
+			buf.writeDouble(this.pitch);
+			for (Leg leg : this.legs) {
+				leg.writeToBuf(buf);
+			}
+		}
+
+		static Pose readFromBuf(ByteBuf buf, Leg[] templates) {
+			Vec3 position = BufferUtil.readVec3(buf);
+			double yaw = buf.readDouble();
+			double pitch = buf.readDouble();
+			Leg[] legs = new Leg[templates.length];
+			for (int i = 0; i < legs.length; i++) {
+				legs[i] = Leg.readFromBuf(buf, templates[i].hipOffset);
+			}
+			return new Pose(position, yaw, pitch, legs);
+		}
+	}
+
+	// Network callbacks publish a complete snapshot, only the client tick applies it.
+	private final AtomicReference<Pose> pendingPose = new AtomicReference<>();
 
 	public EntitySpidertron(World world) {
 		super(world);
@@ -140,13 +202,60 @@ public class EntitySpidertron extends Entity {
 	}
 
 	@Override
-	public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int ticks) {
-		this.targetX = x;
-		this.targetY = y;
-		this.targetZ = z;
-		this.targetYaw = yaw;
-		this.targetPitch = pitch;
-		this.interpolationTicks = Math.max(1, ticks);
+	public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int ticks) {}
+
+	@Override
+	public void serialize(ByteBuf buf) {
+		capturePose().writeToBuf(buf);
+	}
+
+	@Override
+	public void deserialize(ByteBuf buf) {
+		this.pendingPose.set(Pose.readFromBuf(buf, this.legs));
+	}
+
+	private Pose capturePose() {
+		Leg[] poseLegs = new Leg[this.legs.length];
+		for (int i = 0; i < this.legs.length; i++) {
+			poseLegs[i] = new Leg(this.legs[i]);
+		}
+		return new Pose(new Vec3NT(this.posX, this.posY, this.posZ), this.rotationYaw, this.rotationPitch, poseLegs);
+	}
+
+	private void applyPendingPose() {
+		Pose pose = this.pendingPose.getAndSet(null);
+		if (pose == null) return;
+		this.setPosition(pose.position.xCoord, pose.position.yCoord, pose.position.zCoord);
+		this.setRotation((float) pose.yaw, (float) pose.pitch);
+		this.prevRotationYaw = this.rotationYaw
+				- MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
+		for (int i = 0; i < this.legs.length; i++) {
+			this.legs[i].hip = pose.legs[i].hip;
+			this.legs[i].knee = pose.legs[i].knee;
+			this.legs[i].foot = pose.legs[i].foot;
+		}
+	}
+
+	@Override
+	public void writeSpawnData(ByteBuf buf) {
+		serialize(buf);
+	}
+
+	@Override
+	public void readSpawnData(ByteBuf buf) {
+		deserialize(buf);
+		applyPendingPose();
+		this.lastTickPosX = this.prevPosX = this.posX;
+		this.lastTickPosY = this.prevPosY = this.posY;
+		this.lastTickPosZ = this.prevPosZ = this.posZ;
+		this.prevRotationYaw = this.rotationYaw;
+		this.prevRotationPitch = this.rotationPitch;
+	}
+
+	private void solveLegs() {
+		for (Leg leg : this.legs) {
+			leg.solve(new Vec3NT(this.posX, this.posY, this.posZ), this.rotationYaw);
+		}
 	}
 
 	@Override
@@ -154,17 +263,7 @@ public class EntitySpidertron extends Entity {
 		super.onUpdate();
 
 		if (this.worldObj.isRemote) {
-			if (this.interpolationTicks > 0) {
-				double x = this.posX + (this.targetX - this.posX) / this.interpolationTicks;
-				double y = this.posY + (this.targetY - this.posY) / this.interpolationTicks;
-				double z = this.posZ + (this.targetZ - this.posZ) / this.interpolationTicks;
-				float yaw = this.rotationYaw
-						+ MathHelper.wrapAngleTo180_float(this.targetYaw - this.rotationYaw) / this.interpolationTicks;
-				float pitch = this.rotationPitch + (this.targetPitch - this.rotationPitch) / this.interpolationTicks;
-				--this.interpolationTicks;
-				this.setPosition(x, y, z);
-				this.setRotation(yaw, pitch);
-			}
+			applyPendingPose();
 			return;
 		}
 
@@ -197,8 +296,10 @@ public class EntitySpidertron extends Entity {
 		this.motionZ *= 0.9D;
 		this.setRotation(this.rotationYaw, 0.0F);
 
-		for (EntitySpidertron.Leg leg : this.legs) {
-			leg.solve(new Vec3NT(this.posX, this.posY, this.posZ), this.rotationYaw);
+		solveLegs();
+
+		for (EntityPlayer player : ((WorldServer) this.worldObj).getEntityTracker().getTrackingPlayers(this)) {
+			PacketDispatcher.wrapper.sendTo(new EntityBufPacket(this.getEntityId(), this), (EntityPlayerMP) player);
 		}
 	}
 
