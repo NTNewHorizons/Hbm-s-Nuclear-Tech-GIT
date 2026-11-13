@@ -30,8 +30,10 @@ public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEnt
 	private static final double MAX_SPEED = 0.75D;
 	private static final double HEIGHT = 4.0D;
 	private static final double KNEE_HEIGHT = 6.0D;
-	private static final double FOOT_REST_OFFSET_MULTIPLIER = 4.0D;
 	private static final double KNEE_REST_FRACTION = 0.35D;
+	private static final double FOOT_REST_OFFSET_MULTIPLIER = 4.0D;
+	private static final double FOOT_STEP = 2.0D;
+	private static final double RAYCAST_MARGIN = 10.0D;
 
 	public final Leg[] legs = new Leg[] {
 			new Leg(new Vec3NT( 0.75D, 0.0D,  1.0D)),
@@ -155,7 +157,7 @@ public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEnt
 
 	private void solveLegs() {
 		for (Leg leg : this.legs) {
-			leg.solve(new Vec3NT(this.posX, this.posY, this.posZ), this.rotationYaw);
+			leg.solve(this.worldObj, new Vec3NT(this.posX, this.posY, this.posZ), this.rotationYaw);
 		}
 	}
 
@@ -262,10 +264,31 @@ public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEnt
 		/**
 		 * Solve the IK for the leg
 		 */
-		public void solve(Vec3NT position, double yaw) {
+		public void solve(World world,Vec3NT position, double yaw) {
 			this.hip = new Vec3NT(position).add(new Vec3NT(this.hipOffset).rotateAroundYDeg(-yaw));
-			this.foot = new Vec3NT(position).add(new Vec3NT(this.footRestOffset).rotateAroundYDeg(-yaw));
-			this.knee = new Vec3NT(position).add(new Vec3NT(this.kneeRestOffset).rotateAroundYDeg(-yaw));
+			this.knee = new Vec3NT(position).add(new Vec3NT(this.kneeRestOffset).rotateAroundYDeg(-yaw));		
+			
+			Vec3NT footTarget = new Vec3NT(position).add(new Vec3NT(this.footRestOffset).rotateAroundYDeg(-yaw));
+			
+			Vec3NT footHorizontal = new Vec3NT(footTarget.xCoord, 0, footTarget.zCoord);
+			Vec3NT footTargetHorizontal = new Vec3NT(this.foot.xCoord, 0, this.foot.zCoord);
+			double footDistance = footHorizontal.distanceTo(footTargetHorizontal);
+
+			if (footDistance > FOOT_STEP) {
+				Vec3NT footDir = new Vec3NT(new Vec3NT(footHorizontal).subtract(footTargetHorizontal)).normalizeSelf();
+				this.foot = new Vec3NT(footTarget).add(footDir.multiply(-FOOT_STEP));
+			}
+
+
+			// Ground the feet
+			Vec3NT rayStart = new Vec3NT(this.foot.xCoord, this.foot.yCoord + RAYCAST_MARGIN, this.foot.zCoord);
+			Vec3NT rayEnd = new Vec3NT(this.foot.xCoord, this.foot.yCoord - RAYCAST_MARGIN, this.foot.zCoord);
+			//                               raycast       start     end     stopOnLiquid  ignoreBlockWithoutBoundingBox  returnLastUncollidableBlock
+			MovingObjectPosition hit = world.func_147447_a(rayStart, rayEnd, false       , true                         , false);
+			if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+				this.foot.yCoord = hit.hitVec.yCoord;
+			}
+
 			/* Vec3NT footTarget = new Vec3NT(position).add(this.footRestOffset);
 
 			// Solve for knee position
