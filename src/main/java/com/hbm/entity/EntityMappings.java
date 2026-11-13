@@ -236,6 +236,8 @@ public class EntityMappings {
 		for(Quartet<Class<? extends Entity>, String, Integer, Integer> entry : mobMappings) {
 			ModEntityList.registerEntity(entry.getW(), entry.getX(), id++, MainRegistry.instance, entry.getY(), entry.getZ());
 		}
+
+		ModEntityList.registerEntity(EntitySpidertron.class, "entity_spidertron", id++, MainRegistry.instance, 250, 1, true);
 	}
 
 	private static void addEntity(Class<? extends Entity> clazz, String name, int trackingRange) {
