@@ -32,7 +32,8 @@ public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEnt
 	private static final double KNEE_HEIGHT = 3.0D;
 	private static final double KNEE_REST_FRACTION = 0.35D;
 	private static final double FOOT_REST_OFFSET_MULTIPLIER = 4.0D;
-	private static final double FOOT_STEP = 2.0D;
+	private static final double STEP_THRESHOLD = 2.0D;
+	private static final double STEP_SIZE = 1.5D;
 	private static final double RAYCAST_MARGIN = 10.0D;
 
 	public final Leg[] legs = new Leg[] {
@@ -290,11 +291,10 @@ public class EntitySpidertron extends Entity implements IBufPacketReceiver, IEnt
 			Vec3NT footTargetHorizontal = new Vec3NT(this.foot.xCoord, 0, this.foot.zCoord);
 			double footDistance = footHorizontal.distanceTo(footTargetHorizontal);
 
-			if (footDistance > FOOT_STEP) {
+			if (footDistance > STEP_THRESHOLD) {
 				Vec3NT footDir = new Vec3NT(new Vec3NT(footHorizontal).subtract(footTargetHorizontal)).normalizeSelf();
-				this.foot = new Vec3NT(footTarget).add(footDir.multiply(-FOOT_STEP));
+				this.foot = new Vec3NT(footTarget).add(footDir.multiply(-STEP_SIZE));
 			}
-
 
 			// Ground the feet
 			Vec3NT rayStart = new Vec3NT(this.foot.xCoord, this.foot.yCoord + RAYCAST_MARGIN, this.foot.zCoord);
