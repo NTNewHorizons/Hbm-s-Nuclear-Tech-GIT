@@ -129,6 +129,7 @@ public class RenderDecoBlock extends TileEntitySpecialRenderer {
 				ResourceManager.gasDock.renderAll();
 			} else {
 				bindTexture(ResourceManager.satdock_tex);
+				ResourceManager.satDock.renderAll();
 			}
 
 			if(b == ModBlocks.gas_dock) {
