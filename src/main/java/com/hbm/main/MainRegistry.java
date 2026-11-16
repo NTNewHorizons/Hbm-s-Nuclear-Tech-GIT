@@ -93,6 +93,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import com.hbm.dim.CelestialTime;
 import com.hbm.dim.SolarSystem;
 import com.hbm.dim.WorldProviderCelestial;
 import com.hbm.dim.WorldTypeTeleport;
@@ -766,10 +767,13 @@ public class MainRegistry {
 	public void serverStart(FMLServerStartingEvent event) {
 		World world = event.getServer().getEntityWorld();
 		RBMKDials.createDials(world);
+		SpaceConfig.applyDayLength(); // undo values synced from a previously joined remote server
+		CelestialTime.update(world);
 		event.registerServerCommand(new CommandReloadRecipes());
 		event.registerServerCommand(new CommandDebugChunkLoad());
 		event.registerServerCommand(new CommandSatellites());
 		event.registerServerCommand(new CommandRadiation());
+		event.registerServerCommand(new CommandTimeNTM());
 		event.registerServerCommand(new CommandStations());
 		event.registerServerCommand(new CommandPacketInfo());
 		event.registerServerCommand(new CommandReloadServer());

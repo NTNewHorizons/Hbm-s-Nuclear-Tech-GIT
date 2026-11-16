@@ -6444,6 +6444,11 @@ commands.station.invalid_drive=Необходимо держать в руке �
 commands.station.drive_created=Диск создан.
 commands.station.teleported=Телепортация на станцию...
 commands.station.launched=Ядро станции запущено.
+commands.ntmtime.usage=/ntmtime daylength [минуты|reset]
+commands.ntmtime.query=Длина суток в этом мире: %s мин. (задана командой)
+commands.ntmtime.query_config=Длина суток в этом мире: %s мин. (из конфига)
+commands.ntmtime.set=Длина суток установлена на %s мин.
+commands.ntmtime.reset=Длина суток сброшена на значение из конфига: %s мин.
 
 death.attack.eve=%1$ превратился в лужицу кипящей плоти.
 death.attack.nitan=%1$s был поглощён заражением.

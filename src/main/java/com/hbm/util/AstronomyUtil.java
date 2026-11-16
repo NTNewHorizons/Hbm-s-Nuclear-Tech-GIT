@@ -28,6 +28,20 @@ public class AstronomyUtil {
 	// How quickly time moves, for testing celestial mechanics
 	public static long TIME_MULTIPLIER = 1;
 
+	// 1 = 20 minute days, stretches every rotational and orbital period equally
+	public static double DAY_LENGTH_FACTOR = 1;
+
+	// Rebased whenever the multiplier changes so planets don't jump, see CelestialTime
+	public static long TIME_OFFSET = 0;
+
+	public static double getTimeMultiplier() {
+		return (double)TIME_MULTIPLIER / DAY_LENGTH_FACTOR;
+	}
+
+	public static double getCelestialTicks(long totalWorldTime, double partialTicks) {
+		return ((double)totalWorldTime + (double)TIME_OFFSET + partialTicks) * getTimeMultiplier();
+	}
+
 	// Conversion rate from millibuckets to atmospheres
 	// 1 atmosphere is 1 gigabucket
 	public static final double MB_PER_ATM = 1_000_000_000D * 1_000D;

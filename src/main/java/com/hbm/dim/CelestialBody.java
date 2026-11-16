@@ -631,7 +631,7 @@ public class CelestialBody {
 
 	// Returns the day length in ticks, adjusted for the 20 minute minecraft day
 	public double getRotationalPeriod() {
-		return (double)rotationalPeriod * (AstronomyUtil.DAY_FACTOR / (double)AstronomyUtil.TIME_MULTIPLIER) * 20;
+		return (double)rotationalPeriod * (AstronomyUtil.DAY_FACTOR / AstronomyUtil.getTimeMultiplier()) * 20;
 	}
 
 	// Returns the year length in days, derived from semi-major axis

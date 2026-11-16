@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.hbm.dim.CelestialBody;
 import com.hbm.dim.SolarSystemWorldSavedData;
+import com.hbm.util.AstronomyUtil;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -131,17 +132,21 @@ public class CBT_Weather extends CelestialBodyTrait {
 		return MathHelper.clamp_float(CLOUD_LIGHTNING_ACTIVITY + cloudMix * (HAZE_LIGHTNING_ACTIVITY - CLOUD_LIGHTNING_ACTIVITY), CLOUD_LIGHTNING_ACTIVITY, HAZE_LIGHTNING_ACTIVITY);
 	}
 
+	public static int scaleDuration(int duration) {
+		return (int) Math.min(Integer.MAX_VALUE, Math.round(duration * AstronomyUtil.DAY_LENGTH_FACTOR));
+	}
+
 	private static int getStormDuration(Random rand, float lightningSeverity) {
-		int baseDuration = rand.nextInt(12000) + 3600;
+		int baseDuration = scaleDuration(rand.nextInt(12000) + 3600);
 		return Math.max(1200, MathHelper.floor_float(baseDuration * (0.95F + lightningSeverity * 0.45F)));
 	}
 
 	private static int getRainDuration(Random rand) {
-		return rand.nextInt(12000) + 12000;
+		return scaleDuration(rand.nextInt(12000) + 12000);
 	}
 
 	private static int getClearDuration(Random rand) {
-		return rand.nextInt(168000) + 12000;
+		return scaleDuration(rand.nextInt(168000) + 12000);
 	}
 
 	private static int getThunderClearDuration(Random rand, float lightningSeverity) {

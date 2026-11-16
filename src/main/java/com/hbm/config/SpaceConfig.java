@@ -3,6 +3,7 @@ package com.hbm.config;
 import java.util.HashMap;
 
 import com.hbm.dim.BiomeCollisionException;
+import com.hbm.util.AstronomyUtil;
 import com.hbm.util.Compat;
 
 import cpw.mods.fml.common.Loader;
@@ -97,6 +98,13 @@ public class SpaceConfig {
 	
 	public static boolean combatPodDespawn = false;
 
+	public static double dayLengthMinutes = 20.0D;
+
+	public static void applyDayLength() {
+		AstronomyUtil.DAY_LENGTH_FACTOR = dayLengthMinutes / 20.0D;
+		AstronomyUtil.TIME_MULTIPLIER = 1;
+	}
+
 	public static void loadFromConfig(Configuration config) {
 
 		final String CATEGORY_DIM = CommonConfig.CATEGORY_DIMS;
@@ -121,6 +129,11 @@ public class SpaceConfig {
 		crashOnBiomeConflict = CommonConfig.createConfigBool(config, CATEGORY_GENERAL, "1.92_crashOnBiomeConflict", "To avoid biome ID collisions, the game will crash if one occurs, and give instructions on how to fix. Only disable this if you know what you're doing!", crashOnBiomeConflict);
 		showOreLocations = CommonConfig.createConfigBool(config, CATEGORY_GENERAL, "1.93_showOreLocations", "Should ores indicate which planets they can be found on.", showOreLocations);
 		combatPodDespawn = CommonConfig.createConfigBool(config, CATEGORY_GENERAL, "1.94_combatPodDespawn", "wether combat pods should despawn after a certian amount of time.", combatPodDespawn);
+		dayLengthMinutes = CommonConfig.createConfigDouble(config, CATEGORY_GENERAL, "1.95_dayLengthMinutes", "Length of a full day/night cycle on Kerbin (overworld) in real-time minutes. Vanilla is 20. "
+			+ "All other celestial bodies, orbits, moon phases and eclipses are scaled by the same factor, so they stay in sync. Server-side, synced to clients. "
+			+ "Changing this on an existing world will shift the current time of day and planet positions.", dayLengthMinutes);
+		if(dayLengthMinutes < 1.0D || Double.isNaN(dayLengthMinutes) || Double.isInfinite(dayLengthMinutes)) dayLengthMinutes = 20.0D;
+		applyDayLength();
 		// Move defaults into unused ranges if EndlessIDs is installed
 		int defaultBiomeOffset = Loader.isModLoaded(Compat.MOD_EIDS) ? 12_000 : 0;
 

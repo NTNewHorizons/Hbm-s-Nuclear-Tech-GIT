@@ -1,5 +1,7 @@
 package com.hbm.dim;
 
+import com.hbm.util.AstronomyUtil;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
 
@@ -13,6 +15,7 @@ public class CelestialBodyWorldSavedData extends WorldSavedData {
 
 	private WorldProviderCelestial provider;
 	private long localTime;
+	private double timeMultiplier; // 0 = saved before configurable day lengths, treat as 1
 
 	private boolean requiresLoad;
 	private NBTTagCompound nbt;
@@ -39,6 +42,7 @@ public class CelestialBodyWorldSavedData extends WorldSavedData {
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		localTime = nbt.getLong("time");
+		timeMultiplier = nbt.getDouble("timeMult");
 		this.nbt = nbt;
 		requiresLoad = true;
 	}
@@ -46,15 +50,28 @@ public class CelestialBodyWorldSavedData extends WorldSavedData {
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		nbt.setLong("time", localTime);
+		nbt.setDouble("timeMult", timeMultiplier);
 		provider.writeToNBT(nbt);
 	}
 
 	public long getLocalTime() {
+		rescaleIfNeeded();
 		return localTime;
 	}
 
 	public void setLocalTime(long time) {
+		rescaleIfNeeded();
 		localTime = time;
+		markDirty();
+	}
+
+	private void rescaleIfNeeded() {
+		double current = AstronomyUtil.getTimeMultiplier();
+		if(timeMultiplier == current) return;
+
+		double previous = timeMultiplier > 0 ? timeMultiplier : 1.0D;
+		localTime = Math.round(localTime * (previous / current));
+		timeMultiplier = current;
 		markDirty();
 	}
 	

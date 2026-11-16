@@ -407,7 +407,7 @@ public class SolarSystem {
 	public static List<OrreryMetric> calculatePositionsOrrery(World world, float partialTicks) {
 		List<OrreryMetric> metrics = new ArrayList<OrreryMetric>();
 
-		double ticks = ((double)world.getTotalWorldTime() + partialTicks) * (double)AstronomyUtil.TIME_MULTIPLIER;
+		double ticks = AstronomyUtil.getCelestialTicks(world.getTotalWorldTime(), partialTicks);
 
 		// Get our XYZ coordinates of all bodies
 		calculatePositionsRecursiveOrrery(metrics, null, CelestialBody.getBody(world).getStar(), ticks, 0);
@@ -430,7 +430,7 @@ public class SolarSystem {
 			}
 		}
 
-		double ticks = ((double)world.getTotalWorldTime() + partialTicks) * (double)AstronomyUtil.TIME_MULTIPLIER;
+		double ticks = AstronomyUtil.getCelestialTicks(world.getTotalWorldTime(), partialTicks);
 
 		// Get our XYZ coordinates of all bodies
 		calculatePositionsRecursive(metrics, null, body.getStar(), ticks, tidalLockedBody, solarAngle * 360.0, rotOffset);
@@ -449,7 +449,7 @@ public class SolarSystem {
 	public static List<AstroMetric> calculateMetricsFromSatellite(World world, float partialTicks, CelestialBody orbiting, double altitude) {
 		List<AstroMetric> metrics = new ArrayList<AstroMetric>();
 
-		double ticks = ((double)world.getTotalWorldTime() + partialTicks) * (double)AstronomyUtil.TIME_MULTIPLIER;
+		double ticks = AstronomyUtil.getCelestialTicks(world.getTotalWorldTime(), partialTicks);
 
 		// Get our XYZ coordinates of all bodies
 		calculatePositionsRecursive(metrics, null, orbiting.getStar(), ticks);
@@ -477,7 +477,7 @@ public class SolarSystem {
 	public static List<AstroMetric> calculateMetricsBetweenSatelliteOrbits(World world, float partialTicks, CelestialBody from, CelestialBody to, double fromAltitude, double toAltitude, double t) {
 		List<AstroMetric> metrics = new ArrayList<AstroMetric>();
 
-		double ticks = ((double)world.getTotalWorldTime() + partialTicks) * (double)AstronomyUtil.TIME_MULTIPLIER;
+		double ticks = AstronomyUtil.getCelestialTicks(world.getTotalWorldTime(), partialTicks);
 
 		// Get our XYZ coordinates of all bodies
 		calculatePositionsRecursive(metrics, null, from.getStar(), ticks);
@@ -512,7 +512,7 @@ public class SolarSystem {
 	public static double calculateDistanceBetweenTwoBodies(World world, CelestialBody from, CelestialBody to) {
 		List<AstroMetric> metrics = new ArrayList<AstroMetric>();
 
-		double ticks = (double)world.getTotalWorldTime() * (double)AstronomyUtil.TIME_MULTIPLIER;
+		double ticks = AstronomyUtil.getCelestialTicks(world.getTotalWorldTime(), 0);
 
 		// Get our XYZ coordinates of all bodies
 		calculatePositionsRecursive(metrics, null, from.getStar(), ticks);
@@ -759,7 +759,7 @@ public class SolarSystem {
 	}
 
 	public static double calculateSingleAngle(World world, double partialTicks, List<AstroMetric> metrics, CelestialBody orbiting, double altitude) {
-		double ticks = ((double)world.getTotalWorldTime() + partialTicks) * (double)AstronomyUtil.TIME_MULTIPLIER;
+		double ticks = AstronomyUtil.getCelestialTicks(world.getTotalWorldTime(), partialTicks);
 
 		// Add our orbiting satellite position
 		Vec3 from = calculatePositionSatellite(orbiting, altitude, ticks);
@@ -779,7 +779,7 @@ public class SolarSystem {
 	public static double calculateSingleAngle(World world, CelestialBody from, CelestialBody to) {
 		List<AstroMetric> metrics = new ArrayList<AstroMetric>();
 
-		double ticks = ((double)world.getTotalWorldTime()) * (double)AstronomyUtil.TIME_MULTIPLIER;
+		double ticks = AstronomyUtil.getCelestialTicks(world.getTotalWorldTime(), 0);
 
 		// Get our XYZ coordinates of all bodies
 		calculatePositionsRecursive(metrics, null, from.getStar(), ticks);
@@ -799,7 +799,7 @@ public class SolarSystem {
 	}
 
 	public static double calculateSiderealAngle(World world, float partialTicks, CelestialBody body) {
-		double ticks = ((double)world.getTotalWorldTime() + partialTicks) * (double)AstronomyUtil.TIME_MULTIPLIER;
+		double ticks = AstronomyUtil.getCelestialTicks(world.getTotalWorldTime(), partialTicks);
 
 		return calculateSiderealAngle(body, ticks);
 	}

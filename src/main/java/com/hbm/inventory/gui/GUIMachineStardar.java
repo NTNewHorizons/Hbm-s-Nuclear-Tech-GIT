@@ -336,7 +336,7 @@ public class GUIMachineStardar extends GuiInfoContainer {
 		if(root == null) return;
 
 		double dayTicks = mc != null && mc.theWorld != null ? (double) mc.theWorld.getTotalWorldTime() + (double) partialTicks : 0D;
-		double worldTicks = dayTicks * (double) AstronomyUtil.TIME_MULTIPLIER;
+		double worldTicks = (dayTicks + AstronomyUtil.TIME_OFFSET) * AstronomyUtil.getTimeMultiplier();
 		float centerU = MAP_TEX_W * 0.5F;
 		float centerV = MAP_TEX_H * 0.5F;
 		float systemOrbitScale = getOrbitScalePxPerKm(root);
@@ -1038,7 +1038,7 @@ public class GUIMachineStardar extends GuiInfoContainer {
 		if(!rotateBody && body != null) {
 			double period = body.getRotationalPeriod();
 			if(period > 0D && !Double.isNaN(period) && !Double.isInfinite(period)) {
-				atmospherePatternOffset = (float) (dayTicks / period);
+				atmospherePatternOffset = (float) ((dayTicks + AstronomyUtil.TIME_OFFSET) / period);
 			}
 		}
 
@@ -2347,7 +2347,7 @@ public class GUIMachineStardar extends GuiInfoContainer {
 			return 0F;
 		}
 
-		return (float) ((dayTicks % period) / period);
+		return (float) (((dayTicks + AstronomyUtil.TIME_OFFSET) % period) / period);
 	}
 
 	private float getBodySizePxAtZoom(CelestialBody body) {

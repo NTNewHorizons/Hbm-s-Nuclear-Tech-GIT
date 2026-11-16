@@ -30,6 +30,7 @@ import com.hbm.dim.CelestialTeleporter;
 import com.hbm.dim.SolarSystemWorldSavedData;
 import com.hbm.dim.WorldGeneratorCelestial;
 import com.hbm.dim.WorldProviderCelestial;
+import com.hbm.dim.CelestialTime;
 import com.hbm.dim.WorldProviderEarth;
 import com.hbm.dim.WorldTypeTeleport;
 import com.hbm.dim.orbit.OrbitalStation;
@@ -127,6 +128,7 @@ import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.IGrowable;
 import net.minecraft.command.CommandGameRule;
+import net.minecraft.command.CommandTime;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandWeather;
@@ -925,6 +927,10 @@ public class ModEventHandler {
 				BlockPedestal.checkPedestalEntries(world.provider.dimensionId, time);
 			}
 
+			if(event.phase == Phase.START && event.world.provider.dimensionId == 0) {
+				CelestialTime.update(event.world);
+			}
+
 			// Tick our per celestial body timer
 			if(event.phase == Phase.START && event.world.provider instanceof WorldProviderCelestial && event.world.provider.dimensionId != 0) {
 				if(event.world.getGameRules().getGameRuleBooleanValue("doDaylightCycle")) {
@@ -1627,6 +1633,13 @@ public class ModEventHandler {
 			if(world != null && (world.provider instanceof WorldProviderCelestial || world.provider instanceof WorldProviderOrbit)) {
 				handlePlanetaryWeatherCommand(sender, event.parameters, command);
 				event.setCanceled(true);
+			}
+		} else if(command instanceof CommandTime) {
+			// "day" and "night" are hardcoded for 24000 tick days
+			String[] params = event.parameters;
+			if(params != null && params.length >= 2 && "set".equals(params[0])) {
+				if("day".equals(params[1])) params[1] = String.valueOf(Math.round(1000 * AstronomyUtil.DAY_LENGTH_FACTOR));
+				else if("night".equals(params[1])) params[1] = String.valueOf(Math.round(13000 * AstronomyUtil.DAY_LENGTH_FACTOR));
 			}
 		} else if(command instanceof CommandGameRule) {
 			if(command.canCommandSenderUseCommand(sender)) {
