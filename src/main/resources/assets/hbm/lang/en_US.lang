@@ -1064,6 +1064,7 @@ container.machineChemicalPlant=Chemical Plant
 container.machineCoker=Coker Unit
 container.machineCompressor=Compressor
 container.machineCrucible=Crucible
+container.machineMoxer=Moxer
 container.machineDiesel=Diesel Generator
 container.machineElectrolyser=Electrolysis Machine
 container.machineFEL=FEL
@@ -2109,6 +2110,7 @@ gui.recipe.plasmaIn=Plasma Input Energy
 gui.recipe.pu=PU
 gui.recipe.atPressure=at
 gui.recipe.setRecipe=Click to set recipe
+gui.recipe.moxerAmount=Total amount
 gui.recipe_selector.clear_search=Clear search
 gui.recipe_selector.close=Close
 gui.recipe_selector.focus_hint=Press ENTER to toggle focus
@@ -4356,6 +4358,8 @@ item.icf_pellet.muon=Muon catalyzed!
 item.icf_pellet.reactivity=Reactivity multiplier: x%s
 item.icf_pellet_depleted.name=Depleted ICF Fuel Pellet
 item.icf_pellet_empty.name=Empty ICF Fuel Pellet
+item.custom_fuel_ingot.name=Custom Fuel Ingot
+item.custom_fuel_billet.name=Custom Fuel Billet
 item.igniter.name=Igniter
 item.igniter.desc=(Used by right-clicking the Prototype)$It's a green metal handle with a$bright red button and a small lid.$At the bottom, the initials N.E. are$engraved. Whoever N.E. was, he had$a great taste in shades of green.
 item.industrial_magnet.name=Industrial Magnet
@@ -7393,6 +7397,8 @@ tile.machine_conveyor_press.name=Conveyor Press
 tile.machine_conveyor_press.desc=Conveyor moves left to right$Right click stamp to install$Use screwdriver to remove stamp
 tile.machine_crucible.name=Crucible
 tile.machine_crucible.desc=Heat transfer rate: ΔT*0.25 TU/t
+tile.machine_moxer.name=Moxer
+tile.machine_moxer.desc=Mixes nuclear material for fuel as needed.
 tile.machine_crystallizer.name=Ore Acidizer
 tile.machine_cryo_distill.name=Cryogenic Distillation Machine
 tile.machine_cyclotron.name=Cyclotron
@@ -8233,6 +8239,10 @@ precass.recycle=Recycling of %s
 
 purex.recycle=Reprocessing of %s
 purex.schrab=Schrabidium extraction from %s
+
+moxer.ingot=Custom Fuel Ingot
+moxer.billet=Custom Fuel Billet
+moxer.rbmk=Custom RBMK Fuel Rod
 
 qmaw.tab=[ Press %s for help ]
 
