@@ -86,6 +86,7 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IE
 			}
 
 			power = Library.chargeTEFromItems(slots, 0, power, maxPower);
+			upgradeManager.checkSlots(this, slots, 4, 4);
 
 			boolean canProcess = this.canProcess();
 
@@ -95,7 +96,6 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IE
 
 				if(delay <= 0) {
 
-					upgradeManager.checkSlots(this, slots, 4, 4);
 					int speed = 1 + upgradeManager.getLevel(UpgradeType.SPEED);
 
 					int stampSpeed = this.isRetracting ? 20 : 45;
@@ -310,8 +310,14 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IE
 	}
 
 	@Override
+	public PortDef[] getItemOutputPorts() {
+		return getPorts();
+	}
+
+	@Override
 	public HashMap<UpgradeType, Integer> getValidUpgrades() {
 		HashMap<UpgradeType, Integer> upgrades = new HashMap<>();
+		upgrades.put(UpgradeType.EXPORT, 1);
 		upgrades.put(UpgradeType.SPEED, 3);
 		return upgrades;
 	}

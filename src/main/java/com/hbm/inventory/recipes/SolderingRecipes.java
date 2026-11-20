@@ -229,6 +229,12 @@ public class SolderingRecipes extends SerializableRecipe {
 		 * UPGRADES
 		 */
 
+		recipes.add(new SolderingRecipe(new ItemStack(ModItems.upgrade_export), 200, 1_000,
+				new AStack[] {new ComparableStack(ModItems.circuit, 4, EnumCircuitType.VACUUM_TUBE), new ComparableStack(ModItems.circuit, 1, EnumCircuitType.CAPACITOR)},
+				new AStack[] {new ComparableStack(ModItems.upgrade_template), new ComparableStack(Blocks.hopper)},
+				new AStack[] {}
+		));
+
 		recipes.add(new SolderingRecipe(new ItemStack(ModItems.upgrade_speed_1), 200, 1_000,
 				new AStack[] {new ComparableStack(ModItems.circuit, 4, EnumCircuitType.VACUUM_TUBE), new ComparableStack(ModItems.circuit, 1, EnumCircuitType.CAPACITOR)},
 				new AStack[] {new ComparableStack(ModItems.upgrade_template), new OreDictStack(MINGRADE.dust(), 4)},

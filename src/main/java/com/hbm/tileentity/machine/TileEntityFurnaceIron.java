@@ -265,6 +265,7 @@ public class TileEntityFurnaceIron extends TileEntityMachineBase implements IGUI
 	@Override
 	public HashMap<UpgradeType, Integer> getValidUpgrades() {
 		HashMap<UpgradeType, Integer> upgrades = new HashMap<>();
+		upgrades.put(UpgradeType.EXPORT, 1);
 		upgrades.put(UpgradeType.SPEED, 3);
 		return upgrades;
 	}

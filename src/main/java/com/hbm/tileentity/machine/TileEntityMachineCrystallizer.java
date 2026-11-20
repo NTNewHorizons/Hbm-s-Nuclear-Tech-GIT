@@ -418,8 +418,14 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	}
 
 	@Override
+	public PortDef[] getItemOutputPorts() {
+		return getPorts();
+	}
+
+	@Override
 	public HashMap<UpgradeType, Integer> getValidUpgrades() {
 		HashMap<UpgradeType, Integer> upgrades = new HashMap<>();
+		upgrades.put(UpgradeType.EXPORT, 1);
 		upgrades.put(UpgradeType.SPEED, 3);
 		upgrades.put(UpgradeType.EFFECT, 3);
 		upgrades.put(UpgradeType.OVERDRIVE, 3);

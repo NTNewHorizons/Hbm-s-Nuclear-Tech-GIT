@@ -385,8 +385,14 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	}
 
 	@Override
+	public PortDef[] getItemOutputPorts() {
+		return getPorts();
+	}
+
+	@Override
 	public HashMap<UpgradeType, Integer> getValidUpgrades() {
 		HashMap<UpgradeType, Integer> upgrades = new HashMap<>();
+		upgrades.put(UpgradeType.EXPORT, 1);
 		upgrades.put(UpgradeType.SPEED, 3);
 		upgrades.put(UpgradeType.POWER, 3);
 		upgrades.put(UpgradeType.OVERDRIVE, 3);
