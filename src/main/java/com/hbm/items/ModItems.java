@@ -1279,6 +1279,13 @@ public class ModItems {
 	public static Item custom_fuel_billet;
 	public static ItemRBMKRod custom_fuel_rbmk_rod;
 	public static ItemRBMKPellet custom_fuel_rbmk_pellet;
+	public static Item custom_fuel_pwr;
+	public static Item custom_fuel_pwr_hot;
+	public static Item custom_fuel_pwr_depleted;
+	public static Item custom_fuel_zirnox;
+	public static Item custom_fuel_zirnox_depleted;
+	public static Item custom_fuel_watz;
+	public static Item custom_fuel_watz_depleted;
 
 	public static Item icf_pellet_empty;
 	public static Item icf_pellet;
@@ -3805,10 +3812,17 @@ public class ModItems {
 		watz_pellet = new ItemWatzPellet().setUnlocalizedName("watz_pellet").setTextureName(RefStrings.MODID + ":watz_pellet");
 		watz_pellet_depleted = new ItemWatzPellet().setUnlocalizedName("watz_pellet_depleted").setTextureName(RefStrings.MODID + ":watz_pellet");
 
-		custom_fuel_ingot = new ItemCustomFuel(custom_fuel_ingot).setUnlocalizedName("custom_fuel_ingot").setTextureName(RefStrings.MODID + ":custom_fuel_ingot");
-		custom_fuel_billet = new ItemCustomFuel(custom_fuel_billet).setUnlocalizedName("custom_fuel_billet").setTextureName(RefStrings.MODID + ":custom_fuel_billet");
+		custom_fuel_ingot = new ItemCustomFuel(ItemCustomFuel.Form.INGOT).setUnlocalizedName("custom_fuel_ingot").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":custom_fuel_ingot");
+		custom_fuel_billet = new ItemCustomFuel(ItemCustomFuel.Form.BILLET).setUnlocalizedName("custom_fuel_billet").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":custom_fuel_billet");
+		custom_fuel_pwr = new ItemCustomFuel(ItemCustomFuel.Form.PWR).setUnlocalizedName("custom_fuel_pwr").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":custom_fuel_pwr");
+		custom_fuel_pwr_hot = new ItemCustomFuel(ItemCustomFuel.Form.PWR_HOT).setUnlocalizedName("custom_fuel_pwr_hot").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":custom_fuel_pwr_hot");
+		custom_fuel_pwr_depleted = new ItemCustomFuel(ItemCustomFuel.Form.PWR_DEPLETED).setUnlocalizedName("custom_fuel_pwr_depleted").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":custom_fuel_pwr_depleted");
+		custom_fuel_zirnox = new ItemCustomFuel(ItemCustomFuel.Form.ZIRNOX).setUnlocalizedName("custom_fuel_zirnox").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":custom_fuel_zirnox");
+		custom_fuel_zirnox_depleted = new ItemCustomFuel(ItemCustomFuel.Form.ZIRNOX_DEPLETED).setUnlocalizedName("custom_fuel_zirnox_depleted").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":custom_fuel_zirnox_depleted");
+		custom_fuel_watz = new ItemCustomFuel(ItemCustomFuel.Form.WATZ).setUnlocalizedName("custom_fuel_watz").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":custom_fuel_watz");
+		custom_fuel_watz_depleted = new ItemCustomFuel(ItemCustomFuel.Form.WATZ_DEPLETED).setUnlocalizedName("custom_fuel_watz_depleted").setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":custom_fuel_watz_depleted");
 
-		custom_fuel_rbmk_pellet = (ItemRBMKPellet) new ItemRBMKPellet("Custom Fuel").setUnlocalizedName("custom_fuel_rbmk_pellet").setTextureName(RefStrings.MODID + ":custom_fuel_rbmk_pellet");
+		custom_fuel_rbmk_pellet = (ItemRBMKPellet) new ItemCustomRBMKPellet().setUnlocalizedName("custom_fuel_rbmk_pellet").setTextureName(RefStrings.MODID + ":custom_fuel_rbmk_pellet");
 		custom_fuel_rbmk_rod = (ItemCustomRBMKRod) new ItemCustomRBMKRod(custom_fuel_rbmk_pellet)
 				.setYield(100000000D)
 				.setStats(40)
@@ -6148,6 +6162,13 @@ public class ModItems {
 		GameRegistry.registerItem(custom_fuel_billet, custom_fuel_billet.getUnlocalizedName());
 		GameRegistry.registerItem(custom_fuel_rbmk_pellet, custom_fuel_rbmk_pellet.getUnlocalizedName());
 		GameRegistry.registerItem(custom_fuel_rbmk_rod, custom_fuel_rbmk_rod.getUnlocalizedName());
+		GameRegistry.registerItem(custom_fuel_pwr, custom_fuel_pwr.getUnlocalizedName());
+		GameRegistry.registerItem(custom_fuel_pwr_hot, custom_fuel_pwr_hot.getUnlocalizedName());
+		GameRegistry.registerItem(custom_fuel_pwr_depleted, custom_fuel_pwr_depleted.getUnlocalizedName());
+		GameRegistry.registerItem(custom_fuel_zirnox, custom_fuel_zirnox.getUnlocalizedName());
+		GameRegistry.registerItem(custom_fuel_zirnox_depleted, custom_fuel_zirnox_depleted.getUnlocalizedName());
+		GameRegistry.registerItem(custom_fuel_watz, custom_fuel_watz.getUnlocalizedName());
+		GameRegistry.registerItem(custom_fuel_watz_depleted, custom_fuel_watz_depleted.getUnlocalizedName());
 
 		GameRegistry.registerItem(icf_pellet_empty, icf_pellet_empty.getUnlocalizedName());
 		GameRegistry.registerItem(icf_pellet, icf_pellet.getUnlocalizedName());

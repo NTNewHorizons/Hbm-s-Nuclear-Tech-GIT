@@ -68,8 +68,8 @@ public class GUIPWR extends GuiInfoContainer {
 		this.drawCustomInfoStat(x, y, guiLeft + 52, guiTop + 31, 36, 18, x, y, new String[] { ((int) (controller.progress * 100 / controller.processTime)) + "%" });
 		this.drawCustomInfoStat(x, y, guiLeft + 52, guiTop + 53, 54, 4, x, y, I18nUtil.resolveKey("gui.pwr.rod_level", 100 - (Math.round(controller.rodLevel * 100)/100)));
 
-		if(controller.typeLoaded != -1 && controller.amountLoaded > 0) {
-			ItemStack display = new ItemStack(ModItems.pwr_fuel, 1, controller.typeLoaded);
+		ItemStack display = controller.getLoadedDisplay();
+		if(display != null) {
 			if(guiLeft + 88 <= x && guiLeft + 88 + 18 > x && guiTop + 4 < y && guiTop + 4 + 18 >= y) this.renderToolTip(display, x, y);
 		}
 
@@ -126,8 +126,8 @@ public class GUIPWR extends GuiInfoContainer {
 		GUIElements.drawSmoothGauge(guiLeft + 124, guiTop + 40, this.zLevel, (double) controller.coreHeat / (double) controller.coreHeatCapacity, 5, 2, 1, 0x7F0000);
 		GUIElements.drawSmoothGauge(guiLeft + 160, guiTop + 40, this.zLevel, (double) controller.hullHeat / (double) controller.hullHeatCapacityBase, 5, 2, 1, 0x7F0000);
 
-		if(controller.typeLoaded != -1 && controller.amountLoaded > 0) {
-			ItemStack display = new ItemStack(ModItems.pwr_fuel, 1, controller.typeLoaded);
+		ItemStack display = controller.getLoadedDisplay();
+		if(display != null) {
 			this.drawItemStack(display, guiLeft + 89, guiTop + 5, EnumChatFormatting.YELLOW + "" + controller.amountLoaded + "/" + controller.rodCount);
 			RenderHelper.enableGUIStandardItemLighting();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

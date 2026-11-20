@@ -4,6 +4,9 @@ import com.hbm.inventory.FluidStack;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ModItems;
+import com.hbm.items.machine.ICustomFuelItem;
+import com.hbm.items.machine.ItemCustomRBMKRod;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class MoxerRecipes extends GenericRecipes<MoxerRecipe> {
@@ -27,19 +30,24 @@ public class MoxerRecipes extends GenericRecipes<MoxerRecipe> {
 	@Override
 	public String getFileName() { return "hbmMoxer.json"; }
 
+	// the real mix is set by the Moxer, this one only shows up in NEI
+	private static ItemStack display(Item item) {
+		return ICustomFuelItem.makePreset(item, ICustomFuelItem.PRESETS[0]);
+	}
+
 	@Override
 	public void registerDefaults() {
 		this.register((MoxerRecipe) new MoxerRecipe("moxer.ingot").setAmount(72).setup(600, 15000).setNameWrapper("moxer.ingot")
 			.inputFluids(new FluidStack(Fluids.NITRIC_ACID, 75), new FluidStack(Fluids.AMMONIA, 75), new FluidStack(Fluids.KRYPTON, 150))
-			.outputItems(new ItemStack(ModItems.custom_fuel_ingot))
+			.outputItems(display(ModItems.custom_fuel_ingot))
 			.setIcon(ModItems.ingot_uranium_fuel));
 		this.register((MoxerRecipe) new MoxerRecipe("moxer.billet").setAmount(48).setup(400, 15000).setNameWrapper("moxer.billet")
 			.inputFluids(new FluidStack(Fluids.NITRIC_ACID, 50), new FluidStack(Fluids.AMMONIA, 50), new FluidStack(Fluids.KRYPTON, 100))
-			.outputItems(new ItemStack(ModItems.custom_fuel_billet))
+			.outputItems(display(ModItems.custom_fuel_billet))
 			.setIcon(ModItems.billet_uranium_fuel));
 		this.register((MoxerRecipe) new MoxerRecipe("moxer.rbmk").setAmount(384).setup(3200, 15000).setNameWrapper("moxer.rbmk")
 			.inputFluids(new FluidStack(Fluids.NITRIC_ACID, 400), new FluidStack(Fluids.AMMONIA, 400), new FluidStack(Fluids.KRYPTON, 800))
-			.outputItems(new ItemStack(ModItems.custom_fuel_rbmk_rod))
+			.outputItems(ItemCustomRBMKRod.prepare(display(ModItems.custom_fuel_rbmk_rod)))
 			.setIcon(ModItems.rbmk_fuel_meu)
 			.setPools(GenericRecipes.POOL_PREFIX_ALT + "moxer"));
 	}

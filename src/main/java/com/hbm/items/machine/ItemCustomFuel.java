@@ -1,10 +1,16 @@
 package com.hbm.items.machine;
 
 import java.util.List;
+import java.util.Locale;
 
-import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.material.NTMMaterial;
-import com.hbm.util.function.Function;
+import com.hbm.inventory.material.Mats.MaterialStack;
+import com.hbm.items.machine.customfuel.CustomFuelMix;
+import com.hbm.items.machine.customfuel.CustomFuelModel;
+import com.hbm.items.machine.customfuel.CustomFuelModel.PWRProfile;
+import com.hbm.items.machine.customfuel.CustomFuelModel.WatzProfile;
+import com.hbm.items.machine.customfuel.CustomFuelModel.ZirnoxProfile;
+import com.hbm.items.machine.customfuel.CustomFuelSpent;
+import com.hbm.util.BobMathUtil;
 import com.hbm.util.i18n.I18nUtil;
 
 import cpw.mods.fml.relauncher.Side;
@@ -18,75 +24,100 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
-public class ItemCustomFuel extends Item {
+public class ItemCustomFuel extends Item implements ICustomFuelItem {
 
+	public static enum Form {
+		INGOT(72, false),
+		BILLET(48, false),
+		PWR(96, false),
+		PWR_HOT(96, true),
+		PWR_DEPLETED(96, true),
+		ZIRNOX(96, false),
+		ZIRNOX_DEPLETED(96, true),
+		WATZ(288, false),
+		WATZ_DEPLETED(288, true);
+
+		public final int amount;
+		public final boolean spent;
+
+		private Form(int amount, boolean spent) {
+			this.amount = amount;
+			this.spent = spent;
+		}
+	}
+
+	public static final double WATZ_YIELD = 1_000_000_000D;
+
+	public final Form form;
 	protected IIcon iconBG;
 
-	public Item item;
+	public ItemCustomFuel(Form form) {
+		this.form = form;
+		this.setMaxStackSize(form == Form.ZIRNOX || form == Form.ZIRNOX_DEPLETED ? 1 : 64);
+	}
 
-	public static enum EnumCustomFuel {
+	@Override
+	public int getFuelAmount() {
+		return form.amount;
+	}
 
-		TH232(-0.20D, Mats.MAT_THORIUM,    new Function.FunctionLogarithmic(1.00D)),
-		U233(  0.15D, Mats.MAT_U233,        new Function.FunctionSqrt(1.00D)),
-		U235(  0.10D, Mats.MAT_U235,        new Function.FunctionSqrt(1.00D)),
-		U238( -1.00D, Mats.MAT_U238,        new Function.FunctionSqrt(1.25D)),
-		PU239( 0.10D, Mats.MAT_PU239,       new Function.FunctionSqrt(1.50D)),
-		NP237( 0.10D, Mats.MAT_NEPTUNIUM,   new Function.FunctionSqrt(1.75D)),
-		SB326( 0.20D, Mats.MAT_SCHRABIDIUM, new Function.FunctionLinear(2.00D)),
-		SB327( 0.50D, Mats.MAT_SOLINIUM,    new Function.FunctionLinear(1.25D)),
-		;
-
-		public double selfInfluence;
-		public NTMMaterial stack;
-		public Function function;
-
-		private EnumCustomFuel(double self, NTMMaterial stack, Function function) {
-			this.selfInfluence = self;
-			this.stack = stack;
-			this.function = function;
-		}
+	public static ItemStack setup(ItemStack stack, List<MaterialStack> mats, int amount) {
+		CustomFuelMix mix = new CustomFuelMix(mats);
+		mix.fresh = amount;
+		return mix.writeTo(stack);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
-		/*
-		List<Mats.MaterialStack> stack = new ArrayList();
-		stack.add(new Mats.MaterialStack(Mats.matById.get(EnumCustomFuel.U235.stack.id), 1));
-		stack.add(new Mats.MaterialStack(Mats.matById.get(EnumCustomFuel.U238.stack.id), 71));
-		list.add(this.setup(this.item, stack));
-		 */
+		if(form.spent) return;
+		for(int[] preset : ICustomFuelItem.PRESETS) list.add(ICustomFuelItem.makePreset(this, preset));
 	}
 
-	public ItemCustomFuel(Item input) {
-		this.setMaxStackSize(64);
-		this.item = input;
+
+	public static int getLife(ItemStack stack) {
+		return stack.hasTagCompound() ? stack.stackTagCompound.getInteger("life") : 0;
 	}
 
-	public static ItemStack setup(Item input, List<Mats.MaterialStack> stack, int amount) {
-		return setup(new ItemStack(input), stack, amount);
-	}
-
-	public static ItemStack setup(ItemStack stack, List<Mats.MaterialStack> mats, int amount) {
+	public static void setLife(ItemStack stack, int life) {
 		if(!stack.hasTagCompound()) stack.stackTagCompound = new NBTTagCompound();
-		int[] inp = new int[mats.size() * 2];
-		String funcName = "";
-		for(int i = 0; i < mats.size(); i++) {
-			Mats.MaterialStack sta = mats.get(i);
-			inp[i * 2] = sta.material.id;
-			inp[i * 2 + 1] = sta.amount;
-			for (EnumCustomFuel fuel : EnumCustomFuel.values()) {
-				if (fuel.stack == sta.material) {
-					funcName += String.format("%.2f * (%s) + |", (double) sta.amount / amount, fuel.function.getLabelForFuel());
-					break;
-				}
-			}
-		}
-		stack.stackTagCompound.setIntArray("inp", inp);
-		stack.stackTagCompound.setInteger("amount", amount);
-		stack.stackTagCompound.setString("funcName", funcName);
-		return stack;
+		stack.stackTagCompound.setInteger("life", life);
 	}
+
+
+	public static double getWatzYield(ItemStack stack) {
+		if(!stack.hasTagCompound() || !stack.stackTagCompound.hasKey("yield")) return WATZ_YIELD;
+		return stack.stackTagCompound.getDouble("yield");
+	}
+
+	public static void setWatzYield(ItemStack stack, double yield) {
+		if(!stack.hasTagCompound()) stack.stackTagCompound = new NBTTagCompound();
+		stack.stackTagCompound.setDouble("yield", yield);
+	}
+
+	public static double getWatzDepletion(ItemStack stack) {
+		return 1D - getWatzYield(stack) / WATZ_YIELD;
+	}
+
+	public static double getZirnoxDepletion(ItemStack stack) {
+		CustomFuelMix mix = CustomFuelMix.fromStack(stack);
+		if(mix == null) return 0D;
+		ZirnoxProfile p = CustomFuelModel.zirnox(mix, 0D);
+		return Math.min((double) getLife(stack) / p.maxLife, 1D);
+	}
+
+	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
+		return getDurabilityForDisplay(stack) > 0D;
+	}
+
+	@Override
+	public double getDurabilityForDisplay(ItemStack stack) {
+		if(form == Form.ZIRNOX) return getZirnoxDepletion(stack);
+		if(form == Form.WATZ) return getWatzDepletion(stack);
+		return 0D;
+	}
+
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -97,29 +128,11 @@ public class ItemCustomFuel extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int pass) {
-		if (stack != null && stack.hasTagCompound() && pass == 0) {
-			int[] inp = stack.stackTagCompound.getIntArray("inp");
-
-			int size = inp.length / 2;
-			if (size > 0) {
-				int r = 0;
-				int g = 0;
-				int b = 0;
-				for (int i = 0; i < size; i++) {
-					NTMMaterial mat = Mats.matById.get(inp[i * 2]);
-					if (mat == null) continue;
-					double perc = (double) inp[i * 2 + 1] / Math.max(stack.stackTagCompound.getInteger("amount"), 1);
-					r += (mat.moltenColor & 0xff0000) >> 16;
-					g += (mat.moltenColor & 0x00ff00) >> 8;
-					b += mat.moltenColor & 0x0000ff;
-				}
-				r /= size;
-				g /= size;
-				b /= size;
-				return r << 16 | g << 8 | b;
-			}
-		}
-		return 0xffffff;
+		if(pass != 0) return 0xffffff;
+		CustomFuelMix mix = CustomFuelMix.fromStack(stack);
+		if(mix == null) return 0xffffff;
+		int color = mix.getColor();
+		return form.spent ? ICustomFuelItem.darken(color) : color;
 	}
 
 	@Override
@@ -135,26 +148,48 @@ public class ItemCustomFuel extends Item {
 		this.iconBG = reg.registerIcon(this.iconString + "_bg");
 	}
 
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		if (stack != null && stack.hasTagCompound()) {
-			int[] inp = stack.stackTagCompound.getIntArray("inp");
-			String funcName = stack.stackTagCompound.getString("funcName");
-			String funcStep = "";
-			for (int i = 0; i < inp.length / 2; i++) {
-				NTMMaterial mat = Mats.matById.get(inp[i * 2]);
-				if (mat == null) continue;
-				list.add(EnumChatFormatting.YELLOW + String.format("(%5.1f%s) %s: %d mB", (double) inp[i * 2 + 1] / Math.max(stack.stackTagCompound.getInteger("amount"), 1) * 100, "%", I18nUtil.resolveKey(mat.getUnlocalizedName()), 2 * inp[i * 2 + 1]));
-			}
-			list.add(EnumChatFormatting.GREEN + "f(x) = ");
-			for (int i = 0; i < funcName.length(); i++) {
-				if (funcName.charAt(i) == '|') {
-					list.add(EnumChatFormatting.GREEN + funcStep);
-					funcStep = "";
-				} else {
-					funcStep += funcName.charAt(i);
-				}
-			}
+		CustomFuelMix mix = CustomFuelMix.fromStack(stack);
+		if(mix == null) {
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.noMix"));
+			return;
 		}
+
+		ICustomFuelItem.addComposition(mix, list);
+
+		String model = CustomFuelModel.current().title;
+		switch(form) {
+		case PWR: {
+			PWRProfile p = CustomFuelModel.pwr(mix, 0D);
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.customFuel.model", model));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.reaction", EnumChatFormatting.WHITE + p.describe()));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.heat", String.format(Locale.US, "%.2f", p.heat)));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.yield", BobMathUtil.getShortNumber((long) p.yield)));
+			break;
+		}
+		case ZIRNOX: {
+			ZirnoxProfile p = CustomFuelModel.zirnox(mix, getZirnoxDepletion(stack));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.customFuel.model", model));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.depletion", String.format(Locale.US, "%.1f%%", getZirnoxDepletion(stack) * 100D)));
+			if(p.breeding) list.add(EnumChatFormatting.DARK_GREEN + I18nUtil.resolveKey("desc.item.customFuel.zirnoxBreeder", BobMathUtil.getShortNumber(p.maxLife)));
+			else list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.zirnox", p.heat, BobMathUtil.getShortNumber(p.maxLife)));
+			break;
+		}
+		case WATZ: {
+			WatzProfile p = CustomFuelModel.watz(mix, getWatzDepletion(stack));
+			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.customFuel.model", model));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.depletion", String.format(Locale.US, "%.1f%%", getWatzDepletion(stack) * 100D)));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.reaction", EnumChatFormatting.WHITE + p.describe()));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.heat", String.format(Locale.US, "%.2f", p.heatEmission)));
+			if(p.passive > 0) list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.passive", (int) p.passive));
+			break;
+		}
+		default: break;
+		}
+
+		if(form == Form.PWR_HOT) list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.hot"));
+		if(form.spent && form != Form.PWR_HOT) ICustomFuelItem.addSpentInfo(stack, CustomFuelSpent.reactorOf(this), mix, list);
 	}
 }

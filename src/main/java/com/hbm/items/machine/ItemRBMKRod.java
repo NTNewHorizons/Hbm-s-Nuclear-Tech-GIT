@@ -288,8 +288,14 @@ public class ItemRBMKRod extends Item {
 
 		double flux = in * reactivityModByEnrichment(enrichment);
 
-		switch(this.function) {
-		case PASSIVE: return selfRate * enrichment;
+		if(this.function == EnumBurnFunc.PASSIVE) return selfRate * enrichment;
+		return evalBurnFunc(this.function, flux, reactivity);
+	}
+
+	public static double evalBurnFunc(EnumBurnFunc function, double flux, double reactivity) {
+
+		switch(function) {
+		case PASSIVE: return 0;
 		case LOG_TEN: return Math.log10(flux + 1) * 0.5D * reactivity;
 		case PLATEU: return (1 - Math.pow(Math.E, -flux / 25D)) * reactivity;
 		case ARCH: return Math.max((flux - (flux * flux / 10000D)) / 100D * reactivity, 0D);
@@ -596,9 +602,10 @@ public class ItemRBMKRod extends Item {
 	 * Sets up the default values for all NBT data because doing it one-by-one will only correctly set the first called value and the rest stays 0 which is very not good
 	 * @param stack
 	 */
-	private static void setNBTDefaults(ItemStack stack) {
+	protected static void setNBTDefaults(ItemStack stack) {
 
-		stack.stackTagCompound = new NBTTagCompound();
+		// keep other data such as a custom fuel mix
+		if(!stack.hasTagCompound()) stack.stackTagCompound = new NBTTagCompound();
 		setYield(stack, ((ItemRBMKRod)stack.getItem()).yield);
 		setCoreHeat(stack, 20.0D);
 		setHullHeat(stack, 20.0D);

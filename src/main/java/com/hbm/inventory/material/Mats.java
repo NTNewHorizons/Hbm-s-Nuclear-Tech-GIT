@@ -105,6 +105,17 @@ public class Mats {
 	public static final NTMMaterial MAT_RGA			= makeSmeltable(9501,		AMRG,		0xCEB3B9, 0x3A1C21, 0x93767B).setAutogen(BILLET, BLOCK).m();
 	public static final NTMMaterial MAT_AM241		= makeSmeltable(9541,		AM241,		0xCEB3B9, 0x3A1C21, 0x93767B).setAutogen(BILLET, BLOCK).m();
 	public static final NTMMaterial MAT_AM242		= makeSmeltable(9542,		AM242,		0xCEB3B9, 0x3A1C21, 0x93767B).setAutogen(BILLET, BLOCK).m();
+	public static final NTMMaterial MAT_CM242		= makeSmeltable(9642,		CM242,		0xD8C2C4, 0xAD9799, 0xC8B2B4).m();
+	public static final NTMMaterial MAT_CM243		= makeSmeltable(9643,		CM243,		0xD8C2C4, 0xAD9799, 0xC8B2B4).m();
+	public static final NTMMaterial MAT_CM244		= makeSmeltable(9644,		CM244,		0xD8C2C4, 0xAD9799, 0xC8B2B4).m();
+	public static final NTMMaterial MAT_CM245		= makeSmeltable(9645,		CM245,		0xD8C2C4, 0xAD9799, 0xC8B2B4).m();
+	public static final NTMMaterial MAT_CM246		= makeSmeltable(9646,		CM246,		0xD8C2C4, 0xAD9799, 0xC8B2B4).m();
+	public static final NTMMaterial MAT_CM247		= makeSmeltable(9647,		CM247,		0xD8C2C4, 0xAD9799, 0xC8B2B4).m();
+	public static final NTMMaterial MAT_BK247		= makeSmeltable(9747,		BK247,		0xC2C9C7, 0x8D9592, 0xA8B0AD).m();
+	public static final NTMMaterial MAT_CF251		= makeSmeltable(9851,		CF251,		0x7879B4, 0x4D4E89, 0x6364A0).m();
+	public static final NTMMaterial MAT_CF252		= makeSmeltable(9852,		CF252,		0x7879B4, 0x4D4E89, 0x6364A0).m();
+	public static final NTMMaterial MAT_ES253		= makeSmeltable(9953,		ES253,		0xB9BFB2, 0x594E44, 0x8F8A7B).m();
+	public static final NTMMaterial MAT_ES255		= makeSmeltable(9955,		ES255,		0xB9BFB2, 0x594E44, 0x8F8A7B).m();
 	public static final NTMMaterial MAT_NEPTUNIUM	= makeSmeltable(9337,		NP237,		0xA6B2A6, 0x030F03, 0x647064).setAutogen(FRAGMENT, BILLET, DUST, BLOCK).m();
 	public static final NTMMaterial MAT_POLONIUM	= makeSmeltable(8410,		PO210,		0x968779, 0x3D1509, 0x715E4A).setAutogen(FRAGMENT, BILLET, DUST, BLOCK).m();
 	public static final NTMMaterial MAT_TECHNETIUM	= makeSmeltable(4399,		TC99,		0xFAFFFF, 0x576C6C, 0xCADFDF).setAutogen(FRAGMENT, BILLET, BLOCK).m();

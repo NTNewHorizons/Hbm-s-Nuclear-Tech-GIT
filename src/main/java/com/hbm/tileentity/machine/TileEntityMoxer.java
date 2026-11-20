@@ -26,7 +26,15 @@ import com.hbm.inventory.recipes.MoxerRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
+import com.hbm.config.MachineConfig;
+import com.hbm.items.machine.ICustomFuelItem;
 import com.hbm.items.machine.ItemCustomFuel;
+import com.hbm.items.machine.ItemCustomRBMKRod;
+import com.hbm.items.machine.ItemRBMKRod;
+import com.hbm.items.machine.customfuel.CustomFuelMix;
+import com.hbm.items.machine.customfuel.CustomFuelSources;
+import com.hbm.items.machine.customfuel.CustomFuelSpent;
+import com.hbm.items.machine.customfuel.EnumCustomFuel;
 import com.hbm.items.machine.ItemMachineUpgrade;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
@@ -236,7 +244,7 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 
 			status = Status.IDLE;
 
-			if (product != null && totalOut >= recipe.amount && power >= consumption && canFitOutput(product)) {
+			if (product != null && totalOut >= recipe.amount && power >= consumption && hasFluids(recipe) && canFitOutput(product)) {
 				boolean enoughMaterial = true;
 				for (MoxerStack stack : inpStack) {
 					if (stack.amount < stack.percentage) {
@@ -260,6 +268,11 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 				progress = 0.0D;
 				for (MoxerStack stack : inpStack) {
 					if (stack.percentage > 0) stack.amount -= stack.percentage;
+				}
+				if (recipe.inputFluid != null) {
+					for (int i = 0; i < Math.min(recipe.inputFluid.length, inputTanks.length); i++) {
+						inputTanks[i].setFill(inputTanks[i].getFill() - recipe.inputFluid[i].fill);
+					}
 				}
 				if (slots[5] == null) {
 					slots[5] = product;
@@ -308,14 +321,23 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 		out = out.copy();
 		out.stackSize = 1;
 
-		if (out.getItem() instanceof ItemCustomFuel) {
+		if (out.getItem() instanceof ICustomFuelItem) {
 			List<Mats.MaterialStack> mix = new ArrayList();
 			for (MoxerStack stack : inpStack) {
 				if (stack.percentage > 0) mix.add(new Mats.MaterialStack(stack.material, stack.percentage));
 			}
 			ItemCustomFuel.setup(out, mix, recipe.amount);
+			if (out.getItem() instanceof ItemCustomRBMKRod) ItemCustomRBMKRod.prepare(out);
 		}
 		return out;
+	}
+
+	protected boolean hasFluids(MoxerRecipe recipe) {
+		if (recipe.inputFluid == null) return true;
+		for (int i = 0; i < Math.min(recipe.inputFluid.length, inputTanks.length); i++) {
+			if (inputTanks[i].getFill() < recipe.inputFluid[i].fill) return false;
+		}
+		return true;
 	}
 
 	protected boolean canFitOutput(ItemStack product) {
@@ -456,11 +478,17 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 	}
 
 	public static boolean isFuelMaterial(NTMMaterial mat) {
-		if (mat == null) return false;
-		for (ItemCustomFuel.EnumCustomFuel fuel : ItemCustomFuel.EnumCustomFuel.values()) {
-			if (fuel.stack == mat) return true;
-		}
-		return false;
+		return EnumCustomFuel.byMaterial(mat) != null;
+	}
+
+	// What is left of a custom fuel item right now, null if it can't go into the Moxer
+	public static CustomFuelMix getRecyclableMix(ItemStack stack) {
+		Item item = stack.getItem();
+		if (!(item instanceof ICustomFuelItem) || item == ModItems.custom_fuel_pwr_hot) return null;
+		if (CustomFuelSpent.isSpent(stack) && !MachineConfig.customFuelRecycles()) return null;
+
+		if (item instanceof ItemCustomRBMKRod && (ItemRBMKRod.getHullHeat(stack) >= 50 || ItemRBMKRod.getCoreHeat(stack) >= 50)) return null;
+		return ICustomFuelItem.currentMix(stack);
 	}
 
 	// The fuel isotopes dissolving this item would add to the buffer; anything else in it is discarded
@@ -468,18 +496,19 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 		List<MoxerStack> fuels = new ArrayList();
 		if (stack == null) return fuels;
 
-		if (stack.getItem() instanceof ItemCustomFuel) {
-			if (!stack.hasTagCompound()) return fuels;
-			int[] inp = stack.stackTagCompound.getIntArray("inp");
-			for (int i = 0; i < inp.length / 2; i++) {
-				NTMMaterial mat = Mats.matById.get(inp[i * 2]);
-				if (isFuelMaterial(mat) && inp[i * 2 + 1] > 0) fuels.add(new MoxerStack(mat, inp[i * 2 + 1], 0));
+		if (stack.getItem() instanceof ICustomFuelItem) {
+			CustomFuelMix mix = getRecyclableMix(stack);
+			if (mix == null) return fuels;
+			for (EnumCustomFuel fuel : EnumCustomFuel.values()) {
+				if (mix.get(fuel) > 0) fuels.add(new MoxerStack(fuel.stack, mix.get(fuel), 0));
 			}
 			return fuels;
 		}
 
-		for (MoxerStack mat : Mats.getMoxerSmeltingMaterialsFromItem(stack)) {
-			if (isFuelMaterial(mat.material) && mat.amount > 0) fuels.add(mat);
+		CustomFuelMix mix = CustomFuelSources.dissolve(stack);
+		if (mix == null) return fuels;
+		for (EnumCustomFuel fuel : EnumCustomFuel.values()) {
+			if (mix.get(fuel) > 0) fuels.add(new MoxerStack(fuel.stack, mix.get(fuel), 0));
 		}
 		return fuels;
 	}

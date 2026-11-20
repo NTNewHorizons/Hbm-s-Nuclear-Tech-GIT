@@ -1,5 +1,6 @@
 package com.hbm.hazard;
 
+import com.hbm.hazard.modifier.HazardModifierCustomFuel;
 import static com.hbm.blocks.ModBlocks.*;
 import static com.hbm.items.ModItems.*;
 import static com.hbm.inventory.OreDictManager.*;
@@ -179,6 +180,22 @@ public class HazardRegistry {
 	public static final HazardTypeBase NEUTRON = new HazardTypeNeutron();
 
 	public static void registerItems() {
+
+		HazardData customFuel = new HazardData()
+				.addEntry(new HazardEntry(RADIATION, 1F).addMod(new HazardModifierCustomFuel(false)))
+				.addEntry(new HazardEntry(BLINDING, 1F).addMod(new HazardModifierCustomFuel(true)));
+		for(Item item : new Item[] { ModItems.custom_fuel_ingot, ModItems.custom_fuel_billet, ModItems.custom_fuel_rbmk_pellet, ModItems.custom_fuel_pwr, ModItems.custom_fuel_pwr_depleted,
+				ModItems.custom_fuel_zirnox, ModItems.custom_fuel_zirnox_depleted, ModItems.custom_fuel_watz, ModItems.custom_fuel_watz_depleted }) {
+			HazardSystem.register(item, customFuel);
+		}
+		HazardSystem.register(ModItems.custom_fuel_pwr_hot, new HazardData()
+				.addEntry(new HazardEntry(RADIATION, 1F).addMod(new HazardModifierCustomFuel(false)))
+				.addEntry(new HazardEntry(BLINDING, 1F).addMod(new HazardModifierCustomFuel(true)))
+				.addEntry(HOT, 5));
+		HazardSystem.register(ModItems.custom_fuel_rbmk_rod, new HazardData()
+				.addEntry(new HazardEntry(RADIATION, 1F).addMod(new HazardModifierCustomFuel(false)))
+				.addEntry(new HazardEntry(BLINDING, 1F).addMod(new HazardModifierCustomFuel(true)))
+				.addEntry(new HazardEntry(HOT, 0).addMod(new HazardModifierRBMKHot())));
 
 		HazardSystem.register(Items.gunpowder, makeData(EXPLOSIVE, 1F));
 		HazardSystem.register(Blocks.tnt, makeData(EXPLOSIVE, 4F));

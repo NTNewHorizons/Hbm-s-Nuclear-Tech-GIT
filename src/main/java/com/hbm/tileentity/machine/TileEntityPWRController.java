@@ -20,6 +20,11 @@ import com.hbm.inventory.fluid.trait.FT_PWRModerator;
 import com.hbm.inventory.gui.GUIPWR;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemPWRFuel.EnumPWRFuel;
+import com.hbm.items.machine.customfuel.CustomFuelMix;
+import com.hbm.items.machine.customfuel.CustomFuelModel;
+import com.hbm.items.machine.customfuel.CustomFuelModel.PWRProfile;
+import com.hbm.items.machine.customfuel.CustomFuelSpent;
+import com.hbm.items.machine.customfuel.CustomFuelSpent.Reactor;
 import com.hbm.items.machine.ItemPWRPrinter;
 import com.hbm.main.MainRegistry;
 import com.hbm.main.NTMSounds;
@@ -71,8 +76,17 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 
 	public int typeLoaded;
 	public int amountLoaded;
+	public static final int TYPE_CUSTOM = -2;
+	public CustomFuelMix customLoaded;
 	public double progress;
 	public double processTime;
+
+	public ItemStack getLoadedDisplay() {
+		if(amountLoaded <= 0) return null;
+		if(typeLoaded == TYPE_CUSTOM) return customLoaded != null ? customLoaded.writeTo(new ItemStack(ModItems.custom_fuel_pwr)) : null;
+		if(typeLoaded < 0) return null;
+		return new ItemStack(ModItems.pwr_fuel, 1, typeLoaded);
+	}
 
 	public int rodCount;
 	public int connections;
@@ -208,7 +222,18 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 				//only perform fission if the area has been loaded for 40 ticks or more
 				if(this.unloadDelay <= 0) {
 
-					if((typeLoaded == -1 || amountLoaded <= 0) && slots[0] != null && slots[0].getItem() == ModItems.pwr_fuel) {
+					CustomFuelMix inserted = slots[0] != null && slots[0].getItem() == ModItems.custom_fuel_pwr ? CustomFuelMix.fromStack(slots[0]) : null;
+					if((typeLoaded == -1 || amountLoaded <= 0) && inserted != null) {
+						typeLoaded = TYPE_CUSTOM;
+						customLoaded = inserted;
+						amountLoaded++;
+						this.decrStackSize(0, 1);
+						this.markChanged();
+					} else if(typeLoaded == TYPE_CUSTOM && inserted != null && inserted.equals(customLoaded) && amountLoaded < rodCount) {
+						amountLoaded++;
+						this.decrStackSize(0, 1);
+						this.markChanged();
+					} else if((typeLoaded == -1 || amountLoaded <= 0) && slots[0] != null && slots[0].getItem() == ModItems.pwr_fuel) {
 						typeLoaded = slots[0].getItemDamage();
 						amountLoaded++;
 						this.decrStackSize(0, 1);
@@ -231,14 +256,30 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 
 					int newFlux = this.sourceCount * 20;
 
+					if(typeLoaded == TYPE_CUSTOM && customLoaded == null) typeLoaded = -1;
+
 					if(typeLoaded != -1 && amountLoaded > 0) {
 
-						EnumPWRFuel fuel = EnumUtil.grabEnumSafely(EnumPWRFuel.class, typeLoaded);
 						double usedRods = getTotalProcessMultiplier();
 						double fluxPerRod = this.flux / this.rodCount;
-						double outputPerRod = fuel.function.effonix(fluxPerRod);
+						double outputPerRod;
+						double heatEmission;
+						double yield;
+
+						if(typeLoaded == TYPE_CUSTOM) {
+							PWRProfile profile = CustomFuelModel.pwr(customLoaded, this.processTime > 0 ? this.progress / this.processTime : 0D);
+							outputPerRod = profile.react(fluxPerRod);
+							heatEmission = profile.heat;
+							yield = profile.yield;
+						} else {
+							EnumPWRFuel fuel = EnumUtil.grabEnumSafely(EnumPWRFuel.class, typeLoaded);
+							outputPerRod = fuel.function.effonix(fluxPerRod);
+							heatEmission = fuel.heatEmission;
+							yield = fuel.yield;
+						}
+
 						double totalOutput = outputPerRod * amountLoaded * usedRods;
-						double totalHeatOutput = totalOutput * fuel.heatEmission;
+						double totalHeatOutput = totalOutput * heatEmission;
 
 						if(tanks[0].getFill() > 0) {
 							totalHeatOutput *= multiplier;
@@ -247,15 +288,17 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 						this.coreHeat += totalHeatOutput;
 						newFlux += totalOutput;
 
-						this.processTime = (int) fuel.yield;
+						this.processTime = (int) yield;
 						this.progress += totalOutput;
 
 						if(this.progress >= this.processTime) {
 							this.progress -= this.processTime;
 
+							ItemStack spent = typeLoaded == TYPE_CUSTOM ? CustomFuelSpent.spent(Reactor.PWR, customLoaded) : new ItemStack(ModItems.pwr_fuel_hot, 1, typeLoaded);
+
 							if(slots[1] == null) {
-								slots[1] = new ItemStack(ModItems.pwr_fuel_hot, 1, typeLoaded);
-							} else if(slots[1].getItem() == ModItems.pwr_fuel_hot && slots[1].getItemDamage() == typeLoaded && slots[1].stackSize < slots[1].getMaxStackSize()) {
+								slots[1] = spent;
+							} else if(slots[1].getItem() == spent.getItem() && slots[1].getItemDamage() == spent.getItemDamage() && ItemStack.areItemStackTagsEqual(slots[1], spent) && slots[1].stackSize < slots[1].getMaxStackSize()) {
 								slots[1].stackSize++;
 							}
 
@@ -269,6 +312,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 
 					if(this.amountLoaded <= 0) {
 						this.typeLoaded = -1;
+						this.customLoaded = null;
 					}
 
 					if(amountLoaded > rodCount) amountLoaded = rodCount;
@@ -437,6 +481,8 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 		buf.writeDouble(this.progress);
 		buf.writeInt(this.typeLoaded);
 		buf.writeInt(this.amountLoaded);
+		buf.writeBoolean(this.customLoaded != null);
+		if(this.customLoaded != null) this.customLoaded.serialize(buf);
 		buf.writeDouble(this.rodLevel);
 		buf.writeDouble(this.rodTarget);
 		buf.writeLong(this.coreHeatCapacity);
@@ -463,6 +509,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 		this.progress = buf.readDouble();
 		this.typeLoaded = buf.readInt();
 		this.amountLoaded = buf.readInt();
+		this.customLoaded = buf.readBoolean() ? CustomFuelMix.deserialize(buf) : null;
 		this.rodLevel = buf.readDouble();
 		this.rodTarget = buf.readDouble();
 		this.coreHeatCapacity = buf.readLong();
@@ -499,7 +546,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-		if(slot == 0) return stack.getItem() == ModItems.pwr_fuel;
+		if(slot == 0) return stack.getItem() == ModItems.pwr_fuel || (stack.getItem() == ModItems.custom_fuel_pwr && CustomFuelMix.hasMix(stack));
 		return false;
 	}
 
@@ -528,6 +575,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 		this.rodTarget = nbt.getDouble("rodTarget");
 		this.typeLoaded = nbt.getInteger("typeLoaded");
 		this.amountLoaded = nbt.getInteger("amountLoaded");
+		this.customLoaded = CustomFuelMix.fromNBT(nbt.getCompoundTag("customLoaded"));
 		this.progress = nbt.getDouble("progress");
 		this.processTime = nbt.getDouble("processTime");
 		this.coreHeatCapacity = Math.max(nbt.getInteger("coreHeatCapacity"), nbt.getLong("coreHeatCapacityL"));
@@ -573,6 +621,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 		nbt.setDouble("rodTarget", rodTarget);
 		nbt.setInteger("typeLoaded", typeLoaded);
 		nbt.setInteger("amountLoaded", amountLoaded);
+		if(customLoaded != null) nbt.setTag("customLoaded", customLoaded.writeNBT(new NBTTagCompound()));
 		nbt.setDouble("progress", progress);
 		nbt.setDouble("processTime", processTime);
 		nbt.setLong("coreHeatCapacityL", coreHeatCapacity);
@@ -725,6 +774,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 
 		if((PREFIX_FUNCTION + "jettison").equals(name)) {
 			this.typeLoaded = -1;
+			this.customLoaded = null;
 			this.amountLoaded = 0;
 			this.progress = 0;
 			this.markChanged();
