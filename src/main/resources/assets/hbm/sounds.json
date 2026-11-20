@@ -160,6 +160,9 @@
 	"music.recordEthereal": {"category": "record", "sounds": [{"name": "music/recordEthereal", "stream": true}]},
 	"music.recordBallet": {"category": "record", "sounds": [{"name": "music/recordBallet", "stream": true}]},
 	"music.recordBox": {"category": "record", "sounds": [{"name": "music/recordBox", "stream": true}]},
+	"music.recordCity": {"category": "record", "sounds": [{"name": "music/recordCity", "stream": true}]},
+	"music.recordRevenge": {"category": "record", "sounds": [{"name": "music/recordRevenge", "stream": true}]},
+	"music.recordTarnished": {"category": "record", "sounds": [{"name": "music/recordTarnished", "stream": true}]},
 
 	"music.bobmazon": {"category": "player", "sounds": [{"name": "music/ntnhBobmazon", "stream": true}]},
 
@@ -178,13 +181,22 @@
 		{"name": "music/spaceBeat", "stream": true},
 		{"name": "music/spaceTranscend", "stream": true},
 		{"name": "music/spaceCalm", "stream": true},
-		{"name": "music/spaceKoyaanis", "stream": true}
+		{"name": "music/spaceKoyaanis", "stream": true},
+		{"name": "music/bufkaDream", "stream": true},
+		{"name": "music/ntnhCelestia", "stream": true}
 	]},
 
 	"music.game.orbit": {"category": "music", "sounds": [
 		{"name": "music/ntnhLost", "stream": true}
 	]},
 
+	"music.game.laythe": {"category": "music", "sounds": [{"name": "music/ntnhBorealis", "stream": true}]},
+	"music.game.eve": {"category": "music", "sounds": [{"name": "music/ntnhDanger", "stream": true}]},
+	"music.game.duna": {"category": "music", "sounds": [{"name": "music/ntnhDrunk", "stream": true}]},
+	"music.game.kerbin": {"category": "music", "sounds": [{"name": "music/ntnhEarth", "stream": true}]},
+	"music.game.dres": {"category": "music", "sounds": [{"name": "music/ntnhFar", "stream": true}]},
+	"music.game.moho": {"category": "music", "sounds": [{"name": "music/ntnhInterstellar", "stream": true}]},
+	"music.game.minmus": {"category": "music", "sounds": [{"name": "music/ntnhThankyou", "stream": true}]},
 	"la_cucaracha": {
 		"category": "neutral",
 		"sounds": [

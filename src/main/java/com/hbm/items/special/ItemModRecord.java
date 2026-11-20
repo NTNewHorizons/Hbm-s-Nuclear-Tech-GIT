@@ -102,6 +102,12 @@ public class ItemModRecord extends ItemRecord {
 			s = RefStrings.MODID + ":music.recordBallet";
 		if(name.equals("records.box"))
 			s = RefStrings.MODID + ":music.recordBox";
+		if(name.equals("records.city"))
+			s = RefStrings.MODID + ":music.recordCity";
+		if(name.equals("records.revenge"))
+			s = RefStrings.MODID + ":music.recordRevenge";
+		if(name.equals("records.tarnished"))
+			s = RefStrings.MODID + ":music.recordTarnished";
 
 		return new ResourceLocation(s);
 	}
