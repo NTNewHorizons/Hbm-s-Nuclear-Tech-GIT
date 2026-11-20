@@ -58,7 +58,7 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 
 	public List<MoxerStack> inpStack = new ArrayList();
 
-	/* CONFIGURABLE CONSTANTS */
+	// CONFIGURABLE CONSTANTS
 	//because eclipse's auto complete is dumb as a fucking rock, it's now called "ZCapacity" so it's listed AFTER the actual stacks in the auto complete list.
 	//also martin i know you read these: no i will not switch to intellij after using eclipse for 8 years.
 	public static int inpZCapacity = MaterialShapes.BLOCK.q(16);
@@ -225,10 +225,10 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 			if (recipe != null)
 				this.moxerModule.setupTanks(recipe);
 
-			/* smelt items from buffer */
+			// smelt items from buffer
 			trySmelt();
 
-			/* clean up stacks */
+			// clean up stacks
 			this.inpStack.removeIf(x -> x.amount <= 0);
 
 			ItemStack product = recipe != null ? buildProduct(recipe) : null;
@@ -270,7 +270,7 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 
 			this.markDirty();
 
-			/* sync */
+			// sync
 			this.networkPackNT(25);
 		} else {
 			this.prevAnim = this.anim;
@@ -300,7 +300,7 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 		}
 	}
 
-	/** The item one finished cycle would produce with the current mix, or null if the recipe has no output */
+	// The item one finished cycle would produce with the current mix, or null if the recipe has no output
 	protected ItemStack buildProduct(MoxerRecipe recipe) {
 		if (recipe.outputItem == null || recipe.outputItem.length == 0) return null;
 		ItemStack out = recipe.outputItem[0].collapse();
@@ -463,7 +463,7 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 		return false;
 	}
 
-	/** The fuel isotopes dissolving this item would add to the buffer; anything else in it is discarded */
+	// The fuel isotopes dissolving this item would add to the buffer; anything else in it is discarded
 	public static List<MoxerStack> getFuelMaterials(ItemStack stack) {
 		List<MoxerStack> fuels = new ArrayList();
 		if (stack == null) return fuels;
