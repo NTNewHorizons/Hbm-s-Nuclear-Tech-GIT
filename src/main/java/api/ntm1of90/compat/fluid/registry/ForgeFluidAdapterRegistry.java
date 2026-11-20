@@ -17,8 +17,10 @@ import net.minecraftforge.fluids.IFluidHandler;
  */
 public class ForgeFluidAdapterRegistry {
 
-    // Use a WeakHashMap to avoid memory leaks when tile entities are unloaded
-    private static final Map<TileEntity, IFluidHandler> adapterMap = new WeakHashMap<>();
+    // Explicit registrations only. Auto adapters are NOT cached here: an adapter holds a strong reference to its
+    // tile entity, which kept every WeakHashMap key alive forever (leak), and the map was shared unsynchronized
+    // between the client and server threads. Adapters are stateless and cheap, so they are created per lookup.
+    private static final Map<TileEntity, IFluidHandler> adapterMap = java.util.Collections.synchronizedMap(new WeakHashMap<>());
 
     private static boolean initialized = false;
 
@@ -49,8 +51,9 @@ public class ForgeFluidAdapterRegistry {
             return (IFluidHandler) tileEntity;
         }
 
-        if (adapterMap.containsKey(tileEntity)) {
-            return adapterMap.get(tileEntity);
+        IFluidHandler registered = adapterMap.get(tileEntity);
+        if (registered != null) {
+            return registered;
         }
 
         if (isBlacklistedTileEntity(tileEntity)) {
@@ -67,7 +70,6 @@ public class ForgeFluidAdapterRegistry {
             }
 
             IFluidHandler adapter = new AutoForgeFluidAdapter(fluidUser, tileEntity);
-            adapterMap.put(tileEntity, adapter);
             FluidDebug.event("adapter.created|" + FluidDebug.tileKey(tileEntity),
                 () -> "ADAPTER created AutoForgeFluidAdapter for " + FluidDebug.describeTile(tileEntity) + " with " + tanks.length + " tank(s) requested by " + FluidDebug.callerHint());
             return adapter;

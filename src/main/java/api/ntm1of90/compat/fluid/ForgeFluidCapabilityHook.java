@@ -53,6 +53,20 @@ public class ForgeFluidCapabilityHook {
             return;
         }
 
+        // The fluid identifier exposes its fluid through IFluidContainerItem (for AE2 filter slots), but it is
+        // read-only and returns itself as its container item. Foreign tanks that fill from getFluid() without
+        // checking drain() (e.g. the ae2fc Certus Quartz Tank) would get 1000mB out of nothing on every click,
+        // and an empty identifier would make them drain and void their contents. Keep the identifier away from
+        // non-NTM fluid handlers entirely; NTM blocks keep their own identifier handling.
+        net.minecraft.item.ItemStack held = event.entityPlayer == null ? null : event.entityPlayer.getHeldItem();
+        if (held != null && held.getItem() instanceof com.hbm.items.machine.ItemFluidIDMulti && tileEntity instanceof IFluidHandler) {
+            Object blockName = net.minecraft.block.Block.blockRegistry.getNameForObject(event.world.getBlock(event.x, event.y, event.z));
+            if (blockName == null || !blockName.toString().startsWith("hbm:")) {
+                event.setCanceled(true);
+                return;
+            }
+        }
+
         if (tileEntity instanceof IFluidHandler) {
             return;
         }
@@ -88,26 +102,8 @@ public class ForgeFluidCapabilityHook {
      */
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
-            return;
-        }
-
-        for (net.minecraft.world.WorldServer world : net.minecraft.server.MinecraftServer.getServer().worldServers) {
-            for (Object obj : world.loadedTileEntityList) {
-                if (obj instanceof TileEntity) {
-                    TileEntity tileEntity = (TileEntity) obj;
-
-                    if (tileEntity == null || tileEntity.isInvalid()) {
-                        continue;
-                    }
-
-                    // If the tile entity implements IFluidUserMK2 but not IFluidHandler,
-                    if (tileEntity instanceof IFluidUserMK2 && !(tileEntity instanceof IFluidHandler)) {
-                        ForgeFluidAdapterRegistry.getFluidHandler(tileEntity);
-                    }
-                }
-            }
-        }
+        // Intentionally empty: adapters are created on demand by ForgeFluidAdapterRegistry.getFluidHandler.
+        // This used to walk every loaded tile entity of every world each tick just to pre-populate a cache.
     }
 
     /**
@@ -127,7 +123,8 @@ public class ForgeFluidCapabilityHook {
         net.minecraftforge.fluids.FluidStack fluid = net.minecraftforge.fluids.FluidContainerRegistry.getFluidForFilledItem(container);
         if (fluid != null) {
             int filled = fluidHandler.fill(net.minecraftforge.common.util.ForgeDirection.UNKNOWN, fluid, false);
-            if (filled > 0) {
+            // Containers are emptied all-or-nothing, so only accept when the whole content fits (otherwise the rest is voided)
+            if (filled >= fluid.amount) {
                 fluidHandler.fill(net.minecraftforge.common.util.ForgeDirection.UNKNOWN, fluid, true);
 
                 if (!player.capabilities.isCreativeMode) {
@@ -157,8 +154,14 @@ public class ForgeFluidCapabilityHook {
                         if (filledContainer != null) {
                             net.minecraftforge.fluids.FluidStack fluidToExtract = net.minecraftforge.fluids.FluidContainerRegistry.getFluidForFilledItem(filledContainer);
                             if (fluidToExtract != null) {
+                                // getTankInfo lists every tank, but drain only reaches the sending tanks, so simulate first and
+                                // require the full container amount; otherwise a few mB would buy a full container
+                                net.minecraftforge.fluids.FluidStack simulated = fluidHandler.drain(net.minecraftforge.common.util.ForgeDirection.UNKNOWN, fluidToExtract, false);
+                                if (simulated == null || !simulated.isFluidEqual(fluidToExtract) || simulated.amount < fluidToExtract.amount) {
+                                    continue;
+                                }
                                 net.minecraftforge.fluids.FluidStack drained = fluidHandler.drain(net.minecraftforge.common.util.ForgeDirection.UNKNOWN, fluidToExtract, true);
-                                if (drained != null && drained.amount > 0) {
+                                if (drained != null && drained.amount >= fluidToExtract.amount) {
                                     if (!player.capabilities.isCreativeMode) {
                                         if (container.stackSize == 1) {
                                             player.inventory.setInventorySlotContents(player.inventory.currentItem, filledContainer);
