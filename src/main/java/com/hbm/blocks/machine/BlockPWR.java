@@ -106,12 +106,30 @@ public class BlockPWR extends BlockContainer implements IBlockCT {
 		public int coreX;
 		public int coreY;
 		public int coreZ;
-		
+		private boolean hasOrigin;
+		private int originX;
+		private int originY;
+		private int originZ;
+
 		@Override
 		public void updateEntity() {
-			
+
 			if(!worldObj.isRemote) {
-				
+
+				if(block != null && !hasOrigin) {
+					hasOrigin = true;
+					originX = xCoord;
+					originY = yCoord;
+					originZ = zCoord;
+					this.markDirty();
+				}
+
+				// part got relocated with its NBT intact (e.g. gravity gun), take the reactor down with it
+				if(block != null && (originX != xCoord || originY != yCoord || originZ != zCoord)) {
+					this.getBlockType().breakBlock(worldObj, xCoord, yCoord, zCoord, this.getBlockType(), this.getBlockMetadata());
+					return;
+				}
+
 				if(worldObj.getTotalWorldTime() % 20 == 0 && block != null) {
 					
 					TileEntityPWRController controller = getCore();
@@ -136,6 +154,10 @@ public class BlockPWR extends BlockContainer implements IBlockCT {
 				coreX = nbt.getInteger("cX");
 				coreY = nbt.getInteger("cY");
 				coreZ = nbt.getInteger("cZ");
+				hasOrigin = nbt.hasKey("oX");
+				originX = nbt.getInteger("oX");
+				originY = nbt.getInteger("oY");
+				originZ = nbt.getInteger("oZ");
 			} else {
 				block = null;
 			}
@@ -150,6 +172,11 @@ public class BlockPWR extends BlockContainer implements IBlockCT {
 				nbt.setInteger("cX", coreX);
 				nbt.setInteger("cY", coreY);
 				nbt.setInteger("cZ", coreZ);
+				if(hasOrigin) {
+					nbt.setInteger("oX", originX);
+					nbt.setInteger("oY", originY);
+					nbt.setInteger("oZ", originZ);
+				}
 			}
 		}
 		
