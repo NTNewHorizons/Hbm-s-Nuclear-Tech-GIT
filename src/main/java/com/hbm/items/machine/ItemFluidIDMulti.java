@@ -53,7 +53,7 @@ public class ItemFluidIDMulti extends Item implements IItemFluidIdentifier, IIte
 
 	@Override
 	public int getCapacity(ItemStack stack) {
-		return 1000;
+		return 0; // read-only
 	}
 
 	@Override
