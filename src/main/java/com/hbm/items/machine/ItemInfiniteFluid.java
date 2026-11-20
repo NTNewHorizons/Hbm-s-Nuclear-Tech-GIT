@@ -98,7 +98,7 @@ public class ItemInfiniteFluid extends Item implements net.minecraftforge.fluids
 	@Override
 	public FluidStack getFluid(ItemStack stack) {
 		if(this.type == null || this.type == Fluids.NONE) return null;
-		if(!canOperate(stack)) return null; // no matching water table / in orbit
+		if(!canOperate(stack)) return null;
 		net.minecraftforge.fluids.Fluid fluid = api.ntm1of90.compat.fluid.registry.FluidMappingRegistry.getForgeFluid(this.type);
 		return fluid == null ? null : new FluidStack(fluid, Math.max(this.amount, 1));
 	}

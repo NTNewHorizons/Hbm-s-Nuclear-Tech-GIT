@@ -17,9 +17,7 @@ import net.minecraftforge.fluids.IFluidHandler;
  */
 public class ForgeFluidAdapterRegistry {
 
-    // Explicit registrations only. Auto adapters are NOT cached here: an adapter holds a strong reference to its
-    // tile entity, which kept every WeakHashMap key alive forever (leak), and the map was shared unsynchronized
-    // between the client and server threads. Adapters are stateless and cheap, so they are created per lookup.
+    // Explicit registrations only; auto adapters reference their key and would never be collected
     private static final Map<TileEntity, IFluidHandler> adapterMap = java.util.Collections.synchronizedMap(new WeakHashMap<>());
 
     private static boolean initialized = false;

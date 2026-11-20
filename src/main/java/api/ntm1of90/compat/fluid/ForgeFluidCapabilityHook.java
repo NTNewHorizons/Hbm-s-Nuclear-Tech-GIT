@@ -10,7 +10,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 
 /**
  * A hook into Forge's capability system to provide IFluidHandler capabilities for NTM TileEntities.
@@ -53,11 +52,7 @@ public class ForgeFluidCapabilityHook {
             return;
         }
 
-        // The fluid identifier exposes its fluid through IFluidContainerItem (for AE2 filter slots), but it is
-        // read-only and returns itself as its container item. Foreign tanks that fill from getFluid() without
-        // checking drain() (e.g. the ae2fc Certus Quartz Tank) would get 1000mB out of nothing on every click,
-        // and an empty identifier would make them drain and void their contents. Keep the identifier away from
-        // non-NTM fluid handlers entirely; NTM blocks keep their own identifier handling.
+        // Identifier is read-only; foreign tanks (ae2fc Certus Tank) would fill from it for free
         net.minecraft.item.ItemStack held = event.entityPlayer == null ? null : event.entityPlayer.getHeldItem();
         if (held != null && held.getItem() instanceof com.hbm.items.machine.ItemFluidIDMulti && tileEntity instanceof IFluidHandler) {
             Object blockName = net.minecraft.block.Block.blockRegistry.getNameForObject(event.world.getBlock(event.x, event.y, event.z));
@@ -96,15 +91,6 @@ public class ForgeFluidCapabilityHook {
         ForgeFluidAdapterRegistry.clearAdapters();
     }
 
-    /**
-     * Event handler for server tick
-     * This is used to register fluid handlers for new tile entities
-     */
-    @SubscribeEvent
-    public void onServerTick(TickEvent.ServerTickEvent event) {
-        // Intentionally empty: adapters are created on demand by ForgeFluidAdapterRegistry.getFluidHandler.
-        // This used to walk every loaded tile entity of every world each tick just to pre-populate a cache.
-    }
 
     /**
      * Handle fluid container interaction with a fluid handler
@@ -123,7 +109,7 @@ public class ForgeFluidCapabilityHook {
         net.minecraftforge.fluids.FluidStack fluid = net.minecraftforge.fluids.FluidContainerRegistry.getFluidForFilledItem(container);
         if (fluid != null) {
             int filled = fluidHandler.fill(net.minecraftforge.common.util.ForgeDirection.UNKNOWN, fluid, false);
-            // Containers are emptied all-or-nothing, so only accept when the whole content fits (otherwise the rest is voided)
+            // all-or-nothing, otherwise the remainder is voided
             if (filled >= fluid.amount) {
                 fluidHandler.fill(net.minecraftforge.common.util.ForgeDirection.UNKNOWN, fluid, true);
 
@@ -154,8 +140,7 @@ public class ForgeFluidCapabilityHook {
                         if (filledContainer != null) {
                             net.minecraftforge.fluids.FluidStack fluidToExtract = net.minecraftforge.fluids.FluidContainerRegistry.getFluidForFilledItem(filledContainer);
                             if (fluidToExtract != null) {
-                                // getTankInfo lists every tank, but drain only reaches the sending tanks, so simulate first and
-                                // require the full container amount; otherwise a few mB would buy a full container
+                                // require the full amount, otherwise a few mB buy a full container
                                 net.minecraftforge.fluids.FluidStack simulated = fluidHandler.drain(net.minecraftforge.common.util.ForgeDirection.UNKNOWN, fluidToExtract, false);
                                 if (simulated == null || !simulated.isFluidEqual(fluidToExtract) || simulated.amount < fluidToExtract.amount) {
                                     continue;
