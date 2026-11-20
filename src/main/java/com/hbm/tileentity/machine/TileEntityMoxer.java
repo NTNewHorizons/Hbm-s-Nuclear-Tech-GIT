@@ -23,7 +23,9 @@ import com.hbm.inventory.material.Mats.MoxerStack;
 import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.inventory.recipes.MoxerRecipe;
 import com.hbm.inventory.recipes.MoxerRecipes;
+import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ModItems;
+import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.items.machine.ItemCustomFuel;
 import com.hbm.items.machine.ItemMachineUpgrade;
 import com.hbm.lib.Library;
@@ -34,6 +36,7 @@ import com.hbm.sound.AudioWrapper;
 import com.hbm.tileentity.*;
 import com.hbm.util.BobMathUtil;
 
+import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.util.fauxpointtwelve.DirPos;
 import com.hbm.util.i18n.I18nUtil;
 import cpw.mods.fml.relauncher.Side;
@@ -51,6 +54,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvider, IConfigurableMachine, IMetalCopiable, IControlReceiver, IEnergyReceiverMK2, IUpgradeInfoProvider, IFluidStandardReceiverMK2 {
 
+	public static final String MOXER_POOL = GenericRecipes.POOL_PREFIX_ALT + "moxer";
+
 	public List<MoxerStack> inpStack = new ArrayList();
 
 	/* CONFIGURABLE CONSTANTS */
@@ -64,7 +69,6 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 	public double progress;
 	public Status status = Status.IDLE;
 	public boolean autoMode;
-	private boolean canRun;
 	private AudioWrapper audio;
 
 	public ModuleMachineMoxer moxerModule;
@@ -185,7 +189,7 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 		if(maxPower <= 0) this.maxPower = 1_000_000;
 
 		if (!worldObj.isRemote) {
-			MoxerRecipe recipe = MoxerRecipes.INSTANCE.recipeNameMap.get(moxerModule.recipe);
+			MoxerRecipe recipe = MoxerRecipes.INSTANCE.recipeNameMap.get(moxerModule.getRecipeName());
 			if(recipe != null) {
 				this.maxPower = recipe.power * 100;
 			}
@@ -198,10 +202,8 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 			this.inputTanks[1].loadTank(7, 10, slots);
 			this.inputTanks[2].loadTank(8, 11, slots);
 
-			for(DirPos pos : getConPos()) {
-				this.trySubscribe(worldObj, pos);
-				for(FluidTank tank : inputTanks) if(tank.getTankType() != Fluids.NONE) this.trySubscribe(tank.getTankType(), worldObj, pos);
-			}
+			this.setupAllPorts(getPorts());
+			this.updatePortPIFIFO();
 
 			double speed = 1D;
 			double pow = 1D;
@@ -214,7 +216,6 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 			pow += Math.min(upgradeManager.getLevel(ItemMachineUpgrade.UpgradeType.OVERDRIVE), 3) * 10D / 3D;
 
 			int totalOut = 0;
-			canRun = true;
 
 			for(MoxerStack stack : inpStack) {
 				totalOut += stack.percentage;
@@ -230,32 +231,26 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 			/* clean up stacks */
 			this.inpStack.removeIf(x -> x.amount <= 0);
 
-			Item outItem = null;
-			if (recipe != null && recipe.outputItem != null)
-				outItem = recipe.outputItem[0].collapse().getItem();
+			ItemStack product = recipe != null ? buildProduct(recipe) : null;
+			long consumption = recipe == null ? 0 : (pow == 1 ? recipe.power : (long) (recipe.power * pow));
 
-			if (recipe != null && power >= recipe.power && outItem != null && totalOut >= recipe.amount) {
+			status = Status.IDLE;
+
+			if (product != null && totalOut >= recipe.amount && power >= consumption && canFitOutput(product)) {
+				boolean enoughMaterial = true;
 				for (MoxerStack stack : inpStack) {
 					if (stack.amount < stack.percentage) {
-						canRun = false;
+						enoughMaterial = false;
 						break;
 					}
 				}
-				if (canRun) {
-					status = Status.READY;
-
-					if (autoMode) {
-						status = Status.RUNNING;
-					}
-				}
-			} else {
-				status = Status.IDLE;
+				if (enoughMaterial) status = autoMode ? Status.RUNNING : Status.READY;
 			}
 
 			// activated
 			if (status == Status.RUNNING) {
 				progress += Math.min(speed / recipe.duration, 1D);
-				power -= (pow == 1 ? recipe.power : (long) (recipe.power * pow));
+				power -= consumption;
 			} else {
 				progress = 0.0D;
 			}
@@ -263,17 +258,12 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 			// finished
 			if (progress >= 1.0D) {
 				progress = 0.0D;
-				List<Mats.MaterialStack> output = new ArrayList();
-				output.clear();
 				for (MoxerStack stack : inpStack) {
-					if (stack.percentage > 0) {
-						stack.amount -= stack.percentage;
-						output.add(new Mats.MaterialStack(stack.material, stack.percentage));
-					}
+					if (stack.percentage > 0) stack.amount -= stack.percentage;
 				}
 				if (slots[5] == null) {
-					slots[5] = outItem instanceof ItemCustomFuel ? ItemCustomFuel.setup(outItem, output, recipe.amount) : new ItemStack(ModItems.custom_fuel_rbmk_rod);
-				} else if (slots[5].getItem() == outItem && slots[5].stackSize < slots[5].getMaxStackSize()) {
+					slots[5] = product;
+				} else {
 					slots[5].stackSize++;
 				}
 			}
@@ -308,6 +298,33 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 				}
 			}
 		}
+	}
+
+	/** The item one finished cycle would produce with the current mix, or null if the recipe has no output */
+	protected ItemStack buildProduct(MoxerRecipe recipe) {
+		if (recipe.outputItem == null || recipe.outputItem.length == 0) return null;
+		ItemStack out = recipe.outputItem[0].collapse();
+		if (out == null) return null;
+		out = out.copy();
+		out.stackSize = 1;
+
+		if (out.getItem() instanceof ItemCustomFuel) {
+			List<Mats.MaterialStack> mix = new ArrayList();
+			for (MoxerStack stack : inpStack) {
+				if (stack.percentage > 0) mix.add(new Mats.MaterialStack(stack.material, stack.percentage));
+			}
+			ItemCustomFuel.setup(out, mix, recipe.amount);
+		}
+		return out;
+	}
+
+	protected boolean canFitOutput(ItemStack product) {
+		ItemStack current = slots[5];
+		if (current == null) return true;
+		return current.getItem() == product.getItem()
+			&& current.getItemDamage() == product.getItemDamage()
+			&& ItemStack.areItemStackTagsEqual(current, product)
+			&& current.stackSize < current.getMaxStackSize();
 	}
 
 	@Override public AudioWrapper createAudioLoop() {
@@ -354,9 +371,11 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 		int mats = buf.readShort();
 		for(int i = 0; i < mats; i++) {
 			int id = buf.readInt();
-			if (id == -1)
-				continue;
-			inpStack.add(new MoxerStack(Mats.matById.get(id), buf.readInt(), buf.readInt()));
+			int amount = buf.readInt();
+			int percentage = buf.readInt();
+			NTMMaterial mat = Mats.matById.get(id);
+			if (mat == null) continue;
+			inpStack.add(new MoxerStack(mat, amount, percentage));
 		}
 	}
 
@@ -396,6 +415,19 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 		for(int i = 0; i < inputTanks.length; i++) inputTanks[i].writeToNBT(nbt, "t" + i);
 	}
 
+	protected PortDef[] cachedPorts;
+	public PortDef[] getPorts() {
+		if(cachedPorts == null) {
+			DirPos[] cons = getConPos();
+			cachedPorts = new PortDef[cons.length];
+			for(int i = 0; i < cons.length; i++) {
+				ForgeDirection dir = cons[i].getDir();
+				cachedPorts[i] = PortDef.make(cons[i].getX() - dir.offsetX, cons[i].getY(), cons[i].getZ() - dir.offsetZ, dir);
+			}
+		}
+		return cachedPorts;
+	}
+
 	public DirPos[] getConPos() {
 		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
@@ -413,34 +445,9 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 	protected boolean trySmelt() {
 
 		ItemStack slot = slots[4];
-		if (slot == null) return false;
+		if (slot == null || !isItemSmeltable(slot)) return false;
 
-		// custom fuel recycling
-		if (slot.getItem() instanceof ItemCustomFuel) {
-			int[] inp = slot.stackTagCompound.getIntArray("inp");
-			for (int i = 0; i < inp.length / 2; i++) {
-				NTMMaterial mat = Mats.matById.get(inp[i * 2]);
-				this.addToStack(this.inpStack, new MoxerStack(mat, inp[i * 2 + 1], 0));
-			}
-			this.decrStackSize(4, 1);
-		}
-
-		boolean error = true;
-		// "dissolving" everything else valid, it checks if the material is valid for ItemCustomFuel enum
-		List<Mats.MaterialStack> materials = Mats.getMaterialsFromItem(slot);
-		for (Mats.MaterialStack material : materials) {
-			for (ItemCustomFuel.EnumCustomFuel fuel : ItemCustomFuel.EnumCustomFuel.values()) {
-				if (material.material == fuel.stack){
-					error = false;
-					break;
-				}
-			}
-		}
-		if (error) return false;
-
-		List<MoxerStack> materialz = Mats.getMoxerSmeltingMaterialsFromItem(slot);
-
-		for (MoxerStack material : materialz)
+		for (MoxerStack material : getFuelMaterials(slot))
 			this.addToStack(this.inpStack, material);
 
 		this.decrStackSize(4, 1);
@@ -448,10 +455,39 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 		return true;
 	}
 
+	public static boolean isFuelMaterial(NTMMaterial mat) {
+		if (mat == null) return false;
+		for (ItemCustomFuel.EnumCustomFuel fuel : ItemCustomFuel.EnumCustomFuel.values()) {
+			if (fuel.stack == mat) return true;
+		}
+		return false;
+	}
+
+	/** The fuel isotopes dissolving this item would add to the buffer; anything else in it is discarded */
+	public static List<MoxerStack> getFuelMaterials(ItemStack stack) {
+		List<MoxerStack> fuels = new ArrayList();
+		if (stack == null) return fuels;
+
+		if (stack.getItem() instanceof ItemCustomFuel) {
+			if (!stack.hasTagCompound()) return fuels;
+			int[] inp = stack.stackTagCompound.getIntArray("inp");
+			for (int i = 0; i < inp.length / 2; i++) {
+				NTMMaterial mat = Mats.matById.get(inp[i * 2]);
+				if (isFuelMaterial(mat) && inp[i * 2 + 1] > 0) fuels.add(new MoxerStack(mat, inp[i * 2 + 1], 0));
+			}
+			return fuels;
+		}
+
+		for (MoxerStack mat : Mats.getMoxerSmeltingMaterialsFromItem(stack)) {
+			if (isFuelMaterial(mat.material) && mat.amount > 0) fuels.add(mat);
+		}
+		return fuels;
+	}
+
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
 		if (i == 0) return true; // battery
-		if (i == 1 && stack.getItem() == ModItems.blueprints) return true;
+		if (i == 1 && stack.getItem() == ModItems.blueprints) return MOXER_POOL.equals(ItemBlueprints.grabPool(stack));
 		if (i >= 2 && i <= 3 && stack.getItem() instanceof ItemMachineUpgrade) return true; // upgrades
 		if (i == 4) { return isItemSmeltable(stack); }
 		if (i >= 6 && i <= 8) return true; // input fluid
@@ -460,43 +496,13 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 
 	public boolean isItemSmeltable(ItemStack stack) {
 
-		// custom fuel
-		boolean valid = true;
-		if (stack.getItem() instanceof ItemCustomFuel) {
-			// get the total in because we don't want overflows
-			int total = 0;
-			for (MoxerStack ma : inpStack)
-				total += ma.amount;
-			int[] inp = stack.stackTagCompound.getIntArray("inp");
-			for (int i = 0; i < inp.length / 2; i++) {
-				NTMMaterial mat = Mats.matById.get(inp[i * 2]);
-				if (mat == null) continue;
-				if (inp[i * 2 + 1] + total > inpZCapacity) {
-					valid = false;
-					break;
-				}
-				total += inp[i * 2 + 1];
-			}
-			// more slop please!
-			// if it doesn't overfill, it's good to be recycled
-			return valid;
-		}
+		List<MoxerStack> materials = getFuelMaterials(stack);
+		if (materials.isEmpty()) return false;
 
-		List<MoxerStack> materials = Mats.getMoxerSmeltingMaterialsFromItem(stack);
-
-		//if there's no materials in there at all, don't smelt
-		if(materials.isEmpty()) return false;
-
-		//the total amount of the current waste stack, used for simulation
 		int inpAmount = getQuantaFromType(this.inpStack, null);
+		for (MoxerStack mat : materials) inpAmount += mat.amount;
 
-		for(MoxerStack mat : materials) {
-			//if this type isn't required by the recipe, add it to the waste stack
-			inpAmount += mat.amount;
-		}
-
-		//if the amount doesn't exceed the capacity and the recipe matches (or isn't null), return true
-		return inpAmount <= this.inpZCapacity;
+		return inpAmount <= inpZCapacity;
 	}
 
 	public void addToStack(List<MoxerStack> stack, MoxerStack matStack) {
@@ -526,7 +532,12 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int meta) {
-		return new int[] { 4, 5, 6, 7, 8, 9 };
+		return new int[] { 4, 5, 6, 7, 8, 9, 10, 11 };
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+		return slot == 5 || (slot >= 9 && slot <= 11);
 	}
 
 	@Override
@@ -570,17 +581,18 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 	}
 
 	@Override
-	public void receiveControl(NBTTagCompound data) {
-		if(data.hasKey("perc_index") && data.hasKey("percentage") && !inpStack.isEmpty()) {
-			int index = data.getInteger("perc_index");
-			int percentage = data.getInteger("percentage");
+	public void receiveControl(EntityPlayer player, NBTTagCompound data) {
+		int percIndex = data.getInteger("perc_index");
+		if(data.hasKey("perc_index") && data.hasKey("percentage") && percIndex >= 0 && percIndex < inpStack.size()) {
+			int index = percIndex;
+			int percentage = Math.max(data.getInteger("percentage"), 0);
 			MoxerStack ref = inpStack.get(index);
 			int tot_perc = 0;
 			for (MoxerStack mat : inpStack)
 				if (mat != ref)
 					tot_perc += mat.percentage;
-			if (moxerModule.recipe != null) {
-				MoxerRecipe recipe = MoxerRecipes.INSTANCE.recipeNameMap.get(moxerModule.recipe);
+			if (moxerModule.getRecipeName() != null) {
+				MoxerRecipe recipe = MoxerRecipes.INSTANCE.recipeNameMap.get(moxerModule.getRecipeName());
 				if (recipe != null && tot_perc + percentage > recipe.amount)
 					percentage = recipe.amount - tot_perc;
 				inpStack.get(index).percentage = percentage;
@@ -593,7 +605,7 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 			int index = data.getInteger("index");
 			String selection = data.getString("selection");
 			if(index == 0) {
-				this.moxerModule.recipe = selection;
+				this.moxerModule.setRecipe(selection, false);
 				this.markChanged();
 			}
 			for (MoxerStack mat : inpStack)

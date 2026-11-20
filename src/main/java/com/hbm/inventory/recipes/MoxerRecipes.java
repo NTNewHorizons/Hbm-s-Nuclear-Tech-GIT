@@ -13,7 +13,7 @@ public class MoxerRecipes extends GenericRecipes<MoxerRecipe> {
 	public int inputItemLimit() { return 0; }
 
 	@Override
-	public int inputFluidLimit() { return 2; }
+	public int inputFluidLimit() { return 3; }
 
 	@Override
 	public int outputItemLimit() { return 1; }
