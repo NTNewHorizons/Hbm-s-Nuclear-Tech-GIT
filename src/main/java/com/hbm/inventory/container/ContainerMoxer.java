@@ -1,5 +1,6 @@
 package com.hbm.inventory.container;
 
+import com.hbm.inventory.SlotCraftingOutput;
 import com.hbm.inventory.SlotNonRetarded;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBlueprints;
@@ -27,7 +28,7 @@ public class ContainerMoxer extends ContainerBase {
 		// Solid Input
 		this.addSlotToContainer(new SlotNonRetarded(moxer, 4, 116, 9));
 		// Solid Output
-		this.addSlotToContainer(new SlotNonRetarded(moxer, 5, 116, 45));
+		this.addOutputSlots(invPlayer.player, moxer, 5, 116, 45, 1, 1);
 		// Fluid Input
 		this.addSlots(			moxer, 6, 8, 45, 1, 3);
 		this.addTakeOnlySlots(	moxer, 9, 8, 63, 1, 3);
@@ -45,6 +46,7 @@ public class ContainerMoxer extends ContainerBase {
 			slotOriginal = slotStack.copy();
 
 			if(index <= tile.getSizeInventory() - 1) {
+				SlotCraftingOutput.checkAchievements(player, slotStack);
 				if(!this.mergeItemStack(slotStack, tile.getSizeInventory(), this.inventorySlots.size(), true)) {
 					return null;
 				}

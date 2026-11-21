@@ -120,6 +120,21 @@ public class TilePortShapes {
 		};
 	}
 	
+	/** Moxer: four corner ports facing front/back and two side ports */
+	public static PortDef[] moxer(int x, int y, int z, int meta) {
+		ForgeDirection dir = ForgeDirection.getOrientation(meta - 10);
+		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+
+		return new PortDef[] {
+				PortDef.make(x + dir.offsetX + rot.offsetX, y, z + dir.offsetZ + rot.offsetZ, dir),
+				PortDef.make(x + dir.offsetX - rot.offsetX, y, z + dir.offsetZ - rot.offsetZ, dir),
+				PortDef.make(x - dir.offsetX + rot.offsetX, y, z - dir.offsetZ + rot.offsetZ, dir.getOpposite()),
+				PortDef.make(x - dir.offsetX - rot.offsetX, y, z - dir.offsetZ - rot.offsetZ, dir.getOpposite()),
+				PortDef.make(x + rot.offsetX * 2, y, z + rot.offsetZ * 2, rot),
+				PortDef.make(x - rot.offsetX * 2, y, z - rot.offsetZ * 2, rot.getOpposite()),
+		};
+	}
+
 	/** Condenser-like 4 port with 8 connections */
 	public static PortDef[] condenser(int x, int y, int z, int meta) {
 		ForgeDirection dir = ForgeDirection.getOrientation(meta - 10);

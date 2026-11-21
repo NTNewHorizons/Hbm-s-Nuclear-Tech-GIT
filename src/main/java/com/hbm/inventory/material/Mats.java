@@ -312,44 +312,6 @@ public class Mats {
 		}
 	}
 
-	// only used for Moxer machine stuff, just adds the percentage value to the MaterialStack class
-	public static class MoxerStack {
-		//final fields to prevent accidental changing
-		public final NTMMaterial material;
-		public int amount;
-		public int percentage;
-
-		public MoxerStack(NTMMaterial material, int amount, int percentage) {
-			this.material = material;
-			this.amount = amount;
-			this.percentage = percentage;
-		}
-
-		public MoxerStack copy() {
-			return new MoxerStack(material, amount, percentage);
-		}
-	}
-
-	public static List<MoxerStack> getMoxerMaterialsFromItem(ItemStack stack) {
-		List<MaterialStack> input = getMaterialsFromItem(stack);
-		List<MoxerStack> output = new ArrayList();
-		for (MaterialStack mat : input) {
-			output.add(new MoxerStack(mat.material, mat.amount, 0));
-		}
-
-		return output;
-	}
-
-	public static List<MoxerStack> getMoxerSmeltingMaterialsFromItem(ItemStack stack) {
-		List<MaterialStack> input = getSmeltingMaterialsFromItem(stack);
-		List<MoxerStack> output = new ArrayList();
-		for (MaterialStack mat : input) {
-			output.add(new MoxerStack(mat.material, mat.amount, 0));
-		}
-
-		return output;
-	}
-
 	public static String formatAmount(int amount, boolean showInMb) {
 
 		if(showInMb) return (amount * 2) + "mB";

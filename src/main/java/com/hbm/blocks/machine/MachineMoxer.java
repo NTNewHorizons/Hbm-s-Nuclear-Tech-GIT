@@ -1,13 +1,10 @@
 package com.hbm.blocks.machine;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ITooltipProvider;
-import com.hbm.handler.MultiblockHandlerXR;
 import com.hbm.inventory.material.Mats.MaterialStack;
-import com.hbm.inventory.material.Mats.MoxerStack;
 import com.hbm.items.machine.ItemScraps;
 import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.machine.TileEntityMoxer;
@@ -55,18 +52,10 @@ public class MachineMoxer extends BlockDummyable implements ITooltipProvider {
 		TileEntity te = world.getTileEntity(x, y, z);
 
 		if(te instanceof TileEntityMoxer) {
-			TileEntityMoxer crucible = (TileEntityMoxer) te;
-
-			List<MoxerStack> stacks = new ArrayList();
-			stacks.addAll(crucible.inpStack);
-
-			for(MoxerStack stack : stacks) {
-				ItemStack scrap = ItemScraps.create(new MaterialStack(stack.material, stack.amount));
-				EntityItem item = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, scrap);
-				world.spawnEntityInWorld(item);
+			TileEntityMoxer moxer = (TileEntityMoxer) te;
+			for(MaterialStack stack : moxer.buffer.toMaterials()) {
+				world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, ItemScraps.create(stack)));
 			}
-
-			crucible.inpStack.clear();
 		}
 
 		super.breakBlock(world, x, y, z, b, i);

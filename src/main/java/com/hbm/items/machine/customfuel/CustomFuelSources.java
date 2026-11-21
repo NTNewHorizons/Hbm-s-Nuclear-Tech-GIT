@@ -5,11 +5,15 @@ import static com.hbm.items.machine.customfuel.EnumCustomFuel.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.hbm.config.MachineConfig;
 import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.items.ModItems;
+import com.hbm.items.machine.ICustomFuelItem;
+import com.hbm.items.machine.ItemCustomRBMKRod;
+import com.hbm.items.machine.ItemRBMKRod;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -56,9 +60,18 @@ public class CustomFuelSources {
 		}
 	}
 
-	// null if the item holds no fuel isotopes at all
+	// null if the item holds no fuel isotopes at all or can't go into the Moxer
 	public static CustomFuelMix dissolve(ItemStack stack) {
 		if(stack == null) return null;
+
+		Item item = stack.getItem();
+		if(item instanceof ICustomFuelItem) {
+			if(item == ModItems.custom_fuel_pwr_hot) return null;
+			if(CustomFuelSpent.isSpent(stack) && !MachineConfig.customFuelRecycles()) return null;
+			if(item instanceof ItemCustomRBMKRod && (ItemRBMKRod.getHullHeat(stack) >= 50 || ItemRBMKRod.getCoreHeat(stack) >= 50)) return null;
+			return ICustomFuelItem.currentMix(stack);
+		}
+
 		initIfNeeded();
 		CustomFuelMix mix = new CustomFuelMix();
 
