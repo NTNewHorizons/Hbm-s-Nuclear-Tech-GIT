@@ -15,6 +15,7 @@ import com.hbm.module.portmanager.ModulePortManPower;
 import com.hbm.tileentity.IPersistentNBT;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.Tuple.Triplet;
 
 import api.hbm.energymk2.IEnergyReceiverMK2;
@@ -59,6 +60,7 @@ public class TileEntityMachineAlkylation extends TileEntityMachineBase implement
 		
 		if(!worldObj.isRemote) {
 			moduleFluidPorts.update(getPorts());
+			modulePowerPorts.update(getPorts());
 			
 			if(worldObj.getTotalWorldTime() % 2 == 0) alkylate();
 			
@@ -198,31 +200,33 @@ public class TileEntityMachineAlkylation extends TileEntityMachineBase implement
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
-				PREFIX_VALUE + "type",
-				PREFIX_VALUE + "fill",
-				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		String[] info = new String[] {
+				RORFluidUtil.SET_FLUID_INFO,
 		};
+		info = RORFluidUtil.addTankInfo(info, "input", 2);
+		info = RORFluidUtil.addTankInfo(info, "output", 2);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		if((PREFIX_VALUE + "type").equals(name)) return tanks[0].getTankType().getName();
-		if((PREFIX_VALUE + "fill").equals(name)) return "" + tanks[0].getFill();
-		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tanks[0].getFill() * 100 / tanks[0].getMaxFill());
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0], tanks[1]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[2], tanks[3]);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tanks[0], params, type -> {
 				Triplet<FluidStack, FluidStack, FluidStack> out = AlkylationRecipes.getOutput(type);
 				if(out == null) throw new RORFunctionException("Exception: Invalid Alkylation Input");
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], out.getX().type);
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[2], out.getY().type);
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[3], out.getZ().type);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[1], out.getX().type);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[2], out.getY().type);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[3], out.getZ().type);
 			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

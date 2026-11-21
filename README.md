@@ -1,40 +1,15 @@
 # NTM: Space for NT:NH Modpack
 ### WARNING - this version of NTM IS NOT GUARANTEED to work properly OUTSIDE of NTNH
 
-**Changes compared to the upstream**
-- Removed Strawberries
-- Added custom recipes for some modpack mods
-- Added custom soundtrack (space)
-- Added some bobbleheads
-- Added Bufka's head (so that you can put it under press)
-- Dead grass recovery is 10 times slower
-- Returned selenium engine (Radial Performance Engine)
-- Combustible lemon
-- Glyphid dance and maracas
-- Added can crate into default bobmazon pool
-- Burning in the Nether is always on
-- Added special mobs compat to creeper transformation
-- More realistic radiation function with reachers
-- Added music in Bobmazon
-- Added lodestone recipe
-- Added coal recipe in Combination Oven
-- Added 2 new music discs
-- Added AgriCraft compat to Threshener and Buzz Saw
-- Added ForgeFluids <-> NTM Fluids compat
-- Glyphid taming
-- Baubles compat
-- Migrated to the GTNH Gradle build system with JDK 25 and JVM Downgrader, preserving Java 8 compatibility
-- Regulator valve
-- Louis the railgun
-- Full I18n-ization
-- RBMK and PWR fuel rods graph functions
-- Conveyor combinator
+### [Changes compared to the upstream](CHANGES.md)
 
 Hi, i am memeing things into existence, dont mind me! im just the bent fork at the end of the table -JamesH_2
 
 And I turn the memes into reality, see you in orbit! -Mellow
 
 And I am some random guy IDK -Bufka2011
+
+And I am some other random guy IDK -THOMASS47
 
 [NTM: Space on Modrinth](https://modrinth.com/mod/ntmspace)
 
@@ -46,18 +21,6 @@ And I am some random guy IDK -Bufka2011
 
 [Bobcat's Blog (the blag)](https://hbmmods.github.io/), you can find lengthy yapping, upcoming features and some secrets here.
 
-**This is for 1.7.10!** For 1.12, check out these projects:
-
-* NTM Community Edition (WarFactory): https://github.com/MisterNorwood/Hbm-s-Nuclear-Tech-CE/releases
-* NTM Extended Edition (Alcater): https://github.com/Alcatergit/Hbm-s-Nuclear-Tech-GIT/releases
-* NTM Reloaded: https://github.com/TheOriginalGolem/Hbm-s-Nuclear-Tech-GIT/releases
-
-For further ports, try:
-
-* NTM Remake on 1.18.2: https://codeberg.org/MartinTheDragon/Nuclear-Tech-Mod-Remake/releases
-* HBM Modernized on 1.20.1: https://github.com/Raptor324/HBM-Modernized/releases
-* NTM Neo on 1.21.1: https://github.com/ohiomannnn/HBMsNTM-NEO-EDITION/releases
-
 ## Downloading pre-compiled versions from GitHub
 
 Simply navigate to "Releases" on the right side of the page, download links for the compiled JAR as well as the corresponding source code are under the "Assets" category below the changelog. Make sure to review all changelogs when updating!
@@ -68,17 +31,14 @@ To include the mod as a dependency in a project of your own, you can adjust your
 
 ```groovy
 repositories {
-		maven {
-				name "NTM Releases"
-				url "https://maven.ntmr.dev/releases"
-		}
+	maven {
+		name "NTM Releases"
+		url "https://maven.ntnewhorizons.com/releases/"
+	}
 }
 
 dependencies {
-		def ntmBuildNumber = "5687" // Change this value according to the release you wish to use
-
-		implementation "com.hbm:HBM-NTM:1.0.27_X${ntmBuildNumber}:dev"
-		compileOnly "com.hbm:HBM-NTM:1.0.27_X${ntmBuildNumber}:src"
+	implementation "com.hbm:HBM-NTM:1.0.27_X5873_NTNH:dev"
 }
 ```
 
@@ -97,7 +57,7 @@ Please note that these installation instructions are assuming you're running Mic
  ```
  5. Download the source code:
  ```bash
-     git clone https://github.com/JameH2/Hbm-s-Nuclear-Tech-GIT.git
+     git clone https://github.com/NTNewHorizons/Hbm-s-Nuclear-Tech-GIT.git
  ```
  4. Enter the source code directory
  ```bash
@@ -127,7 +87,7 @@ If you want to make some changes to the mod, follow this guide:
 ```
    * Download the source code:
 ```bash
-    git clone https://github.com/JameH2/Hbm-s-Nuclear-Tech-GIT.git
+    git clone https://github.com/NTNewHorizons/Hbm-s-Nuclear-Tech-GIT.git
  ```
    * Move or copy every file within the new folder into your directory, making sure to overwrite any files.
    * Feel free to delete the remaining folder and rename your directory (such as "Hbm-s-Nuclear-Tech-GIT")

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.machine.BlockPWR.TileEntityBlockPWR;
 import com.hbm.handler.CompatHandler;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.interfaces.NotableComments;
@@ -28,6 +29,7 @@ import com.hbm.sound.AudioWrapper;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 
@@ -47,6 +49,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -193,6 +196,11 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 				this.unloadDelay = 60;
 			}
 
+			if(this.assembled && this.unloadDelay <= 0 && worldObj.getTotalWorldTime() % 20 == 0 && !isStructureIntact()) {
+				this.assembled = false;
+				this.markChanged();
+			}
+
 			if(this.assembled) {
 				this.setupAllPorts(ports);
 				this.updatePortFIFO();
@@ -316,6 +324,22 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 				}
 			}
 		}
+	}
+
+	// catches the controller being moved away from its parts, e.g. by a gravity gun
+	protected boolean isStructureIntact() {
+
+		for(BlockPos pos : this.rods) {
+			if(!worldObj.getChunkProvider().chunkExists(pos.getX() >> 4, pos.getZ() >> 4)) continue;
+
+			TileEntity tile = worldObj.getTileEntity(pos.getX(), pos.getY(), pos.getZ());
+			if(!(tile instanceof TileEntityBlockPWR)) return false;
+
+			TileEntityBlockPWR part = (TileEntityBlockPWR) tile;
+			if(part.coreX != xCoord || part.coreY != yCoord || part.coreZ != zCoord) return false;
+		}
+
+		return true;
 	}
 
 	protected void meltDown() {
@@ -655,7 +679,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 	@Override public FluidTank[] getSendingTanks() { return new FluidTank[] { tanks[1] }; }
 	@Override public FluidTank[] getReceivingTanks() { return new FluidTank[] { tanks[0] }; }
 	
-	public static final String[] ROR = new String[] { // not to be confused with RUR
+	public static final String[] ROR = RORFluidUtil.addFixedTankInfo(new String[] { // not to be confused with RUR
 		PREFIX_VALUE + "rods",
 		PREFIX_VALUE + "coreheat",
 		PREFIX_VALUE + "hullheat",
@@ -665,7 +689,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 		PREFIX_VALUE + "depletion",
 		PREFIX_FUNCTION + "setrods" + NAME_SEPARATOR + "percent",
 		PREFIX_FUNCTION + "jettison",
-	};
+	}, "coldbuf", "hotbuf");
 
 	@Override
 	public String[] getFunctionInfo() {
@@ -674,6 +698,11 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "coldbuf", tanks[0]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "hotbuf", tanks[1]);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "rods").equals(name))		return "" + (int) (100 - this.rodLevel); // why the fuck did i invert this again?
 		if((PREFIX_VALUE + "coreheat").equals(name))	return "" + this.coreHeat;
 		if((PREFIX_VALUE + "hullheat").equals(name))	return "" + this.hullHeat;

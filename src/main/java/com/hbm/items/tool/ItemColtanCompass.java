@@ -9,6 +9,7 @@ import baubles.api.IBauble;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.i18n.I18nUtil;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -25,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles")
 public class ItemColtanCompass extends Item implements IBauble {
 
 	public int lastX = 0;
@@ -75,23 +77,29 @@ public class ItemColtanCompass extends Item implements IBauble {
 	}
 
 	@Override
+	@Optional.Method(modid = "Baubles")
 	public BaubleType getBaubleType(ItemStack stack) { return BaubleType.BELT; }
 
 	@Override
+	@Optional.Method(modid = "Baubles")
 	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
 		tickCompass(stack, entity.worldObj, entity);
 	}
 
 	@Override
+	@Optional.Method(modid = "Baubles")
 	public void onEquipped(ItemStack stack, EntityLivingBase entity) { }
 
 	@Override
+	@Optional.Method(modid = "Baubles")
 	public void onUnequipped(ItemStack stack, EntityLivingBase entity) { }
 
 	@Override
+	@Optional.Method(modid = "Baubles")
 	public boolean canEquip(ItemStack stack, EntityLivingBase entity) { return true; }
 
 	@Override
+	@Optional.Method(modid = "Baubles")
 	public boolean canUnequip(ItemStack stack, EntityLivingBase entity) { return true; }
 
 	@SideOnly(Side.CLIENT)

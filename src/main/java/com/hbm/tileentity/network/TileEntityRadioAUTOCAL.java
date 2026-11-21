@@ -33,6 +33,8 @@ import net.minecraft.world.World;
 public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements IControlReceiver, IGUIProvider, SimpleComponent, CompatHandler.OCComponent {
 
 	public boolean isOn = false;
+	public boolean isPaused = false;
+	private int pendingSteps = 0;
 	public boolean ignoreError = false;
 	public boolean autoReboot = false;
 
@@ -54,15 +56,20 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 			}
 			if(this.ctx.world != this.worldObj) this.ctx.world = this.worldObj;
 
-			if(!this.isOn && this.autoReboot) {
+			if(!this.isOn && this.autoReboot && !this.isPaused) {
 				this.isOn = true;
 			}
 
-			if(this.isOn) {
+			if(this.isOn && (!this.isPaused || this.pendingSteps > 0)) {
 
 				int emergencyBrake = 100;
-				for(int i = 0; i < this.ctx.clockSpeed && emergencyBrake > 0; i++) {
+				this.ctx.clockProgress += this.ctx.clockSpeed;
+				while(this.isOn && emergencyBrake > 0 && (
+					this.pendingSteps > 0 
+					|| (!this.isPaused && this.ctx.clockProgress >= 1 - 1e-9))) {
 					emergencyBrake--;
+					boolean stepping = this.pendingSteps > 0;
+					if(stepping) this.pendingSteps--;
 
 					if(this.ctx.current == this.script.length) { this.stop("gui.autocal.error.terminated"); break; }
 					if(this.ctx.current < 0 || this.ctx.current >= this.script.length) { this.stop("gui.autocal.error.index_out_of_bounds"); break; }
@@ -71,10 +78,18 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 						int index = this.ctx.current;
 						this.ctx.current ++;
 						String line = this.script[index];
+						double previousClockSpeed = ctx.clockSpeed;
 						EnumStatementReturn ret = msesv1ext.eval(ctx, line);
-						if(ret != EnumStatementReturn.SKIP) pushMsg(index + ": " + line);
+						if(ret == EnumStatementReturn.SKIP) {
+							// Apply clockspeed change immediately
+							ctx.clockProgress = Math.max(0, ctx.clockProgress + (ctx.clockSpeed - previousClockSpeed));
+							if(stepping) pushMsg(index + ": " + line);
+						} else {
+							ctx.clockProgress = Math.max(0, ctx.clockProgress - 1);
+							pushMsg(index + ": " + line);
+						}
 						this.history[0] = "Buffer: " + ctx.readBuffer();
-						if(ret == EnumStatementReturn.END_TICK) break;
+						if(ret == EnumStatementReturn.END_TICK) { ctx.clockProgress = 0; break; }
 						if(ret == EnumStatementReturn.SHUTDOWN) this.stop("gui.autocal.error.shutdown_requested");
 						if(!this.ignoreError) {
 							if(ret == EnumStatementReturn.UNRECOGNIZED_COMMAND) this.stop("gui.autocal.error.unrecognized_command");
@@ -91,11 +106,11 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 								this.ctx.variables.setString("last_error", ret.name().toLowerCase(Locale.US));
 							}
 						}
-						if(ret == EnumStatementReturn.SKIP) i--;
 					} catch(Exception ex) {
 						this.stop("gui.autocal.error.evaluation_unsuccessful");
 					}
 				}
+				this.ctx.clockProgress %= 1;
 			}
 
 			this.networkPackNT(15);
@@ -113,6 +128,7 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 
 	public void stop(String reason) {
 		this.isOn = false;
+		this.pendingSteps = 0;
 		this.ctx.turnOff();
 		this.pushMsg(reason);
 	}
@@ -121,6 +137,7 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 	public void serialize(ByteBuf buf) {
 		super.serialize(buf);
 		buf.writeBoolean(isOn);
+		buf.writeBoolean(isPaused);
 		buf.writeBoolean(ignoreError);
 		buf.writeBoolean(autoReboot);
 		for(int i = 0; i < history.length; i++) BufferUtil.writeString(buf, this.history[i]);
@@ -130,6 +147,7 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 	public void deserialize(ByteBuf buf) {
 		super.deserialize(buf);
 		this.isOn = buf.readBoolean();
+		this.isPaused = buf.readBoolean();
 		this.ignoreError = buf.readBoolean();
 		this.autoReboot = buf.readBoolean();
 		for(int i = 0; i < history.length; i++) this.history[i] = BufferUtil.readString(buf);
@@ -140,6 +158,8 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 		super.readFromNBT(nbt);
 
 		this.isOn = nbt.getBoolean("isOn");
+		this.isPaused = nbt.getBoolean("isPaused");
+		this.pendingSteps = 0;
 		this.ignoreError = nbt.getBoolean("ignoreError");
 		this.autoReboot = nbt.getBoolean("autoReboot");
 
@@ -158,6 +178,7 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 		super.writeToNBT(nbt);
 
 		nbt.setBoolean("isOn", isOn);
+		nbt.setBoolean("isPaused", isPaused);
 		nbt.setBoolean("ignoreError", ignoreError);
 		nbt.setBoolean("autoReboot", autoReboot);
 
@@ -183,6 +204,17 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 		if(data.hasKey("on")) {
 			if(this.isOn) stop("gui.autocal.error.user_shutdown");
 			else this.isOn = true;
+			this.isPaused = false;
+			this.pendingSteps = 0;
+		}
+		if(data.hasKey("resume")) {
+			this.isPaused = false;
+			this.pendingSteps = 0;
+		}
+		if(data.hasKey("step")) {
+			this.isOn = true;
+			this.isPaused = true;
+			this.pendingSteps++;
 		}
 		if(data.hasKey("ignore")) this.ignoreError = !this.ignoreError;
 		if(data.hasKey("auto")) this.autoReboot = !this.autoReboot;
@@ -265,8 +297,15 @@ public class TileEntityRadioAUTOCAL extends TileEntityTickingBase implements ICo
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] setState(Context context, Arguments args) {
 		boolean state = args.checkBoolean(0);
-		if (state) isOn = true;
-		else stop("User requested shutdown");
+		if (state) {
+			isOn = true;
+			isPaused = false;
+			pendingSteps = 0;
+		} else {
+			isPaused = false;
+			pendingSteps = 0;
+			stop("User requested shutdown");
+		}
 		return new Object[] {};
 	}
 

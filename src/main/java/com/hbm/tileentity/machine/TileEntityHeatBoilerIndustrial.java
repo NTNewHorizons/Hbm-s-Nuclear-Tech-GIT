@@ -19,6 +19,7 @@ import com.hbm.tileentity.IConfigurableMachine;
 import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
 import api.hbm.redstoneoverradio.IRORValueProvider;
@@ -315,15 +316,21 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "input",
 				PREFIX_VALUE + "output",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO
+				RORFluidUtil.SET_FLUID_INFO
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "input", "output");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "input", tanks[0]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "output", tanks[1]);
+		if(tankValue != null) return tankValue;
+
 		if ((PREFIX_VALUE + "input").equals(name))		return "" + tanks[0].getFill();
 		if ((PREFIX_VALUE + "output").equals(name))		return "" + tanks[1].getFill();
 		return null;
@@ -331,14 +338,14 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tanks[0], params, type -> {
 				if(!type.hasTrait(FT_Heatable.class)) throw new RORFunctionException("Exception: Invalid Boiler Input");
 				FT_Heatable trait = type.getTrait(FT_Heatable.class);
 				if(trait.getEfficiency(HeatingType.BOILER) <= 0) throw new RORFunctionException("Exception: Invalid Boiler Input");
 				HeatingStep entry = trait.getFirstStep();
 				int outputCapacity = tanks[0].getMaxFill() * entry.amountProduced / entry.amountReq;
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], entry.typeProduced, outputCapacity);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[1], entry.typeProduced, outputCapacity);
 			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

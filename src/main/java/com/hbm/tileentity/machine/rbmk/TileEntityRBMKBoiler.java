@@ -21,6 +21,7 @@ import com.hbm.packet.toclient.AuxParticlePacketNT;
 import com.hbm.tileentity.TilePort;
 import com.hbm.tileentity.machine.rbmk.TileEntityRBMKConsole.ColumnType;
 import com.hbm.uninos.UniNodespace;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.CompatEnergyControl;
 import com.hbm.util.fauxpointtwelve.DirPos;
 import cpw.mods.fml.common.Optional;
@@ -329,15 +330,21 @@ public class TileEntityRBMKBoiler extends TileEntityRBMKSlottedBase implements I
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "feed",
 				PREFIX_VALUE + "steam",
 				PREFIX_VALUE + "consumption"
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "feed", "steam");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "feed", feed);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "steam", steam);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "feed").equals(name))		return "" + this.feed.getFill();
 		if((PREFIX_VALUE + "steam").equals(name))		return "" + this.steam.getFill();
 		if((PREFIX_VALUE + "consumption").equals(name))	return "" + this.consumption;

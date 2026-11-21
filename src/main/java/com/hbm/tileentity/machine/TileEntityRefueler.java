@@ -12,10 +12,12 @@ import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
+import com.hbm.util.BackhandCompat;
+import com.hbm.util.BaublesCompat;
 import com.hbm.util.BobMathUtil;
 
 import api.hbm.fluidmk2.IFillableItem;
-import baubles.api.BaublesApi;
 import api.hbm.fluidmk2.IFluidStandardReceiverMK2;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
-import xonin.backhand.api.core.BackhandUtils;
 
 public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidStandardReceiverMK2, IRORValueProvider, IRORInteractive {
 
@@ -74,9 +75,9 @@ public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidSt
 					fillEquipment(player.getEquipmentInSlot(i));
 				}
 
-				fillEquipment(BackhandUtils.getOffhandItem(player));
+				fillEquipment(BackhandCompat.getOffhandItem(player));
 
-				IInventory baubles = BaublesApi.getBaubles(player);
+				IInventory baubles = BaublesCompat.getBaubles(player);
 				if(baubles != null) {
 					for(int i = 0; i < baubles.getSizeInventory(); i++) {
 						fillEquipment(baubles.getStackInSlot(i));
@@ -188,26 +189,25 @@ public class TileEntityRefueler extends TileEntityLoadedBase implements IFluidSt
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
-				PREFIX_VALUE + "type",
-				PREFIX_VALUE + "fill",
-				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		String[] info = new String[] {
+				RORFluidUtil.SET_FLUID_INFO,
 		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		if((PREFIX_VALUE + "type").equals(name)) return tank.getTankType().getName();
-		if((PREFIX_VALUE + "fill").equals(name)) return "" + tank.getFill();
-		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tank.getFill() * 100 / tank.getMaxFill());
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, tank);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tank, params)) {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tank, params)) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}

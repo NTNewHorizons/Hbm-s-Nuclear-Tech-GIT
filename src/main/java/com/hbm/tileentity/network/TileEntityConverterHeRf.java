@@ -3,6 +3,7 @@ package com.hbm.tileentity.network;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import com.hbm.tileentity.IConfigurableMachine;
+import com.hbm.interfaces.IControlReceiver;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePortShapes;
 import com.hbm.tileentity.TilePort.PortDef;
@@ -15,12 +16,13 @@ import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.io.IOException;
 
-public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEnergyReceiverMK2, IEnergyHandler, IConfigurableMachine {
+public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEnergyReceiverMK2, IEnergyHandler, IConfigurableMachine, IControlReceiver {
 
 	//Thanks to the great people of Fusion Warfare for helping me with the original implementation of the RF energy API
 
@@ -28,6 +30,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 	private static final long[] HE_LIMITS = {5_000_000, 4_000_000, 3_000_000, 2_000_000, 1_000_000, 100_000};
 	private static final int[] RF_LIMITS = {1_000_000, 800_000, 600_000, 400_000, 200_000, 20_000};
 	private int maxPowerIndex = 0;
+	private ConnectionPriority priority = ConnectionPriority.LOW;
 	public static long heInput = 5;
 	public static long rfOutput = 1;
 	public static double inputDecay = 0.0;
@@ -84,7 +87,30 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 	@Override public void setPower(long i) { power = i; }
 	@Override public long getPower() { return power; }
 	@Override public long getMaxPower() { return HE_LIMITS[maxPowerIndex]; }
-	@Override public ConnectionPriority getPriority() { return ConnectionPriority.LOW; }
+	@Override public ConnectionPriority getPriority() { return priority; }
+
+	private void setPriority(int ordinal) {
+		ConnectionPriority[] priorities = ConnectionPriority.values();
+		priority = ordinal >= 0 && ordinal < priorities.length ? priorities[ordinal] : ConnectionPriority.LOW;
+	}
+
+	@Override
+	public boolean hasPermission(EntityPlayer player) {
+		return !isInvalid() && player.worldObj == worldObj && worldObj.getTileEntity(xCoord, yCoord, zCoord) == this
+				&& player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64;
+	}
+
+	@Override
+	public void receiveControl(EntityPlayer player, NBTTagCompound data) {
+		if(!hasPermission(player)) return;
+		int step = data.getInteger("bufferStep");
+		if(step == -1 || step == 1) adjustMaxPower(step < 0);
+		if(data.getInteger("priorityStep") == 1) {
+			setPriority((priority.ordinal() + 1) % ConnectionPriority.values().length);
+			markDirty();
+			networkPackNT(15);
+		}
+	}
 
 	public boolean adjustMaxPower(boolean decrease) {
 		int nextIndex = Math.max(0, Math.min(HE_LIMITS.length - 1, maxPowerIndex + (decrease ? 1 : -1)));
@@ -119,6 +145,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 
 		setMaxPower(nbt.hasKey("maxPower") ? nbt.getLong("maxPower") : HE_LIMITS[0]);
 		this.power = nbt.getLong("power");
+		setPriority(nbt.hasKey("priority") ? nbt.getByte("priority") : ConnectionPriority.LOW.ordinal());
 		updateRfLimits();
 		storage.readFromNBT(nbt);
 	}
@@ -129,6 +156,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 
 		nbt.setLong("power", power);
 		nbt.setLong("maxPower", getMaxPower());
+		nbt.setByte("priority", (byte) priority.ordinal());
 		storage.writeToNBT(nbt);
 	}
 
@@ -139,6 +167,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 		buf.writeLong(power);
 		buf.writeLong(getMaxPower());
 		buf.writeInt(storage.getEnergyStored());
+		buf.writeByte(priority.ordinal());
 	}
 
 	@Override
@@ -149,6 +178,7 @@ public class TileEntityConverterHeRf extends TileEntityLoadedBase implements IEn
 		setMaxPower(buf.readLong());
 		updateRfLimits();
 		storage.setEnergyStored(buf.readInt());
+		setPriority(buf.readByte());
 	}
 
 	@Override

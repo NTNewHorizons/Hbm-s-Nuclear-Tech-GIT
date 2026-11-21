@@ -1,8 +1,12 @@
 package com.hbm.tileentity.machine;
 
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+
 import java.util.HashMap;
 import java.util.List;
 
+import com.hbm.util.RORFluidUtil;
 import com.hbm.handler.threading.PacketThreading;
 import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.blocks.ModBlocks;
@@ -39,7 +43,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMachineArcWelder extends TileEntityMachineBase implements IEnergyReceiverMK2, IFluidStandardReceiverMK2, IConditionalInvAccess, IGUIProvider, IUpgradeInfoProvider, IFluidCopiable {
+public class TileEntityMachineArcWelder extends TileEntityMachineBase implements IEnergyReceiverMK2, IFluidStandardReceiverMK2, IConditionalInvAccess, IGUIProvider, IUpgradeInfoProvider, IFluidCopiable, IRORValueProvider, IRORInteractive {
 
 	public long power;
 	public long maxPower = 2_000;
@@ -400,5 +404,34 @@ public class TileEntityMachineArcWelder extends TileEntityMachineBase implements
 	@Override
 	public FluidTank getTankToPaste() {
 		return tank;
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		String[] info = new String[] {
+				RORFluidUtil.SET_FLUID_INFO,
+		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		return info;
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, tank);
+		if(fluidValue != null) return fluidValue;
+
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tank, params)) {
+				this.markDirty();
+				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			return null;
+		}
+		return null;
 	}
 }

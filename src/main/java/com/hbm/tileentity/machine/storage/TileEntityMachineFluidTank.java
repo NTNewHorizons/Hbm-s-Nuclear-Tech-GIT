@@ -4,6 +4,7 @@ import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
 import api.hbm.redstoneoverradio.IRORInteractive;
 import api.hbm.redstoneoverradio.IRORValueProvider;
 
+import com.hbm.blocks.BlockDummyable;
 import com.hbm.explosion.vanillant.ExplosionVNT;
 import com.hbm.extprop.HbmPlayerProps;
 import com.hbm.inventory.OreDictManager;
@@ -17,6 +18,7 @@ import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.*;
 import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.ParticleUtil;
 import com.hbm.util.FluidDebug;
 import cpw.mods.fml.common.Optional;
@@ -205,7 +207,20 @@ public class TileEntityMachineFluidTank extends TileEntityBarrel implements IFlu
 	}
 	
 	@Override
-	public PortDef[] getPorts() { if(cachedPorts == null) cachedPorts = TilePortShapes.refinery(xCoord, yCoord, zCoord); return cachedPorts; }
+	public PortDef[] getPorts() { 
+		if(cachedPorts == null) {
+			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+			ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
+
+			cachedPorts = new PortDef[] {
+				PortDef.make(xCoord + dir.offsetX + rot.offsetX, yCoord, zCoord + dir.offsetZ + rot.offsetZ, dir),
+				PortDef.make(xCoord + dir.offsetX - rot.offsetX, yCoord, zCoord + dir.offsetZ - rot.offsetZ, dir),
+				PortDef.make(xCoord - dir.offsetX - rot.offsetX, yCoord, zCoord - dir.offsetZ - rot.offsetZ, dir.getOpposite()),
+				PortDef.make(xCoord - dir.offsetX + rot.offsetX, yCoord, zCoord - dir.offsetZ + rot.offsetZ, dir.getOpposite()),
+			};
+		}
+		return cachedPorts;
+	}
 
 	AxisAlignedBB bb = null;
 
@@ -294,27 +309,26 @@ public class TileEntityMachineFluidTank extends TileEntityBarrel implements IFlu
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
-				PREFIX_VALUE + "type",
-				PREFIX_VALUE + "fill",
-				PREFIX_VALUE + "fillpercent",
+		String[] info = new String[] {
 				PREFIX_FUNCTION + "setmode" + NAME_SEPARATOR + "mode (0-3)",
 				PREFIX_FUNCTION + "setmode" + NAME_SEPARATOR + "mode" + PARAM_SEPARATOR + "fallback (0-3)",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		if((PREFIX_VALUE + "type").equals(name))		return tank.getTankType().getName();
-		if((PREFIX_VALUE + "fill").equals(name))		return "" + tank.getFill();
-		if((PREFIX_VALUE + "fillpercent").equals(name))	return "" + (tank.getFill() * 100 / tank.getMaxFill());
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, tank);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) return super.runRORFunction(name, params);
+		if(RORFluidUtil.SET_FLUID.equals(name)) return super.runRORFunction(name, params);
 		
 		if((PREFIX_FUNCTION + "setmode").equals(name) && params.length > 0) {
 			int mode = IRORInteractive.parseInt(params[0], 0, 3);

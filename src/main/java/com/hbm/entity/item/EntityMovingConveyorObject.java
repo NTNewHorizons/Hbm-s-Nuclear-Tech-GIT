@@ -35,11 +35,10 @@ public abstract class EntityMovingConveyorObject extends Entity {
 	@SideOnly(Side.CLIENT) protected double velocityZ;
 
 	public static final int CRAM_CHECK_TICKS = 1 * 20;
-	public static final int CRAM_CHECK_LIMIT = 25;
 	private boolean blocked = false;
 
 	public static boolean isCrammed(World world, int x, int y, int z) {
-		return getObjectsOnBlock(world, x, y, z).size() >= CRAM_CHECK_LIMIT;
+		return getObjectsOnBlock(world, x, y, z).size() >= ServerConfig.CONVEYOR_CRAM_MAX.get();
 	}
 
 	public static boolean canSendToConveyor(World world, int x, int y, int z, ForgeDirection dir, EntityMovingItem item) {
@@ -179,23 +178,6 @@ public abstract class EntityMovingConveyorObject extends Entity {
 							obj.blocked = isForwardCrammed;
 						}
 					}
-				}
-			}
-			
-			// cram check every 20s
-			if((ticksExisted + this.getEntityId()) % 400 == 0) {
-				List<EntityMovingConveyorObject> objs = worldObj.getEntitiesWithinAABB(EntityMovingConveyorObject.class, this.boundingBox.expand(0.125, 0.125, 0.125));
-				if(objs.size() >= ServerConfig.CONVEYOR_CRAM_MAX.get()) {
-					for(EntityMovingConveyorObject obj : objs) obj.setDead();
-					ExplosionVNT vnt = new ExplosionVNT(worldObj, posX, posY + 0.125, posZ, 1, this);
-					vnt.setSFX(new ExplosionEffectTiny());
-					vnt.explode();
-					int x = (int) Math.floor(posX);
-					int y = (int) Math.floor(posY);
-					int z = (int) Math.floor(posZ);
-					
-					if(worldObj.getBlock(x, y, z) instanceof IConveyorBelt && this.ticksExisted > 400 && ServerConfig.CONVEYOR_CRAM_EXPLODE.get())
-						worldObj.func_147480_a(x, y, z, false);
 				}
 			}
 

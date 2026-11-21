@@ -3,6 +3,7 @@ package com.hbm.tileentity.network;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import com.hbm.tileentity.IConfigurableMachine;
+import com.hbm.interfaces.IControlReceiver;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePortShapes;
 import com.hbm.tileentity.TilePort.PortDef;
@@ -12,11 +13,12 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.io.IOException;
 
-public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEnergyProviderMK2, IEnergyHandler, IConfigurableMachine {
+public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEnergyProviderMK2, IEnergyHandler, IConfigurableMachine, IControlReceiver {
 
 	public long power;
 	private static final long[] HE_LIMITS = {5_000_000, 4_000_000, 3_000_000, 2_000_000, 1_000_000, 100_000};
@@ -63,6 +65,19 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 	@Override public long getPower() { return power; }
 	@Override public void setPower(long power) { this.power = power; }
 	@Override public long getMaxPower() { return HE_LIMITS[maxPowerIndex]; }
+
+	@Override
+	public boolean hasPermission(EntityPlayer player) {
+		return !isInvalid() && player.worldObj == worldObj && worldObj.getTileEntity(xCoord, yCoord, zCoord) == this
+				&& player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64;
+	}
+
+	@Override
+	public void receiveControl(EntityPlayer player, NBTTagCompound data) {
+		if(!hasPermission(player)) return;
+		int step = data.getInteger("bufferStep");
+		if(step == -1 || step == 1) adjustMaxPower(step < 0);
+	}
 	
 	public boolean adjustMaxPower(boolean decrease) {
 		int nextIndex = Math.max(0, Math.min(HE_LIMITS.length - 1, maxPowerIndex + (decrease ? 1 : -1)));

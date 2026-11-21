@@ -19,6 +19,7 @@ import com.hbm.tileentity.IBufPacketReceiver;
 import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
 import cpw.mods.fml.relauncher.Side;
@@ -286,30 +287,32 @@ public class TileEntityMachineHephaestus extends TileEntityLoadedBase implements
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
-				PREFIX_VALUE + "type",
-				PREFIX_VALUE + "fill",
-				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		String[] info = new String[] {
+				RORFluidUtil.SET_FLUID_INFO,
 		};
+		info = RORFluidUtil.addTankInfo(info, "input", 1);
+		info = RORFluidUtil.addTankInfo(info, "output", 1);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		if((PREFIX_VALUE + "type").equals(name)) return input.getTankType().getName();
-		if((PREFIX_VALUE + "fill").equals(name)) return "" + input.getFill();
-		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (input.getFill() * 100 / input.getMaxFill());
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", input);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getTankValue(name, "output", output);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(input, params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(input, params, type -> {
 				if(!type.hasTrait(FT_Heatable.class)) throw new RORFunctionException("Exception: Invalid Hephaestus Input");
 				FT_Heatable trait = type.getTrait(FT_Heatable.class);
 				if(trait.getEfficiency(HeatingType.HEATEXCHANGER) <= 0) throw new RORFunctionException("Exception: Invalid Hephaestus Input");
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(output, trait.getFirstStep().typeProduced);
+				RORFluidUtil.requireEmptyForTypeChange(output, trait.getFirstStep().typeProduced);
 			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.net.URI;
 import java.util.Arrays;
 
 import org.lwjgl.Sys;
@@ -41,17 +40,19 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 		this.autocal = autocal;
 	}
 
-	private void browse(URI uri) throws IOException {
+	private void openFile(File file) throws IOException {
 		// workaround for Java not supporting all platforms, mostly for Linux
-		if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-			Desktop.getDesktop().browse(uri);
+		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+			Desktop.getDesktop().open(file);
+		} else if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			Desktop.getDesktop().browse(file.toURI());
 		} else {
 			if (Sys.getVersion().charAt(0) == '3') {
 				// probably a LWJGL3ify user, open the folder instead since that somehow seems to work
 				File uploadFolder = new File(MainRegistry.configDir.getParentFile(), "hbmComputerUpload");
 				if (uploadFolder.exists()) Sys.openURL(uploadFolder.toString());
 			} else {
-				Sys.openURL(uri.toString());
+				Sys.openURL(file.toURI().toString());
 			}
 		}
 	}
@@ -88,6 +89,8 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 		if(checkClick(x, y, 28, 36, 18, 18)) { data = new NBTTagCompound(); data.setBoolean("ignore", true); }
 		if(checkClick(x, y, 48, 36, 18, 18)) { data = new NBTTagCompound(); data.setBoolean("auto", true); }
 
+		if(checkClick(x, y, 68, 36, 14, 18)) { data = new NBTTagCompound(); data.setBoolean(isShiftKeyDown() ? "resume" : "step", true); }
+
 		// open folder and generate new script file
 		if(checkClick(x, y, 104, 36, 18, 18)) {
 			try {
@@ -96,7 +99,7 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 				if(!uploadFolder.exists()) uploadFolder.mkdir();
 				if(!script.exists()) script.createNewFile();
 				script.setExecutable(false);
-				browse(script.toURI());
+				openFile(script);
 			} catch(Throwable ex) { MainRegistry.logger.error("Couldn't open link", ex); }
 		}
 
@@ -114,7 +117,7 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 						printer.close();
 					} catch(Throwable e) { }
 				}
-				browse(doc.toURI());
+				openFile(doc);
 			} catch(Throwable ex) { MainRegistry.logger.error("Couldn't open link", ex); }
 		}
 
@@ -170,6 +173,8 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 		if(checkClick(x, y, 28, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.RED + I18nUtil.resolveKey("gui.autocal.ignore_errors"), I18nUtil.resolveKey("gui.autocal.doc.line.004"), I18nUtil.resolveKey("gui.autocal.doc.line.002"), I18nUtil.resolveKey("gui.autocal.doc.line.003"), I18nUtil.resolveKey("gui.autocal.doc.line.001")}), x, y);
 		if(checkClick(x, y, 48, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.RED + I18nUtil.resolveKey("gui.autocal.auto_reboot"), I18nUtil.resolveKey("gui.autocal.doc.line.006"), I18nUtil.resolveKey("gui.autocal.doc.line.007"), I18nUtil.resolveKey("gui.autocal.doc.line.005")}), x, y);
 
+		if(checkClick(x, y, 68, 36, 14, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.YELLOW + I18nUtil.resolveKey(isShiftKeyDown() ? "gui.autocal.resume" : "gui.autocal.step"), I18nUtil.resolveKey("gui.autocal.step_info")}), x, y);
+
 		if(checkClick(x, y, 84, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.autocal.upload")}), x, y);
 		if(checkClick(x, y, 104, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.autocal.open_file")}), x, y);
 		if(checkClick(x, y, 124, 36, 18, 18)) this.func_146283_a(Arrays.asList(new String[] {EnumChatFormatting.BLUE + I18nUtil.resolveKey("gui.autocal.download"), EnumChatFormatting.RED + I18nUtil.resolveKey("gui.autocal.unsupported")}), x, y);
@@ -181,7 +186,8 @@ public class GUIScreenRadioAUTOCAL extends GuiScreen {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		if(autocal.isOn) drawTexturedModalRect(guiLeft + 8, guiTop + 36, xSize, 0, 18, 18);
+		if(autocal.isPaused) drawTexturedModalRect(guiLeft + 8, guiTop + 36, xSize + 18, 0, 18, 18);
+		else if(autocal.isOn) drawTexturedModalRect(guiLeft + 8, guiTop + 36, xSize, 0, 18, 18);
 		if(!autocal.ignoreError) drawTexturedModalRect(guiLeft + 28, guiTop + 36, xSize, 18, 18, 18);
 		if(!autocal.autoReboot) drawTexturedModalRect(guiLeft + 48, guiTop + 36, xSize, 36, 18, 18);
 	}

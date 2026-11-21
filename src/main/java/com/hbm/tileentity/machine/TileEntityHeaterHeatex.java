@@ -13,6 +13,7 @@ import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
 import api.hbm.redstoneoverradio.IRORValueProvider;
@@ -269,16 +270,22 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "hotfluid",
 				PREFIX_VALUE + "coldfluid",
 				PREFIX_VALUE + "heat",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO
+				RORFluidUtil.SET_FLUID_INFO
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "hotfluid", "coldfluid");
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "hotfluid", tanks[0]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "coldfluid", tanks[1]);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "hotfluid").equals(name))	return "" + tanks[0].getFill();
 		if((PREFIX_VALUE + "coldfluid").equals(name))	return "" + tanks[1].getFill();
 		if((PREFIX_VALUE + "heat").equals(name))		return "" + heatEnergy;
@@ -287,12 +294,12 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			if(RORFluidUtil.setFluid(tanks[0], params, type -> {
 				if(!type.hasTrait(FT_Coolable.class)) throw new RORFunctionException("Exception: Invalid Coolant");
 				FT_Coolable trait = type.getTrait(FT_Coolable.class);
 				if(trait.getEfficiency(CoolingType.HEATEXCHANGER) <= 0) throw new RORFunctionException("Exception: Invalid Coolant");
-				com.hbm.util.RORFluidUtil.requireEmptyForTypeChange(tanks[1], trait.coolsTo);
+				RORFluidUtil.requireEmptyForTypeChange(tanks[1], trait.coolsTo);
 			})) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

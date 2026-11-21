@@ -26,6 +26,7 @@ import com.hbm.uninos.GenNode;
 import com.hbm.uninos.INetworkProvider;
 import com.hbm.uninos.UniNodespace;
 import com.hbm.uninos.networkproviders.PlasmaNetworkProvider;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.Tuple.Pair;
 import com.hbm.util.fauxpointtwelve.BlockPos;
@@ -597,17 +598,22 @@ public class TileEntityFusionPlasmaForge extends TileEntityMachineBase implement
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "progress",
 				PREFIX_VALUE + "recipe",
 				PREFIX_VALUE + "active",
 				PREFIX_VALUE + "booster",
 				PREFIX_VALUE + "plasma",
 		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, inputTank);
+		if(fluidValue != null) return fluidValue;
+
 		if((PREFIX_VALUE + "progress").equals(name))	return "" + (int) Math.round(this.plasmaModule.progress * 100);
 		if((PREFIX_VALUE + "recipe").equals(name))		return this.plasmaModule.getRecipeName();
 		if((PREFIX_VALUE + "active").equals(name))		return "" + (this.didProcess ? 1 : 0);

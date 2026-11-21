@@ -18,6 +18,7 @@ import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.EnumUtil;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.energymk2.IEnergyReceiverMK2.ConnectionPriority;
@@ -147,7 +148,7 @@ public class FlowControlPump extends BlockDummyable implements ILookOverlay, IGU
 					PREFIX_VALUE + "type",
 					PREFIX_VALUE + "fill",
 					PREFIX_VALUE + "fillpercent",
-					com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+					RORFluidUtil.SET_FLUID_INFO,
 			};
 		}
 
@@ -155,14 +156,14 @@ public class FlowControlPump extends BlockDummyable implements ILookOverlay, IGU
 		public String provideRORValue(String name) {
 			if((PREFIX_VALUE + "type").equals(name)) return tank[0].getTankType().getName();
 			if((PREFIX_VALUE + "fill").equals(name)) return "" + tank[0].getFill();
-			if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tank[0].getFill() * 100 / tank[0].getMaxFill());
+			if((PREFIX_VALUE + "fillpercent").equals(name)) return tank[0].getMaxFill() == 0 ? "0" : "" + (tank[0].getFill() * 100 / tank[0].getMaxFill());
 			return null;
 		}
 
 		@Override
 		public String runRORFunction(String name, String[] params) {
-			if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-				if(com.hbm.util.RORFluidUtil.setFluid(tank[0], params)) {
+			if(RORFluidUtil.SET_FLUID.equals(name)) {
+				if(RORFluidUtil.setFluid(tank[0], params)) {
 					this.markDirty();
 					if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}

@@ -2,14 +2,18 @@ package com.hbm.blocks.machine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.hbm.blocks.ILookOverlay;
+import com.hbm.inventory.gui.GUIEnergyConverter;
+import com.hbm.main.MainRegistry;
+import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.network.TileEntityConverterHeRf;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.i18n.I18nUtil;
 
-import api.hbm.block.IToolable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
@@ -18,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockConverterHeRf extends BlockContainer implements ILookOverlay, IToolable {
+public class BlockConverterHeRf extends BlockContainer implements ILookOverlay, IGUIProvider {
 
 	public BlockConverterHeRf(Material mat) {
 		super(mat);
@@ -30,16 +34,15 @@ public class BlockConverterHeRf extends BlockContainer implements ILookOverlay, 
 	}
 
 	@Override
-	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, int side, float fX, float fY, float fZ, ToolType tool) {
-		if(tool != ToolType.SCREWDRIVER) return false;
-		TileEntity tile = world.getTileEntity(x, y, z);
-		if(!(tile instanceof TileEntityConverterHeRf)) return false;
-		if(!world.isRemote) {
-			TileEntityConverterHeRf converter = (TileEntityConverterHeRf) tile;
-			return converter.adjustMaxPower(!player.isSneaking());
-		}
-		return false;
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float fX, float fY, float fZ) {
+		if(player.isSneaking()) return false;
+		if(!(world.getTileEntity(x, y, z) instanceof TileEntityConverterHeRf)) return false;
+		if(world.isRemote) player.openGui(MainRegistry.instance, 0, world, x, y, z);
+		return true;
 	}
+
+	@Override public Object provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) { return new GUIEnergyConverter((TileEntityConverterHeRf) world.getTileEntity(x, y, z)); }
+	@Override public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) { return null; }
 
 	@Override
 	public void printHook(Pre event, World world, int x, int y, int z) {
@@ -54,6 +57,8 @@ public class BlockConverterHeRf extends BlockContainer implements ILookOverlay, 
 		text.add((EnumChatFormatting.RED) + "<- " + EnumChatFormatting.RESET + I18nUtil.resolveKey("overlay.converter_he_rf.rf", BobMathUtil.getShortNumber(converter.getEnergyStored(ForgeDirection.UNKNOWN))));
 
 		text.add(I18nUtil.resolveKey("overlay.converter.max_buffer", BobMathUtil.getShortNumber(converter.getMaxPower())));
+		text.add(I18nUtil.resolveKey("overlay.converter_he_rf.priority", EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.connection_priority." + converter.getPriority().name().toLowerCase(Locale.ROOT)) + EnumChatFormatting.RESET));
+		text.add(I18nUtil.resolveKey("overlay.converter.configure"));
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}

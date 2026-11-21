@@ -17,6 +17,7 @@ import com.hbm.tileentity.TilePort.PortDef;
 import com.hbm.uninos.GenNode;
 import com.hbm.uninos.UniNodespace;
 import com.hbm.uninos.networkproviders.PlasmaNetworkProvider;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
@@ -321,13 +322,20 @@ public class TileEntityFusionMHDT extends TileEntityLoadedBase implements IEnerg
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "output"
 		};
+		info = RORFluidUtil.addFixedTankInfo(info, "coldcoolant", "warmcoolant");
+		return info;
 	}
 	
 	@Override
 	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getFixedTankValue(name, "coldcoolant", tanks[0]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getFixedTankValue(name, "warmcoolant", tanks[1]);
+		if(fluidValue != null) return fluidValue;
+
 		if((PREFIX_VALUE + "output").equals(name)) return "" + this.power;
 		return null;
 	}

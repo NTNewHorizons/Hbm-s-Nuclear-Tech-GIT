@@ -8,6 +8,7 @@ import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Gaseous_ART;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.IDysonConverter;
 import com.hbm.tileentity.TileEntityMachineBase;
+import com.hbm.util.RORFluidUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -172,7 +173,7 @@ public class TileEntityDysonConverterAnatmogenesis extends TileEntityMachineBase
 	public String[] getFunctionInfo() {
 		return new String[] {
 				PREFIX_VALUE + "type",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+				RORFluidUtil.SET_FLUID_INFO,
 		};
 	}
 
@@ -184,8 +185,8 @@ public class TileEntityDysonConverterAnatmogenesis extends TileEntityMachineBase
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			FluidType type = com.hbm.util.RORFluidUtil.parseFluid(params);
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			FluidType type = RORFluidUtil.parseFluid(params);
 			if(!type.hasTrait(FT_Gaseous.class) && !type.hasTrait(FT_Gaseous_ART.class)) throw new api.hbm.redstoneoverradio.RORFunctionException("Exception: Gas Required");
 			if(fluid != type) {
 				fluid = type;

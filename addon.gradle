@@ -11,6 +11,13 @@ if (!mod_build_number.isEmpty()) {
 
 ext.modVersion = version_name
 
+// Keep dependency coordinates stable regardless of the checkout directory name.
+afterEvaluate {
+    publishing.publications.named('maven', MavenPublication) {
+        artifactId = System.getenv('ARTIFACT_ID') ?: 'HBM-NTM'
+    }
+}
+
 def capturedVersion = project.version
 tasks.register('version') {
     doFirst {
@@ -25,5 +32,27 @@ tasks.named('processResources').configure {
         def mcmodInfo = new File(outputs.files.singleFile, 'mcmod.info')
         mcmodInfo.text = mcmodInfo.getText('UTF-8')
             .replace("[${version_name}]", version_name)
+    }
+}
+
+def forceCompressedJar = project.hasProperty('compressedJar')
+def forceUncompressedJar = project.hasProperty('uncompressedJar')
+
+gradle.taskGraph.whenReady { graph ->
+    def buildsRelease = graph.hasTask(tasks.named('reobfJar').get())
+    def compressedJar = (forceCompressedJar || buildsRelease) && !forceUncompressedJar
+    tasks.named('jar', Jar).get().entryCompression = compressedJar
+        ? org.gradle.api.tasks.bundling.ZipEntryCompression.DEFLATED
+        : org.gradle.api.tasks.bundling.ZipEntryCompression.STORED
+}
+
+afterEvaluate {
+    tasks.withType(JavaCompile).configureEach {
+        if (javaCompiler.get().metadata.languageVersion.asInt() != 8) {
+            sourceCompatibility = '8'
+            targetCompatibility = '8'
+            options.release.set(8)
+            options.fork = false
+        }
     }
 }

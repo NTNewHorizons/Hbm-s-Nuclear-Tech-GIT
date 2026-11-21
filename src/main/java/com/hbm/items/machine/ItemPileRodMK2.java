@@ -3,6 +3,7 @@ package com.hbm.items.machine;
 import java.util.List;
 
 import com.hbm.items.ItemEnumMulti;
+import com.hbm.items.ModItems;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.i18n.I18nUtil;
@@ -29,6 +30,7 @@ public class ItemPileRodMK2 extends ItemEnumMulti {
 	 */
 
 	public static final String KEY_NBT_DEPLETION = "depletion";
+	public static final double METEORITE_SWORD_LIFE = 1_000D;
 
 	public ItemPileRodMK2() {
 		super(EnumPileRod.class, true, true);
@@ -88,18 +90,27 @@ public class ItemPileRodMK2 extends ItemEnumMulti {
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		EnumPileRod rod = EnumUtil.grabEnumSafely(EnumPileRod.class, stack.getItemDamage());
-		double life = rod.life;
+		double life = getLife(stack);
 		if(life <= 0) return 0D;
 		return getDepletion(stack) / life;
 	}
 
 	public static double getDepletionPercent(ItemStack stack) {
 		if(stack == null) return 0D;
-		EnumPileRod rod = EnumUtil.grabEnumSafely(EnumPileRod.class, stack.getItemDamage());
-		double life = rod.life;
+		double life = getLife(stack);
 		if(life <= 0) return 0D;
 		return (getDepletion(stack) / life) * 100;
+	}
+
+	public static boolean isLoadable(ItemStack stack) {
+		return stack != null && (stack.getItem() instanceof ItemPileRodMK2 || stack.getItem() == ModItems.meteorite_sword_etched);
+	}
+
+	public static double getLife(ItemStack stack) {
+		if(stack == null) return 0D;
+		if(stack.getItem() == ModItems.meteorite_sword_etched) return METEORITE_SWORD_LIFE;
+		EnumPileRod rod = EnumUtil.grabEnumSafely(EnumPileRod.class, stack.getItemDamage());
+		return rod.life;
 	}
 
 	public static double getDepletion(ItemStack stack) {
@@ -113,6 +124,7 @@ public class ItemPileRodMK2 extends ItemEnumMulti {
 	}
 
 	public static double getReactivity(ItemStack stack, double inFlux) {
+		if(stack.getItem() == ModItems.meteorite_sword_etched) return 0D;
 		EnumPileRod rod = EnumUtil.grabEnumSafely(EnumPileRod.class, stack.getItemDamage());
 		double outFlux = rod.neutronSource;
 		if(rod.reactionMult > 0) {
@@ -122,11 +134,21 @@ public class ItemPileRodMK2 extends ItemEnumMulti {
 	}
 
 	public static double getHeatPerNeutron(ItemStack stack) {
+		if(stack.getItem() == ModItems.meteorite_sword_etched) return 0D;
 		EnumPileRod rod = EnumUtil.grabEnumSafely(EnumPileRod.class, stack.getItemDamage());
 		return rod.heatMult;
 	}
 
 	public static ItemStack react(ItemStack stack, double inFlux) {
+		if(stack.getItem() == ModItems.meteorite_sword_etched) {
+			double dep = getDepletion(stack) + inFlux;
+			if(dep < METEORITE_SWORD_LIFE) {
+				setDepletion(stack, dep);
+				return stack;
+			}
+			return new ItemStack(ModItems.meteorite_sword_bred);
+		}
+
 		EnumPileRod rod = EnumUtil.grabEnumSafely(EnumPileRod.class, stack.getItemDamage());
 		if(rod.life <= 0) return stack;
 		double dep = getDepletion(stack) + inFlux;

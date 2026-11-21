@@ -228,6 +228,7 @@ public class ItemPipette extends Item implements IFillableItem, net.minecraftfor
 		if(resource == null || resource.amount <= 0) return 0;
 		FluidType type = api.ntm1of90.compat.fluid.registry.FluidMappingRegistry.getHbmFluidType(resource.getFluid());
 		if(type == Fluids.NONE) return 0;
+		if(!acceptsFluid(type, stack) || willFizzle(type)) return 0;
 		int currentFill = getFill(stack);
 		FluidType current = getType(stack);
 		int room = getContainerCapacity(stack) - currentFill;
@@ -242,7 +243,7 @@ public class ItemPipette extends Item implements IFillableItem, net.minecraftfor
 	@Override
 	public net.minecraftforge.fluids.FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain) {
 		net.minecraftforge.fluids.FluidStack content = getFluid(stack);
-		if(content == null) return null;
+		if(content == null || maxDrain <= 0) return null;
 		int amount = Math.min(content.amount, maxDrain);
 		if(doDrain) {
 			FluidType type = getType(stack);

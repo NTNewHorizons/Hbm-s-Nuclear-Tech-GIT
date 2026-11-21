@@ -10,6 +10,7 @@ import com.hbm.lib.Library;
 import com.hbm.tileentity.IConditionalInvAccess;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TilePort.PortDef;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 
@@ -466,7 +467,7 @@ public class TileEntityPASource extends TileEntityCooledBase implements IGUIProv
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 			PREFIX_VALUE + "status",
 			PREFIX_VALUE + "momentum",
 			PREFIX_VALUE + "defocus",
@@ -475,9 +476,15 @@ public class TileEntityPASource extends TileEntityCooledBase implements IGUIProv
 			PREFIX_VALUE + "pfm",
 			PREFIX_FUNCTION + "cancel"
 		};
+		return RORFluidUtil.addFixedTankInfo(info, "pfmcold", "pfm");
 	}
 	@Override
 	public String provideRORValue(String name) {
+		String tankValue = RORFluidUtil.getFixedTankValue(name, "pfmcold", coolantTanks[0]);
+		if(tankValue != null) return tankValue;
+		tankValue = RORFluidUtil.getFixedTankValue(name, "pfm", coolantTanks[1]);
+		if(tankValue != null) return tankValue;
+
 		if((PREFIX_VALUE + "status").equals(name))		return "" + this.state;
 		if((PREFIX_VALUE + "momentum").equals(name))	return "" + this.lastSpeed;
 		if((PREFIX_VALUE + "defocus").equals(name)) {

@@ -16,6 +16,7 @@ import com.hbm.packet.toclient.BufPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.IBufPacketReceiver;
 import com.hbm.util.AstronomyUtil;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.redstoneoverradio.IRORInteractive;
@@ -195,7 +196,7 @@ public class BlockAtmosphereEditor extends BlockContainer implements IToolable, 
 		public String[] getFunctionInfo() {
 			return new String[] {
 					PREFIX_VALUE + "type",
-					com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+					RORFluidUtil.SET_FLUID_INFO,
 			};
 		}
 
@@ -207,8 +208,8 @@ public class BlockAtmosphereEditor extends BlockContainer implements IToolable, 
 
 		@Override
 		public String runRORFunction(String name, String[] params) {
-			if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-				FluidType type = com.hbm.util.RORFluidUtil.parseFluid(params);
+			if(RORFluidUtil.SET_FLUID.equals(name)) {
+				FluidType type = RORFluidUtil.parseFluid(params);
 				if(fluid != type) {
 					fluid = type;
 					this.markDirty();

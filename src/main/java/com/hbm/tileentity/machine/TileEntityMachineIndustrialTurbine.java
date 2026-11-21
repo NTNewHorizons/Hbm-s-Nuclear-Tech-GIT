@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.handler.CompatHandler;
 import com.hbm.inventory.fluid.FluidType;
@@ -248,14 +249,22 @@ public class TileEntityMachineIndustrialTurbine extends TileEntityTurbineBase im
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
+		String[] info = new String[] {
 				PREFIX_VALUE + "output",
 				PREFIX_VALUE + "flywheel"
 		};
+		info = RORFluidUtil.addTankInfo(info, "input", 1);
+		info = RORFluidUtil.addTankInfo(info, "output", 1);
+		return info;
 	}
 	
 	@Override
 	public String provideRORValue(String name) {
+		String fluidValue = RORFluidUtil.getTankValue(name, "input", tanks[0]);
+		if(fluidValue != null) return fluidValue;
+		fluidValue = RORFluidUtil.getTankValue(name, "output", tanks[1]);
+		if(fluidValue != null) return fluidValue;
+
 		if((PREFIX_VALUE + "output").equals(name))		return "" + (int) this.powerBuffer;
 		if((PREFIX_VALUE + "flywheel").equals(name))	return "" + (int) (spin * 100);
 		return null;

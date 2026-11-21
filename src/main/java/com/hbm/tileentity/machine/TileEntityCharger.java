@@ -10,17 +10,17 @@ import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.main.NTMSounds;
 import com.hbm.tileentity.IBufPacketReceiver;
 import com.hbm.tileentity.TileEntityLoadedBase;
-	import com.hbm.util.AE2Compat;
-import baubles.api.BaublesApi;
 import com.hbm.tileentity.TilePort.PortDef;
 
+import com.hbm.util.AE2Compat;
+import com.hbm.util.BackhandCompat;
+import com.hbm.util.BaublesCompat;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
-import xonin.backhand.api.core.BackhandUtils;
 
 public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyReceiverMK2, IBufPacketReceiver {
 
@@ -67,9 +67,9 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 					charge += getChargeDemand(player.getEquipmentInSlot(i));
 				}
 
-				charge += getChargeDemand(BackhandUtils.getOffhandItem(player));
+				charge += getChargeDemand(BackhandCompat.getOffhandItem(player));
 
-				IInventory baubles = BaublesApi.getBaubles(player);
+				IInventory baubles = BaublesCompat.getBaubles(player);
 				if(baubles != null) {
 					for(int i = 0; i < baubles.getSizeInventory(); i++) {
 						charge += getChargeDemand(baubles.getStackInSlot(i));
@@ -152,9 +152,9 @@ public class TileEntityCharger extends TileEntityLoadedBase implements IEnergyRe
 				power = chargeStack(player.getEquipmentInSlot(i), power);
 			}
 
-			power = chargeStack(BackhandUtils.getOffhandItem(player), power);
+			power = chargeStack(BackhandCompat.getOffhandItem(player), power);
 
-			IInventory baubles = BaublesApi.getBaubles(player);
+			IInventory baubles = BaublesCompat.getBaubles(player);
 			if(baubles != null) {
 				for(int i = 0; i < baubles.getSizeInventory(); i++) {
 					power = chargeStack(baubles.getStackInSlot(i), power);

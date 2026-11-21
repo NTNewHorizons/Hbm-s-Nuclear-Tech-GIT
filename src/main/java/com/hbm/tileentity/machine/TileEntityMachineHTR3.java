@@ -29,6 +29,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import com.hbm.util.RORFluidUtil;
 import com.hbm.util.i18n.I18nUtil;
 
 public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPropulsion, IFluidStandardReceiverMK2, IRORValueProvider, IRORInteractive {
@@ -148,7 +149,7 @@ public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPro
 			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset).getRotation(ForgeDirection.UP);
 	
 			cachedPorts = new PortDef[] {
-				PortDef.make(xCoord - dir.offsetX * 5, yCoord, zCoord - dir.offsetZ * 5, dir)
+				PortDef.make(xCoord - dir.offsetX * 5, yCoord, zCoord - dir.offsetZ * 5, dir.getOpposite())
 			};
 		}
 
@@ -306,28 +307,28 @@ public class TileEntityMachineHTR3 extends TileEntityMachineBase implements IPro
 
 	@Override
 	public String[] getFunctionInfo() {
-		return new String[] {
-				PREFIX_VALUE + "type",
-				PREFIX_VALUE + "fill",
-				PREFIX_VALUE + "fillpercent",
-				com.hbm.util.RORFluidUtil.SET_FLUID_INFO,
+		String[] info = new String[] {
+				RORFluidUtil.SET_FLUID_INFO,
 		};
+		info = RORFluidUtil.addSingleTankInfo(info);
+		return info;
 	}
 
 	@Override
 	public String provideRORValue(String name) {
-		if((PREFIX_VALUE + "type").equals(name)) return tanks[0].getTankType().getName();
-		if((PREFIX_VALUE + "fill").equals(name)) return "" + tanks[0].getFill();
-		if((PREFIX_VALUE + "fillpercent").equals(name)) return "" + (tanks[0].getFill() * 100 / tanks[0].getMaxFill());
+		String fluidValue = RORFluidUtil.getSingleTankValue(name, tanks[0]);
+		if(fluidValue != null) return fluidValue;
+
 		return null;
 	}
 
 	@Override
 	public String runRORFunction(String name, String[] params) {
-		if(com.hbm.util.RORFluidUtil.SET_FLUID.equals(name)) {
-			if(com.hbm.util.RORFluidUtil.setFluid(tanks[0], params, type -> {
+		if(RORFluidUtil.SET_FLUID.equals(name)) {
+			// The default fuel and other supported reactor fuels are hidden from player selection.
+			if(RORFluidUtil.setFluid(tanks[0], params, type -> {
 				if(!type.hasTrait(FT_Rocket.class)) throw new RORFunctionException("Exception: Rocket Fuel Required");
-			})) {
+			}, true)) {
 				this.markDirty();
 				if(worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
