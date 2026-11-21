@@ -2746,13 +2746,11 @@ hbmmat.wroughtiron=Wrought Iron
 hbmmat.zirconium=Zirconium
 hbmmat.berkelium247=Berkelium-247
 hbmmat.curium242=Curium-242
-hbmmat.curium243=Curium-243
 hbmmat.curium244=Curium-244
 hbmmat.curium245=Curium-245
 hbmmat.curium246=Curium-246
 hbmmat.curium247=Curium-247
 hbmmat.einsteinium253=Einsteinium-253
-hbmmat.einsteinium255=Einsteinium-255
 
 matshape.block=%s Block
 matshape.blocks=%s Blocks

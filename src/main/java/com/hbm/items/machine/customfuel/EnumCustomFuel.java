@@ -22,7 +22,6 @@ public enum EnumCustomFuel {
 	AM241(		Mats.MAT_AM241,			Role.FERTILE,	0D,		-0.20D,	0.30D,	2386,	HazardRegistry.am241),
 	AM242(		Mats.MAT_AM242,			Role.FISSILE,	2.00D,	0.10D,	0D,		2386,	HazardRegistry.am242),
 	CM242(		Mats.MAT_CM242,			Role.SOURCE,	0D,		0.75D,	0D,		1880,	HazardRegistry.cm242),
-	CM243(		Mats.MAT_CM243,			Role.FISSILE,	2.00D,	0.15D,	0D,		1880,	HazardRegistry.cm243),
 	CM244(		Mats.MAT_CM244,			Role.FERTILE,	0D,		-0.10D,	0.25D,	1880,	HazardRegistry.cm244),
 	CM245(		Mats.MAT_CM245,			Role.FISSILE,	2.20D,	0.15D,	0D,		1880,	HazardRegistry.cm245),
 	CM246(		Mats.MAT_CM246,			Role.FERTILE,	0D,		-0.10D,	0.25D,	1880,	HazardRegistry.cm246),
@@ -31,7 +30,6 @@ public enum EnumCustomFuel {
 	CF251(		Mats.MAT_CF251,			Role.FISSILE,	2.60D,	0.25D,	0D,		2000,	HazardRegistry.cf251),
 	CF252(		Mats.MAT_CF252,			Role.SOURCE,	0D,		1.50D,	0D,		2000,	HazardRegistry.cf252),
 	ES253(		Mats.MAT_ES253,			Role.FISSILE,	2.80D,	0.30D,	0D,		1800,	HazardRegistry.es253),
-	ES255(		Mats.MAT_ES255,			Role.SOURCE,	0D,		0.60D,	0D,		1800,	HazardRegistry.es255),
 	PO210(		Mats.MAT_POLONIUM,		Role.SOURCE,	0D,		1.25D,	0D,		1287,	HazardRegistry.po210),
 	RA226(		Mats.MAT_RADIUM,		Role.SOURCE,	0D,		0.50D,	0D,		700,	HazardRegistry.ra226),
 	SA326(		Mats.MAT_SCHRABIDIUM,	Role.FISSILE,	2.60D,	0.20D,	0D,		3000,	HazardRegistry.sa326),
@@ -96,7 +94,6 @@ public enum EnumCustomFuel {
 		case AM241: return ModItems.nugget_am241;
 		case AM242: return ModItems.nugget_am242;
 		case CM242: return ModItems.nugget_cm242;
-		case CM243: return ModItems.nugget_cm243;
 		case CM244: return ModItems.nugget_cm244;
 		case CM245: return ModItems.nugget_cm245;
 		case CM246: return ModItems.nugget_cm246;

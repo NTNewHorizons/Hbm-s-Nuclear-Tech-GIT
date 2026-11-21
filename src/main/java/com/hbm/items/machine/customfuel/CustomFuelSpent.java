@@ -67,7 +67,7 @@ public class CustomFuelSpent {
 			case SA326: case SA327: pellet = e < 0.15D ? ModItems.rbmk_pellet_les : e < 0.4D ? ModItems.rbmk_pellet_mes : ModItems.rbmk_pellet_hes; break;
 			case PU241: pellet = ModItems.rbmk_pellet_hep241; break;
 			case AM242: pellet = e < 0.15D ? ModItems.rbmk_pellet_lea : e < 0.4D ? ModItems.rbmk_pellet_mea : ModItems.rbmk_pellet_hea242; break;
-			case CM243: case CM245: case CM247: pellet = e < 0.15D ? ModItems.rbmk_pellet_lecm : e < 0.4D ? ModItems.rbmk_pellet_mecm : ModItems.rbmk_pellet_hecm; break;
+			case CM245: case CM247: pellet = e < 0.15D ? ModItems.rbmk_pellet_lecm : e < 0.4D ? ModItems.rbmk_pellet_mecm : ModItems.rbmk_pellet_hecm; break;
 			case BK247: pellet = ModItems.rbmk_pellet_bk247; break;
 			case CF251: case ES253: pellet = e < 0.15D ? ModItems.rbmk_pellet_lecf : e < 0.4D ? ModItems.rbmk_pellet_mecf : ModItems.rbmk_pellet_hecf; break;
 			case AUS: pellet = e < 0.4D ? ModItems.rbmk_pellet_leaus : ModItems.rbmk_pellet_heaus; break;
@@ -84,7 +84,7 @@ public class CustomFuelSpent {
 			case SA326: type = EnumPWRFuel.HES326; break;
 			case SA327: type = EnumPWRFuel.HES327; break;
 			case PU241: type = EnumPWRFuel.HEP241; break;
-			case AM242: case CM243: case CM245: case CM247: case BK247: case CF251: case ES253: type = e < 0.25D ? EnumPWRFuel.MEA : EnumPWRFuel.HEA242; break;
+			case AM242: case CM245: case CM247: case BK247: case CF251: case ES253: type = e < 0.25D ? EnumPWRFuel.MEA : EnumPWRFuel.HEA242; break;
 			case AUS: type = EnumPWRFuel.HES326; break;
 			default: type = e < 0.25D ? EnumPWRFuel.MEU : EnumPWRFuel.HEU235; break;
 			}
@@ -96,7 +96,7 @@ public class CustomFuelSpent {
 			case U233: rod = thoriumBase ? ModItems.rod_zirnox_thorium_fuel_depleted : ModItems.rod_zirnox_u233_fuel_depleted; break;
 			case PU239: case NP237: rod = uraniumBase && e < 0.25D ? ModItems.rod_zirnox_mox_fuel_depleted : ModItems.rod_zirnox_plutonium_fuel_depleted; break;
 			case SA326: case SA327: case AUS: rod = ModItems.rod_zirnox_les_fuel_depleted; break;
-			case PU241: case AM242: case CM243: case CM245: case CM247: case BK247: case CF251: case ES253: rod = ModItems.rod_zirnox_plutonium_fuel_depleted; break;
+			case PU241: case AM242: case CM245: case CM247: case BK247: case CF251: case ES253: rod = ModItems.rod_zirnox_plutonium_fuel_depleted; break;
 			default: rod = e < 0.03D ? ModItems.rod_zirnox_natural_uranium_fuel_depleted : e < 0.25D ? ModItems.rod_zirnox_uranium_fuel_depleted : ModItems.rod_zirnox_u235_fuel_depleted; break;
 			}
 			return new ItemStack(rod);
@@ -108,7 +108,7 @@ public class CustomFuelSpent {
 			case NP237: type = EnumWatzType.HEN; break;
 			case PU241: type = EnumWatzType.PU241; break;
 			case AM242: type = e < 0.5D ? EnumWatzType.AMRG : EnumWatzType.AMF; break;
-			case CM243: case CM245: case CM247: type = e < 0.5D ? EnumWatzType.CMRG : EnumWatzType.CMF; break;
+			case CM245: case CM247: type = e < 0.5D ? EnumWatzType.CMRG : EnumWatzType.CMF; break;
 			case BK247: type = EnumWatzType.BK247; break;
 			case CF251: type = EnumWatzType.CF251; break;
 			case ES253: type = EnumWatzType.ES253; break;

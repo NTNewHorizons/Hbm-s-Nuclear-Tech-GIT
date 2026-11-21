@@ -68,7 +68,6 @@ public class CustomFuelModel {
 		put(EnumCustomFuel.PU241,	new Native(EnumBurnFunc.LINEAR, 40, 1.75,			new FunctionSqrt(25), 10,		90, 150_000,	new FunctionLinear(1.30), 25, 1_950, 0.0025, new FunctionSqrt(2.66 / 18).withOff(24 * 24)));
 		put(EnumCustomFuel.NP237,	new Native(EnumBurnFunc.SQUARE_ROOT, 40, 1.0,		new FunctionSqrt(27.5), 7.5,	80, 170_000,	new FunctionSqrt(100), 10, 0, 0.0005, new FunctionSqrtFalling(10)));
 		put(EnumCustomFuel.AM242,	new Native(EnumBurnFunc.LINEAR, 45, 2.0,			new FunctionSqrt(25), 10,		95, 150_000,	new FunctionLinear(1.33), 44, 2_333, 0.003, new FunctionSqrt(4.11 / 22.2).withOff(27 * 27)));
-		put(EnumCustomFuel.CM243,	new Native(EnumBurnFunc.SLOW_LINEAR, 40, 1.3,		new FunctionSqrt(26), 11,		100, 140_000,	new FunctionLinear(1.5), 50, 2_999, 0.005, new FunctionSqrt(5.5 / 25.5).withOff(30 * 28)));
 		put(EnumCustomFuel.CM245,	new Native(EnumBurnFunc.SLOW_LINEAR, 60, 1.3,		new FunctionSqrt(28), 11,		110, 140_000,	new FunctionLinear(1.8), 48, 2_444, 0.0045, new FunctionSqrt(5.0 / 20).withOff(26 * 24)));
 		put(EnumCustomFuel.CM247,	new Native(EnumBurnFunc.SLOW_LINEAR, 70, 1.4,		new FunctionSqrt(30), 12,		120, 130_000,	new FunctionLinear(1.6), 52, 2_600, 0.005, new FunctionSqrt(5.0 / 20).withOff(26 * 24)));
 		put(EnumCustomFuel.BK247,	new Native(EnumBurnFunc.LINEAR, 50, 2.0,			new FunctionSqrt(30), 12.5,		130, 130_000,	new FunctionLinear(1.5), 55, 3_000, 0.012, new FunctionSqrt(6.0 / 23.5).withOff(10 * 10)));
