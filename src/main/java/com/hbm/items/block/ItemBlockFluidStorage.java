@@ -68,7 +68,7 @@ public class ItemBlockFluidStorage extends ItemBlockBase implements IFluidContai
 
 	@Override
 	public int getCapacity(ItemStack stack) {
-		return getCapacity(stack);
+		return getTankCapacity(stack);
 	}
 
 	@Override

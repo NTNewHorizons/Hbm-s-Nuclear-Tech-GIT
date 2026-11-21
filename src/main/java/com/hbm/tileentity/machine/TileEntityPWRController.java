@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.machine.BlockPWR.TileEntityBlockPWR;
 import com.hbm.handler.CompatHandler;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.interfaces.NotableComments;
@@ -48,6 +49,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -194,6 +196,11 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 				this.unloadDelay = 60;
 			}
 
+			if(this.assembled && this.unloadDelay <= 0 && worldObj.getTotalWorldTime() % 20 == 0 && !isStructureIntact()) {
+				this.assembled = false;
+				this.markChanged();
+			}
+
 			if(this.assembled) {
 				this.setupAllPorts(ports);
 				this.updatePortFIFO();
@@ -317,6 +324,22 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 				}
 			}
 		}
+	}
+
+	// catches the controller being moved away from its parts, e.g. by a gravity gun
+	protected boolean isStructureIntact() {
+
+		for(BlockPos pos : this.rods) {
+			if(!worldObj.getChunkProvider().chunkExists(pos.getX() >> 4, pos.getZ() >> 4)) continue;
+
+			TileEntity tile = worldObj.getTileEntity(pos.getX(), pos.getY(), pos.getZ());
+			if(!(tile instanceof TileEntityBlockPWR)) return false;
+
+			TileEntityBlockPWR part = (TileEntityBlockPWR) tile;
+			if(part.coreX != xCoord || part.coreY != yCoord || part.coreZ != zCoord) return false;
+		}
+
+		return true;
 	}
 
 	protected void meltDown() {

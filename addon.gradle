@@ -34,3 +34,25 @@ tasks.named('processResources').configure {
             .replace("[${version_name}]", version_name)
     }
 }
+
+def forceCompressedJar = project.hasProperty('compressedJar')
+def forceUncompressedJar = project.hasProperty('uncompressedJar')
+
+gradle.taskGraph.whenReady { graph ->
+    def buildsRelease = graph.hasTask(tasks.named('reobfJar').get())
+    def compressedJar = (forceCompressedJar || buildsRelease) && !forceUncompressedJar
+    tasks.named('jar', Jar).get().entryCompression = compressedJar
+        ? org.gradle.api.tasks.bundling.ZipEntryCompression.DEFLATED
+        : org.gradle.api.tasks.bundling.ZipEntryCompression.STORED
+}
+
+afterEvaluate {
+    tasks.withType(JavaCompile).configureEach {
+        if (javaCompiler.get().metadata.languageVersion.asInt() != 8) {
+            sourceCompatibility = '8'
+            targetCompatibility = '8'
+            options.release.set(8)
+            options.fork = false
+        }
+    }
+}

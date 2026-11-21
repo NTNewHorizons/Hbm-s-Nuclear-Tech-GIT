@@ -9,7 +9,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: ["**"]
+    branches: ["space-travel-twopointfive"]
   pull_request:
     branches: ["space-travel-twopointfive"]
   workflow_dispatch:
@@ -19,9 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     concurrency:
       group: release-${{ github.ref }}
-      cancel-in-progress: false
+      cancel-in-progress: ${{ github.event_name == 'pull_request' }}
     permissions:
       contents: write
+    env:
+      # Force using the compressed jar for CI
+      ORG_GRADLE_PROJECT_compressedJar: "true"
 
     steps:
       - uses: actions/checkout@v7

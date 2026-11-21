@@ -546,6 +546,19 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 			.inputItems(new OreDictStack(RUBBER.ingot(), 4))
 			.outputItems(new ItemStack(Blocks.sponge, 1)));
 
+		if(Loader.isModLoaded("harvestcraft")) {
+		Item pamSalt = GameRegistry.findItem("harvestcraft", "saltItem");
+		if(pamSalt != null) {
+			this.register(new GenericRecipe("chem.pamsalt").setup(200, 100)
+				.inputFluids(new FluidStack(Fluids.WATER, 4_000))
+				.outputItems(new ItemStack(pamSalt, 2)));
+			this.register(new GenericRecipe("chem.pamsaltsynth").setup(60, 400)
+				.inputFluids(new FluidStack(Fluids.CHLORINE, 500))
+				.inputItems(new ComparableStack(ModItems.powder_sodium, 1))
+				.outputItems(new ItemStack(pamSalt, 4)));
+		}
+		}
+
 		if(Loader.isModLoaded("appliedenergistics2")) {
 		// Applied Energistics 2 parts
 		this.register(new GenericRecipe("chem.certus").setup(100, 100)
