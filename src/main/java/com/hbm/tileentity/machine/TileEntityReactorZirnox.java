@@ -22,6 +22,12 @@ import com.hbm.inventory.gui.GUIReactorZirnox;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemZirnoxRod;
 import com.hbm.items.machine.ItemZirnoxRod.EnumZirnoxType;
+import com.hbm.items.machine.ItemCustomFuel;
+import com.hbm.items.machine.customfuel.CustomFuelMix;
+import com.hbm.items.machine.customfuel.CustomFuelModel;
+import com.hbm.items.machine.customfuel.CustomFuelModel.ZirnoxProfile;
+import com.hbm.items.machine.customfuel.CustomFuelSpent;
+import com.hbm.items.machine.customfuel.CustomFuelSpent.Reactor;
 import com.hbm.main.MainRegistry;
 import com.hbm.saveddata.satellites.SatelliteRayScan;
 import com.hbm.saveddata.satellites.SatelliteRayScan.RayEvent;
@@ -115,12 +121,12 @@ public class TileEntityReactorZirnox extends TileEntityMachineBase implements IC
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
-		return i < 24 && stack.getItem() instanceof ItemZirnoxRod;
+		return i < 24 && (stack.getItem() instanceof ItemZirnoxRod || (stack.getItem() == ModItems.custom_fuel_zirnox && CustomFuelMix.hasMix(stack)));
 	}
 
 	@Override
 	public boolean canExtractItem(int i, ItemStack stack, int j) {
-		return i < 24 && !(stack.getItem() instanceof ItemZirnoxRod);
+		return i < 24 && !(stack.getItem() instanceof ItemZirnoxRod) && stack.getItem() != ModItems.custom_fuel_zirnox;
 	}
 
 	@Override
@@ -231,6 +237,8 @@ public class TileEntityReactorZirnox extends TileEntityMachineBase implements IC
 					if(slots[i] != null) {
 						if(slots[i].getItem() instanceof ItemZirnoxRod)
 							decay(i);
+						else if(slots[i].getItem() == ModItems.custom_fuel_zirnox)
+							decayCustom(i);
 						else if(slots[i].getItem() == ModItems.meteorite_sword_bred)
 							slots[i] = new ItemStack(ModItems.meteorite_sword_irradiated);
 					}
@@ -315,6 +323,10 @@ public class TileEntityReactorZirnox extends TileEntityMachineBase implements IC
 				final EnumZirnoxType num = EnumUtil.grabEnumSafely(EnumZirnoxType.class, slots[id].getItemDamage());
 				return !num.breeding;
 			}
+			if(slots[id].getItem() == ModItems.custom_fuel_zirnox) {
+				CustomFuelMix mix = CustomFuelMix.fromStack(slots[id]);
+				return mix != null && !CustomFuelModel.zirnox(mix, 0D).breeding;
+			}
 		}
 
 		return false;
@@ -351,6 +363,36 @@ public class TileEntityReactorZirnox extends TileEntityMachineBase implements IC
 
 			if(ItemZirnoxRod.getLifeTime(slots[id]) > num.maxLife) {
 				slots[id] = fuelMap.get(new ComparableStack(getStackInSlot(id))).copy();
+				break;
+			}
+		}
+	}
+
+	private void decayCustom(int id) {
+		CustomFuelMix mix = CustomFuelMix.fromStack(slots[id]);
+		if(mix == null) return;
+
+		int maxLife = CustomFuelModel.zirnox(mix, 0D).maxLife;
+		ZirnoxProfile profile = CustomFuelModel.zirnox(mix, ItemCustomFuel.getZirnoxDepletion(slots[id]));
+		int decay = getNeighbourCount(id);
+
+		if(!profile.breeding)
+			decay++;
+
+		for(int i = 0; i < decay; i++) {
+			this.heat += profile.heat;
+			int life = ItemCustomFuel.getLife(slots[id]) + 1;
+			ItemCustomFuel.setLife(slots[id], life);
+
+			if(life > maxLife) {
+				// a bred rod comes out as fresh fuel, everything else is spent
+				if(profile.breeding) {
+					CustomFuelMix bred = mix.withBreeding(1D);
+					bred.fresh = bred.total();
+					slots[id] = bred.writeTo(new ItemStack(ModItems.custom_fuel_zirnox));
+				} else {
+					slots[id] = CustomFuelSpent.spent(Reactor.ZIRNOX, mix);
+				}
 				break;
 			}
 		}

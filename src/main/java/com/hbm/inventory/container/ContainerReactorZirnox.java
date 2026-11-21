@@ -3,6 +3,7 @@ package com.hbm.inventory.container;
 import com.hbm.inventory.FluidContainerRegistry;
 import com.hbm.inventory.SlotTakeOnly;
 import com.hbm.inventory.fluid.Fluids;
+import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemZirnoxRod;
 import com.hbm.tileentity.machine.TileEntityReactorZirnox;
 
@@ -88,7 +89,7 @@ public class ContainerReactorZirnox extends Container {
 
 				} else {
 
-					if(stack.getItem() instanceof ItemZirnoxRod) {
+					if(stack.getItem() instanceof ItemZirnoxRod || stack.getItem() == ModItems.custom_fuel_zirnox) {
 
 						if(!this.mergeItemStack(stack, 0, 24, true))
 							return null;

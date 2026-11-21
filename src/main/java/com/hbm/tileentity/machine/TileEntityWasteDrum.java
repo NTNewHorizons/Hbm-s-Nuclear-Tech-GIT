@@ -4,6 +4,7 @@ import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.container.ContainerWasteDrum;
 import com.hbm.inventory.gui.GUIWasteDrum;
 import com.hbm.inventory.recipes.FuelPoolRecipes;
+import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemRBMKRod;
 import com.hbm.tileentity.IGUIProvider;
 
@@ -101,7 +102,7 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
-		return FuelPoolRecipes.recipes.keySet().contains(new ComparableStack(itemStack)) || itemStack.getItem() instanceof ItemRBMKRod;
+		return FuelPoolRecipes.recipes.keySet().contains(new ComparableStack(itemStack)) || itemStack.getItem() instanceof ItemRBMKRod || itemStack.getItem() == ModItems.custom_fuel_pwr_hot;
 	}
 	
 	@Override
@@ -216,6 +217,13 @@ public class TileEntityWasteDrum extends TileEntity implements ISidedInventory, 
 							rod.provideHeat(worldObj, slots[i], 20D, 0.025D);
 							
 						} else if(worldObj.rand.nextInt(r) == 0) {
+
+							if(slots[i].getItem() == ModItems.custom_fuel_pwr_hot) {
+								ItemStack cooled = new ItemStack(ModItems.custom_fuel_pwr_depleted, slots[i].stackSize);
+								if(slots[i].hasTagCompound()) cooled.stackTagCompound = (NBTTagCompound) slots[i].stackTagCompound.copy();
+								slots[i] = cooled;
+								continue;
+							}
 
 							ComparableStack comp = new ComparableStack(getStackInSlot(i));
 							if(FuelPoolRecipes.recipes.containsKey(comp)) {
