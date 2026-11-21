@@ -290,6 +290,11 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 			boolean didSomething = progress > 0;
 			if(didSomething) this.anim++;
 
+			//steam out of the fan
+			if(didSomething && worldObj.rand.nextInt(10) == 0) {
+				worldObj.spawnParticle("cloud", xCoord + 0.1D + worldObj.rand.nextDouble() * 0.8D, yCoord + 2.5D, zCoord + 0.1D + worldObj.rand.nextDouble() * 0.8D, 0.0, 0.1, 0.0);
+			}
+
 			if(worldObj.getTotalWorldTime() % 20 == 0) {
 				frame = !worldObj.getBlock(xCoord, yCoord + 3, zCoord).isAir(worldObj, xCoord, yCoord + 3, zCoord);
 			}
