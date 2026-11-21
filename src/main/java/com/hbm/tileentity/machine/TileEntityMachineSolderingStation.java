@@ -14,6 +14,7 @@ import com.hbm.interfaces.IControlReceiver;
 import com.hbm.inventory.UpgradeManagerNT;
 import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.container.ContainerMachineSolderingStation;
+import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.gui.GUIMachineSolderingStation;
@@ -99,7 +100,9 @@ public class TileEntityMachineSolderingStation extends TileEntityMachineBase imp
 
 			this.power = Library.chargeTEFromItems(slots, 7, this.getPower(), this.getMaxPower());
 			this.tank.setType(8, slots);
-			
+			// without an identifier, an emptied tank goes back to NONE so the next craft can bring any fluid
+			if(slots[8] == null && tank.getFill() <= 0 && tank.getTankType() != Fluids.NONE) tank.setTankType(Fluids.NONE);
+
 			recipe = SolderingRecipes.getRecipe(new ItemStack[] {slots[0], slots[1], slots[2], slots[3], slots[4], slots[5]});
 			long intendedMaxPower;
 
@@ -350,6 +353,18 @@ public class TileEntityMachineSolderingStation extends TileEntityMachineBase imp
 	@Override
 	public FluidTank[] getReceivingTanks() {
 		return new FluidTank[] {tank};
+	}
+
+	@Override
+	public long getDemand(FluidType type, int pressure) {
+		// lets Forge/AE2 fill an untyped tank with any fluid a soldering recipe uses
+		if(tank.getTankType() == Fluids.NONE && slots[8] == null && pressure == 0 && isRecipeFluid(type)) return tank.getMaxFill();
+		return IFluidStandardReceiverMK2.super.getDemand(type, pressure);
+	}
+
+	private static boolean isRecipeFluid(FluidType type) {
+		for(SolderingRecipe recipe : SolderingRecipes.recipes) if(recipe.fluid != null && recipe.fluid.type == type) return true;
+		return false;
 	}
 
 	@Override
