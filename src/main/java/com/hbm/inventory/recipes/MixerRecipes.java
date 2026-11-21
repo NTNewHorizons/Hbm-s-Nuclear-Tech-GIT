@@ -21,6 +21,7 @@ import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.recipes.loader.SerializableRecipe;
+import com.hbm.util.CompatHarvestcraft;
 import com.hbm.items.ItemEnums;
 import com.hbm.items.ModItems;
 import com.hbm.items.ItemEnums.EnumAshType;
@@ -54,7 +55,7 @@ public class MixerRecipes extends SerializableRecipe {
 		register(Fluids.MUSTARDGAS, new MixerRecipe(1000, 20).setStack1(new FluidStack(Fluids.REFORMGAS, 750)).setStack2(new FluidStack(Fluids.CHLORINE, 250)).setSolid(new OreDictStack(S.dust())));
 		register(Fluids.IONGEL, new MixerRecipe(1_000, 50).setStack1(new FluidStack(Fluids.WATER, 1000)).setStack2(new FluidStack(Fluids.HYDROGEN, 200)).setSolid(new ComparableStack(ModItems.pellet_charged)));
 		register(Fluids.EGG, new MixerRecipe(1_000, 50).setStack1(new FluidStack(Fluids.RADIOSOLVENT, 500)).setSolid(new ComparableStack(Items.egg)));
-		register(Fluids.FISHOIL, new MixerRecipe(100, 50).setSolid(Loader.isModLoaded("harvestcraft") ? new OreDictStack("listAllfishraw") : new ComparableStack(Items.fish, 1, OreDictionary.WILDCARD_VALUE)));
+		register(Fluids.FISHOIL, new MixerRecipe(100, 50).setSolid(CompatHarvestcraft.isLoaded() ? new OreDictStack(CompatHarvestcraft.fishRawDict()) : new ComparableStack(Items.fish, 1, OreDictionary.WILDCARD_VALUE)));
 		register(Fluids.SUNFLOWEROIL, new MixerRecipe(100, 50).setSolid(new ComparableStack(Blocks.double_plant, 1, 0)));
 		register(Fluids.FULLERENE, new MixerRecipe(250, 50).setStack1(new FluidStack(Fluids.RADIOSOLVENT, 500)).setSolid(new ComparableStack(DictFrame.fromOne(ModItems.powder_ash, EnumAshType.SOOT))));
 
@@ -144,15 +145,24 @@ public class MixerRecipes extends SerializableRecipe {
 		/* Pam's HarvestCraft compat */
 		if(!Loader.isModLoaded("harvestcraft")) return;
 
-		if(!hasSolid(Fluids.FISHOIL, "listAllfishraw")) {
-			append(Fluids.FISHOIL, new MixerRecipe(100, 50).setSolid(new OreDictStack("listAllfishraw")));
+		if(!hasSolid(Fluids.FISHOIL, CompatHarvestcraft.fishRawDict())) {
+			append(Fluids.FISHOIL, new MixerRecipe(100, 50).setSolid(new OreDictStack(CompatHarvestcraft.fishRawDict())));
 		}
 
 		/* oily crops can be pressed into seed oil */
-		for(String crop : new String[] { "cropOlive", "cropSunflower", "cropPeanut", "cropWalnut", "cropAlmond", "cropSoybean", "cropMustard" }) {
+		for(String crop : CompatHarvestcraft.OIL_NUTS) {
+			if(!hasSolid(Fluids.SUNFLOWEROIL, crop)) {
+				append(Fluids.SUNFLOWEROIL, new MixerRecipe(200, 50).setSolid(new OreDictStack(crop)));
+			}
+		}
+		for(String crop : CompatHarvestcraft.OIL_SEEDS) {
 			if(!hasSolid(Fluids.SUNFLOWEROIL, crop)) {
 				append(Fluids.SUNFLOWEROIL, new MixerRecipe(100, 50).setSolid(new OreDictStack(crop)));
 			}
+		}
+		for(String name : CompatHarvestcraft.OIL_SEED_ITEMS) {
+			Item seed = CompatHarvestcraft.item(name);
+			if(seed != null) append(Fluids.SUNFLOWEROIL, new MixerRecipe(100, 50).setSolid(new ComparableStack(seed)));
 		}
 	}
 

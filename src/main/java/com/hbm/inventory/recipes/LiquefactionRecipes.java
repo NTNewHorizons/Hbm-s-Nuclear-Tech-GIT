@@ -18,10 +18,12 @@ import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.recipes.loader.SerializableRecipe;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFluidIcon;
+import com.hbm.util.CompatHarvestcraft;
 
 import cpw.mods.fml.common.Loader;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -69,7 +71,7 @@ public class LiquefactionRecipes extends SerializableRecipe {
 		recipes.put(new ComparableStack(ModBlocks.plant_flower, 1, 4),	new FluidStack(Fluids.ETHANOL, 50));
 		recipes.put(new ComparableStack(ModItems.biomass),				new FluidStack(Fluids.BIOGAS, 125));
 		recipes.put(new ComparableStack(ModItems.glyphid_gland_empty),	new FluidStack(Fluids.BIOGAS, 2000));
-		recipes.put(Loader.isModLoaded("harvestcraft") ? "listAllfishraw" : new ComparableStack(Items.fish, 1, wildcard), new FluidStack(Fluids.FISHOIL, 100));
+		recipes.put(CompatHarvestcraft.isLoaded() ? CompatHarvestcraft.fishRawDict() : new ComparableStack(Items.fish, 1, wildcard), new FluidStack(Fluids.FISHOIL, 100));
 		recipes.put(new ComparableStack(Blocks.double_plant, 1, 0),		new FluidStack(Fluids.SUNFLOWEROIL, 100));
 
 		// plant gunk
@@ -89,12 +91,18 @@ public class LiquefactionRecipes extends SerializableRecipe {
 		/* Pam's HarvestCraft compat */
 		if(!Loader.isModLoaded("harvestcraft")) return;
 
-		putIfAbsent("listAllfishraw", new FluidStack(Fluids.FISHOIL, 100));
+		putIfAbsent(CompatHarvestcraft.fishRawDict(), new FluidStack(Fluids.FISHOIL, 100));
 		putIfAbsent("listAllfruit", new FluidStack(Fluids.ETHANOL, 100));
 
-		/* oily crops can be liquefied into seed oil */
-		for(String crop : new String[] { "cropOlive", "cropSunflower", "cropPeanut", "cropWalnut", "cropAlmond", "cropSoybean", "cropMustard" }) {
-			putIfAbsent(crop, new FluidStack(Fluids.SUNFLOWEROIL, 100));
+		Item almond = CompatHarvestcraft.item("almondItem");
+		if(almond != null) recipes.put(new ComparableStack(almond), new FluidStack(Fluids.MILK, 250));
+
+		/* oily crops can be liquefied into seed oil, nuts yield more */
+		for(String crop : CompatHarvestcraft.OIL_NUTS) putIfAbsent(crop, new FluidStack(Fluids.SUNFLOWEROIL, 200));
+		for(String crop : CompatHarvestcraft.OIL_SEEDS) putIfAbsent(crop, new FluidStack(Fluids.SUNFLOWEROIL, 100));
+		for(String name : CompatHarvestcraft.OIL_SEED_ITEMS) {
+			Item seed = CompatHarvestcraft.item(name);
+			if(seed != null) recipes.put(new ComparableStack(seed), new FluidStack(Fluids.SUNFLOWEROIL, 100));
 		}
 	}
 
