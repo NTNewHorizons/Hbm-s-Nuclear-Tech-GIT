@@ -1,11 +1,13 @@
 package com.hbm.items.machine;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import com.hbm.items.machine.customfuel.CustomFuelMix;
 import com.hbm.items.machine.customfuel.CustomFuelModel;
 import com.hbm.items.machine.customfuel.CustomFuelModel.RBMKProfile;
+import com.hbm.items.machine.customfuel.CustomFuelModel.RBMKTerm;
 import com.hbm.tileentity.machine.rbmk.RBMKDials;
 import com.hbm.util.i18n.I18nUtil;
 
@@ -144,21 +146,57 @@ public class ItemCustomRBMKRod extends ItemRBMKRod implements ICustomFuelItem {
 			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.wasteCooling"));
 		}
 
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.customFuel.model", EnumChatFormatting.RESET, CustomFuelModel.current().title));
 		if(p.selfRate > 0) list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmk.source"));
 
-		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.customFuel.model", CustomFuelModel.current().title));
 		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("trait.rbmk.depletion", ((int) (getDepletion(stack) * 100000D)) / 1000D + "%"));
 		list.add(EnumChatFormatting.DARK_PURPLE + I18nUtil.resolveKey("trait.rbmk.xenon", ((int) (getPoison(stack) * 1000D) / 1000D) + "%"));
 		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("trait.rbmk.splitsWith", I18nUtil.resolveKey(nType.unlocalized)));
 		list.add(EnumChatFormatting.BLUE + I18nUtil.resolveKey("trait.rbmk.splitsInto", I18nUtil.resolveKey(rType.unlocalized)));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.fluxFunc", EnumChatFormatting.WHITE + p.describe()));
-		if(p.selfRate != 0) list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.selfRate", String.format(Locale.US, "%.1f", p.selfRate)));
-		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.xenonGen", EnumChatFormatting.WHITE + "x * " + String.format(Locale.US, "%.2f", xGen * p.xenonMult)));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.fluxFunc", EnumChatFormatting.WHITE + getFuncDescription(stack, p)));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.funcType", getFuncTypes(p)));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.xenonGen", EnumChatFormatting.WHITE + "x * " + round(xGen * p.xenonMult)));
 		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.xenonBurn", EnumChatFormatting.WHITE + "x² / " + xBurn));
-		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmk.heat", String.format(Locale.US, "%.2f", p.heat) + "°C"));
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmk.heat", round(p.heat) + "°C"));
 		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("trait.rbmk.diffusion", diffusion + "¹/²"));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmk.skinTemp", ((int) (getHullHeat(stack) * 10D) / 10D) + "°C"));
 		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmk.coreTemp", ((int) (getCoreHeat(stack) * 10D) / 10D) + "°C"));
-		list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmk.melt", ((int) p.meltingPoint) + "°C"));
+		list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmk.melt", round(p.meltingPoint) + "°C"));
+	}
+
+	// same syntax as the vanilla rods, each isotope's weight is folded into its reactivity since every burn function scales linearly with it
+	public String getFuncDescription(ItemStack stack, RBMKProfile p) {
+
+		double captured = p.selfRate * p.selfCapture;
+		double leaked = p.selfRate * (1D - p.selfCapture);
+		String flux = captured > 0 ? "(x" + EnumChatFormatting.RED + " + " + round(captured) + EnumChatFormatting.WHITE + ")" : "x";
+
+		double enrichment = getEnrichment(stack);
+		double mod = p.fluxMult * (enrichment < 1 ? reactivityModByEnrichment(enrichment) : 1D);
+		if(mod != 1D) flux = "(" + flux + " * " + EnumChatFormatting.YELLOW + ((int) (mod * 1000D) / 1000D) + EnumChatFormatting.WHITE + ")";
+
+		List<String> parts = new ArrayList();
+		for(RBMKTerm term : p.terms) parts.add(String.format(Locale.US, getFuncTemplate(term.func), flux, round(term.reactivity * term.weight)));
+		if(leaked > 0) parts.add(EnumChatFormatting.RED + "" + round(leaked * enrichment) + EnumChatFormatting.WHITE);
+
+		String desc = parts.isEmpty() ? "0" : String.join(" + ", parts);
+		if(enrichment < 1) desc += EnumChatFormatting.GOLD + " (" + ((int) (reactivityModByEnrichment(enrichment) * 1000D) / 10D) + "%)";
+		return desc;
+	}
+
+	public static String getFuncTypes(RBMKProfile p) {
+		List<String> types = new ArrayList();
+		List<EnumBurnFunc> seen = new ArrayList();
+		for(RBMKTerm term : p.terms) {
+			if(seen.contains(term.func)) continue;
+			seen.add(term.func);
+			types.add(term.func.format + I18nUtil.resolveKey(term.func.title));
+		}
+		if(p.selfRate * (1D - p.selfCapture) > 0) types.add(EnumBurnFunc.PASSIVE.format + I18nUtil.resolveKey(EnumBurnFunc.PASSIVE.title));
+		return String.join(EnumChatFormatting.WHITE + ", ", types);
+	}
+
+	private static double round(double d) {
+		return Math.round(d * 100D) / 100D;
 	}
 }

@@ -1,11 +1,13 @@
 package com.hbm.items.machine;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import com.hbm.inventory.material.Mats.MaterialStack;
 import com.hbm.items.machine.customfuel.CustomFuelMix;
 import com.hbm.items.machine.customfuel.CustomFuelModel;
+import com.hbm.items.machine.customfuel.CustomFuelModel.FuncTerm;
 import com.hbm.items.machine.customfuel.CustomFuelModel.PWRProfile;
 import com.hbm.items.machine.customfuel.CustomFuelModel.WatzProfile;
 import com.hbm.items.machine.customfuel.CustomFuelModel.ZirnoxProfile;
@@ -159,32 +161,50 @@ public class ItemCustomFuel extends Item implements ICustomFuelItem {
 
 		ICustomFuelItem.addComposition(mix, list);
 
+		String color = EnumChatFormatting.GOLD + "";
+		String reset = EnumChatFormatting.RESET + "";
 		String model = CustomFuelModel.current().title;
+
+		// same lines and keys as the vanilla fuels of each reactor
 		switch(form) {
 		case PWR: {
 			PWRProfile p = CustomFuelModel.pwr(mix, 0D);
-			if(p.selfFlux > 0) list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.passive", String.format(Locale.US, "%.1f", p.selfFlux)));
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.customFuel.model", model));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.reaction", EnumChatFormatting.WHITE + p.describe()));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.heat", String.format(Locale.US, "%.2f", p.heat)));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.yield", BobMathUtil.getShortNumber((long) p.yield)));
+			list.add(color + I18nUtil.resolveKey("desc.item.customFuel.model", reset, model));
+			if(p.selfFlux > 0) {
+				list.add(color + I18nUtil.resolveKey("item.watz_pellet.fission_rate", reset, round(p.selfFlux)));
+				list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.watz_pellet.self_igniting"));
+			}
+			list.add(color + I18nUtil.resolveKey("item.pwr_fuel.heat", reset, round(p.heat)));
+			list.add(color + I18nUtil.resolveKey("item.pwr_fuel.reaction", reset, describe(p.terms, p.fluxMult)));
+			list.add(color + I18nUtil.resolveKey("item.pwr_fuel.fuel_type", reset, dangers(p.terms)));
+			if(p.yield != PWRProfile.BASE_YIELD) list.add(color + I18nUtil.resolveKey("desc.item.customFuel.yield", reset, BobMathUtil.getShortNumber((long) p.yield)));
 			break;
 		}
 		case ZIRNOX: {
 			ZirnoxProfile p = CustomFuelModel.zirnox(mix, getZirnoxDepletion(stack));
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.customFuel.model", model));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.depletion", String.format(Locale.US, "%.1f%%", getZirnoxDepletion(stack) * 100D)));
-			if(p.breeding) list.add(EnumChatFormatting.DARK_GREEN + I18nUtil.resolveKey("desc.item.customFuel.zirnoxBreeder", BobMathUtil.getShortNumber(p.maxLife)));
-			else list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.zirnox", p.heat, BobMathUtil.getShortNumber(p.maxLife)));
+			list.add(color + I18nUtil.resolveKey("desc.item.customFuel.model", reset, model));
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.depletion", ((int) (getZirnoxDepletion(stack) * 100000D)) / 1000D + "%"));
+			String[] loc = p.breeding
+					? I18nUtil.resolveKeyArray("desc.item.zirnoxBreedingRod", BobMathUtil.getShortNumber(p.maxLife))
+					: I18nUtil.resolveKeyArray("desc.item.zirnoxRod", p.heat, BobMathUtil.getShortNumber(p.maxLife));
+			for(String line : loc) list.add(line);
 			break;
 		}
 		case WATZ: {
 			WatzProfile p = CustomFuelModel.watz(mix, getWatzDepletion(stack));
-			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.customFuel.model", model));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("trait.rbmk.depletion", String.format(Locale.US, "%.1f%%", getWatzDepletion(stack) * 100D)));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.reaction", EnumChatFormatting.WHITE + p.describe()));
-			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.heat", String.format(Locale.US, "%.2f", p.heatEmission)));
-			if(p.passive > 0) list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.passive", (int) p.passive));
+			list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("item.pile_rod_mk2.depletion", String.format(Locale.US, "%.1f", getWatzDepletion(stack) * 100D)));
+			list.add(color + I18nUtil.resolveKey("desc.item.customFuel.model", reset, model));
+			if(p.passive > 0) {
+				list.add(color + I18nUtil.resolveKey("item.watz_pellet.fission_rate", reset, round(p.passive)));
+				list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.watz_pellet.self_igniting"));
+			}
+			if(p.heatEmission > 0) list.add(color + I18nUtil.resolveKey("item.pwr_fuel.heat", reset, round(p.heatEmission)));
+			if(!p.burn.isEmpty()) {
+				list.add(color + I18nUtil.resolveKey("item.pwr_fuel.reaction", reset, describe(p.burn, 1D)));
+				list.add(color + I18nUtil.resolveKey("item.pwr_fuel.fuel_type", reset, dangers(p.burn)));
+			}
+			if(!p.heatDiv.isEmpty()) list.add(color + I18nUtil.resolveKey("item.watz_pellet.thermal_multiplier", reset, describe(p.heatDiv, 1D)));
+			if(!p.absorb.isEmpty()) list.add(color + I18nUtil.resolveKey("item.watz_pellet.flux_capture", reset, describe(p.absorb, 1D)));
 			break;
 		}
 		default: break;
@@ -192,5 +212,27 @@ public class ItemCustomFuel extends Item implements ICustomFuelItem {
 
 		if(form == Form.PWR_HOT) list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.hot"));
 		if(form.spent && form != Form.PWR_HOT) ICustomFuelItem.addSpentInfo(stack, CustomFuelSpent.reactorOf(this), mix, list);
+	}
+
+	// a blend of functions in the vanilla label syntax, each prefixed with its share
+	private static String describe(List<FuncTerm> terms, double fluxMult) {
+		List<String> parts = new ArrayList();
+		for(FuncTerm term : terms) parts.add(terms.size() == 1 && term.weight == 1D ? term.func.getLabelForFuel() : round(term.weight) + " * " + term.func.getLabelForFuel());
+		String desc = String.join(" + ", parts);
+		if(fluxMult != 1D) desc += EnumChatFormatting.GOLD + " (" + ((int) (fluxMult * 1000D) / 10D) + "%)";
+		return desc;
+	}
+
+	private static String dangers(List<FuncTerm> terms) {
+		List<String> types = new ArrayList();
+		for(FuncTerm term : terms) {
+			String danger = term.func.getDangerFromFuel();
+			if(!types.contains(danger)) types.add(danger);
+		}
+		return String.join(EnumChatFormatting.RESET + ", ", types);
+	}
+
+	private static double round(double d) {
+		return Math.round(d * 100D) / 100D;
 	}
 }

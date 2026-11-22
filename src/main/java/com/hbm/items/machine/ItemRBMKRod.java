@@ -310,33 +310,26 @@ public class ItemRBMKRod extends Item {
 		return 0;
 	}
 
+	// %1$s is the flux, %2$s the reactivity
+	public static String getFuncTemplate(EnumBurnFunc function) {
+
+		switch(function) {
+		case LOG_TEN: return "log10(%1$s + 1) * 0.5 * %2$s";
+		case PLATEU: return "(1 - e^(-%1$s / 25)) * %2$s";
+		case ARCH: return "(%1$s - %1$s² / 10000) / 100 * %2$s [0;∞]";
+		case SIGMOID: return "%2$s / (1 + e^(-(%1$s - 50) / 10))";
+		case SQUARE_ROOT: return "sqrt(%1$s) * %2$s / 10";
+		case LINEAR: return "%1$s / 100 * %2$s";
+		case QUADRATIC: return "%1$s² / 10000 * %2$s";
+		case EXPERIMENTAL: return "%1$s * (sin(%1$s) + 1) * %2$s";
+		case SLOW_LINEAR: return "sqrt(2 * %1$s + 30) / 10 * %2$s / 2.5";
+		default: return "ERROR";
+		}
+	}
+
 	public String getFuncDescription(ItemStack stack) {
 
-		String function;
-
-		switch(this.function) {
-		case PASSIVE: function = EnumChatFormatting.RED + "" + selfRate;
-			break;
-		case LOG_TEN: function = "log10(%1$s + 1) * 0.5 * %2$s";
-			break;
-		case PLATEU: function = "(1 - e^(-%1$s / 25)) * %2$s";
-			break;
-		case ARCH: function = "(%1$s - %1$s² / 10000) / 100 * %2$s [0;∞]";
-			break;
-		case SIGMOID: function = "%2$s / (1 + e^(-(%1$s - 50) / 10))";
-			break;
-		case SQUARE_ROOT: function = "sqrt(%1$s) * %2$s / 10";
-			break;
-		case LINEAR: function = "%1$s / 100 * %2$s";
-			break;
-		case QUADRATIC: function = "%1$s² / 10000 * %2$s";
-			break;
-		case EXPERIMENTAL: function = "%1$s * (sin(%1$s) + 1) * %2$s";
-			break;
-		case SLOW_LINEAR: function = "sqrt(2 * %1$s + 30) / 10 * %2$s / 2.5";
-		    break;
-		default: function = "ERROR";
-		}
+		String function = this.function == EnumBurnFunc.PASSIVE ? EnumChatFormatting.RED + "" + selfRate : getFuncTemplate(this.function);
 
 		double enrichment = getEnrichment(stack);
 		String flux = selfRate > 0 ? "(x" + EnumChatFormatting.RED + " + " + selfRate + "" + EnumChatFormatting.WHITE + ")" : "x";

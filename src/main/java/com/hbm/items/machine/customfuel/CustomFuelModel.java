@@ -2,7 +2,6 @@ package com.hbm.items.machine.customfuel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import com.hbm.config.MachineConfig;
 import com.hbm.items.machine.ItemRBMKRod;
@@ -175,14 +174,6 @@ public class CustomFuelModel {
 			for(RBMKTerm term : terms) out += term.weight * ItemRBMKRod.evalBurnFunc(term.func, flux * fluxMult, term.reactivity);
 			return out;
 		}
-
-		public String describe() {
-			List<String> parts = new ArrayList();
-			for(RBMKTerm term : terms) parts.add(String.format(Locale.US, "%.2f×%s(%.1f)", term.weight, term.func.name(), term.reactivity));
-			String s = String.join(" + ", parts);
-			if(fluxMult != 1D) s += String.format(Locale.US, " @ %.0f%% flux", fluxMult * 100);
-			return s;
-		}
 	}
 
 	// depletion 0 = fresh, 1 = spent, only the hybrid model breeds in the core
@@ -255,21 +246,14 @@ public class CustomFuelModel {
 		public final List<FuncTerm> terms = new ArrayList();
 		public double fluxMult = 1D;
 		public double heat;
-		public double yield = 1_000_000_000D;
+		public static final double BASE_YIELD = 1_000_000_000D;
+		public double yield = BASE_YIELD;
 		public double selfFlux;
 
 		public double react(double flux) {
 			double out = 0;
 			for(FuncTerm term : terms) out += term.weight * term.func.effonix(flux * fluxMult);
 			return out;
-		}
-
-		public String describe() {
-			List<String> parts = new ArrayList();
-			for(FuncTerm term : terms) parts.add(String.format(Locale.US, "%.2f×%s", term.weight, term.func.getLabelForFuel()));
-			String s = String.join(" + ", parts);
-			if(fluxMult != 1D) s += String.format(Locale.US, " @ %.0f%% flux", fluxMult * 100);
-			return s;
 		}
 	}
 
@@ -329,10 +313,6 @@ public class CustomFuelModel {
 		public int maxLife;
 		// no fissile material: breeds from its neighbours like the vanilla thorium rod
 		public boolean breeding;
-
-		public String describe() {
-			return breeding ? "breeder" : heat + " heat/tick, " + maxLife + " ticks";
-		}
 	}
 
 	public static ZirnoxProfile zirnox(CustomFuelMix mix, double depletion) {
@@ -407,12 +387,6 @@ public class CustomFuelModel {
 			double out = 0;
 			for(FuncTerm term : absorb) out += term.weight * term.func.effonix(flux);
 			return out;
-		}
-
-		public String describe() {
-			List<String> parts = new ArrayList();
-			for(FuncTerm term : burn) parts.add(String.format(Locale.US, "%.2f×%s", term.weight, term.func.getLabelForFuel()));
-			return String.join(" + ", parts);
 		}
 	}
 
