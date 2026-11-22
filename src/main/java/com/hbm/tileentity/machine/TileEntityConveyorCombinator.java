@@ -1,10 +1,9 @@
 package com.hbm.tileentity.machine;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import com.hbm.entity.item.EntityMovingConveyorObject;
 import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.tileentity.TileEntityMachineBase;
@@ -94,80 +93,152 @@ public class TileEntityConveyorCombinator extends TileEntityMachineBase {
 		return this.mode == MODE_2x2 ? 4 : 9;
 	}
 
+	private EntityMovingItem held;
+
 	public boolean process() {
 
-		List<EntityMovingItem> items = worldObj.getEntitiesWithinAABB(EntityMovingItem.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 0.5, zCoord + 1));
+		int needed = this.getRequired();
+		EntityMovingItem held = this.getHeld();
 
-		if(items.isEmpty()) return false;
+		if(held == null || held.getItemStack().stackSize < needed) {
+			this.absorbItems(needed);
+			held = this.getHeld();
+		}
 
-		HashMap<ComparableStack, List<EntityMovingItem>> groups = new HashMap();
+		if(held == null) return false;
+
+		held.heldUntil = worldObj.getTotalWorldTime() + 1;
+
+		ItemStack stack = held.getItemStack();
+		if(stack.stackSize < needed) return false;
+
+		ItemStack output = this.getCombined(stack, needed);
+
+		if(output == null) {
+			this.releaseHeld();
+			return false;
+		}
+
+		if(EntityMovingConveyorObject.isCrammed(worldObj, xCoord, yCoord, zCoord)) return false;
+
+		stack.stackSize -= needed;
+
+		if(stack.stackSize <= 0) {
+			held.setDead();
+			this.held = null;
+		} else {
+			held.setItemStack(stack);
+		}
+
+		this.spawnOutput(output, output.stackSize);
+		return true;
+	}
+
+	public EntityMovingItem getHeld() {
+
+		if(this.held != null && !this.held.isDead) return this.held;
+		this.held = null;
+
+		List<EntityMovingItem> items = worldObj.getEntitiesWithinAABB(EntityMovingItem.class, this.getCatchBox());
 
 		for(EntityMovingItem item : items) {
+			if(!item.isDead && this.isOwn(item, TAG_HELD)) {
+				this.held = item;
+				break;
+			}
+		}
+
+		return this.held;
+	}
+
+	protected void absorbItems(int needed) {
+
+		List<EntityMovingItem> items = worldObj.getEntitiesWithinAABB(EntityMovingItem.class, this.getCatchBox());
+
+		for(EntityMovingItem item : items) {
+
+			if(item.isDead || this.isOwnOutput(item) || this.isOwn(item, TAG_HELD)) continue;
+			if(Math.abs(item.posX - xCoord - 0.5) > 0.2 || Math.abs(item.posZ - zCoord - 0.5) > 0.2) continue;
+
 			ItemStack stack = item.getItemStack();
 			if(stack == null || stack.stackSize <= 0) continue;
 
-			if(this.isOwnOutput(item)) continue;
+			EntityMovingItem held = this.getHeld();
+			ItemStack heldStack = held != null ? held.getItemStack() : null;
 
-			ComparableStack key = new ComparableStack(stack).makeSingular();
-			List<EntityMovingItem> list = groups.get(key);
-			if(list == null) {
-				list = new ArrayList();
-				groups.put(key, list);
-			}
-			list.add(item);
-		}
-
-		int needed = this.getRequired();
-		boolean did = false;
-
-		for(Map.Entry<ComparableStack, List<EntityMovingItem>> entry : groups.entrySet()) {
-
-			List<EntityMovingItem> list = entry.getValue();
-
-			int total = 0;
-			for(EntityMovingItem item : list) total += item.getItemStack().stackSize;
-
-			if(total < needed) continue;
-
-			ItemStack output = this.getCombined(list.get(0).getItemStack(), needed);
-			if(output == null) continue;
-
-			int sets = total / needed;
-			int toConsume = sets * needed;
-
-			for(EntityMovingItem item : list) {
-				ItemStack stack = item.getItemStack();
-				int take = Math.min(stack.stackSize, toConsume);
-				toConsume -= take;
-
-				if(take >= stack.stackSize) {
-					item.setDead();
-				} else {
-					stack.stackSize -= take;
-					item.setItemStack(stack);
-				}
-
-				if(toConsume <= 0) break;
+			if(heldStack == null) {
+				if(this.getCombined(stack, needed) == null) continue;
+			} else if(!heldStack.isItemEqual(stack) || !ItemStack.areItemStackTagsEqual(heldStack, stack)) {
+				continue;
 			}
 
-			this.spawnOutput(output, sets * output.stackSize);
-			did = true;
-		}
+			int space = needed - (heldStack == null ? 0 : heldStack.stackSize);
+			if(space <= 0) return;
 
-		return did;
+			int take = Math.min(space, stack.stackSize);
+
+			if(held == null) {
+				ItemStack copy = stack.copy();
+				copy.stackSize = take;
+				held = new EntityMovingItem(worldObj);
+				held.setPosition(this.xCoord + 0.5, this.yCoord + 0.25, this.zCoord + 0.5);
+				held.setItemStack(copy);
+				this.tagOwn(held, TAG_HELD);
+				held.heldUntil = worldObj.getTotalWorldTime() + 1;
+				worldObj.spawnEntityInWorld(held);
+				this.held = held;
+			} else {
+				heldStack.stackSize += take;
+				held.setItemStack(heldStack);
+			}
+
+			if(take >= stack.stackSize) {
+				item.setDead();
+			} else {
+				stack.stackSize -= take;
+				item.setItemStack(stack);
+			}
+		}
+	}
+
+	public void releaseHeld() {
+
+		EntityMovingItem held = this.getHeld();
+		if(held == null) return;
+
+		held.getEntityData().removeTag(TAG_HELD + "X");
+		held.heldUntil = -1;
+		this.tagOwn(held, TAG_OWNER);
+		this.held = null;
+	}
+
+	protected AxisAlignedBB getCatchBox() {
+		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 0.5, zCoord + 1);
 	}
 
 	public static final String TAG_OWNER = "hbmConveyorCombinator";
+	public static final String TAG_HELD = "hbmConveyorCombinatorHeld";
 
 	public boolean isOwnOutput(EntityMovingItem item) {
+		return this.isOwn(item, TAG_OWNER);
+	}
+
+	protected boolean isOwn(EntityMovingItem item, String tag) {
 
 		NBTTagCompound data = item.getEntityData();
 
-		if(!data.hasKey(TAG_OWNER + "X")) return false;
+		if(!data.hasKey(tag + "X")) return false;
 
-		return data.getInteger(TAG_OWNER + "X") == this.xCoord
-			&& data.getInteger(TAG_OWNER + "Y") == this.yCoord
-			&& data.getInteger(TAG_OWNER + "Z") == this.zCoord;
+		return data.getInteger(tag + "X") == this.xCoord
+			&& data.getInteger(tag + "Y") == this.yCoord
+			&& data.getInteger(tag + "Z") == this.zCoord;
+	}
+
+	protected void tagOwn(EntityMovingItem item, String tag) {
+		NBTTagCompound data = item.getEntityData();
+		data.setInteger(tag + "X", this.xCoord);
+		data.setInteger(tag + "Y", this.yCoord);
+		data.setInteger(tag + "Z", this.zCoord);
 	}
 
 	protected void spawnOutput(ItemStack output, int amount) {

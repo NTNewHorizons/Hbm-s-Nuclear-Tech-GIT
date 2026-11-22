@@ -11,6 +11,8 @@ import com.hbm.util.fauxpointtwelve.BlockPos;
 
 import api.hbm.conveyor.IConveyorBelt;
 import api.hbm.conveyor.IEnterableBlock;
+import com.hbm.blocks.machine.MachineConveyorCombinator;
+import com.hbm.blocks.machine.MachineConveyorPress;
 import com.hbm.blocks.network.BlockConveyorBase;
 import com.hbm.blocks.network.CranePartitioner;
 import com.hbm.blocks.network.CraneSplitter;
@@ -36,6 +38,8 @@ public abstract class EntityMovingConveyorObject extends Entity {
 
 	public static final int CRAM_CHECK_TICKS = 1 * 20;
 	private boolean blocked = false;
+	// world time until which a machine keeps this object in place
+	public long heldUntil = -1;
 
 	public static boolean isCrammed(World world, int x, int y, int z) {
 		return getObjectsOnBlock(world, x, y, z).size() >= ServerConfig.CONVEYOR_CRAM_MAX.get();
@@ -101,6 +105,10 @@ public abstract class EntityMovingConveyorObject extends Entity {
 			return ((CraneSplitter) block).getTravelDirection(world, x, y, z, itemPos).getOpposite();
 		} else if(block instanceof CranePartitioner) {
 			return ((CranePartitioner) block).getTravelDirection(world, x, y, z, itemPos).getOpposite();
+		} else if(block instanceof MachineConveyorCombinator) {
+			return ((MachineConveyorCombinator) block).getTravelDirection(world, x, y, z, itemPos).getOpposite();
+		} else if(block instanceof MachineConveyorPress) {
+			return ((MachineConveyorPress) block).getTravelDirection(world, x, y, z, itemPos).getOpposite();
 		} else if(block instanceof IConveyorBelt) {
 			return ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z)).getOpposite();
 		}
@@ -197,7 +205,7 @@ public abstract class EntityMovingConveyorObject extends Entity {
 			}
 			
 			BlockPos lastPos = new BlockPos(posX, posY, posZ);
-			if (!blocked) this.moveEntity(motionX, motionY, motionZ);
+			if(!blocked && worldObj.getTotalWorldTime() > heldUntil) this.moveEntity(motionX, motionY, motionZ);
 			BlockPos newPos = new BlockPos(posX, posY, posZ);
 			
 			if(!lastPos.equals(newPos)) {

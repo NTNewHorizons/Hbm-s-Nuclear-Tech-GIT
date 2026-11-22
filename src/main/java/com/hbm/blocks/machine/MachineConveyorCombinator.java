@@ -6,6 +6,7 @@ import java.util.List;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.blocks.ITooltipProvider;
+import com.hbm.entity.item.EntityMovingItem;
 import com.hbm.tileentity.machine.TileEntityConveyorCombinator;
 import com.hbm.util.i18n.I18nUtil;
 
@@ -60,6 +61,8 @@ public class MachineConveyorCombinator extends BlockDummyable implements IConvey
 		TileEntityConveyorCombinator combinator = (TileEntityConveyorCombinator) te;
 
 		combinator.mode = combinator.mode == TileEntityConveyorCombinator.MODE_3x3 ? TileEntityConveyorCombinator.MODE_2x2 : TileEntityConveyorCombinator.MODE_3x3;
+		EntityMovingItem held = combinator.getHeld();
+		if(held != null && combinator.getCombined(held.getItemStack(), combinator.getRequired()) == null) combinator.releaseHeld();
 		combinator.markChanged();
 		combinator.networkPackNT(50);
 
