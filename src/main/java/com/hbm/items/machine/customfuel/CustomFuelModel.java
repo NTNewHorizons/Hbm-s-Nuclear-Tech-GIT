@@ -36,6 +36,8 @@ public class CustomFuelModel {
 
 	// self-inflicted RBMK flux per unit of selfInfluence, a pure Pu238Be source is 40
 	public static final double RBMK_SELF_SCALE = 40D;
+	// PWR flux per rod per unit of selfInfluence, a neutron source block gives 20
+	public static final double PWR_SELF_SCALE = 20D;
 	public static final double HYBRID_ENRICHMENT_EXP = 0.35D;
 
 	/// NATIVE PROFILES ///
@@ -122,6 +124,13 @@ public class CustomFuelModel {
 		return a;
 	}
 
+	// fertile isotopes don't cancel sources out, they only absorb flux in the hybrid model
+	public static double selfInfluence(CustomFuelMix mix) {
+		double self = 0;
+		for(EnumCustomFuel fuel : EnumCustomFuel.values()) self += mix.share(fuel) * Math.max(fuel.selfInfluence, 0);
+		return self;
+	}
+
 	public static double hybridEnrichment(double e) {
 		return e <= 0 ? 0D : Math.pow(e, HYBRID_ENRICHMENT_EXP) / e;
 	}
@@ -155,6 +164,8 @@ public class CustomFuelModel {
 		public final List<RBMKTerm> terms = new ArrayList();
 		public double fluxMult = 1D;
 		public double selfRate;
+		// share of source neutrons caught by the fissile isotopes, the rest leaves the rod like a vanilla Be source
+		public double selfCapture;
 		public double heat = 1D;
 		public double meltingPoint;
 		public double xenonMult = 1D;
@@ -181,14 +192,11 @@ public class CustomFuelModel {
 
 		RBMKProfile p = new RBMKProfile();
 		double e = mix.fissileShare();
-		double melt = 0, self = 0, selfPositive = 0;
-		for(EnumCustomFuel fuel : EnumCustomFuel.values()) {
-			double s = mix.share(fuel);
-			melt += s * fuel.meltingPoint;
-			self += s * fuel.selfInfluence;
-			selfPositive += s * Math.max(fuel.selfInfluence, 0);
-		}
+		double melt = 0;
+		for(EnumCustomFuel fuel : EnumCustomFuel.values()) melt += mix.share(fuel) * fuel.meltingPoint;
 		p.meltingPoint = melt;
+		p.selfRate = selfInfluence(mix) * RBMK_SELF_SCALE;
+		p.selfCapture = e;
 
 		double nativeHeat = 0;
 		for(EnumCustomFuel fuel : EnumCustomFuel.values()) nativeHeat += mix.fissileShareOf(fuel) * rbmkHeat(fuel);
@@ -198,7 +206,6 @@ public class CustomFuelModel {
 			for(EnumCustomFuel fuel : EnumCustomFuel.values()) {
 				if(fuel.fissile && mix.share(fuel) > 0) p.terms.add(new RBMKTerm(rbmkFunc(fuel), rbmkStats(fuel), mix.share(fuel)));
 			}
-			p.selfRate = self * RBMK_SELF_SCALE;
 			p.heat = nativeHeat;
 			break;
 
@@ -217,7 +224,6 @@ public class CustomFuelModel {
 				}
 				p.heat = nativeHeat;
 			}
-			p.selfRate = selfPositive * RBMK_SELF_SCALE;
 			break;
 
 		case HYBRID:
@@ -229,7 +235,6 @@ public class CustomFuelModel {
 				p.terms.add(new RBMKTerm(rbmkFunc(fuel), rbmkStats(fuel), weight));
 			}
 			p.fluxMult = 1D - absorption(mix);
-			p.selfRate = selfPositive * RBMK_SELF_SCALE;
 			p.heat = nativeHeat * hybridCooling(mix) * (1D + 0.5D * mix.schrabidicShare());
 			p.xenonMult = 1D - 0.8D * mix.share(EnumCustomFuel.TH232);
 			break;
@@ -251,6 +256,7 @@ public class CustomFuelModel {
 		public double fluxMult = 1D;
 		public double heat;
 		public double yield = 1_000_000_000D;
+		public double selfFlux;
 
 		public double react(double flux) {
 			double out = 0;
@@ -273,6 +279,7 @@ public class CustomFuelModel {
 
 		PWRProfile p = new PWRProfile();
 		double e = mix.fissileShare();
+		p.selfFlux = selfInfluence(mix) * PWR_SELF_SCALE;
 		double nativeHeat = 0;
 		for(EnumCustomFuel fuel : EnumCustomFuel.values()) nativeHeat += mix.fissileShareOf(fuel) * pwrHeat(fuel);
 

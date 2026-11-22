@@ -265,12 +265,14 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 						double outputPerRod;
 						double heatEmission;
 						double yield;
+						double selfFlux = 0D;
 
 						if(typeLoaded == TYPE_CUSTOM) {
 							PWRProfile profile = CustomFuelModel.pwr(customLoaded, this.processTime > 0 ? this.progress / this.processTime : 0D);
 							outputPerRod = profile.react(fluxPerRod);
 							heatEmission = profile.heat;
 							yield = profile.yield;
+							selfFlux = profile.selfFlux;
 						} else {
 							EnumPWRFuel fuel = EnumUtil.grabEnumSafely(EnumPWRFuel.class, typeLoaded);
 							outputPerRod = fuel.function.effonix(fluxPerRod);
@@ -279,6 +281,8 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 						}
 
 						double totalOutput = outputPerRod * amountLoaded * usedRods;
+						// source neutrons aren't fission, so they ignore control rods and don't burn the fuel
+						newFlux += selfFlux * amountLoaded;
 						double totalHeatOutput = totalOutput * heatEmission;
 
 						if(tanks[0].getFill() > 0) {

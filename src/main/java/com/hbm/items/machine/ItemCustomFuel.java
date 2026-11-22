@@ -163,6 +163,7 @@ public class ItemCustomFuel extends Item implements ICustomFuelItem {
 		switch(form) {
 		case PWR: {
 			PWRProfile p = CustomFuelModel.pwr(mix, 0D);
+			if(p.selfFlux > 0) list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.passive", String.format(Locale.US, "%.1f", p.selfFlux)));
 			list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.customFuel.model", model));
 			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.reaction", EnumChatFormatting.WHITE + p.describe()));
 			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.heat", String.format(Locale.US, "%.2f", p.heat)));

@@ -57,7 +57,7 @@ public class ItemCustomRBMKRod extends ItemRBMKRod implements ICustomFuelItem {
 		RBMKProfile p = getProfile(stack);
 		if(p == null) return 0D;
 
-		inFlux += p.selfRate;
+		inFlux += p.selfRate * p.selfCapture;
 		if(inFlux < 0D) inFlux = 0D;
 
 		if(RBMKDials.getXenon(world)) {
@@ -69,7 +69,7 @@ public class ItemCustomRBMKRod extends ItemRBMKRod implements ICustomFuelItem {
 		}
 
 		double flux = inFlux * reactivityModByEnrichment(getEnrichment(stack));
-		double outFlux = p.react(flux) * RBMKDials.getReactivityMod(world);
+		double outFlux = (p.react(flux) + p.selfRate * (1D - p.selfCapture) * getEnrichment(stack)) * RBMKDials.getReactivityMod(world);
 
 		if(RBMKDials.getDepletion(world)) {
 			setYield(stack, Math.max(getYield(stack) - inFlux, 0D));
