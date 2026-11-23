@@ -23,6 +23,7 @@ import com.hbm.items.machine.ItemDrive.EnumDriveType;
 import com.hbm.items.special.ItemBedrockOre.EnumBedrockOre;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.Compat;
+import com.hbm.util.CompatHarvestcraft;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -93,6 +94,40 @@ public class ShredderRecipes extends SerializableRecipe {
 					putIfValid(stack, new ItemStack(ModItems.dust), name);
 				}
 			}
+		}
+
+		/* Pam's HarvestCraft compat: any grain can be ground into flour */
+		if(Loader.isModLoaded("harvestcraft")) {
+			registerOredictRecipe("listAllgrain", new ItemStack(ModItems.flour));
+			registerOredictRecipe("cropRice", new ItemStack(ModItems.flour));
+			registerOredictRecipe("cropCorn", new ItemStack(ModItems.flour));
+			ShredderRecipes.setRecipe(Items.potato, new ItemStack(ModItems.flour));
+
+			registerOredictRecipe("listAllfruit", new ItemStack(Items.sugar));
+			registerOredictRecipe("cropBeet", new ItemStack(Items.sugar));
+
+			/* former Quern recipes */
+			ItemStack cocoa = CompatHarvestcraft.stack("cocoapowderItem");
+			if(cocoa != null) ShredderRecipes.setRecipe(new ItemStack(Items.dye, 1, 3), cocoa);
+
+			String[][] spices = new String[][] {
+				{ "cinnamonItem", "groundcinnamonItem" },
+				{ "nutmegItem", "groundnutmegItem" },
+				{ "peppercornItem", "blackpepperItem" },
+				{ "curryleafItem", "currypowderItem" }
+			};
+
+			for(String[] spice : spices) {
+				Item in = CompatHarvestcraft.item(spice[0]);
+				ItemStack out = CompatHarvestcraft.stack(spice[1]);
+				if(in != null && out != null) ShredderRecipes.setRecipe(in, out);
+			}
+		}
+	}
+
+	private static void registerOredictRecipe(String dict, ItemStack out) {
+		for(ItemStack stack : OreDictionary.getOres(dict)) {
+			putIfValid(stack, out, dict);
 		}
 	}
 

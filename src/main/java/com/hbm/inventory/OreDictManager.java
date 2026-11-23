@@ -648,6 +648,7 @@ public class OreDictManager {
 		 * foude
 		 */
 		OreDictionary.registerOre(KEY_FLOUR, new ItemStack(flour));
+		OreDictionary.registerOre("flourEqualswheat", new ItemStack(flour));
 		OreDictionary.registerOre(KEY_BUTTER, new ItemStack(butter));
 		OreDictionary.registerOre(KEY_CHEESE, new ItemStack(cheese));
 		for(NTMMaterial mat : Mats.orderedList) {

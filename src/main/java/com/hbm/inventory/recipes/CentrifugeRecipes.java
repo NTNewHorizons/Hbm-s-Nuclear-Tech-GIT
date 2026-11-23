@@ -32,10 +32,12 @@ import com.hbm.items.special.ItemBedrockOreNew.CelestialBedrockOre;
 import com.hbm.items.special.ItemBedrockOreNew.CelestialBedrockOreType;
 import com.hbm.items.special.ItemByproduct.EnumByproduct;
 import com.hbm.main.MainRegistry;
+import com.hbm.util.CompatHarvestcraft;
 import com.hbm.util.ItemStackUtil;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -397,6 +399,37 @@ public class CentrifugeRecipes extends SerializableRecipe {
 		recipes.put(new ComparableStack(ModItems.crystal_zinc), new ItemStack[] { new ItemStack(ModItems.powder_zinc, 2), new ItemStack(ModItems.powder_zinc, 2), new ItemStack(ModItems.sulfur, 2), new ItemStack(ModItems.powder_aluminium, 1) });
 		recipes.put(new ComparableStack(ModItems.nickel_salts), new ItemStack[] { new ItemStack(ModItems.powder_iron, 2), new ItemStack(ModItems.powder_nickel, 2), new ItemStack(ModItems.powder_sodium, 1), new ItemStack(ModItems.sulfur, 1) });
 
+		/* Pam's HarvestCraft compat: former Presser recipes */
+		if(CompatHarvestcraft.isLoaded()) {
+			ItemStack fruitbait = CompatHarvestcraft.stack("fruitbaitItem");
+			ItemStack grainbait = CompatHarvestcraft.stack("grainbaitItem");
+			ItemStack veggiebait = CompatHarvestcraft.stack("veggiebaitItem");
+			ItemStack oliveoil = CompatHarvestcraft.stack("oliveoilItem");
+
+			addPamRecipe(Items.apple, CompatHarvestcraft.stack("applejuiceItem"), fruitbait);
+			for(String fruit : CompatHarvestcraft.JUICE_FRUITS) {
+				addPamRecipe(CompatHarvestcraft.item(fruit + "Item"), CompatHarvestcraft.stack(fruit + "juiceItem"), fruitbait);
+			}
+
+			addPamRecipe(CompatHarvestcraft.item("oliveItem"), oliveoil, fruitbait);
+			addPamRecipe(CompatHarvestcraft.item("coconutItem"), oliveoil, veggiebait);
+			addPamRecipe(CompatHarvestcraft.item("avocadoItem"), oliveoil, veggiebait);
+			addPamRecipe(Items.pumpkin_seeds, oliveoil, grainbait);
+			for(String seed : new String[] { "sunflowerseedsItem", "walnutItem", "sesameseedsItem", "grapeseedItem", "mustardseedsItem", "cottonseedItem", "teaseedItem" }) {
+				addPamRecipe(CompatHarvestcraft.item(seed), oliveoil, grainbait);
+			}
+
+			addPamRecipe(CompatHarvestcraft.item("beetItem"), new ItemStack(Items.sugar), veggiebait);
+			addPamRecipe(CompatHarvestcraft.item("honeycombItem"), CompatHarvestcraft.stack("honeyItem"), CompatHarvestcraft.stack("beeswaxItem"));
+			addPamRecipe(CompatHarvestcraft.item("silkentofuItem"), CompatHarvestcraft.stack("firmtofuItem"), CompatHarvestcraft.stack("soymilkItem"));
+		}
+
+	}
+
+	private static void addPamRecipe(Item in, ItemStack... out) {
+		if(in == null) return;
+		for(ItemStack stack : out) if(stack == null) return;
+		recipes.put(new ComparableStack(in), out);
 	}
 
 	@Override

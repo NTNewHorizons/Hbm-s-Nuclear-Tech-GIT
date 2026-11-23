@@ -26,6 +26,8 @@ import com.hbm.items.machine.ItemCircuit.EnumCircuitType;
 import com.hbm.items.machine.ItemStamp.StampType;
 import com.hbm.util.Tuple.Pair;
 
+import com.hbm.util.CompatHarvestcraft;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
@@ -124,6 +126,15 @@ public class PressRecipes extends SerializableRecipe {
 
 		if(Loader.isModLoaded("OpenComputers")) {
 		makeRecipe(StampType.CIRCUIT, new ComparableStack(ModItems.plate_iron), new ItemStack(GameRegistry.findItem("OpenComputers", "item"), 1, 19));
+		}
+
+		if(CompatHarvestcraft.isLoaded()) {
+			Item waxcomb = CompatHarvestcraft.item("waxcombItem");
+			ItemStack beeswax = CompatHarvestcraft.stack("beeswaxItem");
+			if(waxcomb != null && beeswax != null) makeRecipe(StampType.FLAT, new ComparableStack(waxcomb), beeswax);
+
+			ItemStack tofu = CompatHarvestcraft.stack("silkentofuItem");
+			if(tofu != null) makeRecipe(StampType.FLAT, new OreDictStack("cropSoybean"), tofu);
 		}
 	}
 
