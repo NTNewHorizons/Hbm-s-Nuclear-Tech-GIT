@@ -13,6 +13,7 @@ import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 public interface ICustomFuelItem {
@@ -35,6 +36,32 @@ public interface ICustomFuelItem {
 		for(int i = 0; i < preset.length / 2; i++) mix.amounts[preset[i * 2]] = amount * preset[i * 2 + 1] / 100;
 		mix.fresh = amount;
 		return mix.writeTo(new ItemStack(item));
+	}
+
+	public static final String KEY_SAMPLE = "moxerSample";
+
+	// NEI only: no mix, so it can't be crafted, burned or dissolved, the tooltip explains the Moxer instead
+	public static ItemStack makeSample(Item item) {
+		ItemStack stack = new ItemStack(item);
+		stack.stackTagCompound = new NBTTagCompound();
+		stack.stackTagCompound.setBoolean(KEY_SAMPLE, true);
+		return stack;
+	}
+
+	public static boolean isSample(ItemStack stack) {
+		return stack != null && stack.hasTagCompound() && stack.stackTagCompound.getBoolean(KEY_SAMPLE);
+	}
+
+	public static void addSampleInfo(ItemStack stack, List list) {
+		int mB = ((ICustomFuelItem) stack.getItem()).getFuelAmount() * 2;
+		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.customFuel.sample.title"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.sample.input"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.sample.mixed"));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.sample.amounts", mB));
+		list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("desc.item.customFuel.sample.start"));
+		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey(stack.getItem() == ModItems.custom_fuel_ingot ? "desc.item.customFuel.sample.ingot" : "desc.item.customFuel.sample.billet"));
+		list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.sample.sources"));
+		list.add(EnumChatFormatting.DARK_GRAY + "" + EnumChatFormatting.ITALIC + I18nUtil.resolveKey("desc.item.customFuel.sample.note"));
 	}
 
 	// The mix as it is now, partly used fuel in a reactor slot already counts as burned

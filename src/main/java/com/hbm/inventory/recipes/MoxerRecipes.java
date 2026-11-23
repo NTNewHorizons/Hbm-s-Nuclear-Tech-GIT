@@ -5,7 +5,6 @@ import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ICustomFuelItem;
-import com.hbm.items.machine.ItemCustomRBMKRod;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -32,7 +31,7 @@ public class MoxerRecipes extends GenericRecipes<MoxerRecipe> {
 
 	// the real mix is set by the Moxer, this one only shows up in NEI
 	private static ItemStack display(Item item) {
-		return ICustomFuelItem.makePreset(item, ICustomFuelItem.PRESETS[0]);
+		return ICustomFuelItem.makeSample(item);
 	}
 
 	@Override
@@ -45,10 +44,5 @@ public class MoxerRecipes extends GenericRecipes<MoxerRecipe> {
 			.inputFluids(new FluidStack(Fluids.NITRIC_ACID, 50), new FluidStack(Fluids.AMMONIA, 50), new FluidStack(Fluids.KRYPTON, 100))
 			.outputItems(display(ModItems.custom_fuel_billet))
 			.setIcon(ModItems.billet_uranium_fuel));
-		this.register((MoxerRecipe) new MoxerRecipe("moxer.rbmk").setAmount(384).setup(3200, 15000).setNameWrapper("moxer.rbmk")
-			.inputFluids(new FluidStack(Fluids.NITRIC_ACID, 400), new FluidStack(Fluids.AMMONIA, 400), new FluidStack(Fluids.KRYPTON, 800))
-			.outputItems(ItemCustomRBMKRod.prepare(display(ModItems.custom_fuel_rbmk_rod)))
-			.setIcon(ModItems.rbmk_fuel_meu)
-			.setPools(GenericRecipes.POOL_PREFIX_ALT + "moxer"));
 	}
 }

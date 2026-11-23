@@ -24,16 +24,27 @@ import net.minecraftforge.oredict.OreDictionary;
 // result mix = sum of all custom inputs split across the output, so different batches blend
 public class CustomFuelCraftingHandler implements IRecipe {
 
-	private static final char CUSTOM = 'C';
+	public static final char CUSTOM = 'C';
 
-	private static class Def {
+	public static class Def {
 		// null for shapeless
-		final String[] shape;
-		final char[] keys;
-		final Object[] values;
-		final Item custom;
-		final Item output;
-		final int outCount;
+		public final String[] shape;
+		public final char[] keys;
+		public final Object[] values;
+		public final Item custom;
+		public final Item output;
+		public final int outCount;
+
+		public int customCount() {
+			if(shape == null) {
+				int count = 0;
+				for(Object value : values) if(value instanceof Character && (Character) value == CUSTOM) count++;
+				return count;
+			}
+			int count = 0;
+			for(String row : shape) for(char c : row.toCharArray()) if(c == CUSTOM) count++;
+			return count;
+		}
 
 		Def(String[] shape, Item custom, Item output, int outCount, Object... keyValues) {
 			this.shape = shape;
@@ -48,7 +59,7 @@ public class CustomFuelCraftingHandler implements IRecipe {
 			}
 		}
 
-		Object valueOf(char c) {
+		public Object valueOf(char c) {
 			for(int i = 0; i < keys.length; i++) if(keys[i] == c) return values[i];
 			return null;
 		}
@@ -56,7 +67,7 @@ public class CustomFuelCraftingHandler implements IRecipe {
 
 	private static final List<Def> defs = new ArrayList();
 
-	private static List<Def> getDefs() {
+	public static List<Def> getDefs() {
 		if(defs.isEmpty()) {
 			defs.add(new Def(null, ModItems.custom_fuel_billet, ModItems.custom_fuel_ingot, 2, 'a', CUSTOM, 'b', CUSTOM, 'c', CUSTOM));
 			defs.add(new Def(new String[] { "CC" }, ModItems.custom_fuel_ingot, ModItems.custom_fuel_billet, 3));
@@ -87,19 +98,23 @@ public class CustomFuelCraftingHandler implements IRecipe {
 			List<ItemStack> customs = def.shape != null ? matchShaped(def, inv) : matchShapeless(def, inv);
 			if(customs == null) continue;
 
-			CustomFuelMix sum = new CustomFuelMix();
-			for(ItemStack stack : customs) {
-				CustomFuelMix mix = CustomFuelMix.fromStack(stack);
-				if(mix == null) return null;
-				sum.add(mix);
-			}
-
-			ItemStack out = sum.divide(def.outCount).writeTo(new ItemStack(def.output, def.outCount));
-			if(def.output == ModItems.custom_fuel_rbmk_rod) ItemCustomRBMKRod.prepare(out);
-			return out;
+			return craft(def, customs);
 		}
 
 		return null;
+	}
+
+	public static ItemStack craft(Def def, List<ItemStack> customs) {
+		CustomFuelMix sum = new CustomFuelMix();
+		for(ItemStack stack : customs) {
+			CustomFuelMix mix = CustomFuelMix.fromStack(stack);
+			if(mix == null) return null;
+			sum.add(mix);
+		}
+
+		ItemStack out = sum.divide(def.outCount).writeTo(new ItemStack(def.output, def.outCount));
+		if(def.output == ModItems.custom_fuel_rbmk_rod) ItemCustomRBMKRod.prepare(out);
+		return out;
 	}
 
 	private ItemStack breakRod(ItemStack rod) {

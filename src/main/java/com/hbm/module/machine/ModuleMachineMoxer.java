@@ -6,7 +6,6 @@ import com.hbm.inventory.recipes.MoxerRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.machine.ICustomFuelItem;
-import com.hbm.items.machine.ItemCustomRBMKRod;
 import com.hbm.items.machine.customfuel.CustomFuelMix;
 
 import api.hbm.energymk2.IEnergyHandlerMK2;
@@ -39,10 +38,10 @@ public class ModuleMachineMoxer extends ModuleMachineBase {
 		out.stackSize = 1;
 
 		if(out.getItem() instanceof ICustomFuelItem) {
+			out.stackTagCompound = null;
 			CustomFuelMix mix = perCycle.copy();
 			mix.fresh = ((MoxerRecipe) recipe).amount;
 			mix.writeTo(out);
-			if(out.getItem() instanceof ItemCustomRBMKRod) ItemCustomRBMKRod.prepare(out);
 		}
 		return out;
 	}

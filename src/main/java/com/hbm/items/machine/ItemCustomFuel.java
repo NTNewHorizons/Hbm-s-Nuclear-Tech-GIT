@@ -1,5 +1,6 @@
 package com.hbm.items.machine;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -132,7 +133,8 @@ public class ItemCustomFuel extends Item implements ICustomFuelItem {
 	public int getColorFromItemStack(ItemStack stack, int pass) {
 		if(pass != 0) return 0xffffff;
 		CustomFuelMix mix = CustomFuelMix.fromStack(stack);
-		if(mix == null) return 0xffffff;
+		// the sample cycles through colours since its mix is whatever the player sets
+		if(mix == null) return ICustomFuelItem.isSample(stack) ? Color.HSBtoRGB((System.currentTimeMillis() % 6000L) / 6000F, 0.5F, 0.9F) & 0xffffff : 0xffffff;
 		int color = mix.getColor();
 		return form.spent ? ICustomFuelItem.darken(color) : color;
 	}
@@ -155,7 +157,8 @@ public class ItemCustomFuel extends Item implements ICustomFuelItem {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		CustomFuelMix mix = CustomFuelMix.fromStack(stack);
 		if(mix == null) {
-			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.noMix"));
+			if(ICustomFuelItem.isSample(stack)) ICustomFuelItem.addSampleInfo(stack, list);
+			else list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.noMix"));
 			return;
 		}
 

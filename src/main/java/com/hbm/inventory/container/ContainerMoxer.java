@@ -3,7 +3,6 @@ package com.hbm.inventory.container;
 import com.hbm.inventory.SlotCraftingOutput;
 import com.hbm.inventory.SlotNonRetarded;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.items.machine.ItemMachineUpgrade;
 import com.hbm.util.InventoryUtil;
 
@@ -21,17 +20,15 @@ public class ContainerMoxer extends ContainerBase {
 
 		// Battery
 		this.addSlotToContainer(new SlotNonRetarded(moxer, 0, 152, 81));
-		// Schematic
-		this.addSlotToContainer(new SlotNonRetarded(moxer, 1, 35, 126));
 		// Upgrades
-		this.addSlots(moxer, 2, 152, 108, 2, 1);
+		this.addSlots(moxer, 1, 152, 108, 2, 1);
 		// Solid Input
-		this.addSlotToContainer(new SlotNonRetarded(moxer, 4, 116, 9));
+		this.addSlotToContainer(new SlotNonRetarded(moxer, 3, 116, 9));
 		// Solid Output
-		this.addOutputSlots(invPlayer.player, moxer, 5, 116, 45, 1, 1);
+		this.addOutputSlots(invPlayer.player, moxer, 4, 116, 45, 1, 1);
 		// Fluid Input
-		this.addSlots(			moxer, 6, 8, 45, 1, 3);
-		this.addTakeOnlySlots(	moxer, 9, 8, 63, 1, 3);
+		this.addSlots(			moxer, 5, 8, 45, 1, 3);
+		this.addTakeOnlySlots(	moxer, 8, 8, 63, 1, 3);
 
 		this.playerInv(invPlayer, 8, 174);
 	}
@@ -54,12 +51,10 @@ public class ContainerMoxer extends ContainerBase {
 
 				if(slotOriginal.getItem() instanceof IBatteryItem || slotOriginal.getItem() == ModItems.battery_creative) {
 					if(!this.mergeItemStack(slotStack, 0, 1, false)) return null;
-				} else if(slotOriginal.getItem() instanceof ItemBlueprints) {
-					if(!this.mergeItemStack(slotStack, 1, 2, false)) return null;
 				} else if(slotOriginal.getItem() instanceof ItemMachineUpgrade) {
-					if(!this.mergeItemStack(slotStack, 2, 4, false)) return null;
+					if(!this.mergeItemStack(slotStack, 1, 3, false)) return null;
 				} else {
-					if(!InventoryUtil.mergeItemStack(this.inventorySlots, slotStack, 4, 5, false)) return null;
+					if(!InventoryUtil.mergeItemStack(this.inventorySlots, slotStack, 3, 4, false)) return null;
 				}
 			}
 

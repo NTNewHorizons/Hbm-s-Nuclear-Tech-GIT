@@ -1476,14 +1476,23 @@ desc.item.customFuel.noMix=No composition, make it in a Moxer
 desc.item.customFuel.products=Fission products
 desc.item.customFuel.purex=Can be reprocessed in a PUREX
 desc.item.customFuel.recycle=Can be recycled in the Moxer
+desc.item.customFuel.sample.title=Example output, the real one carries the mix you set
+desc.item.customFuel.sample.input=Put nuggets, billets or ingots into the input slot to dissolve them into the buffer
+desc.item.customFuel.sample.mixed=Mixed fuels like MEU or MOX are split into their isotopes
+desc.item.customFuel.sample.amounts=Pick an isotope with the arrows and type how many mB one cycle takes, the total must be %s mB
+desc.item.customFuel.sample.start=Press the toggle to start, every cycle uses the same mix until you change it
+desc.item.customFuel.sample.ingot=Craft 2 into 3 billets, or 4 around graphite into a Watz pellet
+desc.item.customFuel.sample.billet=Craft 3 into 2 ingots, or into ZIRNOX, PWR and RBMK fuel rods
+desc.item.customFuel.sample.sources=Ra-226, Po-210, Pu-238, Cm-242 and Cf-252 are neutron sources and make the fuel self-igniting
+desc.item.customFuel.sample.note=Example only, it can't be crafted or used
 desc.item.customFuel.vanilla=Can be crafted into %s
 desc.item.customFuel.yield=Lifetime: %s%s flux
 
 desc.fuel.graphLegend=§aFlux (x) -> output (y)   §9Depletion (x) -> multiplier (y)
 desc.fuel.graphLegendFlux=§aFlux (x) -> output (y)
-desc.network_placer.start=Sneak-right-click to start a cable or duct line
+desc.network_placer.start=Right-click to start a cable or duct line
 desc.network_placer.finish=Right-click again to build the selected line
-desc.network_placer.cancel=Sneak-right-click again to cancel the selection
+desc.network_placer.cancel=Sneak-right-click to place a single block, or to cancel the selection
 
 desc.gui.upgrade=§lAcceptable Upgrades:§r
 desc.gui.upgrade.afterburner=* §dAfterburner§r: Stacks to level 3
@@ -2810,6 +2819,7 @@ nei.particle_accelerator.momentum=Momentum: %s
 nei.press.name=Press
 nei.purex.extras=%s ticks   %sHE/t
 nei.radiolysis.name=Radiolysis
+nei.custom_fuel_crafting.name=Custom Fuel Crafting
 nei.rbmk_rod_disassembly.name=RBMK Rod Disassembly
 nei.rbmkwaste_decay.name=Nuclear Waste Decay
 nei.refinery.name=Refinery
@@ -8270,7 +8280,6 @@ purex.schrab=Schrabidium extraction from %s
 
 moxer.ingot=Custom Fuel Ingot
 moxer.billet=Custom Fuel Billet
-moxer.rbmk=Custom RBMK Fuel Rod
 
 qmaw.tab=[ Press %s for help ]
 

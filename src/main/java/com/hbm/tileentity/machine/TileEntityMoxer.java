@@ -19,7 +19,6 @@ import com.hbm.inventory.recipes.MoxerRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemBlueprints;
 import com.hbm.items.machine.ItemMachineUpgrade.UpgradeType;
 import com.hbm.items.machine.customfuel.CustomFuelMix;
 import com.hbm.items.machine.customfuel.CustomFuelSources;
@@ -54,8 +53,6 @@ import net.minecraft.world.World;
 
 public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvider, IConfigurableMachine, IMetalCopiable, IControlReceiver, IEnergyReceiverMK2, IUpgradeInfoProvider, IFluidStandardReceiverMK2 {
 
-	public static final String MOXER_POOL = GenericRecipes.POOL_PREFIX_ALT + "moxer";
-
 	public static int bufferCapacity = MaterialShapes.BLOCK.q(16);
 
 	// dissolved isotopes, and how much of each one cycle takes
@@ -80,13 +77,13 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 	public enum Status { IDLE, READY, RUNNING }
 
 	public TileEntityMoxer() {
-		super(12);
+		super(11);
 		this.inputTanks = new FluidTank[3];
 		for(int i = 0; i < inputTanks.length; i++) this.inputTanks[i] = new FluidTank(Fluids.NONE, 16_000);
 
 		this.moxerModule = new ModuleMachineMoxer(0, this, slots)
 				.buffer(buffer, perCycle)
-				.itemOutput(5)
+				.itemOutput(4)
 				.fluidInput(inputTanks[0], inputTanks[1], inputTanks[2]);
 	}
 
@@ -116,11 +113,11 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 			this.maxPower = BobMathUtil.max(this.power, this.maxPower, 1_000_000);
 
 			this.power = Library.chargeTEFromItems(slots, 0, power, maxPower);
-			upgradeManager.checkSlots(slots, 2, 3);
+			upgradeManager.checkSlots(slots, 1, 2);
 
-			inputTanks[0].loadTank(6, 9, slots);
-			inputTanks[1].loadTank(7, 10, slots);
-			inputTanks[2].loadTank(8, 11, slots);
+			inputTanks[0].loadTank(5, 8, slots);
+			inputTanks[1].loadTank(6, 9, slots);
+			inputTanks[2].loadTank(7, 10, slots);
 
 			double speed = 1D;
 			double pow = 1D;
@@ -134,7 +131,7 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 
 			if(dissolveInput()) this.markDirty();
 
-			this.moxerModule.update(speed, pow, autoMode, slots[1]);
+			this.moxerModule.update(speed, pow, autoMode, null);
 			this.didProcess = this.moxerModule.didProcess;
 			if(this.moxerModule.markDirty) this.markDirty();
 
@@ -179,11 +176,11 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 
 	// dissolves one item from the input slot into the buffer if it fits
 	protected boolean dissolveInput() {
-		ItemStack stack = slots[4];
+		ItemStack stack = slots[3];
 		CustomFuelMix mix = CustomFuelSources.dissolve(stack);
 		if(mix == null || buffer.total() + mix.total() > bufferCapacity) return false;
 		buffer.add(mix);
-		this.decrStackSize(4, 1);
+		this.decrStackSize(3, 1);
 		return true;
 	}
 
@@ -275,21 +272,20 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		if(slot == 0) return true; // battery
-		if(slot == 1 && stack.getItem() == ModItems.blueprints) return MOXER_POOL.equals(ItemBlueprints.grabPool(stack));
-		if(slot >= 2 && slot <= 3) return this.isUpgradeValid(stack);
-		if(slot == 4) return canDissolve(stack);
-		if(slot >= 6 && slot <= 8) return true; // input fluid
+		if(slot >= 1 && slot <= 2) return this.isUpgradeValid(stack);
+		if(slot == 3) return canDissolve(stack);
+		if(slot >= 5 && slot <= 7) return true; // input fluid
 		return false;
 	}
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
-		return slot == 5 || (slot >= 9 && slot <= 11);
+		return slot == 4 || (slot >= 8 && slot <= 10);
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		return new int[] { 4, 5, 6, 7, 8, 9, 10, 11 };
+		return new int[] { 3, 4, 5, 6, 7, 8, 9, 10 };
 	}
 
 	@Override public long getPower() { return power; }
