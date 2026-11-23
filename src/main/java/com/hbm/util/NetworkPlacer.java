@@ -22,8 +22,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Conveyor-like placement for fluid ducts and cables.
- * Sneak-click to set a start position, then click again elsewhere to build a whole line
+ * Click to set a start position, then click again elsewhere to build a whole line
  * along the path between them (stepping over obstacles), consuming items from the inventory.
+ * Sneak-click places a single block, or cancels a pending selection.
  * Adapted from the IQ edition; pipe anchors and other span blocks are intentionally not supported.
  */
 public class NetworkPlacer {
@@ -35,14 +36,12 @@ public class NetworkPlacer {
 		if(!isLine(block)) return false;
 		if(!player.canPlayerEdit(x, y, z, side, stack)) return false;
 
+		// like the conveyor wand: clicks build lines, sneak-clicks place normally or cancel the selection
 		if(player.isSneaking()) {
-			if(hasPending(stack)) {
-				clearPending(stack);
-				if(world.isRemote) player.addChatMessage(new ChatComponentText("Selection cleared"));
-				return true;
-			}
-		} else if(!hasPending(stack)) {
-			return false;
+			if(!hasPending(stack)) return false;
+			clearPending(stack);
+			if(world.isRemote) player.addChatMessage(new ChatComponentText("Selection cleared"));
+			return true;
 		}
 
 		if(!hasPending(stack)) {
