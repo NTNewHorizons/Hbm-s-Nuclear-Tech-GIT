@@ -54,6 +54,7 @@ public abstract class WorldProviderCelestial extends WorldProviderSurface {
 
 	private double eclipseAmount;
 	private long localTime = -1;
+	private long preSleepTime = -1; // vanilla sleeping snaps the overworld to a multiple of 24000 before resetRainAndThunder runs
 
 	public static ArrayList<Meteor> meteors = new ArrayList<>();
 
@@ -92,6 +93,8 @@ public abstract class WorldProviderCelestial extends WorldProviderSurface {
 
 	@Override
 	public void updateWeather() {
+		if(!worldObj.isRemote) preSleepTime = getWorldTime();
+
 		CBT_Atmosphere atmosphere = body.getTrait(CBT_Atmosphere.class);
 		double pressure = atmosphere != null ? atmosphere.getPressure() : 0;
 
@@ -708,7 +711,7 @@ public abstract class WorldProviderCelestial extends WorldProviderSurface {
 	public void resetRainAndThunder() {
 		CBT_Weather weather = CBT_Weather.ensureTrait(body);
 		if(weather != null) {
-			weather.forceClear(worldObj.rand, worldObj.rand.nextInt(168000) + 12000);
+			weather.forceClear(worldObj.rand, CBT_Weather.scaleDuration(worldObj.rand.nextInt(168000) + 12000));
 			SolarSystemWorldSavedData.get(worldObj).markDirty();
 		}
 
@@ -717,12 +720,11 @@ public abstract class WorldProviderCelestial extends WorldProviderSurface {
 		worldObj.prevThunderingStrength = 0.0F;
 		worldObj.thunderingStrength = 0.0F;
 
-		if(dimensionId == 0) return;
 		if(!worldObj.getGameRules().getGameRuleBooleanValue("doDaylightCycle")) return;
 
-		long dayLength = (long)getDayLength();
-		long i = getWorldTime() % dayLength;
-		setWorldTime(i - i % dayLength);
+		double dayLength = getDayLength();
+		long time = preSleepTime >= 0 ? preSleepTime : getWorldTime();
+		setWorldTime((long)Math.ceil((Math.floor(time / dayLength) + 1.0D) * dayLength));
 	}
 
 	@Override

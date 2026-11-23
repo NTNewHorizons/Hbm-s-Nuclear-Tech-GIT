@@ -25,6 +25,7 @@ import com.hbm.saveddata.SatelliteSavedData;
 import com.hbm.saveddata.TomSaveData;
 import com.hbm.saveddata.satellites.SatelliteBase;
 import com.hbm.saveddata.satellites.XSatelliteRegistry;
+import com.hbm.util.AstronomyUtil;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
@@ -143,6 +144,9 @@ public class PermaSyncHandler {
 		/// SATELLITES ///
 
 		/// TIME OF DAY ///
+		buf.writeDouble(AstronomyUtil.DAY_LENGTH_FACTOR);
+		buf.writeLong(AstronomyUtil.TIME_MULTIPLIER);
+		buf.writeLong(AstronomyUtil.TIME_OFFSET);
 		if(world.provider instanceof WorldProviderCelestial && world.provider.dimensionId != 0) {
 			buf.writeBoolean(true);
 			((WorldProviderCelestial) world.provider).serialize(buf);
@@ -275,6 +279,9 @@ public class PermaSyncHandler {
 		/// SATELLITES ///
 
 		/// TIME OF DAY ///
+		AstronomyUtil.DAY_LENGTH_FACTOR = buf.readDouble();
+		AstronomyUtil.TIME_MULTIPLIER = buf.readLong();
+		AstronomyUtil.TIME_OFFSET = buf.readLong();
 		if(buf.readBoolean() && world.provider instanceof WorldProviderCelestial) {
 			((WorldProviderCelestial) world.provider).deserialize(buf);
 		}

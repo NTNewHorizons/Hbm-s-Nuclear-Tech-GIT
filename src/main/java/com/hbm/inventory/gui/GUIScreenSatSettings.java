@@ -820,7 +820,7 @@ public class GUIScreenSatSettings extends GuiScreen {
 		if(!rotateBody && body != null) {
 			double period = body.getRotationalPeriod();
 			if(period > 0D && !Double.isNaN(period) && !Double.isInfinite(period)) {
-				atmospherePatternOffset = (float) (dayTicks / period);
+				atmospherePatternOffset = (float) ((dayTicks + AstronomyUtil.TIME_OFFSET) / period);
 			}
 		}
 
@@ -1080,7 +1080,7 @@ public class GUIScreenSatSettings extends GuiScreen {
 		double orbitalPeriodTicks = body.getOrbitalPeriod() * (double) AstronomyUtil.TICKS_IN_DAY;
 		if(orbitalPeriodTicks <= 0D) return 0F;
 
-		double worldTicks = dayTicks * AstronomyUtil.TIME_MULTIPLIER;
+		double worldTicks = (dayTicks + AstronomyUtil.TIME_OFFSET) * AstronomyUtil.getTimeMultiplier();
 		float orbitalAngle = (float) (2D * Math.PI * (worldTicks / orbitalPeriodTicks));
 		float dx = MathHelper.cos(orbitalAngle);
 		float dy = MathHelper.sin(orbitalAngle);
@@ -1169,7 +1169,7 @@ public class GUIScreenSatSettings extends GuiScreen {
 
 	private float getBodyRotationPhase(CelestialBody body, double dayTicks) {
 		double period = body.getRotationalPeriod();
-		return (float) ((dayTicks % period) / period);
+		return (float) (((dayTicks + AstronomyUtil.TIME_OFFSET) % period) / period);
 	}
 
 	private float getBodySizePxAt1x(CelestialBody body) {
