@@ -1,5 +1,6 @@
 package com.hbm.crafting.handlers;
 
+import com.hbm.items.machine.ItemCustomRBMKRod;
 import com.hbm.items.machine.ItemRBMKRod;
 
 import net.minecraft.inventory.InventoryCrafting;
@@ -21,7 +22,7 @@ public class RBMKFuelCraftingHandler implements IRecipe {
 		
 		ItemStack stack = getFirstStack(inventory);
 		
-		return stack.getItem() instanceof ItemRBMKRod && ((ItemRBMKRod)stack.getItem()).pellet != null &&
+		return stack.getItem() instanceof ItemRBMKRod && !(stack.getItem() instanceof ItemCustomRBMKRod) && ((ItemRBMKRod)stack.getItem()).pellet != null &&
 				ItemRBMKRod.getHullHeat(stack) < 50 && ItemRBMKRod.getCoreHeat(stack) < 50;
 	}
 
@@ -38,7 +39,7 @@ public class RBMKFuelCraftingHandler implements IRecipe {
 		
 		ItemStack stack = getFirstStack(inventory);
 		
-		if(stack.getItem() instanceof ItemRBMKRod) {
+		if(stack.getItem() instanceof ItemRBMKRod && !(stack.getItem() instanceof ItemCustomRBMKRod)) {
 			
 			ItemRBMKRod rod = (ItemRBMKRod)stack.getItem();
 			

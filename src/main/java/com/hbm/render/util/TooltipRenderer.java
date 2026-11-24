@@ -8,11 +8,20 @@ import javax.vecmath.Vector2f;
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.items.ModItems;
+import com.hbm.items.machine.ItemCustomFuel;
+import com.hbm.items.machine.ItemCustomRBMKRod;
 import com.hbm.items.machine.ItemPWRFuel;
 import com.hbm.items.machine.ItemPWRFuel.EnumPWRFuel;
 import com.hbm.items.machine.ItemRBMKRod;
 import com.hbm.items.machine.ItemWatzPellet;
 import com.hbm.items.machine.ItemWatzPellet.EnumWatzType;
+import com.hbm.items.machine.customfuel.CustomFuelMix;
+import com.hbm.items.machine.customfuel.CustomFuelModel;
+import com.hbm.items.machine.customfuel.CustomFuelModel.FuncTerm;
+import com.hbm.items.machine.customfuel.CustomFuelModel.PWRProfile;
+import com.hbm.items.machine.customfuel.CustomFuelModel.RBMKProfile;
+import com.hbm.items.machine.customfuel.CustomFuelModel.RBMKTerm;
+import com.hbm.items.machine.customfuel.CustomFuelModel.WatzProfile;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.function.Function;
 import com.hbm.util.i18n.I18nUtil;
@@ -134,7 +143,8 @@ public class TooltipRenderer {
 	public static boolean hasGraphs(ItemStack stack) {
 		if(stack == null) return false;
 		Item item = stack.getItem();
-		return item instanceof ItemRBMKRod || item == ModItems.pwr_fuel || item == ModItems.watz_pellet;
+		return item instanceof ItemRBMKRod || item == ModItems.pwr_fuel || item == ModItems.watz_pellet
+				|| item == ModItems.custom_fuel_pwr || item == ModItems.custom_fuel_watz;
 	}
 
 	private static boolean hasDepletionCurve(ItemStack fuel) {
@@ -145,7 +155,29 @@ public class TooltipRenderer {
 		Item item = fuel.getItem();
 		double[] values = new double[64];
 
-		if(item instanceof ItemRBMKRod) {
+		if(item instanceof ItemCustomRBMKRod) {
+			RBMKProfile p = ItemCustomRBMKRod.getProfile(fuel);
+			if(p != null) {
+				ItemRBMKRod rod = (ItemRBMKRod) item;
+				double mod = rod.reactivityModByEnrichment(ItemRBMKRod.getEnrichment(fuel));
+				double max = 0D;
+				for(RBMKTerm term : p.terms) max = Math.max(max, fluxMax(term.func));
+				for(int i = 0; i < 64; i++) values[i] = p.react(sample(i) * max * mod);
+			}
+		} else if(item == ModItems.custom_fuel_pwr) {
+			CustomFuelMix mix = CustomFuelMix.fromStack(fuel);
+			if(mix != null) {
+				PWRProfile p = CustomFuelModel.pwr(mix, 0D);
+				for(int i = 0; i < 64; i++) values[i] = p.react(sample(i) * 2500D);
+			}
+		} else if(item == ModItems.custom_fuel_watz) {
+			CustomFuelMix mix = CustomFuelMix.fromStack(fuel);
+			if(mix != null) {
+				WatzProfile p = CustomFuelModel.watz(mix, ItemCustomFuel.getWatzDepletion(fuel));
+				List<FuncTerm> terms = p.burn.isEmpty() ? p.absorb : p.burn;
+				for(int i = 0; i < 64; i++) for(FuncTerm term : terms) values[i] += term.weight * term.func.effonix(sample(i) * 2500D);
+			}
+		} else if(item instanceof ItemRBMKRod) {
 			ItemRBMKRod rod = (ItemRBMKRod) item;
 			double enrichment = ItemRBMKRod.getEnrichment(fuel);
 			double max = fluxMax(rod.function);

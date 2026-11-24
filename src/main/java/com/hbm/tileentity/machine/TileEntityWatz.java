@@ -18,6 +18,12 @@ import com.hbm.inventory.gui.GUIWatz;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemWatzPellet;
 import com.hbm.items.machine.ItemWatzPellet.EnumWatzType;
+import com.hbm.items.machine.ItemCustomFuel;
+import com.hbm.items.machine.customfuel.CustomFuelMix;
+import com.hbm.items.machine.customfuel.CustomFuelModel;
+import com.hbm.items.machine.customfuel.CustomFuelModel.WatzProfile;
+import com.hbm.items.machine.customfuel.CustomFuelSpent;
+import com.hbm.items.machine.customfuel.CustomFuelSpent.Reactor;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
 import com.hbm.packet.PacketDispatcher;
@@ -242,11 +248,19 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 
 		if(turnedOn) {
 			List<ItemStack> pellets = new ArrayList();
+			List<ItemStack> customPellets = new ArrayList();
+			List<WatzProfile> customProfiles = new ArrayList();
 
 			for(int i = 0; i < 24; i++) {
 				ItemStack stack = slots[i];
 				if(stack != null && stack.getItem() == ModItems.watz_pellet) {
 					pellets.add(stack);
+				}
+				if(stack != null && stack.getItem() == ModItems.custom_fuel_watz) {
+					CustomFuelMix mix = CustomFuelMix.fromStack(stack);
+					if(mix == null) continue;
+					customPellets.add(stack);
+					customProfiles.add(CustomFuelModel.watz(mix, ItemCustomFuel.getWatzDepletion(stack)));
 				}
 			}
 
@@ -257,6 +271,7 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 				EnumWatzType type = EnumUtil.grabEnumSafely(EnumWatzType.class, stack.getItemDamage());
 				baseFlux += type.passive;
 			}
+			for(WatzProfile profile : customProfiles) baseFlux += profile.passive;
 
 			double inputFlux = baseFlux + fluxLastReaction;
 			double addedFlux = 0D;
@@ -274,6 +289,24 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 					addedFlux += burn;
 					addedHeat += type.heatEmission * burn;
 					tanks[2].setFill(tanks[2].getFill() + (int) Math.round(type.mudContent * burn));
+				}
+			}
+
+			for(int i = 0; i < customPellets.size(); i++) {
+				ItemStack stack = customPellets.get(i);
+				WatzProfile profile = customProfiles.get(i);
+				double burn = profile.burn(inputFlux, heat);
+				if(burn > 0) {
+					ItemCustomFuel.setWatzYield(stack, ItemCustomFuel.getWatzYield(stack) - burn);
+					addedFlux += burn;
+					addedHeat += profile.heatEmission * burn;
+					tanks[2].setFill(tanks[2].getFill() + (int) Math.round(profile.mudContent * burn));
+				}
+				double absorb = profile.absorb(baseFlux + fluxLastReaction);
+				if(absorb > 0) {
+					addedHeat += absorb;
+					ItemCustomFuel.setWatzYield(stack, ItemCustomFuel.getWatzYield(stack) - absorb);
+					tanks[2].setFill(tanks[2].getFill() + (int) Math.round(profile.mudContent * absorb));
 				}
 			}
 
@@ -307,6 +340,11 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 				slots[i] = new ItemStack(ModItems.watz_pellet_depleted, 1, stack.getItemDamage());
 				continue; // depleted pellets may persist for one tick
 			}
+
+			if(stack != null && stack.getItem() == ModItems.custom_fuel_watz && ItemCustomFuel.getWatzYield(stack) <= 0) {
+				CustomFuelMix mix = CustomFuelMix.fromStack(stack);
+				slots[i] = mix != null ? CustomFuelSpent.spent(Reactor.WATZ, mix) : null;
+			}
 		}
 
 		if(above != null) {
@@ -321,7 +359,7 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 				}
 
 				/* items switch places if the top slot is depleted */
-				if(stackBottom != null && stackBottom.getItem() == ModItems.watz_pellet && stackTop != null && stackTop.getItem() == ModItems.watz_pellet_depleted) {
+				if(isFreshPellet(stackBottom) && isSpentPellet(stackTop)) {
 					ItemStack buf = stackTop.copy();
 					above.slots[i] = stackBottom.copy();
 					slots[i] = buf;
@@ -428,8 +466,20 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 		}
 	}
 
+	public static boolean isFreshPellet(ItemStack stack) {
+		return stack != null && (stack.getItem() == ModItems.watz_pellet || stack.getItem() == ModItems.custom_fuel_watz);
+	}
+
+	public static boolean isSpentPellet(ItemStack stack) {
+		return stack != null && (stack.getItem() == ModItems.watz_pellet_depleted || stack.getItem() == ModItems.custom_fuel_watz_depleted);
+	}
+
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
+		if(stack.getItem() == ModItems.custom_fuel_watz) {
+			if(!CustomFuelMix.hasMix(stack)) return false;
+			return !this.isLocked || (this.locks[i] != null && this.locks[i].getItem() == stack.getItem());
+		}
 		if(stack.getItem() != ModItems.watz_pellet) return false;
 		if(!this.isLocked) return true;
 		return this.locks[i] != null && this.locks[i].getItem() == stack.getItem() && locks[i].getItemDamage() == stack.getItemDamage();
@@ -442,7 +492,7 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 
 	@Override
 	public boolean canExtractItem(int i, ItemStack stack, int j) {
-		return stack.getItem() != ModItems.watz_pellet;
+		return !isFreshPellet(stack);
 	}
 
 	@Override

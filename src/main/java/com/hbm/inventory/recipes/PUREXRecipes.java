@@ -1,5 +1,6 @@
 package com.hbm.inventory.recipes;
 
+import com.hbm.config.MachineConfig;
 import static com.hbm.inventory.OreDictManager.*;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 	@Override public int outputFluidLimit() { return 1; }
 
 	@Override public String getFileName() { return "hbmPUREX.json"; }
-	@Override public PUREXRecipe instantiateRecipe(String name) { return new PUREXRecipe(name); }
+	@Override public PUREXRecipe instantiateRecipe(String name) { return name.startsWith(CustomFuelPUREXRecipe.PREFIX) ? new CustomFuelPUREXRecipe(name) : new PUREXRecipe(name); }
 
 	@Override
 	public void registerDefaults() {
@@ -40,6 +41,13 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 		long pwrPower = 2_500;
 		long watzPower = 10_000;
 		long vitrification = 1_000;
+
+		if(MachineConfig.customFuelPUREX()) {
+			registerCustomFuel("rbmk", new ComparableStack(ModItems.custom_fuel_rbmk_pellet, 1, OreDictionary.WILDCARD_VALUE), 100, 2_000);
+			registerCustomFuel("pwr", new ComparableStack(ModItems.custom_fuel_pwr_depleted), 100, pwrPower);
+			registerCustomFuel("zirnox", new ComparableStack(ModItems.custom_fuel_zirnox_depleted), 100, zirnoxPower);
+			registerCustomFuel("watz", new ComparableStack(ModItems.custom_fuel_watz_depleted), 200, watzPower);
+		}
 
 		this.register((PUREXRecipe) new PUREXRecipe("purex.uzh").setup(600, 1_000)
 				.inputItems(new ComparableStack(ModItems.billet_uranium_fuel),
@@ -626,6 +634,14 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 						new ItemStack(ModItems.nugget_cf252, 3),
 						new ItemStack(ModItems.nuclear_waste, 24))
 				.outputFluids(new FluidStack(Fluids.WATZ, 1_000))
+				.setIconToFirstIngredient());
+	}
+
+	private void registerCustomFuel(String name, ComparableStack input, int duration, long power) {
+		this.register((PUREXRecipe) new CustomFuelPUREXRecipe(CustomFuelPUREXRecipe.PREFIX + name).setup(duration, power).setNameWrapper("purex.recycle")
+				.inputItems(input)
+				.inputFluids(new FluidStack(Fluids.KEROSENE, 500), new FluidStack(Fluids.NITRIC_ACID, 250))
+				.outputItems(new ItemStack(ModItems.nugget_u238), new ItemStack(ModItems.nugget_pu239), new ItemStack(ModItems.nugget_u235), new ItemStack(ModItems.nuclear_waste_tiny))
 				.setIconToFirstIngredient());
 	}
 }
