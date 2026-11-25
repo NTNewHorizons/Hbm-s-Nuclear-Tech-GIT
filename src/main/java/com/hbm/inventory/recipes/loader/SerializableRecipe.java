@@ -89,6 +89,7 @@ public abstract class SerializableRecipe {
 		recipeHandlers.add(new PedestalRecipes());
 		recipeHandlers.add(new AnnihilatorRecipes());
 		recipeHandlers.add(new AtmosphereRecipes());
+		recipeHandlers.add(new SILEXRecipes());
 
 		//GENERIC
 		recipeHandlers.add(CrucibleRecipes.INSTANCE);

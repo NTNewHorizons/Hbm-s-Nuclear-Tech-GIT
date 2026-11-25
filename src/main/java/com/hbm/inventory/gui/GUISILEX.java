@@ -88,7 +88,7 @@ public class GUISILEX extends GuiInfoContainer {
 
 		if(silex.tank.getFill() > 0) {
 
-			if(silex.tank.getTankType() == Fluids.PEROXIDE || silex.fluidConversion.containsKey(silex.tank.getTankType()) || SILEXRecipes.getOutput(new ItemStack(ModItems.fluid_icon, 1, silex.tank.getTankType().getID())) != null) {
+			if(silex.tank.getTankType() == Fluids.PEROXIDE || SILEXRecipes.getOutput(new ItemStack(ModItems.fluid_icon, 1, silex.tank.getTankType().getID())) != null) {
 				drawTexturedModalRect(guiLeft + 7, guiTop + 41, 176, 118, 54, 9);
 			} else {
 				drawTexturedModalRect(guiLeft + 7, guiTop + 41, 176, 109, 54, 9);

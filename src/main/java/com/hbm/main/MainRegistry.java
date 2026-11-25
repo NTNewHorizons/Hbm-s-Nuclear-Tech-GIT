@@ -604,7 +604,6 @@ public class MainRegistry {
 
 		MagicRecipes.register();
 		LemegetonRecipes.register();
-		SILEXRecipes.register();
 		GasCentrifugeRecipes.register();
 
 		CustomMachineConfigJSON.initialize();
