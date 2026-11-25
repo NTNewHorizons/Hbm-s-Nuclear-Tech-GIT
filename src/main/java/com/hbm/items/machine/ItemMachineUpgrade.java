@@ -59,6 +59,10 @@ public class ItemMachineUpgrade extends Item {
 			}
 		}
 
+		if(this == ModItems.upgrade_export) {
+			list.add(EnumChatFormatting.YELLOW + I18nUtil.resolveKey("item.upgrade_export.desc"));
+		}
+
 		if(this == ModItems.upgrade_radius) {
 			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("item.upgrade_radius.category"));
 			list.add(I18nUtil.resolveKey("item.upgrade_radius.stats", 16, 500));
@@ -127,7 +131,8 @@ public class ItemMachineUpgrade extends Item {
 		LM_CENTRIFUGE(true),
 		LM_CRYSTALLIZER(true),
 		GS_SPEED,
-		CLAUDE;
+		CLAUDE,
+		EXPORT;
 
 		public boolean mutex = false;
 

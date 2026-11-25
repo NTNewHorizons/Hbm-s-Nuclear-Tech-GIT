@@ -25,6 +25,7 @@
 - Adapted Meteorite Sword breeding to use the Chicago Pile.
 
 **Machines and Automation**
+- Added Item Export Upgrade which exports machine outputs into adjacent inventories automatically.
 - Added decimal AUTOCAL clockspeeds, allowing scripts to run slower than one line per tick.
 - Added AUTOCAL stepping for line-by-line debugging, with a pause indicator and Shift-click to resume execution.
 - Fixed AUTOCAL script opening on some computers.
