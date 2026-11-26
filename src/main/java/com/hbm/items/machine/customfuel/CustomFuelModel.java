@@ -130,6 +130,30 @@ public class CustomFuelModel {
 		return self;
 	}
 
+	// below the most dilute vanilla fuel (natural uranium) rods burn out faster, so diluting an isotope
+	// further gives no extra energy per fissile atom
+	public static final double LIFETIME_REFERENCE = 1D / 12D;
+
+	// how output scales with enrichment at low enrichment in the current model
+	private static double powerExponent() {
+		switch(current()) {
+		case WEIGHTED: return 1D;
+		case DERIVED: return 0.3D;
+		default: return HYBRID_ENRICHMENT_EXP;
+		}
+	}
+
+	// fuel without fissile isotopes keeps its full life, it only breeds from outside flux
+	public static double lifetime(CustomFuelMix mix, double powerExponent) {
+		double e = mix.fissileShare();
+		if(e <= 0D || e >= LIFETIME_REFERENCE) return 1D;
+		return Math.max(Math.pow(e / LIFETIME_REFERENCE, 1D - powerExponent), 0.01D);
+	}
+
+	public static double lifetime(CustomFuelMix mix) {
+		return lifetime(mix, powerExponent());
+	}
+
 	public static double hybridEnrichment(double e) {
 		return e <= 0 ? 0D : Math.pow(e, HYBRID_ENRICHMENT_EXP) / e;
 	}
@@ -168,6 +192,8 @@ public class CustomFuelModel {
 		public double heat = 1D;
 		public double meltingPoint;
 		public double xenonMult = 1D;
+		// yield is used up this many times slower than the incoming flux
+		public double lifetime = 1D;
 
 		public double react(double flux) {
 			double out = 0;
@@ -179,9 +205,10 @@ public class CustomFuelModel {
 	// depletion 0 = fresh, 1 = spent, only the hybrid model breeds in the core
 	public static RBMKProfile rbmk(CustomFuelMix mix, double depletion) {
 		Model model = current();
+		RBMKProfile p = new RBMKProfile();
+		p.lifetime = lifetime(mix);
 		if(model == Model.HYBRID) mix = mix.withBreeding(depletion);
 
-		RBMKProfile p = new RBMKProfile();
 		double e = mix.fissileShare();
 		double melt = 0;
 		for(EnumCustomFuel fuel : EnumCustomFuel.values()) melt += mix.share(fuel) * fuel.meltingPoint;
@@ -259,9 +286,10 @@ public class CustomFuelModel {
 
 	public static PWRProfile pwr(CustomFuelMix mix, double depletion) {
 		Model model = current();
+		PWRProfile p = new PWRProfile();
+		p.yield *= lifetime(mix);
 		if(model == Model.HYBRID) mix = mix.withBreeding(depletion);
 
-		PWRProfile p = new PWRProfile();
 		double e = mix.fissileShare();
 		p.selfFlux = selfInfluence(mix) * PWR_SELF_SCALE;
 		double nativeHeat = 0;
@@ -317,6 +345,7 @@ public class CustomFuelModel {
 
 	public static ZirnoxProfile zirnox(CustomFuelMix mix, double depletion) {
 		Model model = current();
+		double lifetime = lifetime(mix, model == Model.WEIGHTED ? 1D : HYBRID_ENRICHMENT_EXP);
 		if(model == Model.HYBRID) mix = mix.withBreeding(depletion);
 
 		ZirnoxProfile p = new ZirnoxProfile();
@@ -357,7 +386,7 @@ public class CustomFuelModel {
 		}
 
 		p.heat = Math.max((int) Math.round(heat), 1);
-		p.maxLife = Math.max((int) Math.round(life), 1);
+		p.maxLife = Math.max((int) Math.round(life * lifetime), 1);
 		return p;
 	}
 
@@ -370,6 +399,8 @@ public class CustomFuelModel {
 		public double passive;
 		public double heatEmission;
 		public double mudContent;
+		// yield is used up this many times slower than the pellet burns, a Watz pellet's energy is fixed by its yield
+		public double lifetime = 1D;
 
 		public double burn(double flux, double heat) {
 			double out = 0;
@@ -392,9 +423,10 @@ public class CustomFuelModel {
 
 	public static WatzProfile watz(CustomFuelMix mix, double depletion) {
 		Model model = current();
+		WatzProfile p = new WatzProfile();
+		p.lifetime = lifetime(mix, 0D);
 		if(model == Model.HYBRID) mix = mix.withBreeding(depletion);
 
-		WatzProfile p = new WatzProfile();
 		double e = mix.fissileShare();
 		double nativeHeat = 0, passive = 0, mud = 0;
 		for(EnumCustomFuel fuel : EnumCustomFuel.values()) {

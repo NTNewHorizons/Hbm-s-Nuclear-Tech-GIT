@@ -131,6 +131,7 @@ public class CustomFuelCraftingHandler implements IRecipe {
 
 		if(MachineConfig.customFuelDirectVanilla()) {
 			ItemStack vanilla = CustomFuelSpent.closestVanilla(Reactor.RBMK, burned, stage);
+			if(vanilla == null) return CustomFuelSpent.waste(burned.fresh);
 			vanilla.stackSize = 8;
 			vanilla.setItemDamage(stage + xenon);
 			return vanilla;
@@ -146,6 +147,7 @@ public class CustomFuelCraftingHandler implements IRecipe {
 		if(mix == null || reactor == null) return null;
 		int meta = ItemRBMKPellet.rectify(spent.getItemDamage());
 		ItemStack vanilla = CustomFuelSpent.closestVanilla(reactor, mix, meta % 5);
+		if(vanilla == null) return null;
 		if(reactor == Reactor.RBMK) vanilla.setItemDamage(meta);
 		return vanilla;
 	}

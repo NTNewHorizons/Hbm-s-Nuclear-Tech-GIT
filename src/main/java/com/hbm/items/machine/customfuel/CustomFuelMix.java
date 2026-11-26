@@ -20,6 +20,8 @@ public class CustomFuelMix {
 
 	public static final double FISSION_BURN = 0.8D;
 	public static final double BREED_RATE = 0.12D;
+	// fissile quanta bred per fissioned quantum at most, below 1 so fuel can't breed more than it burns
+	public static final double CONVERSION_RATIO = 0.6D;
 
 	public final int[] amounts = new int[EnumCustomFuel.values().length];
 	// the part missing from the fresh total is fission products
@@ -159,18 +161,39 @@ public class CustomFuelMix {
 		return mix;
 	}
 
+	// quanta each fertile isotope has bred at this depletion. Fuel with fissile isotopes breeds at most
+	// CONVERSION_RATIO per fissioned quantum, so it always ends up with less fissile material than it started with.
+	// Fuel without any only breeds from outside flux and keeps the full rate.
+	private int[] bred(double depletion) {
+		double fissioned = 0, potential = 0;
+		for(EnumCustomFuel fuel : EnumCustomFuel.values()) {
+			int amount = amounts[fuel.ordinal()];
+			if(fuel.fissile) fissioned += amount * FISSION_BURN * depletion;
+			else if(fuel.breedsInto() != null) potential += amount * BREED_RATE * depletion;
+		}
+
+		int[] bred = new int[amounts.length];
+		if(potential <= 0) return bred;
+		double scale = fissioned > 0 ? Math.min(1D, CONVERSION_RATIO * fissioned / potential) : 1D;
+		for(EnumCustomFuel fuel : EnumCustomFuel.values()) {
+			if(fuel.fissile || fuel.breedsInto() == null) continue;
+			bred[fuel.ordinal()] = (int) Math.round(amounts[fuel.ordinal()] * BREED_RATE * depletion * scale);
+		}
+		return bred;
+	}
+
 	// depletion 0 to 1: fissile isotopes fission away, fertile ones breed into fissile ones
 	public CustomFuelMix burnUp(double depletion) {
 		depletion = Math.max(0D, Math.min(1D, depletion));
 		CustomFuelMix mix = copy();
+		int[] bred = bred(depletion);
 		for(EnumCustomFuel fuel : EnumCustomFuel.values()) {
 			int amount = amounts[fuel.ordinal()];
 			if(fuel.fissile) {
 				mix.amounts[fuel.ordinal()] -= (int) Math.round(amount * FISSION_BURN * depletion);
-			} else if(fuel.breedsInto() != null) {
-				int bred = (int) Math.round(amount * BREED_RATE * depletion);
-				mix.amounts[fuel.ordinal()] -= bred;
-				mix.amounts[fuel.breedsInto().ordinal()] += bred;
+			} else if(bred[fuel.ordinal()] > 0) {
+				mix.amounts[fuel.ordinal()] -= bred[fuel.ordinal()];
+				mix.amounts[fuel.breedsInto().ordinal()] += bred[fuel.ordinal()];
 			}
 		}
 		for(int i = 0; i < mix.amounts.length; i++) mix.amounts[i] = Math.max(mix.amounts[i], 0);
@@ -180,11 +203,11 @@ public class CustomFuelMix {
 	// hybrid model: what has bred while in the core, nothing burned
 	public CustomFuelMix withBreeding(double depletion) {
 		CustomFuelMix mix = copy();
+		int[] bred = bred(Math.max(0D, Math.min(1D, depletion)));
 		for(EnumCustomFuel fuel : EnumCustomFuel.values()) {
-			if(fuel.fissile || fuel.breedsInto() == null) continue;
-			int bred = (int) Math.round(amounts[fuel.ordinal()] * BREED_RATE * depletion);
-			mix.amounts[fuel.ordinal()] -= bred;
-			mix.amounts[fuel.breedsInto().ordinal()] += bred;
+			if(bred[fuel.ordinal()] <= 0) continue;
+			mix.amounts[fuel.ordinal()] -= bred[fuel.ordinal()];
+			mix.amounts[fuel.breedsInto().ordinal()] += bred[fuel.ordinal()];
 		}
 		return mix;
 	}

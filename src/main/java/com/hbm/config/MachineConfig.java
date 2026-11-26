@@ -33,7 +33,7 @@ public class MachineConfig {
 			+ "2 = both", 2, 0, 2);
 		customFuelReprocessing = CommonConfig.createConfigInt(config, CATEGORY_MACHINE, "9.04_customFuelReprocessing",
 			"How spent Moxer custom fuel is reprocessed (ignored when 9.03 is 0). "
-			+ "0 = it becomes the closest vanilla spent item (by dominant isotope and enrichment); "
+			+ "0 = it becomes the vanilla spent item whose isotope concentration it reaches, or nuclear waste if none; "
 			+ "1 = PUREX recipes that recover isotopes matching its actual composition; "
 			+ "2 = both (PUREX, or craft it into the closest vanilla spent item)", 2, 0, 2);
 	}

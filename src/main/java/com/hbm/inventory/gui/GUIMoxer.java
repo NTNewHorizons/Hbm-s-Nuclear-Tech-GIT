@@ -86,6 +86,12 @@ public class GUIMoxer extends GuiInfoContainerProcessor {
 		}
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 62, guiTop + 8, 36, 54, mouseX, mouseY, info);
 
+		EnumCustomFuel selected = getSelected(isotopes);
+		String selectedName = selected != null ? I18nUtil.resolveKey(selected.stack.getUnlocalizedName()) : I18nUtil.resolveKey("turret.none");
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 29, guiTop + 125, 18, 18, mouseX, mouseY, new String[] {
+				EnumChatFormatting.RED + I18nUtil.resolveKey("gui.moxer.void"),
+				EnumChatFormatting.YELLOW + I18nUtil.resolveKey("gui.moxer.void.desc", selectedName) });
+
 		for(int i = 0; i < moxer.inputTanks.length; i++) moxer.inputTanks[i].renderTankInfo(this, mouseX, mouseY, guiLeft + 7 + i * 18, guiTop + 8, 18, 36);
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 152, guiTop + 18, 16, 61, moxer.power, moxer.maxPower);
 	}
@@ -99,6 +105,15 @@ public class GUIMoxer extends GuiInfoContainerProcessor {
 
 		if(count > 0 && checkClick(x, y, 8, 99, 16, 16)) { index = (index + 1) % count; click(); pressTimer = 5; }
 		if(count > 0 && checkClick(x, y, 26, 99, 16, 16)) { index = (index + count - 1) % count; click(); pressTimer = 5; }
+
+		// shift-click only, voided material is gone for good
+		EnumCustomFuel selected = getSelected(moxer.getListedIsotopes());
+		if(selected != null && isShiftKeyDown() && checkClick(x, y, 30, 126, 16, 16)) {
+			NBTTagCompound data = new NBTTagCompound();
+			data.setInteger("void", selected.ordinal());
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, moxer.xCoord, moxer.yCoord, moxer.zCoord));
+			click();
+		}
 
 		if(checkClick(x, y, 44, 99, 16, 16)) {
 			NBTTagCompound data = new NBTTagCompound();
@@ -118,17 +133,25 @@ public class GUIMoxer extends GuiInfoContainerProcessor {
 		super.keyTyped(c, key);
 	}
 
-	// the field takes mB, the machine works in quanta (1 quantum = 2 mB)
+	// the field takes mB or a percentage of the recipe with a % suffix, the machine works in quanta (1 quantum = 2 mB)
 	private void submitAmount() {
 		EnumCustomFuel selected = getSelected(moxer.getListedIsotopes());
-		if(selected == null || this.field.getText().isEmpty()) return;
+		String text = this.field.getText().trim();
+		if(selected == null || text.isEmpty()) return;
 
-		int mB;
-		try { mB = Integer.parseInt(this.field.getText()); } catch(NumberFormatException e) { mB = 0; }
+		int quanta;
+		try {
+			if(text.endsWith("%")) {
+				double percent = Double.parseDouble(text.substring(0, text.length() - 1).trim());
+				quanta = (int) Math.round(percent / 100D * getRecipeAmount());
+			} else {
+				quanta = Integer.parseInt(text) / 2;
+			}
+		} catch(NumberFormatException e) { quanta = 0; }
 
 		NBTTagCompound data = new NBTTagCompound();
 		data.setInteger("isotope", selected.ordinal());
-		data.setInteger("amount", Math.max(mB, 0) / 2);
+		data.setInteger("amount", Math.max(quanta, 0));
 		PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, moxer.xCoord, moxer.yCoord, moxer.zCoord));
 		click();
 		this.field.setText("");
@@ -171,6 +194,7 @@ public class GUIMoxer extends GuiInfoContainerProcessor {
 		if(isMouseOverSlot(mouseX, mouseY, 7, 98)) drawTexturedModalRect(guiLeft + 7, guiTop + 98, 176, pressTimer > 0 ? 147 : 129, 18, 18);
 		if(isMouseOverSlot(mouseX, mouseY, 25, 98)) drawTexturedModalRect(guiLeft + 25, guiTop + 98, 194, pressTimer > 0 ? 147 : 129, 18, 18);
 		if(isMouseOverSlot(mouseX, mouseY, 43, 98)) drawTexturedModalRect(guiLeft + 43, guiTop + 98, 212, 129, 18, 18);
+		if(isMouseOverSlot(mouseX, mouseY, 29, 125)) drawTexturedModalRect(guiLeft + 29, guiTop + 125, 230, 129, 18, 18);
 		if(moxer.autoMode) drawTexturedModalRect(guiLeft + 43, guiTop + 98, 212, 147, 18, 18);
 		if(pressTimer > 0) pressTimer--;
 

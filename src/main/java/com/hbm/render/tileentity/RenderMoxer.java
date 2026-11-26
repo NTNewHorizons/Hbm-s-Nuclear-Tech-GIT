@@ -21,6 +21,8 @@ public class RenderMoxer extends TileEntitySpecialRenderer implements IItemRende
 		GL11.glPushMatrix();
 		GL11.glTranslated(x + 0.5, y, z + 0.5);
 		GL11.glRotated(90, 0, 1, 0);
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 
 		switch(tile.getBlockMetadata() - BlockDummyable.offset) {

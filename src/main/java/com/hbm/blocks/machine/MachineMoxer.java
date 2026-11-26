@@ -37,6 +37,18 @@ public class MachineMoxer extends BlockDummyable implements ITooltipProvider {
 	}
 
 	@Override
+	public int[][] getAllPorts(ForgeDirection dir) {
+		return rotatePorts(new int[][] {
+			{1, 0, 1, ForgeDirection.SOUTH.ordinal()},
+			{-1, 0, 1, ForgeDirection.SOUTH.ordinal()},
+			{1, 0, -1, ForgeDirection.NORTH.ordinal()},
+			{-1, 0, -1, ForgeDirection.NORTH.ordinal()},
+			{2, 0, 0, ForgeDirection.EAST.ordinal()},
+			{-2, 0, 0, ForgeDirection.WEST.ordinal()}
+		}, dir);
+	}
+
+	@Override
 	public int[] getDimensions() {
 		return new int[] {2, 0, 1, 1, 2, 2};
 	}
