@@ -1,7 +1,13 @@
 package com.hbm.inventory.recipes;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonWriter;
+import com.hbm.inventory.recipes.loader.SerializableRecipe;
 
 import static com.hbm.inventory.OreDictManager.*;
 import com.hbm.inventory.RecipesCommon.AStack;
@@ -12,9 +18,30 @@ import com.hbm.items.ModItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class LemegetonRecipes {
+public class LemegetonRecipes extends SerializableRecipe {
 	
 	public static HashMap<AStack, ItemStack> recipes = new HashMap();
+
+	@Override public String getFileName() { return "hbmLemegeton.json"; }
+	@Override public Object getRecipeObject() { return recipes; }
+	@Override public void deleteRecipes() { recipes.clear(); }
+	@Override public void registerDefaults() { register(); }
+	@Override public String getComment() { return "Input stack sizes are ignored."; }
+
+	@Override
+	public void readRecipe(JsonElement recipe) {
+		JsonObject obj = recipe.getAsJsonObject();
+		AStack input = readAStack(obj.getAsJsonArray("input"));
+		input.stacksize = 1;
+		recipes.put(input, readItemStack(obj.getAsJsonArray("output")));
+	}
+
+	@Override
+	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
+		Entry<AStack, ItemStack> rec = (Entry<AStack, ItemStack>) recipe;
+		writer.name("input"); writeAStack(rec.getKey(), writer);
+		writer.name("output"); writeItemStack(rec.getValue(), writer);
+	}
 	
 	public static void register() {
 		recipes.put(new OreDictStack(IRON.ingot()), new ItemStack(ModItems.ingot_steel));

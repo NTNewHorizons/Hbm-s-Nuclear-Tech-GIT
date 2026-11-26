@@ -62,6 +62,7 @@ public abstract class SerializableRecipe {
 		recipeHandlers.add(new VacuumRefineryRecipes());
 		recipeHandlers.add(new FractionRecipes());
 		recipeHandlers.add(new CrackingRecipes());
+		recipeHandlers.add(new RadiolysisRecipes());
 		recipeHandlers.add(new ReformingRecipes());
 		recipeHandlers.add(new HydrotreatingRecipes());
 		recipeHandlers.add(new LiquefactionRecipes());
@@ -90,6 +91,9 @@ public abstract class SerializableRecipe {
 		recipeHandlers.add(new AnnihilatorRecipes());
 		recipeHandlers.add(new AtmosphereRecipes());
 		recipeHandlers.add(new SILEXRecipes());
+		recipeHandlers.add(new GasCentrifugeRecipes());
+		recipeHandlers.add(new MagicRecipes());
+		recipeHandlers.add(new LemegetonRecipes());
 
 		//GENERIC
 		recipeHandlers.add(CrucibleRecipes.INSTANCE);
