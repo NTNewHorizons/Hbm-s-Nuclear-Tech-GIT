@@ -124,26 +124,12 @@ jobs:
           done < <(git ls-remote --tags origin "refs/tags/${base_tag}*")
 
           if (( found )); then
-            if (( highest > 0 )); then
-              previous_tag="${base_tag}_${highest}"
-              tag="${base_tag}_$((highest + 1))"
-            else
-              previous_tag="$base_tag"
-              tag="${base_tag}_1"
-            fi
+            tag="${base_tag}_$((highest + 1))"
           else
             tag="$base_tag"
-            # find the most recent existing release tag for the changelog comparison
-            previous_tag=$(git ls-remote --tags origin \
-              | sed 's|.*refs/tags/||; s|\^{}$||' \
-              | grep -E '^1\.0\.27_X[0-9]+(_[0-9]+)?$' \
-              | sort -V | tail -1) || true
           fi
 
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
-          if [[ -n "$previous_tag" ]]; then
-            echo "previous_tag=$previous_tag" >> "$GITHUB_OUTPUT"
-          fi
 
       - name: Publish to NTNH Maven
         if: github.event_name != 'pull_request' && github.repository == 'NTNewHorizons/Hbm-s-Nuclear-Tech-GIT' && github.ref == 'refs/heads/space-travel-twopointfive'
@@ -164,7 +150,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           tag="${{ steps.release_tag.outputs.tag }}"
-          prev="${{ steps.release_tag.outputs.previous_tag }}"
           jar=$(find ./build/libs -maxdepth 1 -type f \
             -name 'HBM-NTM-*.jar' \
             ! -name '*-sources.jar' \
@@ -180,14 +165,8 @@ jobs:
           # gh interprets asset paths as glob patterns, so escape the [ ] in the jar name
           asset=$(printf '%s' "$jar" | sed 's/[][?*\\]/\\&/g')
 
-          notes="Automated release build for the space-travel-twopointfive branch. Build number: ${{ steps.calculate_days.outputs.days }}"
-          if [ -n "$prev" ]; then
-            notes="$notes
-
-          [Full Changelog](https://github.com/NTNewHorizons/Hbm-s-Nuclear-Tech-GIT/compare/${prev}...${tag})"
-          fi
-
           gh release create "$tag" "$asset" \
             --title "$tag" \
-            --notes "$notes" \
+            --notes "Automated release build for the space-travel-twopointfive branch. Build number: ${{ steps.calculate_days.outputs.days }}" \
+            --generate-notes \
             --latest
