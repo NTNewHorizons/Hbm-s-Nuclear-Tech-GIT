@@ -166,6 +166,7 @@ jobs:
           asset=$(printf '%s' "$jar" | sed 's/[][?*\\]/\\&/g')
 
           gh release create "$tag" "$asset" \
+            --target "$GITHUB_SHA" \
             --title "$tag" \
             --notes "Automated release build for the space-travel-twopointfive branch. Build number: ${{ steps.calculate_days.outputs.days }}" \
             --generate-notes \
