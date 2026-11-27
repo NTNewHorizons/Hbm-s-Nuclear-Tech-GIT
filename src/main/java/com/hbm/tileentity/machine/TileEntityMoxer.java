@@ -313,6 +313,14 @@ public class TileEntityMoxer extends TileEntityMachineBase implements IGUIProvid
 			}
 		}
 
+		if(data.hasKey("void")) {
+			int isotope = data.getInteger("void");
+			if(isotope >= 0 && isotope < buffer.amounts.length) {
+				buffer.amounts[isotope] = 0;
+				this.markChanged();
+			}
+		}
+
 		if(data.hasKey("autoMode")) {
 			this.autoMode = data.getBoolean("autoMode");
 			this.markChanged();

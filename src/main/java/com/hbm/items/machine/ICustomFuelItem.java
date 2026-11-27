@@ -6,6 +6,7 @@ import java.util.Locale;
 import com.hbm.config.MachineConfig;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.customfuel.CustomFuelMix;
+import com.hbm.items.machine.customfuel.CustomFuelModel;
 import com.hbm.items.machine.customfuel.CustomFuelSpent;
 import com.hbm.items.machine.customfuel.CustomFuelSpent.Reactor;
 import com.hbm.items.machine.customfuel.EnumCustomFuel;
@@ -99,6 +100,9 @@ public interface ICustomFuelItem {
 			list.add(EnumChatFormatting.DARK_GRAY + String.format(Locale.US, "(%5.1f%%) %s: %d mB", (double) products / fresh * 100D, I18nUtil.resolveKey("desc.item.customFuel.products"), products * 2));
 		}
 		list.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.item.customFuel.fissile", String.format(Locale.US, "%.1f%%", mix.fissileShare() * 100D)));
+		if(CustomFuelModel.lifetime(mix) < 1D) {
+			list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.item.customFuel.dilute", String.format(Locale.US, "%.1f%%", CustomFuelModel.LIFETIME_REFERENCE * 100D)));
+		}
 	}
 
 	public static void addSpentInfo(ItemStack stack, Reactor reactor, CustomFuelMix mix, List list) {

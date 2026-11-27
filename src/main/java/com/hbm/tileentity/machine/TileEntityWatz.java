@@ -297,7 +297,7 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 				WatzProfile profile = customProfiles.get(i);
 				double burn = profile.burn(inputFlux, heat);
 				if(burn > 0) {
-					ItemCustomFuel.setWatzYield(stack, ItemCustomFuel.getWatzYield(stack) - burn);
+					ItemCustomFuel.setWatzYield(stack, ItemCustomFuel.getWatzYield(stack) - burn / profile.lifetime);
 					addedFlux += burn;
 					addedHeat += profile.heatEmission * burn;
 					tanks[2].setFill(tanks[2].getFill() + (int) Math.round(profile.mudContent * burn));
@@ -305,7 +305,7 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 				double absorb = profile.absorb(baseFlux + fluxLastReaction);
 				if(absorb > 0) {
 					addedHeat += absorb;
-					ItemCustomFuel.setWatzYield(stack, ItemCustomFuel.getWatzYield(stack) - absorb);
+					ItemCustomFuel.setWatzYield(stack, ItemCustomFuel.getWatzYield(stack) - absorb / profile.lifetime);
 					tanks[2].setFill(tanks[2].getFill() + (int) Math.round(profile.mudContent * absorb));
 				}
 			}
