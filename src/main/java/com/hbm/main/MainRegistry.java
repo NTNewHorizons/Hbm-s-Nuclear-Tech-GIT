@@ -603,11 +603,6 @@ public class MainRegistry {
 		Fluids.reloadFluids();
 		FluidContainerRegistry.register();
 
-		MagicRecipes.register();
-		LemegetonRecipes.register();
-		SILEXRecipes.register();
-		GasCentrifugeRecipes.register();
-
 		CustomMachineConfigJSON.initialize();
 		proxy.registerCustomMachineModels();
 		proxy.registerCustomMachineSounds();
@@ -618,9 +613,6 @@ public class MainRegistry {
 
 		//Anvil has to come after serializables (i.e. anvil)
 		AnvilRecipes.register();
-
-		//has to register after cracking, and therefore after all serializable recipes
-		RadiolysisRecipes.registerRadiolysis();
 
 		FalloutConfigJSON.initialize();
 		ItemPoolConfigJSON.initialize();

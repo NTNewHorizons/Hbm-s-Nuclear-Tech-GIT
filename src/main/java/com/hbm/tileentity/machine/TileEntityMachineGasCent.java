@@ -58,8 +58,10 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 	public TileEntityMachineGasCent() {
 		super(7);
 		tank = new FluidTank(Fluids.UF6, 2000);
-		inputTank = new PseudoFluidTank(PseudoFluidType.NUF6, 8000);
-		outputTank = new PseudoFluidTank(PseudoFluidType.LEUF6, 8000);
+		PseudoFluidType initialStage = GasCentrifugeRecipes.fluidConversions.get(Fluids.UF6);
+		if(initialStage == null) initialStage = PseudoFluidType.NONE;
+		inputTank = new PseudoFluidTank(initialStage, 8000);
+		outputTank = new PseudoFluidTank(initialStage.getOutputType(), 8000);
 	}
 
 	@Override
@@ -116,9 +118,6 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 					return false;
 
 			if(list == null)
-				return false;
-
-			if(list.length < 1)
 				return false;
 
 			if(InventoryUtil.doesArrayHaveSpace(slots, 0, 3, list))
@@ -186,8 +185,10 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 
 			power = Library.chargeTEFromItems(slots, 4, power, maxPower);
 			setTankType(5);
+			// A recipe reload can change the next stage while this machine is loaded.
+			outputTank.setTankType(inputTank.getTankType().getOutputType());
 
-			if(GasCentrifugeRecipes.fluidConversions.containsValue(inputTank.getTankType())) {
+			if(GasCentrifugeRecipes.fluidConversions.get(tank.getTankType()) == inputTank.getTankType()) {
 				attemptConversion();
 			}
 
@@ -218,14 +219,14 @@ public class TileEntityMachineGasCent extends TileEntityMachineBase implements I
 				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
 				TileEntity te = worldObj.getTileEntity(this.xCoord - dir.offsetX, this.yCoord, this.zCoord - dir.offsetZ);
 
-				//*AT THE MOMENT*, there's not really any need for a dedicated method for this. Yet.
-				if(!attemptTransfer(te) && this.inputTank.getTankType() == PseudoFluidType.LEUF6) {
-					ItemStack[] converted = new ItemStack[] { new ItemStack(ModItems.nugget_uranium_fuel, 6), new ItemStack(ModItems.fluorite) };
+				PseudoFluidType stage = inputTank.getTankType();
+				if(!attemptTransfer(te) && stage.getTerminalAmount() > 0) {
+					ItemStack[] converted = stage.getTerminalOutputs();
 
-					if(this.outputTank.getFill() >= 600 && InventoryUtil.doesArrayHaveSpace(slots, 0, 3, converted)) {
-						this.outputTank.setFill(this.outputTank.getFill() - 600);
+					if(this.outputTank.getFill() >= stage.getTerminalAmount() && InventoryUtil.doesArrayHaveSpace(slots, 0, 3, converted)) {
+						this.outputTank.setFill(this.outputTank.getFill() - stage.getTerminalAmount());
 						for(ItemStack stack : converted)
-							InventoryUtil.tryAddItemToInventory(slots, 0, 3, stack);
+							InventoryUtil.tryAddItemToInventory(slots, 0, 3, stack.copy());
 					}
 				}
 			}

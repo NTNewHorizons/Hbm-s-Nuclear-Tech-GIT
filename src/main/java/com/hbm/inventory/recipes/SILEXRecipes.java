@@ -1,10 +1,18 @@
 package com.hbm.inventory.recipes;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonWriter;
+import com.hbm.inventory.RecipesCommon.AStack;
+import com.hbm.inventory.RecipesCommon.OreDictStack;
+import com.hbm.inventory.recipes.loader.SerializableRecipe;
 
 import static com.hbm.inventory.OreDictManager.*;
 import com.hbm.blocks.ModBlocks;
@@ -23,13 +31,109 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class SILEXRecipes {
+public class SILEXRecipes extends SerializableRecipe {
 
 	private static HashMap<Object, SILEXRecipe> recipes = new HashMap();
 	private static HashMap<ComparableStack, ComparableStack> itemTranslation = new HashMap();
 	private static HashMap<String, String> dictTranslation = new HashMap();
 
+	@Override public String getFileName() { return "hbmSILEX.json"; }
+	@Override public void registerDefaults() { register(); }
+	@Override public String getComment() {
+		return "Input stack sizes are ignored. Fluid inputs are fluid icons with the fluid ID as metadata. fluidProduced defaults to fluidConsumed, for fluid inputs it only changes the yield shown in NEI. Translations make the input use the output's recipe, tinyWasteTranslation also keeps the metadata and divides fluidProduced by 9.";
+	}
+
+	@Override
+	public Object getRecipeObject() {
+		List<Object> entries = new ArrayList();
+		entries.addAll(recipes.entrySet());
+		entries.addAll(itemTranslation.entrySet());
+		entries.addAll(dictTranslation.entrySet());
+		entries.addAll(tinyWasteTranslation.entrySet());
+		return entries;
+	}
+
+	@Override
+	public void deleteRecipes() {
+		recipes.clear();
+		itemTranslation.clear();
+		dictTranslation.clear();
+		tinyWasteTranslation.clear();
+	}
+
+	@Override
+	public void readRecipe(JsonElement recipe) {
+		JsonObject obj = recipe.getAsJsonObject();
+		String type = obj.get("type").getAsString();
+		if("recipe".equals(type)) {
+			AStack input = readAStack(obj.getAsJsonArray("input"));
+			int fluidConsumed = obj.get("fluidConsumed").getAsInt();
+			int fluidProduced = obj.has("fluidProduced") ? obj.get("fluidProduced").getAsInt() : fluidConsumed;
+			SILEXRecipe rec = new SILEXRecipe(fluidProduced, fluidConsumed, EnumWavelengths.valueOf(obj.get("laserStrength").getAsString()));
+			if(fluidProduced <= 0 || fluidConsumed <= 0) throw new IllegalArgumentException("SILEX fluid quantities must be positive");
+			long totalWeight = 0;
+			for(JsonElement output : obj.getAsJsonArray("outputs")) {
+				JsonObject out = output.getAsJsonObject();
+				int weight = out.get("weight").getAsInt();
+				if(weight < 0) throw new IllegalArgumentException("SILEX output weights must be nonnegative");
+				totalWeight += weight;
+				rec.addOut(readItemStack(out.getAsJsonArray("stack")), weight);
+			}
+			if(totalWeight == 0 || totalWeight > Integer.MAX_VALUE) throw new IllegalArgumentException("Invalid SILEX total output weight");
+			if(input instanceof OreDictStack) recipes.put(((OreDictStack) input).name, rec);
+			else if(input.getClass() == ComparableStack.class) recipes.put(((ComparableStack) input).makeSingular(), rec);
+			else throw new IllegalArgumentException("SILEX inputs must be item or dict stacks");
+		} else if("itemTranslation".equals(type)) {
+			itemTranslation.put(new ComparableStack(readItemStack(obj.getAsJsonArray("input"))).makeSingular(),
+					new ComparableStack(readItemStack(obj.getAsJsonArray("output"))).makeSingular());
+		} else if("dictTranslation".equals(type)) {
+			dictTranslation.put(obj.get("input").getAsString(), obj.get("output").getAsString());
+		} else if("tinyWasteTranslation".equals(type)) {
+			Item input = (Item) Item.itemRegistry.getObject(obj.get("input").getAsString());
+			Item output = (Item) Item.itemRegistry.getObject(obj.get("output").getAsString());
+			if(input == null || output == null) throw new IllegalArgumentException("Invalid SILEX tiny-waste translation");
+			tinyWasteTranslation.put(input, output);
+		} else {
+			throw new IllegalArgumentException("Unknown SILEX entry type: " + type);
+		}
+	}
+
+	@Override
+	public void writeRecipe(Object recipe, JsonWriter writer) throws IOException {
+		Entry<?, ?> entry = (Entry<?, ?>) recipe;
+		Object value = entry.getValue();
+		if(value instanceof SILEXRecipe) {
+			SILEXRecipe rec = (SILEXRecipe) value;
+			writer.name("type").value("recipe");
+			writer.name("input"); writeAStack(entry.getKey() instanceof String ? new OreDictStack((String) entry.getKey()) : (AStack) entry.getKey(), writer);
+			writer.name("fluidProduced").value(rec.fluidProduced);
+			writer.name("fluidConsumed").value(rec.fluidConsumed);
+			writer.name("laserStrength").value(rec.laserStrength.name());
+			writer.name("outputs").beginArray();
+			for(WeightedRandomObject output : rec.outputs) {
+				writer.beginObject();
+				writer.name("stack"); writeItemStack(output.asStack(), writer);
+				writer.name("weight").value(output.itemWeight);
+				writer.endObject();
+			}
+			writer.endArray();
+		} else if(value instanceof ComparableStack) {
+			writer.name("type").value("itemTranslation");
+			writer.name("input"); writeItemStack(((ComparableStack) entry.getKey()).toStack(), writer);
+			writer.name("output"); writeItemStack(((ComparableStack) value).toStack(), writer);
+		} else if(value instanceof String) {
+			writer.name("type").value("dictTranslation");
+			writer.name("input").value((String) entry.getKey());
+			writer.name("output").value((String) value);
+		} else if(value instanceof Item) {
+			writer.name("type").value("tinyWasteTranslation");
+			writer.name("input").value(Item.itemRegistry.getNameForObject(entry.getKey()));
+			writer.name("output").value(Item.itemRegistry.getNameForObject(value));
+		}
+	}
+
 	public static void register() {
+		registerTinyWasteTranslations();
 
 		itemTranslation.put(new ComparableStack(ModItems.fluid_icon, 1, Fluids.UF6.getID()), new ComparableStack(ModItems.ingot_uranium));
 		dictTranslation.put(U.dust(), U.ingot());
@@ -863,7 +967,7 @@ public class SILEXRecipes {
 
 	private static final HashMap<Item, Item> tinyWasteTranslation = new HashMap();
 
-	static {
+	private static void registerTinyWasteTranslations() {
 		tinyWasteTranslation.put(ModItems.nuclear_waste_short_tiny, ModItems.nuclear_waste_short);
 		tinyWasteTranslation.put(ModItems.nuclear_waste_long_tiny, ModItems.nuclear_waste_long);
 		tinyWasteTranslation.put(ModItems.nuclear_waste_short_depleted_tiny, ModItems.nuclear_waste_short_depleted);
@@ -874,6 +978,33 @@ public class SILEXRecipes {
 
 		if(stack == null || stack.getItem() == null)
 			return null;
+
+		SILEXRecipe recipe = findRecipe(stack);
+
+		if(recipe != null)
+			return recipe;
+
+		Item fullWaste = tinyWasteTranslation.get(stack.getItem());
+
+		if(fullWaste == null)
+			return null;
+
+		recipe = findRecipe(new ItemStack(fullWaste, 1, stack.getItemDamage()));
+
+		// anything below 9 would round down to 0, consuming the item for nothing
+		if(recipe == null || recipe.fluidProduced < 9)
+			return null;
+
+		SILEXRecipe tinyVersion = new SILEXRecipe(recipe.fluidProduced / 9, recipe.fluidConsumed, recipe.laserStrength);
+		// Shared ownership shouldn't be an issue since the resulting recipe isn't modified by the caller
+		tinyVersion.outputs = recipe.outputs;
+
+		// TODO: Cache? Might break saving recipes, IDK
+
+		return tinyVersion;
+	}
+
+	private static SILEXRecipe findRecipe(ItemStack stack) {
 
 		ComparableStack comp = translateItem(stack);
 
@@ -886,23 +1017,6 @@ public class SILEXRecipes {
 			String translation = translateDict(key);
 			if(recipes.containsKey(translation))
 				return recipes.get(translation);
-		}
-
-		if(tinyWasteTranslation.containsKey(comp.item)) {
-			SILEXRecipe result = getOutput(new ItemStack(tinyWasteTranslation.get(comp.item), comp.stacksize, comp.meta));
-
-			if(result != null) {
-				// This way it rounds down if somehow the recipe's fluid produced is not divisible by 900
-				int fluidProduced = (result.fluidProduced / 900) * 100;
-				SILEXRecipe tinyVersion = new SILEXRecipe(fluidProduced, result.fluidConsumed, result.laserStrength);
-				// Shared ownership shouldn't be an issue since the resulting recipe isn't modified by the caller
-				tinyVersion.outputs = result.outputs;
-
-				// TODO: Cache? Might break saving recipes, IDK
-				// recipes.put(comp, tinyVersion);
-
-				return tinyVersion;
-			}
 		}
 
 		return null;
